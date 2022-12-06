@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Amadon.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Amadon"
+    Shell.FlyoutBehavior="Flyout">
+
+    <ShellContent
+        Title="Main Page"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+
+    <ShellContent
+        Title="The Urantia Book"
+        ContentTemplate="{DataTemplate local:TextPage}"
+        Route="The Urantia Book" />
+
+    
+    <ShellContent
+        Title="Table of Contents"
+        ContentTemplate="{DataTemplate local:TOCPage}"
+        Route="Table of Contents" />
+
+    <ShellContent
+        Title="Index"
+        ContentTemplate="{DataTemplate local:IndexPage}"
+        Route="Subject Index for The Urantia Book" />
+
+
+    <ShellContent
+        Title="Search"
+        ContentTemplate="{DataTemplate local:SearchPage}"
+        Route="Search Engine" />
+
+    <ShellContent
+        Title="Track"
+        ContentTemplate="{DataTemplate local:TrackPage}"
+        Route="Track - Viewed paragraphs" />
+
+    <ShellContent
+        Title="Settings"
+        ContentTemplate="{DataTemplate local:SettingsPage}"
+        Route="Setting" />
+
+</Shell>
