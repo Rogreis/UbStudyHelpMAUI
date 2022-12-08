@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amadon", "Amadon\Amadon.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UbStandardObjects", "..\..\Ub\UbStandardObjects\UbStandardObjects.csproj", "{9253EF3E-A6A2-4DC9-9BD9-61F94CB7E9AA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Maui", "..\..\MauiToolKit\src\CommunityToolkit.Maui\CommunityToolkit.Maui.csproj", "{C35384DB-50B3-4D0C-90F5-1601ACEA9EC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmadonBlazor", "..\AmadonBlazor\AmadonBlazor.csproj", "{2AC4945D-24CE-4FD7-8F7E-C5539484E484}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,16 @@ Global
 		{9253EF3E-A6A2-4DC9-9BD9-61F94CB7E9AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9253EF3E-A6A2-4DC9-9BD9-61F94CB7E9AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9253EF3E-A6A2-4DC9-9BD9-61F94CB7E9AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C35384DB-50B3-4D0C-90F5-1601ACEA9EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C35384DB-50B3-4D0C-90F5-1601ACEA9EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C35384DB-50B3-4D0C-90F5-1601ACEA9EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C35384DB-50B3-4D0C-90F5-1601ACEA9EC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC4945D-24CE-4FD7-8F7E-C5539484E484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AC4945D-24CE-4FD7-8F7E-C5539484E484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AC4945D-24CE-4FD7-8F7E-C5539484E484}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2AC4945D-24CE-4FD7-8F7E-C5539484E484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC4945D-24CE-4FD7-8F7E-C5539484E484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC4945D-24CE-4FD7-8F7E-C5539484E484}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

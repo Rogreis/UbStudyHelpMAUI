@@ -1,6 +1,7 @@
 ﻿using static System.Environment;
 using UbStandardObjects;
 using Amadon.Classes;
+using CommunityToolkit.Maui;
 
 namespace Amadon;
 
@@ -69,6 +70,11 @@ public partial class App : Application
 		InitializeComponent();
         Application.Current.UserAppTheme = AppTheme.Dark;
         LocalInitialization();
+
+        // Initialise the Community Maui Toolkit 
+        var builder = MauiApp.CreateBuilder();
+        builder.UseMauiApp<App>().UseMauiCommunityToolkit();
+
         MainPage = new AppShell();
 	}
 }

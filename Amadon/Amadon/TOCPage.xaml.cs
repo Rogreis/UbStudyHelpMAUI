@@ -6,4 +6,5 @@ public partial class TOCPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
 }
