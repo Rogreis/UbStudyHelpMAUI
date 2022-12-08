@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 
 namespace Amadon.Controls
 {
+    /// <summary>
+    /// This is a recursive StackLayout with several elements
+    /// A BoxView (_SpacerBoxView) for sub-levels identation
+    /// A ContentView (_ExpandButtonContent) with a TapGestureRecognizer 
+    ///    that is used to determine if the user tapped on the image (to expand/hide the inner content).
+    /// The TreeViewNode content is configured in the constructor.
+    /// The ChildrenList is a IList<TreeViewNode>, so that means this control is recursive: A node can contain other (sub)nodes.
+    /// </summary>
     public class TreeViewNode : StackLayout
     {
         private DataTemplate _ExpandButtonTemplate = null;

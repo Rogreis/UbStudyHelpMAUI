@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Amadon.Controls
 {
+    /// <summary>
+    /// TreeView control implementation
+    /// The public collection RootNodes needs to be assigned (later) in order to display the nodes. It's a List of TreeViewNode.
+    /// Call the public ProcessXamlItemGroups method to map the hierarchy of nodes (xamlItemGroups) into an ObservableCollection of TreeViewNode.
+    /// </summary>
     public class TreeView : ScrollView
     {
         private readonly StackLayout _StackLayout = new StackLayout { Orientation = StackOrientation.Vertical };
@@ -166,6 +171,11 @@ namespace Amadon.Controls
             children.Add(xamlItemTreeViewNode);
         }
 
+        /// <summary>
+        /// Used to map the hierarchy of nodes (xamlItemGroups) into an ObservableCollection of TreeViewNode.
+        /// </summary>
+        /// <param name="xamlItemGroups"></param>
+        /// <returns></returns>
         public ObservableCollection<TreeViewNode> ProcessXamlItemGroups(XamlItemGroup xamlItemGroups)
         {
             var rootNodes = new ObservableCollection<TreeViewNode>();

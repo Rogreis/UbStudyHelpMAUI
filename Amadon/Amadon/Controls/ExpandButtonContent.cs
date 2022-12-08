@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Amadon.Controls
 {
+    /// <summary>
+    /// Sets the specific icons that will be displayed for expanded/Collapsed Leaf Nodes or expanded on-request nodes.
+    /// It uses the ResourceImage and extends a ContentView.
+    /// </summary>
     public class ExpandButtonContent : ContentView
     {
         protected override void OnBindingContextChanged()
