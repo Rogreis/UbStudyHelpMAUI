@@ -1,5 +1,4 @@
-﻿using Amadon.Resources.Styles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,14 +58,14 @@ namespace AmadonBlazor.Classes
         //ICollection<ResourceDictionary> MergedDictionaries = Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries;
         public ControlsAppearance()
         {
-            foreach (ResourceDictionary dic in Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries)
-            {
-                if ( (dic is DarkTheme || (dic.Source != null && dic.Source.OriginalString != null && dic.Source.OriginalString.IndexOf("DarkTheme") > 0)) ||
-                     (dic is LightTheme || (dic.Source != null && dic.Source.OriginalString != null && dic.Source.OriginalString.IndexOf("LightTheme") > 0)) )
-                {
-                    Dic = dic;
-                }
-            }
+            //foreach (ResourceDictionary dic in Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries)
+            //{
+            //    if ( (dic is DarkTheme || (dic.Source != null && dic.Source.OriginalString != null && dic.Source.OriginalString.IndexOf("DarkTheme") > 0)) ||
+            //         (dic is LightTheme || (dic.Source != null && dic.Source.OriginalString != null && dic.Source.OriginalString.IndexOf("LightTheme") > 0)) )
+            //    {
+            //        Dic = dic;
+            //    }
+            //}
 
         }
 

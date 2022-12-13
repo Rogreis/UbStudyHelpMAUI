@@ -1,7 +1,60 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@using AmadonBlazor.Data;
+@using UbStandardObjects.Objects;
+@inject IJSRuntime JS
+@inject TOC_Service Service
 
-Welcome to your new app.
+<h1>@Title</h1>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+@code {
+
+    // The application lifecycle methods in Blazor:https://www.syncfusion.com/faq/blazor/lifecycle/what-are-the-application-lifecycle-methods-in-blazor
+    // Call JavaScript from Blazor: https://swimburger.net/blog/dotnet/communicating-between-dotnet-and-javascript-in-blazor-with-in-browser-samples#:~:text=To%20invoke%20JavaScript%20functions%20from,instance%20of%20the%20IJSRuntime%20interface.&text=You%20can%20now%20use%20the%20js%20variable%20throughout%20the%20component.&text=This%20method%20will%20invoke%20the,which%20JavaScript%20function%20to%20run.
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    string name = await JS.InvokeAsync<string>("prompt", "What is your name?");
+    //    await JS.InvokeVoidAsync("alert", $"Hello {name}!");
+    //}
+
+
+
+    // Treeview from https://www.w3schools.com/howto/howto_js_treeview.asp
+
+    private TOC_Table toc_table;
+
+    [Parameter]
+    public string Title { get; set; } = "Título";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        toc_table = await TOC_Service.GetTocTableAsync(false);
+        Title = toc_table.Title;
+    }
+
+
+
+    /// <summary>
+    /// The javascript inserted in the static page wwwroot\index.html is called after render for the fiorst time
+    /// </summary>
+    /// <param name="firstRender"></param>
+    /// <returns></returns>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        //await JS.InvokeVoidAsync("alert", "Hello OnAfterRenderAsync!");
+        if (firstRender)
+            await JS.InvokeVoidAsync("ExpandIndex", "");
+    }
+
+    private async void PaperClicked(TOC_Entry entry, MouseEventArgs args)
+    {
+        string id = entry.Section == 0 ? entry.Paper.ToString() : $"{entry.Paper}:{entry.Section}";
+        await JS.InvokeVoidAsync("alert", id);
+    }
+
+}
+

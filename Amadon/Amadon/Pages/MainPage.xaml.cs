@@ -1,4 +1,4 @@
-﻿using Amadon.Classes;
+﻿using AmadonBlazor.Classes;
 using Amadon.Resources.Styles;
 using UbStandardObjects;
 using UbStandardObjects.Objects;
@@ -38,7 +38,7 @@ public partial class MainPage : ContentPage
 
     private void EventsControl_SendMessage(string Message)
     {
-        LabelMessages.Text = Message;
+        //LabelMessages.Text = Message;
     }
 
     private void EventsControl_Error(string message)
@@ -99,6 +99,11 @@ public partial class MainPage : ContentPage
 
     private void ContentPage_Loaded(object sender, EventArgs e)
     {
+    }
+
+    private void ContentPage_SizeChanged(object sender, EventArgs e)
+    {
+
     }
 }
 

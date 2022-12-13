@@ -1,0 +1,157 @@
+﻿@page "/TableOfContents"
+
+@using AmadonBlazor.Data;
+@using UbStandardObjects.Objects;
+@inject IJSRuntime JS
+@inject TOC_Service Service
+
+<h3>Table Of Contents</h3>
+
+<style>
+    ul, #myUL {
+        list-style-type: none;
+    }
+
+    #myUL {
+        margin: 0;
+        padding: 0;
+    }
+
+    .caret {
+        cursor: pointer;
+        -webkit-user-select: none; /* Safari 3.1+ */
+        -moz-user-select: none; /* Firefox 2+ */
+        -ms-user-select: none; /* IE 10+ */
+        user-select: none;
+    }
+
+        .caret::before {
+            content: "\25B6";
+            color: black;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+    .caret-down::before {
+        -ms-transform: rotate(90deg); /* IE 9 */
+        -webkit-transform: rotate(90deg); /* Safari */
+        transform: rotate(90deg);
+    }
+
+    .nested {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+        a:link {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:visited {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:focus {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover {
+            text-decoration: none;
+            background: #cdfeaa;
+            color: black;
+            cursor: pointer;
+        }
+
+        a:active {
+            text-decoration: none;
+            color: black;
+        }
+
+</style>
+
+<ul id="myUL">
+
+    @foreach (TOC_Entry part in Parts)
+    {
+        <li>
+            <span class="caret expandable">@part.Text</span>
+            <ul class="nested">
+                @foreach (TOC_Entry paper in part.Papers)
+                {
+                    <li>
+                        <span class="caret"><a class="liIndex" @onclick="args => PaperClicked(paper, args)">@paper.Ident</a></span>
+                        <ul class="nested">
+                            @foreach (TOC_Entry sectionPaper in paper.Sections)
+                            {
+                                <li><a class="liIndex" @onclick="args => PaperClicked(sectionPaper, args)">@sectionPaper.Ident</a></li>
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+</ul>
+
+
+@code {
+    // The application lifecycle methods in Blazor:https://www.syncfusion.com/faq/blazor/lifecycle/what-are-the-application-lifecycle-methods-in-blazor
+    // Call JavaScript from Blazor: https://swimburger.net/blog/dotnet/communicating-between-dotnet-and-javascript-in-blazor-with-in-browser-samples#:~:text=To%20invoke%20JavaScript%20functions%20from,instance%20of%20the%20IJSRuntime%20interface.&text=You%20can%20now%20use%20the%20js%20variable%20throughout%20the%20component.&text=This%20method%20will%20invoke%20the,which%20JavaScript%20function%20to%20run.
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    string name = await JS.InvokeAsync<string>("prompt", "What is your name?");
+    //    await JS.InvokeVoidAsync("alert", $"Hello {name}!");
+    //}
+
+
+
+    // Treeview from https://www.w3schools.com/howto/howto_js_treeview.asp
+
+    private TOC_Table toc_table;
+
+    [Parameter]
+    public string Title { get; set; } = "Título";
+
+    [Parameter]
+    public List<TOC_Entry> Parts { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        toc_table = await TOC_Service.GetTocTableAsync(false);
+        Title = toc_table.Title;
+        Parts = toc_table.Parts;
+    }
+
+
+
+    /// <summary>
+    /// The javascript inserted in the static page wwwroot\index.html is called after render for the fiorst time
+    /// </summary>
+    /// <param name="firstRender"></param>
+    /// <returns></returns>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JS.InvokeVoidAsync("ExpandIndex", "");
+    }
+
+    private async void PaperClicked(TOC_Entry entry, MouseEventArgs args)
+    {
+        string id = entry.Section == 0 ? entry.Paper.ToString() : $"{entry.Paper}:{entry.Section}";
+        await JS.InvokeVoidAsync("alert", id);
+    }
+
+}

@@ -2,14 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:view="clr-namespace:Amadon.Views"
              xmlns:controls="clr-namespace:Amadon.Controls"
              x:Class="Amadon.TOCPage"
              Title="Table of Contents">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="10">
-            <view:TableOfContentsView></view:TableOfContentsView>
-        </VerticalStackLayout>
-    </ScrollView>
+    <controls:TreeView Margin="15" x:Name="TheTreeView" />
+
 </ContentPage>

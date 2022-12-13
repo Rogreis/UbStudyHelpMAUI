@@ -1,4 +1,4 @@
-using Amadon.Classes;
+using AmadonBlazor.Classes;
 using UbStandardObjects;
 using UbStandardObjects.Objects;
 

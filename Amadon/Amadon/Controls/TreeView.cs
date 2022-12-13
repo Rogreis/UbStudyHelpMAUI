@@ -13,6 +13,7 @@ namespace Amadon.Controls
     /// TreeView control implementation
     /// The public collection RootNodes needs to be assigned (later) in order to display the nodes. It's a List of TreeViewNode.
     /// Call the public ProcessXamlItemGroups method to map the hierarchy of nodes (xamlItemGroups) into an ObservableCollection of TreeViewNode.
+    /// <see href="https://dev.to/icebeam7/creating-a-treeview-control-in-net-maui-49mp"/>
     /// </summary>
     public class TreeView : ScrollView
     {
@@ -163,7 +164,8 @@ namespace Amadon.Controls
             var label = new Label
             {
                 VerticalOptions = LayoutOptions.Center,
-                TextColor = Colors.Black
+                //TextColor = Colors.Black,
+                Margin= new Thickness(15, 0, 5, 0)
             };
             label.SetBinding(Label.TextProperty, "Key");
 
@@ -180,12 +182,13 @@ namespace Amadon.Controls
         {
             var rootNodes = new ObservableCollection<TreeViewNode>();
 
-            foreach (var xamlItemGroup in xamlItemGroups.Children.OrderBy(xig => xig.Name))
+            foreach (var xamlItemGroup in xamlItemGroups.Children)
             {
                 var label = new Label
                 {
                     VerticalOptions = LayoutOptions.Center,
-                    TextColor = Colors.Black
+                    //TextColor = Colors.Black
+                    Margin = new Thickness(15, 0, 5, 0)
                 };
                 label.SetBinding(Label.TextProperty, "Name");
 

@@ -1,6 +1,6 @@
 ﻿using static System.Environment;
 using UbStandardObjects;
-using Amadon.Classes;
+using AmadonBlazor.Classes;
 using CommunityToolkit.Maui;
 
 namespace Amadon;

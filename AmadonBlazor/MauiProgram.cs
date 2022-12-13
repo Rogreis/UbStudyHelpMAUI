@@ -23,6 +23,7 @@ namespace AmadonBlazor
 #endif
 
             builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddSingleton<TOC_Service>();
 
             return builder.Build();
         }
