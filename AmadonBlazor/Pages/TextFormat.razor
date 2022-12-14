@@ -1,0 +1,26 @@
+﻿@page "/TextFormat"
+
+@using AmadonBlazor.Data;
+@using UbStandardObjects.Objects;
+@inject IJSRuntime JS
+@inject TextService Service
+
+<h3>@Title</h3>
+
+@((MarkupString)Html)
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = "Documento XXX";
+
+    [Parameter]
+    public string Html { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Html = await TextService.GetHtml();
+    }
+
+}
