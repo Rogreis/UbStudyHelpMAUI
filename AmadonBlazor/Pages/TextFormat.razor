@@ -1,5 +1,4 @@
 ﻿@page "/TextFormat"
-
 @using AmadonBlazor.Data;
 @using UbStandardObjects.Objects;
 @inject IJSRuntime JS
@@ -12,15 +11,25 @@
 @code {
 
     [Parameter]
-    public string Title { get; set; } = "Documento XXX";
+    public string Title { get; set; }
 
     [Parameter]
     public string Html { get; set; }
 
+    [Parameter]
+    public string Entry { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-        Html = await TextService.GetHtml();
+        string entry = "100:1:5";
+        Html = await TextService.GetHtml(entry);
+    }
+
+    protected override async void OnParametersSet()
+    {
+        if (Entry == null) Entry = "100:1:5";
+        Html = await TextService.GetHtml(Entry);
     }
 
 }

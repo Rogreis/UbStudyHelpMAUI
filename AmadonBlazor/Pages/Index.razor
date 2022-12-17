@@ -1,5 +1,6 @@
 ﻿@page "/"
 
+@using AmadonBlazor.Classes;
 @using AmadonBlazor.Data;
 @using UbStandardObjects.Objects;
 @inject IJSRuntime JS
@@ -9,30 +10,57 @@
 <style>
 
         html, body {
+            padding-top: 0px;
+            padding-right: 0px;
+            padding-bottom: 0px;
+            padding-left: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-right: 0px;
+            margin-left: 0px;
             height: 100%;
-            margin: 0;
-        }
+    }
 
         .panelMain {
-            height: @DivHeight;
+            padding-top: 0px;
+            padding-right: 0px;
+            padding-bottom: 0px;
+            padding-left: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-right: 0px;
+            margin-left: 0px;
+        height: 100%;
             width: 100%;
         }
 
         .panelLeft {
             height: @DivHeight;
             width: 25%;
+            padding-top: 10px;
+            padding-right: 10px;
+            padding-bottom: 10px;
+            padding-left: 10px;
         }
 
         .panelRight {
-            height: @DivHeight;
-            width: 75%;
+        height: @DivHeight;
+        width: 75%;
         }
 
 
         .topnav {
             overflow: hidden;
             background-color: #e9e9e9;
-        }
+            padding-top: 0px;
+            padding-right: 0px;
+            padding-bottom: 0px;
+            padding-left: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-right: 0px;
+            margin-left: 0px;
+    }
 
         .topnav a {
             float: left;
@@ -84,7 +112,8 @@
 
 </style>
 
-<div class="topnav">  <a class="active" href="#home">Home</a>
+<div class="topnav">
+  <a class="active" href="#home">Home</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
   <div class="search-container">
@@ -97,14 +126,12 @@
 
 
 <div class="container-fluid panelMain">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-3 bg-dark text-white p-3 panelLeft overflow-auto">
-                <TableOfContents></TableOfContents>
-            </div>
-            <div class="col-9 bg-dark text-white p-3 panelRight overflow-auto">
-                <TextFormat Title="Documento 001"></TextFormat>
-            </div>
+    <div class="row">
+        <div class="col-3 bg-dark text-white panelLeft overflow-auto">
+            <TableOfContents OnEntryChanged=@NewEntry></TableOfContents>
+        </div>
+        <div class="col-9 bg-dark text-white panelRight overflow-auto">
+            <TextFormat Entry=@EntryHref></TextFormat>
         </div>
     </div>
 </div>
@@ -139,15 +166,49 @@
     [Parameter]
     public string DivHeight { get; set; }
 
+    [Parameter]
+    public string EntryHref { get; set; }
+
+    public class WindowDimension
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+    }
+
+
+    private async Task SetDimensions()
+    {
+        var dimension = await JS.InvokeAsync<WindowDimension>("getWindowDimensions");
+        //Width = dimension.Width;
+
+        DivHeight = $"{(dimension.Height - 120)}px";
+    }
 
     protected override async Task OnInitializedAsync()
     {
         Title = "O Livro de Urântia";
-        DivHeight = "600px";
+
+        var dimension = await JS.InvokeAsync<WindowDimension>("getWindowDimensions");
+        //Width = dimension.Width;
+
+        DivHeight = $"{(dimension.Height-80)}px";
+        EntryHref = "100:1:5";
         //await JS.InvokeAsync<object>("AddResizeHandler", "leftUbPanel");
         //await JS.InvokeAsync<object>("CallResizeHandler", "leftUbPanel");
     }
 
+    private void NewEntry(string entryHref)
+    {
+        EntryHref = entryHref;
+    }
+
+
+    //protected override void OnSizeAllocated(double width, double height)
+    //{
+    //    base.OnSizeAllocated(width, height);
+
+    //    //respond to size change below...
+    //}
 
 
     /// <summary>
@@ -155,18 +216,13 @@
     /// </summary>
     /// <param name="firstRender"></param>
     /// <returns></returns>
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        //await JS.InvokeVoidAsync("alert", "Hello OnAfterRenderAsync!");
-        //if (firstRender)
-        //    await JS.InvokeVoidAsync("StartPanel", "");
-    }
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    //await JS.InvokeVoidAsync("alert", $"Hello OnAfterRenderAsync {firstRender}");
+    //    //if (firstRender)
+    //    //    await JS.InvokeVoidAsync("StartPanel", "");
+    //}
 
-    private async void PaperClicked(TOC_Entry entry, MouseEventArgs args)
-    {
-        string id = entry.Section == 0 ? entry.Paper.ToString() : $"{entry.Paper}:{entry.Section}";
-        await JS.InvokeVoidAsync("alert", id);
-    }
 
 }
 

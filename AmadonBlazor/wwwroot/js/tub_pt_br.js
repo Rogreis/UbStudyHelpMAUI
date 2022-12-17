@@ -156,4 +156,33 @@ function loadDoc(url, hash) {
     ret= loadEditData();
   }
 
-  
+window.getWindowDimensions = function () {
+    return {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
+}; 
+
+
+const heightOutput = document.querySelector("#height");
+const widthOutput = document.querySelector("#width");
+
+function reportWindowSize() {
+    heightOutput.textContent = window.innerHeight;
+    widthOutput.textContent = window.innerWidth;
+}
+
+DotNet.invokeMethodAsync('AmadonBlazor.Classes.ResizeInformation', 'ReSize', null);
+
+Blazor.registerCustomEventType('custompaste', {
+    browserEventName: 'paste',
+    createEventArgs: event => {
+        return {
+            eventTimestamp: new Date(),
+            pastedData: event.clipboardData.getData('text')
+        };
+    }
+});
+
+
+window.onresize = reportWindowSize;

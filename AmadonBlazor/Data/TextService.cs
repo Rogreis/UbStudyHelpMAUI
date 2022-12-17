@@ -12,11 +12,12 @@ namespace AmadonBlazor.Data
     public class TextService
     {
 
-        public static Task<string> GetHtml()
+        public static Task<string> GetHtml(string href)
         {
+            TOC_Entry entry = TOC_Entry.FromHref(href);
             ParametersMAUI parameters = new ParametersMAUI();
             HtmlFormatMAUI formatter = new HtmlFormatMAUI((Parameters)parameters);
-            string html = formatter.FormatPaper(1, StaticObjects.Book.LeftTranslation, null, StaticObjects.Book.RightTranslation);
+            string html = formatter.FormatPaper(entry.Paper, StaticObjects.Book.LeftTranslation, null, StaticObjects.Book.RightTranslation);
             return Task.FromResult(html);
         }
     }

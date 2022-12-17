@@ -2,7 +2,7 @@
 
 :root {
     --font: 'Roboto Serif Medium';
-    --fontSize: 18px;
+    --fontSize: 22px;
     --fontOld: 'Helvetica Neue';
 }
 
@@ -28,7 +28,15 @@ a, .btn-link {
 }
 
 .content {
-    padding-top: 1.1rem;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    height: 100%;
 }
 
 .valid.modified:not([type=checkbox]) {

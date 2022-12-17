@@ -68,36 +68,7 @@ public partial class MainPage : ContentPage
 
     #endregion
 
-    #region Themme
-    /// <summary>
-    /// Chage the current themme
-    /// <see href="https://learn.microsoft.com/en-us/dotnet/maui/user-interface/theming?view=net-maui-7.0"/>
-    /// </summary>
-    private void ChangeThemme()
-    {
-        ICollection<ResourceDictionary> mergedDictionaries = Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries;
-        if (mergedDictionaries != null)
-        {
-            bool useDark = true;
-            ResourceDictionary existingDic = null;
-            foreach (ResourceDictionary dic in mergedDictionaries)
-            {
-                if (dic is DarkTheme || (dic.Source != null && dic.Source.OriginalString != null && dic.Source.OriginalString.IndexOf("DarkTheme") > 0))
-                {
-                    useDark = false;
-                    existingDic = dic;
-                }
-            }
-            //if(existingDic != null) mergedDictionaries.Remove(existingDic);
-            mergedDictionaries.Clear();
-            mergedDictionaries.Add(useDark ? new DarkTheme() : new LightTheme());
-        }
-    }
-    #endregion
-
-
-
-    private void ContentPage_Loaded(object sender, EventArgs e)
+     private void ContentPage_Loaded(object sender, EventArgs e)
     {
     }
 
