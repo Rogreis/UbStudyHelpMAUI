@@ -1,12 +1,50 @@
 ﻿@page "/TextFormat"
 @using AmadonBlazor.Data;
+@using System.Text.Json;
 @using UbStandardObjects.Objects;
 @inject IJSRuntime JS
 @inject TextService Service
 
 <h3>@Title</h3>
 
-@((MarkupString)Html)
+<table class="table table-borderless">
+    <thead>
+	<tr>
+        <th><div class="p-3 mb-2 parClosed"><h2>Paper 1</h2> </div></th>
+        <th><div class="p-3 mb-2 parClosed"><h2>Documento 1</h2> </div></th>
+	</tr>
+</thead>
+<tbody>
+
+<!-- @((MarkupString)Html) -->
+@foreach (ParagraphsLine pLine in @Lines)
+{
+    <tr>
+        @if (pLine.ParRight != null)
+        {
+            @((MarkupString)pLine.ParRight)
+        }
+
+        @if (pLine.ParMiddle != null)
+        {
+            @((MarkupString)pLine.ParMiddle)
+        }
+
+        @if (pLine.ParRight != null)
+        {
+            @((MarkupString)pLine.ParRight)
+        }
+
+        @if (pLine.HtmlCompare != null)
+        {
+            @((MarkupString)pLine.HtmlCompare)
+        }
+    </tr>
+}
+
+</tbody>
+</table>
+
 
 @code {
 
@@ -14,22 +52,40 @@
     public string Title { get; set; }
 
     [Parameter]
-    public string Html { get; set; }
+    public List<ParagraphsLine> Lines { get; set; }
 
     [Parameter]
     public string Entry { get; set; }
 
+    public class ParagraphsLine
+    {
+        public string ParLeft { get; set; }
+        public string ParMiddle { get; set; }
+        public string ParRight { get; set; }
+        public string HtmlCompare { get; set; }
+    }
+
+    private async Task<List<ParagraphsLine>> GetParagraphs(string entry)
+    {
+        string jason = await TextService.GetHtml(entry);
+        var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true,
+            };
+        return JsonSerializer.Deserialize<List<ParagraphsLine>>(jason, options);
+    }
 
     protected override async Task OnInitializedAsync()
     {
         string entry = "100:1:5";
-        Html = await TextService.GetHtml(entry);
+        Lines = await GetParagraphs(entry);
     }
 
     protected override async void OnParametersSet()
     {
         if (Entry == null) Entry = "100:1:5";
-        Html = await TextService.GetHtml(Entry);
+        Lines = await GetParagraphs(Entry);
     }
 
 }

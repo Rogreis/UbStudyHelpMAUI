@@ -11,6 +11,15 @@
 html, body {
     font-family: var(--font), Helvetica, Arial, sans-serif;
     font-size: var(--fontSize);
+    color: var(--bs-white-rgb);
+    background-color: var(--bs-dark-rgb);
+}
+
+table {
+    font-family: var(--font), Helvetica, Arial, sans-serif;
+    font-size: var(--fontSize);
+    color: var(--bs-white-rgb);
+    background-color: var(--bs-dark-rgb);
 }
 
 h1:focus {
@@ -214,7 +223,7 @@ a.parOk:active {
     color: black;
 }
 
-.parClosed {
+.parClosed .commonText {
     color: rgba(var(--bs-white-rgb),var(--bs-text-opacity)) !important;
     background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
 }
