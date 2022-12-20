@@ -172,8 +172,6 @@ function reportWindowSize() {
     widthOutput.textContent = window.innerWidth;
 }
 
-DotNet.invokeMethodAsync('AmadonBlazor.Classes.ResizeInformation', 'ReSize', null);
-
 Blazor.registerCustomEventType('custompaste', {
     browserEventName: 'paste',
     createEventArgs: event => {

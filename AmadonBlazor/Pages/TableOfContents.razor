@@ -22,7 +22,7 @@
                         <ul class="nested">
                             @foreach (TOC_Entry sectionPaper in paper.Sections)
                             {
-                                <li><a class="liIndex" @onclick="args => PaperClicked(sectionPaper, args)">@sectionPaper.Ident</a></li>
+                                <li><a class="liIndex p-3" @onclick="args => PaperClicked(sectionPaper, args)">@sectionPaper.Ident</a></li>
                             }
                         </ul>
                     </li>

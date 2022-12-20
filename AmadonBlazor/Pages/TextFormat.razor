@@ -5,47 +5,21 @@
 @inject IJSRuntime JS
 @inject TextService Service
 
-<h3>@Title</h3>
-
 <table class="table-borderless">
     <thead>
-	<tr>
-        <th><div class="p-3 mb-2 parClosed"><h2>Paper 1</h2> </div></th>
-        <th><div class="p-3 mb-2 parClosed"><h2>Documento 1</h2> </div></th>
-	</tr>
-</thead>
+        <tr>
+            @foreach (string line in @PaperLines.Titles)
+            {
+                @((MarkupString)@line)
+            }
+        </tr>
+    </thead>
 <tbody>
 
-@foreach (ParagraphsLine pLine in @Lines)
+@foreach (string line in @PaperLines.Lines)
 {
     <tr>
-        @if (pLine.ParLeft != null)
-        {
-            <td>
-                @((MarkupString)pLine.ParLeft)
-            </td>
-        }
-
-        @if (pLine.ParMiddle != null)
-        {
-            <td>
-                @((MarkupString)pLine.ParMiddle)
-            </td>
-        }
-
-        @if (pLine.ParRight != null)
-        {
-            <td>
-                @((MarkupString)pLine.ParRight)
-            </td>
-        }
-
-        @if (pLine.HtmlCompare != null)
-        {
-            <td>
-                @((MarkupString)pLine.HtmlCompare)
-            </td>
-        }
+        @((MarkupString)@line)
     </tr>
 }
 
@@ -56,23 +30,19 @@
 @code {
 
     [Parameter]
-    public string Title { get; set; }
-
-    [Parameter]
-    public List<ParagraphsLine> Lines { get; set; }
+    public PaperText PaperLines { get; set; }
 
     [Parameter]
     public string Entry { get; set; }
 
-    public class ParagraphsLine
+    public class PaperText
     {
-        public string ParLeft { get; set; }
-        public string ParMiddle { get; set; }
-        public string ParRight { get; set; }
-        public string HtmlCompare { get; set; }
+        public List<string> Titles { get; set; } = new List<string>();
+        public List<string> Lines { get; set; } = new List<string>();
     }
 
-    private async Task<List<ParagraphsLine>> GetParagraphs(string entry)
+
+    private async Task<bool> GetParagraphs(string entry)
     {
         string jason = await TextService.GetHtml(entry);
         var options = new JsonSerializerOptions
@@ -80,19 +50,20 @@
                 AllowTrailingCommas = true,
                 WriteIndented = true,
             };
-        return JsonSerializer.Deserialize<List<ParagraphsLine>>(jason, options);
+        PaperLines = JsonSerializer.Deserialize<PaperText>(jason, options);
+        return true;
     }
 
     protected override async Task OnInitializedAsync()
     {
         string entry = "100:1:5";
-        Lines = await GetParagraphs(entry);
+        bool ret= await GetParagraphs(entry);
     }
 
     protected override async void OnParametersSet()
     {
         if (Entry == null) Entry = "100:1:5";
-        Lines = await GetParagraphs(Entry);
+        bool ret = await GetParagraphs(Entry);
     }
 
 }

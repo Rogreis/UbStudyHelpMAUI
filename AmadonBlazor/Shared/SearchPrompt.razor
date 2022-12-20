@@ -1,0 +1,32 @@
+﻿
+<div class="search-container">
+    <form>
+        <input type="text" width="300" @bind="@CurrentValue" placeholder="Search this page..." name="search" @onkeydown="@Enter" />
+        <button @onclick="args => SearchClicked(args)" type="button"><i class="fa fa-search"></i></button>
+    </form>
+</div>
+
+
+
+@code {
+
+    // Implements the search on page UI and event to send back the request
+
+    [Parameter]
+    public EventCallback<string> OnPageSearchAsked { get; set; }
+
+    private string CurrentValue { get; set; } = "";
+
+    private void SearchClicked(MouseEventArgs args)
+    {
+        OnPageSearchAsked.InvokeAsync(CurrentValue);
+    }
+
+    public void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            OnPageSearchAsked.InvokeAsync(CurrentValue);
+        }
+    }
+}

@@ -2,7 +2,7 @@
 
 :root {
     --font: 'Roboto Serif Medium';
-    --fontSize: 22px;
+    --fontSize: 18px;
     --fontOld: 'Helvetica Neue';
 }
 
@@ -138,7 +138,7 @@ ul, #myUL {
 
 .caret::before {
     content: "\25B6";
-    color: black;
+    color: white;
     display: inline-block;
     margin-right: 6px;
 }
@@ -163,36 +163,36 @@ a {
     color: white;
 }
 
-    a:link {
-        text-decoration: none;
-        color: white;
-    }
+a:link {
+    text-decoration: none;
+    color: white;
+}
 
-    a:visited {
-        text-decoration: none;
-        color: white;
-    }
+a:visited {
+    text-decoration: none;
+    color: white;
+}
 
-    a:focus {
-        text-decoration: none;
-        color: white;
-    }
+a:focus {
+    text-decoration: none;
+    color: white;
+}
 
-    a:hover {
-        text-decoration: none;
-        background: white;
-        color: black;
-        cursor: pointer;
-    }
+a:hover {
+    text-decoration: none;
+    background: white;
+    color: black;
+    cursor: pointer;
+}
 
-    a:active {
-        text-decoration: none;
-        color: white;
-    }
+a:active {
+    text-decoration: none;
+    color: white;
+}
 
 
 
-.parStarted, .parWorking, .parDoubt, .parOk, .parClosed {
+.parStarted, .parWorking, .parDoubt, .parOk, .parClosed, .commonText {
     font-family: var(--font);
     font-size: var(--fontSize);
     text-align: justify;
@@ -305,7 +305,7 @@ a.parOk:active {
     color: black;
 }
 
-.parClosed .commonText {
+.parClosed, .commonText {
     color: rgba(var(--bs-white-rgb),var(--bs-text-opacity)) !important;
     background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
 }
