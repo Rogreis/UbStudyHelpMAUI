@@ -7,7 +7,7 @@
 
 <h3>@Title</h3>
 
-<table class="table table-borderless">
+<table class="table-borderless">
     <thead>
 	<tr>
         <th><div class="p-3 mb-2 parClosed"><h2>Paper 1</h2> </div></th>
@@ -16,28 +16,35 @@
 </thead>
 <tbody>
 
-<!-- @((MarkupString)Html) -->
 @foreach (ParagraphsLine pLine in @Lines)
 {
     <tr>
-        @if (pLine.ParRight != null)
+        @if (pLine.ParLeft != null)
         {
-            @((MarkupString)pLine.ParRight)
+            <td>
+                @((MarkupString)pLine.ParLeft)
+            </td>
         }
 
         @if (pLine.ParMiddle != null)
         {
-            @((MarkupString)pLine.ParMiddle)
+            <td>
+                @((MarkupString)pLine.ParMiddle)
+            </td>
         }
 
         @if (pLine.ParRight != null)
         {
-            @((MarkupString)pLine.ParRight)
+            <td>
+                @((MarkupString)pLine.ParRight)
+            </td>
         }
 
         @if (pLine.HtmlCompare != null)
         {
-            @((MarkupString)pLine.HtmlCompare)
+            <td>
+                @((MarkupString)pLine.HtmlCompare)
+            </td>
         }
     </tr>
 }
