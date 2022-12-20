@@ -102,9 +102,7 @@
 </style>
 
 <div class="topnav">
-  <a class="active" href="#home">Home</a>
-  <a href="#about">About</a>
-  <a href="#contact">Contact</a>
+    <NavMenuItem OnMenuClicked="MenuClicked"></NavMenuItem>
     <SearchPrompt OnPageSearchAsked=@SearchAsked></SearchPrompt>
 </div>
 
@@ -190,6 +188,9 @@
     {
     }
 
+    private void MenuClicked(string command)
+    {
+    }
 
     //protected override void OnSizeAllocated(double width, double height)
     //{
