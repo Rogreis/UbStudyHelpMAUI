@@ -1,6 +1,6 @@
 ﻿@foreach (MenuItem item in MenuItemList)
 {
-    @if (item.IsActive)
+    @if (item.MenuCommand == CurrentCommand)
     {
         <a class="active" @onclick="args => MenuClicked(item.MenuCommand, args)">@item.MenuText</a>
     }
@@ -17,18 +17,17 @@
     {
         public string MenuText { get; set; }
         public string MenuCommand { get; set; }
-        public bool IsActive { get; set; } = false;
     }
 
     private List<MenuItem> MenuItemList { get; set; } 
 
-    private string Menu1 { get; set; } = "XXXCCC";
+    public string CurrentCommand { get; set; } = "text";
 
     protected override async Task OnInitializedAsync()
     {
         MenuItemList = new List<MenuItem>()
         {
-            new MenuItem() { MenuText= "Paper Text", MenuCommand= "text", IsActive= true},
+            new MenuItem() { MenuText= "Paper Text", MenuCommand= CurrentCommand },
             new MenuItem() { MenuText= "Subject Index", MenuCommand= "index"},
             new MenuItem() { MenuText= "Advanced Search", MenuCommand= "search"},
             new MenuItem() { MenuText= "Track", MenuCommand= "track"},
@@ -42,6 +41,7 @@
 
     private void MenuClicked(string action, MouseEventArgs args)
     {
+        CurrentCommand = action;
         OnMenuClicked.InvokeAsync(action);
     }
 
