@@ -21,7 +21,7 @@ namespace AmadonBlazor.Classes
         /// <returns></returns>
         protected override string ControlFilePath()
         {
-            return Path.Combine(ApplicationFolderTubFiles, ControlFileName);
+            return Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, ControlFileName);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace AmadonBlazor.Classes
         /// <returns></returns>
         protected override string TranslationFilePath(short translationId)
         {
-            return Path.Combine(ApplicationFolderTubFiles, $"TR{translationId:000}.gz");
+            return Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, $"TR{translationId:000}.gz");
         }
 
 

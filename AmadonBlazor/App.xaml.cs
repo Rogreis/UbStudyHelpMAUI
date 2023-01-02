@@ -1,18 +1,21 @@
 ﻿using AmadonBlazor.Classes;
+using Microsoft.Maui.Controls;
 using UbStandardObjects;
+using UbStandardObjects.Helpers;
 using static System.Environment;
 
 namespace AmadonBlazor
 {
     public partial class App : Application
     {
+        private const string AppName = "AmandonApp";
 
         private string DataFolder()
         {
 
-            string processName = System.IO.Path.GetFileNameWithoutExtension(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            //string processName = System.IO.Path.GetFileNameWithoutExtension(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             var commonpath = GetFolderPath(SpecialFolder.CommonApplicationData);
-            return Path.Combine(commonpath, processName);
+            return Path.Combine(commonpath, AppName);
         }
 
 
@@ -23,31 +26,46 @@ namespace AmadonBlazor
             return Path.Combine(folder, fileName);
         }
 
+
         private bool LocalInitialization()
         {
+
+            var dataFolder = Path.Combine(GetFolderPath(SpecialFolder.CommonApplicationData), AppName);
+            Directory.CreateDirectory(dataFolder);
+
             // Log for errors
-            string pathLog = MakeProgramDataFolder("UbStudyHelp.log");
+            StaticObjects.PathLog = Path.Combine(dataFolder, $"{AppName}.log");
 
             StaticObjects.Logger = new LogMAUI();
-            StaticObjects.Logger.Initialize(pathLog, false);
+            StaticObjects.Logger.Initialize(StaticObjects.PathLog, false);
             StaticObjects.Logger.Info("»»»» Startup");
 
-            StaticObjects.PathParameters = MakeProgramDataFolder("UbStudyHelp.json");
+            StaticObjects.PathParameters = Path.Combine(dataFolder, $"{AppName}.json");
             if (!File.Exists(StaticObjects.PathParameters))
             {
                 StaticObjects.Logger.Info("Parameters not found, creating a new one: " + StaticObjects.PathParameters);
             }
             StaticObjects.Parameters = ParametersMAUI.Deserialize(StaticObjects.PathParameters);
-
-
-
-            // Set folders and URLs used
-            // This must be set in the parameters
             StaticObjects.Parameters.ApplicationFolder = System.AppDomain.CurrentDomain.BaseDirectory;
-            StaticObjects.Parameters.TUB_Files_RepositoryFolder = MakeProgramDataFolder("TUB_Files");
-            // FIX ME
-            StaticObjects.Parameters.TUB_Files_RepositoryFolder = @"C:\ProgramData\UbStudyHelp\TUB_Files";
-            StaticObjects.Parameters.ApplicationFolder = @"C:\ProgramData\UbStudyHelp";
+
+
+            // Get Github data
+            GitHelper gitHelper = GitHelper.Instance;
+
+            // TUB files (existing translations) folder
+            StaticObjects.Parameters.TUB_Files_RepositoryFolder = Path.Combine(dataFolder, "TUB_Files");
+            Directory.CreateDirectory(StaticObjects.Parameters.TUB_Files_RepositoryFolder);
+            StaticObjects.Logger.Info($"TUB_Files_RepositoryFolder: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}");
+            gitHelper.VerifyRepository("https://github.com/Rogreis/TUB_Files.git", StaticObjects.Parameters.TUB_Files_RepositoryFolder);
+
+            // Reposiroty folder for edit language when exists
+            StaticObjects.Parameters.EditParagraphsRepositoryFolder = Path.Combine(dataFolder, "Repo");
+            StaticObjects.Logger.Info($"EditParagraphsRepositoryFolder: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
+
+
+
+
+
             StaticObjects.Book = new BookMAUI();
 
             GetDataFilesMAUI dataFiles = new((ParametersMAUI)StaticObjects.Parameters);
