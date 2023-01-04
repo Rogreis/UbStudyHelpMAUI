@@ -1,0 +1,67 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Amadon App</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-text" aria-hidden="true"></span> Paper
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="toctable">
+                <span class="oi oi-list" aria-hidden="true"></span> Table of Contents
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="tubindex">
+                <span class="oi oi-star" aria-hidden="true"></span> Index
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="search">
+                <span class="oi oi-info" aria-hidden="true"></span> Search
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="track">
+                <span class="oi oi-location" aria-hidden="true"></span> Track
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3 fixed-bottom">
+            <NavLink class="nav-link" href="help">
+                <span class="oi oi-question-mark" aria-hidden="true"></span> Help
+            </NavLink>
+            <NavLink class="nav-link" href="fontbigger">
+                <span class="oi oi-plus" aria-hidden="true"></span> Bigger Font
+            </NavLink>
+            <NavLink class="nav-link" href="fontsmaller">
+                <span class="oi oi-minus" aria-hidden="true"></span> Smaller Font
+            </NavLink>
+            <NavLink class="nav-link" href="track">
+                <span class="oi oi-target" aria-hidden="true"></span> Settings
+            </NavLink>
+        </div>
+
+    </nav>
+
+</div>
+
+@code {
+
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

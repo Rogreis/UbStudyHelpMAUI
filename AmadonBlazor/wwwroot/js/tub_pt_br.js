@@ -182,5 +182,9 @@ Blazor.registerCustomEventType('custompaste', {
     }
 });
 
+window.Alert = function (message) {
+    alert(message);
+}
+
 
 window.onresize = reportWindowSize;

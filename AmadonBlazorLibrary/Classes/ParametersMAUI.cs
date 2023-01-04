@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using UbStandardObjects;
 
-namespace AmadonBlazor.Classes
+namespace AmadonBlazorLibrary.Classes
 {
     [Serializable]
     internal class ParametersMAUI : Parameters

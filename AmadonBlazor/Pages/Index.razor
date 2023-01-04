@@ -157,6 +157,11 @@
         public int Height { get; set; }
     }
 
+    private async Task Alert(string message)
+    {
+        await JS.InvokeAsync<string>("Alert", message);
+    }
+
 
     private async Task SetDimensions()
     {
@@ -170,11 +175,22 @@
     {
         Title = "O Livro de Urântia";
 
+        Initializer initializer = Initializer.Instance;
+        initializer.Log();
+
+        initializer.Parameters();
+
+        initializer.StartTubRepository();
+
         var dimension = await JS.InvokeAsync<WindowDimension>("getWindowDimensions");
         //Width = dimension.Width;
 
         DivHeight = $"{(dimension.Height-80)}px";
-        EntryHref = "100:1:5";
+
+
+        await Alert("Log iniciado");
+
+
         //await JS.InvokeAsync<object>("AddResizeHandler", "leftUbPanel");
         //await JS.InvokeAsync<object>("CallResizeHandler", "leftUbPanel");
     }

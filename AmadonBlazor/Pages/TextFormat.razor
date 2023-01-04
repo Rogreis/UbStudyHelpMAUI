@@ -1,30 +1,34 @@
 ﻿@page "/TextFormat"
 @using AmadonBlazor.Data;
 @using System.Text.Json;
+@using UbStandardObjects;
 @using UbStandardObjects.Objects;
 @inject IJSRuntime JS
 @inject TextService Service
 
-<table class="table-borderless">
-    <thead>
-        <tr>
-            @foreach (string line in @PaperLines.Titles)
-            {
-                @((MarkupString)@line)
-            }
-        </tr>
-    </thead>
-<tbody>
-
-@foreach (string line in @PaperLines.Lines)
+@if (@PaperLines != null)
 {
-    <tr>
-        @((MarkupString)@line)
-    </tr>
-}
+    <table class="table-borderless">
+        <thead>
+            <tr>
+                @foreach (string line in @PaperLines.Titles)
+                {
+                    @((MarkupString)@line)
+                }
+            </tr>
+        </thead>
+        <tbody>
 
-</tbody>
-</table>
+            @foreach (string line in @PaperLines.Lines)
+            {
+                <tr>
+                    @((MarkupString)@line)
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
 
 
 @code {
@@ -41,9 +45,14 @@
         public List<string> Lines { get; set; } = new List<string>();
     }
 
+    private string lastEntry = "";
 
     private async Task<bool> GetParagraphs(string entry)
     {
+        if (lastEntry == entry)
+        {
+            return true;   
+        }
         string jason = await TextService.GetHtml(entry);
         var options = new JsonSerializerOptions
             {
@@ -51,18 +60,18 @@
                 WriteIndented = true,
             };
         PaperLines = JsonSerializer.Deserialize<PaperText>(jason, options);
+        lastEntry = entry;
         return true;
     }
 
     protected override async Task OnInitializedAsync()
     {
-        string entry = "100:1:5";
-        bool ret= await GetParagraphs(entry);
+        bool ret = await GetParagraphs(StaticObjects.Parameters.Entry.Reference);
     }
 
     protected override async void OnParametersSet()
     {
-        if (Entry == null) Entry = "100:1:5";
+        if (Entry == null) Entry = StaticObjects.Parameters.Entry.Reference;
         bool ret = await GetParagraphs(Entry);
     }
 
