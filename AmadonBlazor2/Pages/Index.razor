@@ -96,7 +96,7 @@
 </style>
 
 
-<div class="container-fluid panelMain">
+<div class="container-fluid panelMain bg-dark">
     <div class="row bg-dark text-white overflow-auto">
         <TextFormat Entry=@EntryHref></TextFormat>
     </div>
@@ -152,15 +152,6 @@
     protected override async Task OnInitializedAsync()
     {
         Title = "O Livro de Urântia";
-
-
-        var dimension = await JS.InvokeAsync<WindowDimension>("getWindowDimensions");
-        //Width = dimension.Width;
-
-        DivHeight = $"{(dimension.Height - 80)}px";
-
-
-        await Alert("Log iniciado");
 
 
         //await JS.InvokeAsync<object>("AddResizeHandler", "leftUbPanel");
