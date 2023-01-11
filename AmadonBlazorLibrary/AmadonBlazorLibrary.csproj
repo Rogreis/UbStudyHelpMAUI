@@ -23,6 +23,7 @@
 	  <Compile Remove="Classes\Initializer.cs" />
 	  <Compile Remove="Classes\LogMAUI.cs" />
 	  <Compile Remove="Classes\ParametersMAUI.cs" />
+	  <Compile Remove="UbClasses\GetDataFiles.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,14 +32,12 @@
 	  <None Include="Classes\Initializer.cs" />
 	  <None Include="Classes\LogMAUI.cs" />
 	  <None Include="Classes\ParametersMAUI.cs" />
+	  <None Include="UbClasses\GetDataFiles.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
 	  <PackageReference Include="log4net" Version="2.0.15" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Ub\UbStandardObjects\UbStandardObjects.csproj" />
 	</ItemGroup>
 
 </Project>

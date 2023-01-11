@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UbStandardObjects.Objects;
-using UbStandardObjects;
+﻿using AmadonBlazorLibrary.UbClasses;
 
 namespace AmadonBlazorLibrary.Classes
 {

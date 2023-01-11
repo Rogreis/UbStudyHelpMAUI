@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonBlazor", "AmadonBlazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UbStandardObjects", "..\Ub\UbStandardObjects\UbStandardObjects.csproj", "{E841A3CD-EFBA-4B7C-9999-91BD0C3AE470}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmadonBlazor2", "AmadonBlazor2\AmadonBlazor2.csproj", "{A4CB4B20-C77C-4A50-8E90-8C8C9241B888}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmadonBlazorLibrary", "AmadonBlazorLibrary\AmadonBlazorLibrary.csproj", "{589FB2CD-84C7-47AA-8BD3-CBCD953A599A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,16 +23,6 @@ Global
 		{E841A3CD-EFBA-4B7C-9999-91BD0C3AE470}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E841A3CD-EFBA-4B7C-9999-91BD0C3AE470}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E841A3CD-EFBA-4B7C-9999-91BD0C3AE470}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4CB4B20-C77C-4A50-8E90-8C8C9241B888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4CB4B20-C77C-4A50-8E90-8C8C9241B888}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4CB4B20-C77C-4A50-8E90-8C8C9241B888}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{A4CB4B20-C77C-4A50-8E90-8C8C9241B888}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4CB4B20-C77C-4A50-8E90-8C8C9241B888}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4CB4B20-C77C-4A50-8E90-8C8C9241B888}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{589FB2CD-84C7-47AA-8BD3-CBCD953A599A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{589FB2CD-84C7-47AA-8BD3-CBCD953A599A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{589FB2CD-84C7-47AA-8BD3-CBCD953A599A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{589FB2CD-84C7-47AA-8BD3-CBCD953A599A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

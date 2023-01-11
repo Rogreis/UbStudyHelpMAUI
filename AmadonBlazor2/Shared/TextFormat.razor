@@ -1,0 +1,78 @@
+﻿@using System.Text.Json;
+@using AmadonBlazor2.Data;
+@using AmadonBlazorLibrary.Helpers;
+
+@if (@PaperLines != null)
+{
+        <table class="table-borderless">
+            <thead>
+                <tr>
+                    @foreach (string line in @PaperLines.Titles)
+                    {
+                        @((MarkupString)@line)
+                    }
+                </tr>
+            </thead>
+            <tbody>
+
+            @foreach (string line in @PaperLines.Lines)
+            {
+                <tr>
+                    @((MarkupString)@line)
+                </tr>
+            }
+
+            </tbody>
+        </table>
+}
+
+
+@code {
+
+    [Parameter]
+    public string Entry { get; set; }
+
+    private PaperText PaperLines { get; set; }
+
+    internal class PaperText
+    {
+        public List<string> Titles { get; set; } = new List<string>();
+        public List<string> Lines { get; set; } = new List<string>();
+    }
+
+    private string lastEntry = "";
+
+
+    private async Task<bool> GetParagraphs()
+    {
+        //if (lastEntry == entry)
+        //{
+        //    return true;
+        //}
+        string jason = await TextService.GetHtml();
+        var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true,
+            };
+        PaperLines = JsonSerializer.Deserialize<PaperText>(jason, options);
+        //lastEntry = entry;
+        return true;
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (TextService.Initialize())
+        {
+            bool ret = await GetParagraphs();
+        }
+    }
+
+    protected override async void OnParametersSet()
+    {
+        bool ret = await GetParagraphs();
+    }
+
+
+}

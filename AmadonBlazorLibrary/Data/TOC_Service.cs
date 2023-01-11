@@ -1,5 +1,5 @@
-﻿using UbStandardObjects;
-using UbStandardObjects.Objects;
+﻿using AmadonBlazorLibrary.Helpers;
+using AmadonBlazorLibrary.UbClasses;
 
 namespace AmadonBlazorLibrary.Data
 {

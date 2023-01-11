@@ -55,6 +55,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Ub\UbStandardObjects\UbStandardObjects.csproj" />
+      <ProjectReference Include="..\AmadonBlazorLibrary\AmadonBlazorLibrary.csproj" />
     </ItemGroup>
 
 </Project>
