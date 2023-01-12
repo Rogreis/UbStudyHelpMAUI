@@ -184,12 +184,16 @@
     /// </summary>
     /// <param name="firstRender"></param>
     /// <returns></returns>
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    //await JS.InvokeVoidAsync("alert", $"Hello OnAfterRenderAsync {firstRender}");
-    //    //if (firstRender)
-    //    //    await JS.InvokeVoidAsync("StartPanel", "");
-    //}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        //await JS.InvokeVoidAsync("alert", $"Hello OnAfterRenderAsync {firstRender}");
+        //if (firstRender)
+        //    await JS.InvokeVoidAsync("StartPanel", "");
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
 
 
 }

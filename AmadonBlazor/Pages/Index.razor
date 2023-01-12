@@ -183,12 +183,7 @@
         initializer.StartTubRepository();
 
         var dimension = await JS.InvokeAsync<WindowDimension>("getWindowDimensions");
-        //Width = dimension.Width;
 
-        DivHeight = $"{(dimension.Height-80)}px";
-
-
-        await Alert("Log iniciado");
 
 
         //await JS.InvokeAsync<object>("AddResizeHandler", "leftUbPanel");

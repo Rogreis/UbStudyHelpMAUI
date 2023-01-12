@@ -1,16 +1,23 @@
 ﻿@page "/toctable"
+@inject IJSRuntime JS
 
-<h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+<div class="container-fluid panelMain bg-dark">
+    <div class="row bg-dark text-white overflow-auto">
+        <TableOfContents></TableOfContents>
+    </div>
+</div>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
+  
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        //await JS.InvokeVoidAsync("ExpandIndex", "");
+    //    }
+    //}
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
+
 }
