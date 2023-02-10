@@ -51,7 +51,7 @@ namespace AmadonBlazorLibrary.UbClasses
             {
                 string message = $"Could not initialize available translations. See log.";
                 StaticObjects.Logger.Error(message, ex);
-                StaticObjects.Logger.FatalErrorAsync(message);
+                StaticObjects.Logger.FatalError(message);
                 return false;
             }
         }
@@ -69,7 +69,7 @@ namespace AmadonBlazorLibrary.UbClasses
             if (trans == null)
             {
                 message = $"Missing translation number {id}. May be you do not have the correct data to use this tool.";
-                StaticObjects.Logger.FatalErrorAsync(message);
+                StaticObjects.Logger.FatalError(message);
             }
             return trans;
         }
@@ -125,7 +125,7 @@ namespace AmadonBlazorLibrary.UbClasses
             {
                 string message = $"Could not initialize translations. See log.";
                 StaticObjects.Logger.Error(message, ex);
-                StaticObjects.Logger.FatalErrorAsync(message);
+                StaticObjects.Logger.FatalError(message);
                 return false;
             }
         }

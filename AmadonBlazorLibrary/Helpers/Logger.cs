@@ -155,7 +155,7 @@ namespace AmadonBlazorLibrary.Helpers
         }
 
 
-        public void FatalErrorAsync(string message)
+        public void FatalError(string message)
         {
             // https://learn.microsoft.com/en-us/dotnet/maui/user-interface/pop-ups?view=net-maui-7.0
             _logger.Error(message);
@@ -165,13 +165,13 @@ namespace AmadonBlazorLibrary.Helpers
         public void IsNull(object obj, string message)
         {
             if (obj == null)
-                FatalErrorAsync(message);
+                FatalError(message);
         }
 
         public void InInterval(short value, short minValue, short maxValue, string message)
         {
             if (value < minValue || value > maxValue)
-                FatalErrorAsync(message);
+                FatalError(message);
         }
 
 

@@ -197,7 +197,7 @@ namespace AmadonBlazorLibrary.UbClasses
             }
             catch (Exception ex)
             {
-                StaticObjects.Logger.FatalErrorAsync($"Fatal error in translation data {ex.Message}");
+                StaticObjects.Logger.FatalError($"Fatal error in translation data {ex.Message}");
                 return false;
             }
 
@@ -288,6 +288,40 @@ namespace AmadonBlazorLibrary.UbClasses
             Paragraph par = new Paragraph(LocalRepositoryFolder);
             return par;
         }
+
+
+        /// <summary>
+        /// Get all papers data for a non editing translation
+        /// </summary>
+        /// <param name="jsonString"></param>
+        public void GetPapersData(string jsonString)
+        {
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true,
+            };
+            var root = JsonSerializer.Deserialize<JsonRootobject>(jsonString, options);
+
+            if (root.Papers != null)
+            {
+                Papers = new List<Paper>();
+                foreach (JsonPaper jsonPaper in root.Papers)
+                {
+                    this.Papers.Add(new Paper()
+                    {
+                        Paragraphs = new List<Paragraph>(jsonPaper.Paragraphs)
+                    });
+                    // Fix the translation number not set in json file for each paragraph
+                    foreach (Paragraph p in jsonPaper.Paragraphs)
+                    {
+                        p.Entry.TranslationId = LanguageID;
+                    }
+                }
+            }
+
+        }
+
 
 
         #region Index

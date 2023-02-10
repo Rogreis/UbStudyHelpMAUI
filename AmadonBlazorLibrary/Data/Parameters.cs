@@ -111,6 +111,21 @@ namespace AmadonBlazorLibrary.Data
         public string ApplicationFolder { get; set; } = "";
 
         /// <summary>
+        /// Current data folder
+        /// </summary>
+        public string ApplicationDataFolder { get; set; } = "";
+
+        /// <summary>
+        /// Folder to store local lucene index search data
+        /// </summary>
+        public string IndexSearchFolders { get; set; } = "";
+
+        /// <summary>
+        /// Folder to store local lucene TUB search data
+        /// </summary>
+        public string TubSearchFolders { get; set; } = "";
+
+        /// <summary>
 		/// Source of TUB Files used only by UbStudyHelp
 		/// </summary>
 		public string UbStudyHelpTubFilesSourcePath = "";
@@ -121,9 +136,19 @@ namespace AmadonBlazorLibrary.Data
         public string TUB_Files_RepositoryFolder { get; set; } = "";
 
         /// <summary>
+        /// Github source for translations
+        /// </summary>
+        public string TUB_Files_Url { get; set; } = "https://github.com/Rogreis/TUB_Files.git";
+
+        /// <summary>
         /// Work local repository for paragraphs
         /// </summary>
         public string EditParagraphsRepositoryFolder { get; set; } = null;
+
+        /// <summary>
+        /// Github source for editing translation
+        /// </summary>
+        public string EditParagraphsUrl { get; set; } = "https://github.com/Rogreis/PtAlternative.git";
 
         /// <summary>
         /// Full book pages local repository
