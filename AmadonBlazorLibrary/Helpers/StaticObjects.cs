@@ -11,8 +11,6 @@ namespace AmadonBlazorLibrary.Helpers
 {
     public delegate void dlShowMessage(string message, bool isError = false, bool isFatal = false);
 
-    public delegate void dlShowExceptionMessage(string message, Exception ex, bool isFatal = false);
-
     public delegate void ShowStatusMessage(string message);
 
     public delegate void ShowPaperNumber(short paperNo);
@@ -20,14 +18,6 @@ namespace AmadonBlazorLibrary.Helpers
 
     public static class StaticObjects
     {
-        /// <summary>
-        /// Control file name for different translations versions
-        /// </summary>
-        public const string ControlFileName = "UbControlFile.json";
-
-        public static string PathParameters { get; set; } = "";
-
-        public static string PathLog { get; set; } = "";
 
         /// <summary>
         /// This is the object to store log
@@ -37,23 +27,6 @@ namespace AmadonBlazorLibrary.Helpers
         public static Parameters Parameters { get; set; }
 
         public static Book Book { get; set; } = new Book();
-
-        #region events
-
-        public static event dlShowMessage ShowMessage = null;
-        public static event dlShowExceptionMessage ShowExceptionMessage = null;
-
-        public static void FireSendMessage(string message, bool isError = false, bool isFatal = false)
-        {
-            ShowMessage?.Invoke(message, isError, isFatal);
-        }
-
-        public static void FireShowExceptionMessage(string message, Exception ex, bool isFatal = false)
-        {
-            ShowExceptionMessage?.Invoke(message, ex, isFatal);
-        }
-
-        #endregion
 
         /// <summary>
         /// Serialize an object to string using json

@@ -1,7 +1,9 @@
-﻿using LibGit2Sharp;
+﻿using AmadonBlazorLibrary.Classes;
+using LibGit2Sharp;
 using LibGit2Sharp.Handlers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,40 @@ namespace AmadonBlazorLibrary.Helpers
 
         private string RepoPath = null;
 
+
+        private CredentialsHandler Credentials(string username, string password)
+        {
+            return new CredentialsHandler(
+                    (url, usernameFromUrl, types) =>
+                        new UsernamePasswordCredentials()
+                        {
+                            Username = "username",
+                            Password = "password"
+                        });
+        }
+
+        private bool Fetch(Repository repo)
+        {
+            try
+            {
+                var options = new FetchOptions();
+                options.Prune = true;
+                options.TagFetchMode = TagFetchMode.Auto;
+                //options.CredentialsProvider = Credentials(string username, string password)
+                Remote remote = repo.Network.Remotes["origin"];
+                string msg = "Fetching remote";
+                IEnumerable<string> refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+                Commands.Fetch(repo, remote.Name, refSpecs, options, msg);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EventsControl.FireFatalError($"Fetch Error, repository= {repo.Head.FriendlyName}: ", ex);
+                return false;
+            }
+        }
+
+
         /// <summary>
         /// Check is a path is a valid repository
         /// </summary>
@@ -25,8 +61,6 @@ namespace AmadonBlazorLibrary.Helpers
         {
             return Repository.IsValid(respositoryPath);
         }
-
-
 
         public void VerifyRepository(string sourceUrl, string repositoryFolder)
         {
@@ -63,40 +97,6 @@ namespace AmadonBlazorLibrary.Helpers
             }
         }
 
-        private CredentialsHandler Credentials(string username, string password)
-        {
-            return new CredentialsHandler(
-                    (url, usernameFromUrl, types) =>
-                        new UsernamePasswordCredentials()
-                        {
-                            Username = "username",
-                            Password = "password"
-                        });
-        }
-
-
-        private bool Fetch(Repository repo)
-        {
-            try
-            {
-                var options = new FetchOptions();
-                options.Prune = true;
-                options.TagFetchMode = TagFetchMode.Auto;
-                //options.CredentialsProvider = Credentials(string username, string password)
-                Remote remote = repo.Network.Remotes["origin"];
-                string msg = "Fetching remote";
-                IEnumerable<string> refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
-                Commands.Fetch(repo, remote.Name, refSpecs, options, msg);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                StaticObjects.FireShowExceptionMessage($"Fetch Error, repository= {repo.Head.FriendlyName}: ", ex);
-                return false;
-            }
-        }
-
-
         public bool Pull(string repositoryPath)
         {
             try
@@ -110,12 +110,16 @@ namespace AmadonBlazorLibrary.Helpers
             }
             catch (Exception ex)
             {
-                StaticObjects.FireShowExceptionMessage($"Pull Error, repository= {repositoryPath}: ", ex);
+                EventsControl.FireFatalError($"Pull Error, repository= {repositoryPath}: ", ex);
                 StaticObjects.Logger.Error($"Pull Error, repository= {repositoryPath}: ", ex);
                 return false;
             }
         }
 
+        private static void CheckoutProgress(string path, int completedSteps, int totalSteps)
+        {
+            EventsControl.FireSendMessage($"Checkout progress: {completedSteps} of {totalSteps}");
+        }
 
         /// <summary>
         /// Checkout a branch overwriting local changes
@@ -127,25 +131,38 @@ namespace AmadonBlazorLibrary.Helpers
         {
             try
             {
-                /*
-                    git fetch --all
-                    git reset --hard origin/abranch
-                    git checkout abranch 
-                */
-                CheckoutOptions options = new CheckoutOptions() { CheckoutModifiers = CheckoutModifiers.Force };
                 using Repository localRepo = new Repository(repositoryPath);
-                Branch branch = localRepo.Branches[branchName];
-                Fetch(localRepo);
-                Commands.Checkout(localRepo, branch, options);
+
+                Branch branch = localRepo.Branches.ToList().Find(b => b.CanonicalName == branchName);
+                if (branch == null)
+                {
+                    // Let's get a reference on the remote tracking branch...
+                    string trackedBranchName = $"origin/{branchName}";
+                    Branch trackedBranch = localRepo.Branches[trackedBranchName];
+
+                    // ...and create a local branch pointing at the same Commit
+                    branch = localRepo.CreateBranch(branchName, trackedBranch.Tip);
+
+                    // The local branch is not configured to track anything
+                    if (!branch.IsTracking)
+                    {
+                        // So, let's configure the local branch to track the remote one.
+                        Branch updatedBranch = localRepo.Branches.Update(branch, b => b.TrackedBranch = trackedBranch.CanonicalName);
+                    }
+
+                }
+                CheckoutOptions options = new CheckoutOptions() { CheckoutModifiers = CheckoutModifiers.Force, OnCheckoutProgress = CheckoutProgress };
+                Branch currentBranch = Commands.Checkout(localRepo, branchName, options);
                 return true;
             }
             catch (Exception ex)
             {
-                StaticObjects.FireShowExceptionMessage($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
+                EventsControl.FireFatalError($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
                 StaticObjects.Logger.Error($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
                 return false;
             }
         }
+
 
         public bool Clone(string sourceUrl, string repositoryPath)
         {
@@ -157,14 +174,58 @@ namespace AmadonBlazorLibrary.Helpers
             }
             catch (Exception ex)
             {
-                StaticObjects.FireShowExceptionMessage($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
+                EventsControl.FireFatalError($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
                 StaticObjects.Logger.Error($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
                 return false;
             }
         }
 
+        public void Test(string repositoryPath, string branchName, string url)
+        {
+            Directory.CreateDirectory(repositoryPath);
+            if (!Repository.IsValid(repositoryPath))
+            {
+                Clone(url, repositoryPath);
+            }
+
+            using Repository localRepo = new Repository(repositoryPath);
+
+            Branch branch= localRepo.Branches.ToList().Find(b => b.CanonicalName == branchName);
+
+            if (branch == null)
+            {
+                // Let's get a reference on the remote tracking branch...
+                string trackedBranchName = $"origin/{branchName}";
+                Branch trackedBranch = localRepo.Branches[trackedBranchName];
+
+                // ...and create a local branch pointing at the same Commit
+                branch = localRepo.CreateBranch(branchName, trackedBranch.Tip);
+
+                // The local branch is not configured to track anything
+                if (branch.IsTracking)
+                {
+                    return;
+                }
+
+                // So, let's configure the local branch to track the remote one.
+                Branch updatedBranch = localRepo.Branches.Update(branch, b => b.TrackedBranch = trackedBranch.CanonicalName);
+            }
+
+            CheckoutOptions options = new CheckoutOptions() { CheckoutModifiers = CheckoutModifiers.Force, OnCheckoutProgress = CheckoutProgress };
+            Commands.Checkout(localRepo, branchName, options);
 
 
+            //Process.Start
+
+
+            //var remoteBranches = localRepo.Network.Remotes
+            //                    .SelectMany(r => localRepo.Branches.Where(b =>
+            //                        b.IsRemote &&
+            //                        b.CanonicalName == $"refs/remotes/{r.Name}/{branchName}"))
+            //                    .ToList();
+            //Commands.Checkout(localRepo, remoteBranches[0].Tip.Tree, options, remoteBranches[0].Tip.Tree.Sha);
+        }
 
     }
+
 }

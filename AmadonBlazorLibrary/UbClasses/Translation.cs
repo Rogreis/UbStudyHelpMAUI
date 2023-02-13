@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AmadonBlazorLibrary.Helpers;
+using AmadonBlazorLibrary.Classes;
 
 namespace AmadonBlazorLibrary.UbClasses
 {
@@ -28,6 +29,9 @@ namespace AmadonBlazorLibrary.UbClasses
         public int EndingYear { get; set; }
         public string PaperTranslation { get; set; }
         public bool IsEditingTranslation { get; set; } = false;
+        public string Hash { get; set; } = "";
+        public string RepositoryName { get; set; } = "";
+
 
         public List<Paper> Papers { get; set; } = new List<Paper>();
 
@@ -197,7 +201,7 @@ namespace AmadonBlazorLibrary.UbClasses
             }
             catch (Exception ex)
             {
-                StaticObjects.Logger.FatalError($"Fatal error in translation data {ex.Message}");
+                EventsControl.FireFatalError($"Fatal error in translation data {ex.Message}");
                 return false;
             }
 

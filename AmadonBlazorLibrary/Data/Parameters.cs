@@ -22,6 +22,12 @@ namespace AmadonBlazorLibrary.Data
 
     public class Parameters
     {
+
+        public const string FileName = "AmadonParameters.json";
+
+        public static string PathParameters { get; set; }
+
+
         /// <summary>
         /// Last position in the text, default for first paragraph
         /// </summary>

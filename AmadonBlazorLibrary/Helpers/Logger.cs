@@ -4,6 +4,7 @@ using log4net.Appender;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
+using System.IO.Enumeration;
 
 namespace AmadonBlazorLibrary.Helpers
 {
@@ -11,7 +12,9 @@ namespace AmadonBlazorLibrary.Helpers
     {
         private bool _logIniciado = false;
 
-        public string PathLog { get; set; }
+        public const string FileName= "Amadon.log";
+
+        public static string PathLog { get; set; }
 
         private readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -51,6 +54,10 @@ namespace AmadonBlazorLibrary.Helpers
             roller.StaticLogFileName = true;
             roller.ActivateOptions();
             hierarchy.Root.AddAppender(roller);
+
+            //AmadonLogAppender amadonLogAppender= new AmadonLogAppender();
+            //amadonLogAppender.Layout = patternLayout;
+            //hierarchy.Root.AddAppender(amadonLogAppender);
 
             //MemoryAppender memory = new MemoryAppender();
             //memory.ActivateOptions();
@@ -99,6 +106,14 @@ namespace AmadonBlazorLibrary.Helpers
             SetupLof4Net();
             Enable();
         }
+
+        private void FatalError(string message)
+        {
+            // https://learn.microsoft.com/en-us/dotnet/maui/user-interface/pop-ups?view=net-maui-7.0
+            _logger.Error(message);
+            EventsControl.FireFatalError(message);
+        }
+
 
         public void Disable()
         {
@@ -152,14 +167,6 @@ namespace AmadonBlazorLibrary.Helpers
         public void Error(string message, Exception ex)
         {
             _logger.Error(message, ex);
-        }
-
-
-        public void FatalError(string message)
-        {
-            // https://learn.microsoft.com/en-us/dotnet/maui/user-interface/pop-ups?view=net-maui-7.0
-            _logger.Error(message);
-            EventsControl.FireFatalError(message);
         }
 
         public void IsNull(object obj, string message)

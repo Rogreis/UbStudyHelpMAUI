@@ -1,10 +1,27 @@
 ﻿using AmadonBlazorLibrary.UbClasses;
+using static AmadonBlazorLibrary.Classes.EventsControl;
 
 namespace AmadonBlazorLibrary.Classes
 {
+    /// <summary>
+    /// Used to send a fatal error message
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="ex"></param>
+    /// <returns></returns>
     public delegate bool FatalErrorDelegate(string message, Exception ex);
 
+    /// <summary>
+    /// Used to send an error message
+    /// </summary>
+    /// <param name="message"></param>
     public delegate void ErrorDelegate(string message);
+
+    /// <summary>
+    /// Used to send a message to be shown in the main form
+    /// </summary>
+    /// <param name="Message"></param>
+    public delegate void dlSendMessage(string Message);
 
     /// <summary>
     /// Used to fire a click on a new Table Of Contents item
@@ -43,12 +60,6 @@ namespace AmadonBlazorLibrary.Classes
     /// <param name="indexEntry"></param>
     public delegate void dlOpenNewIndexEntry(string indexEntry);
 
-
-    /// <summary>
-    /// Used to send a message to be shown in the main form
-    /// </summary>
-    /// <param name="Message"></param>
-    public delegate void dlSendMessage(string Message);
 
     /// <summary>
     /// Used to infor about a change in the left column
@@ -110,11 +121,15 @@ namespace AmadonBlazorLibrary.Classes
     /// <summary>
     /// Implement the delegates and fire routines for the several events used
     /// </summary>
-    internal static class EventsControl
+    public static class EventsControl
     {
         public static event FatalErrorDelegate FatalError = null;
 
         public static event ErrorDelegate Error = null;
+
+        public static event dlSendMessage SendMessage = null;
+
+
 
         public static event dlSearchClicked SearchClicked = null;
 
@@ -128,7 +143,6 @@ namespace AmadonBlazorLibrary.Classes
 
         public static event dlTrackSelected TrackSelected = null;
 
-        public static event dlSendMessage SendMessage = null;
 
         public static event dlRefreshText RefreshText = null;
 
@@ -150,7 +164,6 @@ namespace AmadonBlazorLibrary.Classes
 
         internal static event dlAnnotationsChanges AnnotationsChanges = null;
 
-
         internal static bool FireFatalError(string message, Exception ex = null)
         {
             bool? ret = FatalError?.Invoke(message, ex);
@@ -160,9 +173,6 @@ namespace AmadonBlazorLibrary.Classes
         internal static void FireError(string message) => Error?.Invoke(message);
 
         internal static void FireSearchClicked(TOC_Entry entry, List<string> Words) => SearchClicked?.Invoke(entry, Words);
-
-        //internal static void FireDirectSearch(ParagraphSearchData data) => DirectSearch?.Invoke(data);
-
 
         public static void FireIndexClicked(TOC_Entry entry) => IndexClicked?.Invoke(entry);
 
@@ -183,6 +193,12 @@ namespace AmadonBlazorLibrary.Classes
             }
             SendMessage?.Invoke(message);
         }
+
+        //public static void FireShowExceptionMessage(string message, Exception ex, bool isFatal = false)
+        //{
+        //    ShowExceptionMessage?.Invoke(message, ex, isFatal);
+        //}
+
 
         public static void FireGridSplitter(double newWidth) => GridSplitterChanged?.Invoke(newWidth);
 
