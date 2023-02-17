@@ -2,11 +2,11 @@
 using LibGit2Sharp;
 using LibGit2Sharp.Handlers;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
+
+
 
 namespace AmadonBlazorLibrary.Helpers
 {
@@ -190,7 +190,7 @@ namespace AmadonBlazorLibrary.Helpers
 
             using Repository localRepo = new Repository(repositoryPath);
 
-            Branch branch= localRepo.Branches.ToList().Find(b => b.CanonicalName == branchName);
+            Branch branch = localRepo.Branches.ToList().Find(b => b.CanonicalName == branchName);
 
             if (branch == null)
             {
@@ -226,6 +226,152 @@ namespace AmadonBlazorLibrary.Helpers
             //Commands.Checkout(localRepo, remoteBranches[0].Tip.Tree, options, remoteBranches[0].Tip.Tree.Sha);
         }
 
-    }
+        /// <summary>
+        /// Push the repository to the remote
+        /// </summary>
+        /// <param name="repositoryPath"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool Push(string repositoryPath, string username, string password, string email, string branch)
+        {
+            try
+            {
+                using (var repo = new Repository(repositoryPath))
+                {
 
+                    var remote = repo.Network.Remotes[branch];
+                    string gitUser = "rogreis@gmail.com", gitToken = "720685f529537d57e95b159e48c0fb631c1c8ba0";
+                    PushOptions pushOptions = new PushOptions
+                    {
+                        CredentialsProvider = (_url, _user, _cred) =>
+                            new UsernamePasswordCredentials { Username = gitUser, Password = gitToken }
+                    };
+
+
+                    pushOptions.CredentialsProvider = new CredentialsHandler(
+                      (url, usernameFromUrl, types) => new UsernamePasswordCredentials()
+                      {
+                          Username = gitUser,
+                          Password = gitToken
+                      });
+
+                    //var pushRefSpec = @"refs/heads/master";
+                    //repo.Network.Push(remote, pushRefSpec, pushOptions, new Signature(username, email, DateTimeOffset.Now),
+                    //    "pushed changes");
+
+                    //// Fetch the remote repository to ensure it's up-to-date
+                    //var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+                    //Commands.Fetch(repo, remote.Name, refSpecs, new FetchOptions(), "");
+
+
+                    //// Replace "sshUsername" and "sshKeyFilePath" with your SSH credentials
+                    //var sshKeyFile = "720685f529537d57e95b159e48c0fb631c1c8ba0";
+                    //var sshUsername = "sshUsername";
+                    //var sshAuth = new PrivateKeyAuthentication(sshUsername, sshKeyFile);
+
+                    //CloneOptions co = new CloneOptions();
+                    //co.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials { Username = gitUser, Password = gitToken };
+
+                    //var options = new PushOptions
+                    //{
+                    //    CredentialsProvider = new UsernamePasswordCredentials { Username = gitUser, Password = gitToken }
+                    //};
+
+
+                    // Push the changes to the remote repository
+                    string pushRefSpec = $@"refs/heads/{branch}";
+                    Branch branchFullName = repo.Branches[pushRefSpec];
+                    //repo.Network.Push(branchFullName, pushOptions);
+                    repo.Network.Push(branchFullName, pushOptions);
+
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EventsControl.FireFatalError($"Push Error, repository= {repositoryPath}, branch= {branch}: ", ex);
+                StaticObjects.Logger.Error("Push error", ex);
+                return false;
+            }
+        }
+
+        public void Push2()
+        {
+            // Replace "userName" with your Github username, "repoName" with the name of your repository,
+            // and "token" with your Github API token
+            var userName = "userName";
+            var repoName = "repoName";
+            var token = "token";
+
+            // Replace "branchName" with the name of the branch you want to push to
+            var branchName = "branchName";
+
+            // Replace "commitMessage" with the commit message
+            var commitMessage = "commitMessage";
+
+            // Replace "fileName" with the name of the file you want to push
+            var fileName = "fileName";
+
+            // Replace "fileContent" with the content of the file
+            var fileContent = "fileContent";
+
+            // Set the Github API endpoint for pushing a file
+            var apiUrl = $"https://api.github.com/repos/{userName}/{repoName}/contents/{fileName}";
+
+            // Use the HttpClient class to send a request to the Github API
+            using (var httpClient = new HttpClient())
+            {
+                // Set the Authorization header for the Github API request
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
+
+                // Get the latest commit SHA for the branch
+                var branchUrl = $"https://api.github.com/repos/{userName}/{repoName}/git/refs/heads/{branchName}";
+                var branchResponse = httpClient.GetAsync(branchUrl).Result;
+                var branchJson = branchResponse.Content.ReadAsStringAsync().Result;
+                var branch = JsonConvert.DeserializeObject<Branch>(branchJson);
+
+                // Build the request body for pushing the file
+                var requestBody = new PushRequestBody
+                {
+                    Message = commitMessage,
+                    Sha = branch.Object.Sha,
+                    Branch = branchName,
+                    Content = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileContent))
+                };
+
+                // Serialize the request body to a JSON string
+                var requestJson = JsonConvert.SerializeObject(requestBody);
+
+                // Send the PUT request to the Github API to push the file
+                var response = httpClient.PutAsync(apiUrl, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
+
+                // Check if the request was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Push successful");
+                }
+                else
+                {
+                    Console.WriteLine("Push failed");
+                }
+            }
+        }
+
+        // Class to represent the branch information
+        class Branch
+        {
+            public Object Object { get; set; }
+        }
+
+        // Class to represent the commit information
+        class Object
+        {
+        }
+
+
+    }
 }
+
+

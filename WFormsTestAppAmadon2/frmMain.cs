@@ -31,29 +31,25 @@ namespace WFormsTestAppAmadon2
 
         private void btInicializeParamLog_Click(object sender, EventArgs e)
         {
-
             if (!DataInitializer.InitTranslations())
             {
                 StaticObjects_ShowMessage("**** ERROR: InitTranslations");
             }
-
-
-
         }
 
         private void btTest_Click(object sender, EventArgs e)
         {
-            //string branch = "changes_for_edition";
+            string branch = "correcoes";
             //string url = "https://github.com/Rogreis/UbReviewer.git";
-            //string repository = "C:\\Trabalho\\Lixo\\git\\UbReviewer";
+            string repository = "C:\\ProgramData\\UbStudyHelp\\PtAlternative";
+            string username = "rogreis";
+            string password = "Uversa_250";
+            string email = "rogreis@gmail.com";
 
-
-            //GitHelper.Instance.Test(repository, branch, url);
-
-            //if (!GitHelper.Instance.Checkout(StaticObjects.Parameters.EditParagraphsRepositoryFolder, branch))
-            //{
-            //    StaticObjects_ShowMessage("**** ERROR: btTest_Click");
-            //}
+            if (!GitHelper.Instance.Push(repository, username, password, email, branch))
+            {
+                StaticObjects_ShowMessage("**** ERROR: btTest_Click");
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e)

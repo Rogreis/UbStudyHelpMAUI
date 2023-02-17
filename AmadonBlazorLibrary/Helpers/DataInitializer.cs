@@ -83,10 +83,10 @@ namespace AmadonBlazorLibrary.Helpers
 
         private static bool InitTranslation(GetDataFiles dataFiles, short translationId, ref Translation trans)
         {
+            trans = null;
             if (translationId < 0) return true;
 
             EventsControl.FireSendMessage($"Getting translation id {translationId}");
-            trans = null;
             trans = dataFiles.GetTranslation(translationId);
             if (trans == null)
             {
