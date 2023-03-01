@@ -50,12 +50,20 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Ub\UbStandardObjects\UbStandardObjects.csproj" />
       <ProjectReference Include="..\AmadonBlazorLibrary\AmadonBlazorLibrary.csproj" />
+      <ProjectReference Include="..\AmadonStandardLib\AmadonStandardLib.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="MaterialIcons.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
     </ItemGroup>
 
 </Project>

@@ -28,214 +28,233 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControlMain = new System.Windows.Forms.TabControl();
-            this.tabPageInicialization = new System.Windows.Forms.TabPage();
-            this.splitContainerInicialization = new System.Windows.Forms.SplitContainer();
-            this.btTest = new System.Windows.Forms.Button();
-            this.btInicializeParamLog = new System.Windows.Forms.Button();
-            this.txInitializationMessages = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPageLog = new System.Windows.Forms.TabPage();
-            this.txLog = new System.Windows.Forms.TextBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonInicialization = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabelMessages = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabControlMain.SuspendLayout();
-            this.tabPageInicialization.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerInicialization)).BeginInit();
-            this.splitContainerInicialization.Panel1.SuspendLayout();
-            this.splitContainerInicialization.Panel2.SuspendLayout();
-            this.splitContainerInicialization.SuspendLayout();
-            this.tabPageLog.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            this.SuspendLayout();
+            tabControlMain = new TabControl();
+            tabPageInicialization = new TabPage();
+            splitContainerInicialization = new SplitContainer();
+            btSearchTest = new Button();
+            btTest = new Button();
+            btInicializeParamLog = new Button();
+            txInitializationMessages = new TextBox();
+            tabPage2 = new TabPage();
+            tabPageLog = new TabPage();
+            txLog = new TextBox();
+            toolStrip1 = new ToolStrip();
+            toolStripButtonInicialization = new ToolStripButton();
+            toolStripButton2 = new ToolStripButton();
+            toolStripButton3 = new ToolStripButton();
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabelMessages = new ToolStripStatusLabel();
+            btSearchIndex = new Button();
+            tabControlMain.SuspendLayout();
+            tabPageInicialization.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainerInicialization).BeginInit();
+            splitContainerInicialization.Panel1.SuspendLayout();
+            splitContainerInicialization.Panel2.SuspendLayout();
+            splitContainerInicialization.SuspendLayout();
+            tabPageLog.SuspendLayout();
+            toolStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // tabControlMain
             // 
-            this.tabControlMain.Controls.Add(this.tabPageInicialization);
-            this.tabControlMain.Controls.Add(this.tabPage2);
-            this.tabControlMain.Controls.Add(this.tabPageLog);
-            this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlMain.Location = new System.Drawing.Point(0, 34);
-            this.tabControlMain.Name = "tabControlMain";
-            this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(1347, 827);
-            this.tabControlMain.TabIndex = 0;
+            tabControlMain.Controls.Add(tabPageInicialization);
+            tabControlMain.Controls.Add(tabPage2);
+            tabControlMain.Controls.Add(tabPageLog);
+            tabControlMain.Dock = DockStyle.Fill;
+            tabControlMain.Location = new Point(0, 34);
+            tabControlMain.Name = "tabControlMain";
+            tabControlMain.SelectedIndex = 0;
+            tabControlMain.Size = new Size(1347, 827);
+            tabControlMain.TabIndex = 0;
             // 
             // tabPageInicialization
             // 
-            this.tabPageInicialization.Controls.Add(this.splitContainerInicialization);
-            this.tabPageInicialization.Location = new System.Drawing.Point(4, 34);
-            this.tabPageInicialization.Name = "tabPageInicialization";
-            this.tabPageInicialization.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInicialization.Size = new System.Drawing.Size(1339, 789);
-            this.tabPageInicialization.TabIndex = 0;
-            this.tabPageInicialization.Text = "Inicialization";
-            this.tabPageInicialization.UseVisualStyleBackColor = true;
+            tabPageInicialization.Controls.Add(splitContainerInicialization);
+            tabPageInicialization.Location = new Point(4, 34);
+            tabPageInicialization.Name = "tabPageInicialization";
+            tabPageInicialization.Padding = new Padding(3);
+            tabPageInicialization.Size = new Size(1339, 789);
+            tabPageInicialization.TabIndex = 0;
+            tabPageInicialization.Text = "Inicialization";
+            tabPageInicialization.UseVisualStyleBackColor = true;
             // 
             // splitContainerInicialization
             // 
-            this.splitContainerInicialization.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerInicialization.Location = new System.Drawing.Point(3, 3);
-            this.splitContainerInicialization.Name = "splitContainerInicialization";
+            splitContainerInicialization.Dock = DockStyle.Fill;
+            splitContainerInicialization.Location = new Point(3, 3);
+            splitContainerInicialization.Name = "splitContainerInicialization";
             // 
             // splitContainerInicialization.Panel1
             // 
-            this.splitContainerInicialization.Panel1.Controls.Add(this.btTest);
-            this.splitContainerInicialization.Panel1.Controls.Add(this.btInicializeParamLog);
+            splitContainerInicialization.Panel1.Controls.Add(btSearchIndex);
+            splitContainerInicialization.Panel1.Controls.Add(btSearchTest);
+            splitContainerInicialization.Panel1.Controls.Add(btTest);
+            splitContainerInicialization.Panel1.Controls.Add(btInicializeParamLog);
             // 
             // splitContainerInicialization.Panel2
             // 
-            this.splitContainerInicialization.Panel2.Controls.Add(this.txInitializationMessages);
-            this.splitContainerInicialization.Size = new System.Drawing.Size(1333, 783);
-            this.splitContainerInicialization.SplitterDistance = 282;
-            this.splitContainerInicialization.TabIndex = 0;
+            splitContainerInicialization.Panel2.Controls.Add(txInitializationMessages);
+            splitContainerInicialization.Size = new Size(1333, 783);
+            splitContainerInicialization.SplitterDistance = 282;
+            splitContainerInicialization.TabIndex = 0;
+            // 
+            // btSearchTest
+            // 
+            btSearchTest.Location = new Point(18, 78);
+            btSearchTest.Name = "btSearchTest";
+            btSearchTest.Size = new Size(176, 54);
+            btSearchTest.TabIndex = 2;
+            btSearchTest.Text = "Search Test 1";
+            btSearchTest.UseVisualStyleBackColor = true;
+            btSearchTest.Click += btSearchTest_Click;
             // 
             // btTest
             // 
-            this.btTest.Location = new System.Drawing.Point(31, 488);
-            this.btTest.Name = "btTest";
-            this.btTest.Size = new System.Drawing.Size(176, 54);
-            this.btTest.TabIndex = 1;
-            this.btTest.Text = "Test";
-            this.btTest.UseVisualStyleBackColor = true;
-            this.btTest.Click += new System.EventHandler(this.btTest_Click);
+            btTest.Location = new Point(31, 488);
+            btTest.Name = "btTest";
+            btTest.Size = new Size(176, 54);
+            btTest.TabIndex = 1;
+            btTest.Text = "Test";
+            btTest.UseVisualStyleBackColor = true;
+            btTest.Click += btTest_Click;
             // 
             // btInicializeParamLog
             // 
-            this.btInicializeParamLog.Location = new System.Drawing.Point(18, 18);
-            this.btInicializeParamLog.Name = "btInicializeParamLog";
-            this.btInicializeParamLog.Size = new System.Drawing.Size(176, 54);
-            this.btInicializeParamLog.TabIndex = 0;
-            this.btInicializeParamLog.Text = "Param && Log";
-            this.btInicializeParamLog.UseVisualStyleBackColor = true;
-            this.btInicializeParamLog.Click += new System.EventHandler(this.btInicializeParamLog_Click);
+            btInicializeParamLog.Location = new Point(18, 18);
+            btInicializeParamLog.Name = "btInicializeParamLog";
+            btInicializeParamLog.Size = new Size(176, 54);
+            btInicializeParamLog.TabIndex = 0;
+            btInicializeParamLog.Text = "Param && Log";
+            btInicializeParamLog.UseVisualStyleBackColor = true;
+            btInicializeParamLog.Click += btInicializeParamLog_Click;
             // 
             // txInitializationMessages
             // 
-            this.txInitializationMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txInitializationMessages.Location = new System.Drawing.Point(0, 0);
-            this.txInitializationMessages.Multiline = true;
-            this.txInitializationMessages.Name = "txInitializationMessages";
-            this.txInitializationMessages.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txInitializationMessages.Size = new System.Drawing.Size(1047, 783);
-            this.txInitializationMessages.TabIndex = 1;
+            txInitializationMessages.Dock = DockStyle.Fill;
+            txInitializationMessages.Location = new Point(0, 0);
+            txInitializationMessages.Multiline = true;
+            txInitializationMessages.Name = "txInitializationMessages";
+            txInitializationMessages.ScrollBars = ScrollBars.Vertical;
+            txInitializationMessages.Size = new Size(1047, 783);
+            txInitializationMessages.TabIndex = 1;
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 34);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1339, 789);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Location = new Point(4, 34);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(1339, 789);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPageLog
             // 
-            this.tabPageLog.Controls.Add(this.txLog);
-            this.tabPageLog.Location = new System.Drawing.Point(4, 34);
-            this.tabPageLog.Name = "tabPageLog";
-            this.tabPageLog.Size = new System.Drawing.Size(1339, 789);
-            this.tabPageLog.TabIndex = 2;
-            this.tabPageLog.Text = "Log";
-            this.tabPageLog.UseVisualStyleBackColor = true;
+            tabPageLog.Controls.Add(txLog);
+            tabPageLog.Location = new Point(4, 34);
+            tabPageLog.Name = "tabPageLog";
+            tabPageLog.Size = new Size(1339, 789);
+            tabPageLog.TabIndex = 2;
+            tabPageLog.Text = "Log";
+            tabPageLog.UseVisualStyleBackColor = true;
             // 
             // txLog
             // 
-            this.txLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txLog.Location = new System.Drawing.Point(0, 0);
-            this.txLog.Multiline = true;
-            this.txLog.Name = "txLog";
-            this.txLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txLog.Size = new System.Drawing.Size(1339, 789);
-            this.txLog.TabIndex = 0;
+            txLog.Dock = DockStyle.Fill;
+            txLog.Location = new Point(0, 0);
+            txLog.Multiline = true;
+            txLog.Name = "txLog";
+            txLog.ScrollBars = ScrollBars.Vertical;
+            txLog.Size = new Size(1339, 789);
+            txLog.TabIndex = 0;
             // 
             // toolStrip1
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonInicialization,
-            this.toolStripButton2,
-            this.toolStripButton3});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1347, 34);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
+            toolStrip1.ImageScalingSize = new Size(24, 24);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonInicialization, toolStripButton2, toolStripButton3 });
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(1347, 34);
+            toolStrip1.TabIndex = 1;
+            toolStrip1.Text = "toolStrip1";
             // 
             // toolStripButtonInicialization
             // 
-            this.toolStripButtonInicialization.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonInicialization.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonInicialization.Name = "toolStripButtonInicialization";
-            this.toolStripButtonInicialization.Size = new System.Drawing.Size(112, 29);
-            this.toolStripButtonInicialization.Text = "Inicialization";
+            toolStripButtonInicialization.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButtonInicialization.ImageTransparentColor = Color.Magenta;
+            toolStripButtonInicialization.Name = "toolStripButtonInicialization";
+            toolStripButtonInicialization.Size = new Size(112, 29);
+            toolStripButtonInicialization.Text = "Inicialization";
             // 
             // toolStripButton2
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(34, 29);
-            this.toolStripButton2.Text = "toolStripButton2";
+            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton2.ImageTransparentColor = Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(34, 29);
+            toolStripButton2.Text = "toolStripButton2";
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(34, 29);
-            this.toolStripButton3.Text = "toolStripButton3";
+            toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton3.ImageTransparentColor = Color.Magenta;
+            toolStripButton3.Name = "toolStripButton3";
+            toolStripButton3.Size = new Size(34, 29);
+            toolStripButton3.Text = "toolStripButton3";
             // 
             // statusStrip1
             // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelMessages});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 861);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1347, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            statusStrip1.ImageScalingSize = new Size(24, 24);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelMessages });
+            statusStrip1.Location = new Point(0, 861);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(1347, 22);
+            statusStrip1.TabIndex = 2;
+            statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabelMessages
             // 
-            this.toolStripStatusLabelMessages.Name = "toolStripStatusLabelMessages";
-            this.toolStripStatusLabelMessages.Size = new System.Drawing.Size(1332, 15);
-            this.toolStripStatusLabelMessages.Spring = true;
+            toolStripStatusLabelMessages.Name = "toolStripStatusLabelMessages";
+            toolStripStatusLabelMessages.Size = new Size(1332, 15);
+            toolStripStatusLabelMessages.Spring = true;
+            // 
+            // btSearchIndex
+            // 
+            btSearchIndex.Location = new Point(18, 138);
+            btSearchIndex.Name = "btSearchIndex";
+            btSearchIndex.Size = new Size(176, 54);
+            btSearchIndex.TabIndex = 3;
+            btSearchIndex.Text = "Search Index";
+            btSearchIndex.UseVisualStyleBackColor = true;
+            btSearchIndex.Click += btSearchIndex_Click;
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1347, 883);
-            this.Controls.Add(this.tabControlMain);
-            this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.statusStrip1);
-            this.Name = "frmMain";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.frmMain_Load);
-            this.tabControlMain.ResumeLayout(false);
-            this.tabPageInicialization.ResumeLayout(false);
-            this.splitContainerInicialization.Panel1.ResumeLayout(false);
-            this.splitContainerInicialization.Panel2.ResumeLayout(false);
-            this.splitContainerInicialization.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerInicialization)).EndInit();
-            this.splitContainerInicialization.ResumeLayout(false);
-            this.tabPageLog.ResumeLayout(false);
-            this.tabPageLog.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1347, 883);
+            Controls.Add(tabControlMain);
+            Controls.Add(toolStrip1);
+            Controls.Add(statusStrip1);
+            Name = "frmMain";
+            Text = "Form1";
+            Load += frmMain_Load;
+            tabControlMain.ResumeLayout(false);
+            tabPageInicialization.ResumeLayout(false);
+            splitContainerInicialization.Panel1.ResumeLayout(false);
+            splitContainerInicialization.Panel2.ResumeLayout(false);
+            splitContainerInicialization.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainerInicialization).EndInit();
+            splitContainerInicialization.ResumeLayout(false);
+            tabPageLog.ResumeLayout(false);
+            tabPageLog.PerformLayout();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -255,5 +274,7 @@
         private TextBox txLog;
         private TextBox txInitializationMessages;
         private Button btTest;
+        private Button btSearchTest;
+        private Button btSearchIndex;
     }
 }

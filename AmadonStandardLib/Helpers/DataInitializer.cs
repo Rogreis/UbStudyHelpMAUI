@@ -1,16 +1,10 @@
-﻿using AmadonBlazorLibrary.Classes;
-using AmadonBlazorLibrary.Data;
-using AmadonBlazorLibrary.UbClasses;
-using LibGit2Sharp;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.UbClasses;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using static System.Environment;
 
-namespace AmadonBlazorLibrary.Helpers
+namespace AmadonStandardLib.Helpers
 {
     public class DataInitializer
     {
@@ -23,7 +17,7 @@ namespace AmadonBlazorLibrary.Helpers
         }
 
 
-        private static string MakeProgramDataFolder(string fileName = null)
+        private static string MakeProgramDataFolder(string? fileName = null)
         {
             string folder = DataFolder();
             Directory.CreateDirectory(folder);
@@ -81,12 +75,12 @@ namespace AmadonBlazorLibrary.Helpers
         }
 
 
-        private static bool InitTranslation(GetDataFiles dataFiles, short translationId, ref Translation trans)
+        private static bool InitTranslation(GetDataFiles dataFiles, short translationId, ref Translation? trans)
         {
+            trans = null;
             if (translationId < 0) return true;
 
             EventsControl.FireSendMessage($"Getting translation id {translationId}");
-            trans = null;
             trans = dataFiles.GetTranslation(translationId);
             if (trans == null)
             {
@@ -118,7 +112,7 @@ namespace AmadonBlazorLibrary.Helpers
             return trans.CheckData();
         }
 
-        private static bool VerifyRepository(string repository, string url, string branch= null)
+        private static bool VerifyRepository(string repository, string url, string? branch = null)
         {
             try
             {

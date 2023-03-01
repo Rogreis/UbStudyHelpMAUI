@@ -6,9 +6,10 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Xml;
-using AmadonBlazorLibrary.Helpers;
+using AmadonStandardLib.Helpers;
+using System.IO;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     public class TOC_Entry
     {
@@ -166,7 +167,7 @@ namespace AmadonBlazorLibrary.UbClasses
         }
 
 
-        public TOC_Entry(Paragraph p, string text = null)
+        public TOC_Entry(Paragraph p, string? text = null)
         {
             Text = text == null ? p.Text : text;
             TranslationId = p.TranslationId;
@@ -190,7 +191,7 @@ namespace AmadonBlazorLibrary.UbClasses
             IsExpanded = false;
         }
 
-        public static TOC_Entry FromReference(string reference, ref string aMessage)
+        public static TOC_Entry? FromReference(string reference, ref string aMessage)
         {
             TOC_Entry entry = null;
 
@@ -216,7 +217,9 @@ namespace AmadonBlazorLibrary.UbClasses
 
             try
             {
-                Paragraph par = StaticObjects.Book.GetTranslation(StaticObjects.Parameters.CurrentTranslation).Paper(entry.Paper).GetParagraph(entry);
+                Paragraph par = StaticObjects.Book.GetTranslation(StaticObjects.Parameters.CurrentTranslation)
+                                                  .Paper(entry.Paper)
+                                                  .GetParagraph(entry);
                 entry.Text = par.Text;
                 aMessage = $"Jumping to {reference}.";
                 return entry;
@@ -256,7 +259,7 @@ namespace AmadonBlazorLibrary.UbClasses
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            TOC_Entry entry = obj as TOC_Entry;
+            TOC_Entry? entry = obj as TOC_Entry;
             if (entry == null) return false;
             if (entry.TranslationId != this.TranslationId) return false;
             if (entry.Paper != this.Paper) return false;

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonBlazor2", "AmadonBlazor2\AmadonBlazor2.csproj", "{8C4A69C6-DFFE-4570-9CC6-4D8C0250EB46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WFormsTestAppAmadon2", "WFormsTestAppAmadon2\WFormsTestAppAmadon2.csproj", "{24C2A398-BD4B-4DAE-8C07-45485837A28E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonBlazorLibrary", "AmadonBlazorLibrary\AmadonBlazorLibrary.csproj", "{F89E6554-CE92-4402-ABAC-6D2500C64609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonStandardLib", "AmadonStandardLib\AmadonStandardLib.csproj", "{6CFD8E12-2311-4ECF-84B8-9B9B668FF284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WFormsTestAppAmadon2", "WFormsTestAppAmadon2\WFormsTestAppAmadon2.csproj", "{24C2A398-BD4B-4DAE-8C07-45485837A28E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonBlazorLibrary", "AmadonBlazorLibrary\AmadonBlazorLibrary.csproj", "{DA0864B0-82C5-43F4-8F66-602BBB27475C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8C4A69C6-DFFE-4570-9CC6-4D8C0250EB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C4A69C6-DFFE-4570-9CC6-4D8C0250EB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C4A69C6-DFFE-4570-9CC6-4D8C0250EB46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C4A69C6-DFFE-4570-9CC6-4D8C0250EB46}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{F89E6554-CE92-4402-ABAC-6D2500C64609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F89E6554-CE92-4402-ABAC-6D2500C64609}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F89E6554-CE92-4402-ABAC-6D2500C64609}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F89E6554-CE92-4402-ABAC-6D2500C64609}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24C2A398-BD4B-4DAE-8C07-45485837A28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24C2A398-BD4B-4DAE-8C07-45485837A28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24C2A398-BD4B-4DAE-8C07-45485837A28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24C2A398-BD4B-4DAE-8C07-45485837A28E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CFD8E12-2311-4ECF-84B8-9B9B668FF284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CFD8E12-2311-4ECF-84B8-9B9B668FF284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CFD8E12-2311-4ECF-84B8-9B9B668FF284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CFD8E12-2311-4ECF-84B8-9B9B668FF284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA0864B0-82C5-43F4-8F66-602BBB27475C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA0864B0-82C5-43F4-8F66-602BBB27475C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA0864B0-82C5-43F4-8F66-602BBB27475C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA0864B0-82C5-43F4-8F66-602BBB27475C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

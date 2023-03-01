@@ -1,13 +1,8 @@
-﻿using AmadonBlazorLibrary.Data;
-using AmadonBlazorLibrary.UbClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.UbClasses;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace AmadonBlazorLibrary.Helpers
+namespace AmadonStandardLib.Helpers
 {
     public delegate void dlShowMessage(string message, bool isError = false, bool isFatal = false);
 
@@ -22,9 +17,9 @@ namespace AmadonBlazorLibrary.Helpers
         /// <summary>
         /// This is the object to store log
         /// </summary>
-        public static Logger Logger { get; set; }
+        public static Logger? Logger { get; set; }
 
-        public static Parameters Parameters { get; set; }
+        public static Parameters? Parameters { get; set; }
 
         public static Book Book { get; set; } = new Book();
 
@@ -50,10 +45,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static T DeserializeObject<T>(string json)
-        {
-            return JsonSerializer.Deserialize<T>(json);
-        }
+        public static T DeserializeObject<T>(string json) => JsonSerializer.Deserialize<T>(json);
 
 
     }

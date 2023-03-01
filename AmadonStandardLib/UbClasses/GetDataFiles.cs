@@ -1,5 +1,5 @@
-﻿using AmadonBlazorLibrary.Data;
-using AmadonBlazorLibrary.Helpers;
+﻿using AmadonStandardLib.Data;
+using AmadonStandardLib.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     public class GetDataFiles
     {

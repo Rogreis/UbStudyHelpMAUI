@@ -5,29 +5,30 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
-using AmadonBlazorLibrary.Helpers;
-using AmadonBlazorLibrary.Classes;
+using AmadonStandardLib.Helpers;
+using AmadonStandardLib.Classes;
+using System.IO;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     public class Translation
     {
         public const short NoTranslation = -1;
-        private string LocalRepositoryFolder = null;
-        private string TocTableFileName = "TOC_Table.json";
+        private string? LocalRepositoryFolder = null;
+        private readonly string TocTableFileName = "TOC_Table.json";
 
         public short LanguageID { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = "";
         public int Version { get; set; }
-        public string TIN { get; set; }
-        public string TUB { get; set; }
-        public string TextButton { get; set; }
+        public string TIN { get; set; } = "";
+        public string TUB { get; set; } = "";
+        public string TextButton { get; set; } = "";
         public int CultureID { get; set; }
         public bool UseBold { get; set; }
         public bool RightToLeft { get; set; }
         public int StartingYear { get; set; }
         public int EndingYear { get; set; }
-        public string PaperTranslation { get; set; }
+        public string PaperTranslation { get; set; } = "";
         public bool IsEditingTranslation { get; set; } = false;
         public string Hash { get; set; } = "";
         public string RepositoryName { get; set; } = "";
@@ -329,7 +330,7 @@ namespace AmadonBlazorLibrary.UbClasses
 
 
         #region Index
-        private TUB_TOC_Entry JsonIndexEntry(string fileNamePath, bool isPaperTitle, short paperNoParam = -1)
+        private TUB_TOC_Entry? JsonIndexEntry(string fileNamePath, bool isPaperTitle, short paperNoParam = -1)
         {
             char[] separators = { '_' };
             string fileName = Path.GetFileNameWithoutExtension(fileNamePath);
@@ -403,7 +404,7 @@ namespace AmadonBlazorLibrary.UbClasses
             for (short paperNo = 0; paperNo < 197; paperNo++)
             {
                 string folderPath = Path.Combine(LocalRepositoryFolder, $"Doc{paperNo:000}");
-                TUB_TOC_Entry jsonIndexPaper = null;
+                TUB_TOC_Entry? jsonIndexPaper = null;
                 string pathTitle = Path.Combine(folderPath, $"Par_{paperNo:000}_000_000.md");
                 if (paperNo == 0)
                 {

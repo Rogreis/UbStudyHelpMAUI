@@ -1,12 +1,14 @@
-﻿using AmadonBlazorLibrary.Classes;
+﻿using AmadonStandardLib.Classes;
 using log4net;
 using log4net.Appender;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
+using System;
+using System.IO;
 using System.IO.Enumeration;
 
-namespace AmadonBlazorLibrary.Helpers
+namespace AmadonStandardLib.Helpers
 {
     public class Logger
     {

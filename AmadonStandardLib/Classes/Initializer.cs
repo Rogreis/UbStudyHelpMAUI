@@ -7,7 +7,7 @@ using UbStandardObjects;
 using UbStandardObjects.Helpers;
 using static System.Environment;
 
-namespace AmadonBlazorLibrary.Classes
+namespace AmadonStandardLib.Classes
 {
     internal class Initializer
     {

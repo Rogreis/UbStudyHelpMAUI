@@ -1,12 +1,6 @@
-﻿using AmadonBlazorLibrary.Data;
-using AmadonBlazorLibrary.Helpers;
-using AmadonBlazorLibrary.UbClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AmadonStandardLib.UbClasses;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AmadonBlazor2.Data
 {

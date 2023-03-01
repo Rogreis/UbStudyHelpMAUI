@@ -1,7 +1,7 @@
 ﻿using log4net;
 using log4net.Appender;
 using log4net.Core;
-namespace AmadonBlazorLibrary.Helpers
+namespace AmadonStandardLib.Helpers
 {
     internal class AmadonLogAppender : AppenderSkeleton
     {

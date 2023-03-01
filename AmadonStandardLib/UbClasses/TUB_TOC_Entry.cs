@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     /// <summary>
     /// Define a table of contents entry for TUB

@@ -1,6 +1,9 @@
-﻿using AmadonBlazorLibrary.UbClasses;
+﻿using AmadonStandardLib.UbClasses;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
-namespace AmadonBlazorLibrary.Helpers
+namespace AmadonStandardLib.Helpers
 {
     public class DatabaseReader : Database
     {
@@ -12,7 +15,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// <param name="translationId"></param>
         /// <param name="isZip"></param>
         /// <returns></returns>
-        protected string GetFile(short translationId, bool isZip = true)
+        protected string? GetFile(short translationId, bool isZip = true)
         {
             try
             {
@@ -111,7 +114,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// Get the zipped format table json and unzipp it to return
         /// </summary>
         /// <returns></returns>
-        public string GetFormatTable()
+        public string? GetFormatTable()
         {
             try
             {
@@ -139,7 +142,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// Get the json string for a paper notes
         /// </summary>
         /// <returns></returns>
-        public string GetNotes(short paperNo)
+        public string? GetNotes(short paperNo)
         {
             try
             {

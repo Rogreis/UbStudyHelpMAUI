@@ -1,5 +1,6 @@
-﻿using AmadonBlazorLibrary.Helpers;
-using AmadonBlazorLibrary.UbClasses;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.Helpers;
+using AmadonStandardLib.UbClasses;
 using System.Text;
 using System.Text.Json;
 

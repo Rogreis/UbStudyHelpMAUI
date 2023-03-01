@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmadonBlazorLibrary.Classes
+namespace AmadonStandardLib.Classes
 {
     public static class EnumerationExtension
     {

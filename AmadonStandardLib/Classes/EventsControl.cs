@@ -1,7 +1,9 @@
-﻿using AmadonBlazorLibrary.UbClasses;
-using static AmadonBlazorLibrary.Classes.EventsControl;
+﻿using AmadonStandardLib.UbClasses;
+using System;
+using System.Collections.Generic;
+using static AmadonStandardLib.Classes.EventsControl;
 
-namespace AmadonBlazorLibrary.Classes
+namespace AmadonStandardLib.Classes
 {
     /// <summary>
     /// Used to send a fatal error message
@@ -123,48 +125,48 @@ namespace AmadonBlazorLibrary.Classes
     /// </summary>
     public static class EventsControl
     {
-        public static event FatalErrorDelegate FatalError = null;
+        public static event FatalErrorDelegate? FatalError = null;
 
-        public static event ErrorDelegate Error = null;
+        public static event ErrorDelegate? Error = null;
 
-        public static event dlSendMessage SendMessage = null;
+        public static event dlSendMessage? SendMessage = null;
 
 
 
-        public static event dlSearchClicked SearchClicked = null;
+        public static event dlSearchClicked? SearchClicked = null;
 
         //internal static event dlDirectSearch DirectSearch = null;
 
-        public static event dlIndexClicked IndexClicked = null;
+        public static event dlIndexClicked? IndexClicked = null;
 
-        public static event dlOpenNewIndexEntry OpenNewIndexEntry = null;
+        public static event dlOpenNewIndexEntry? OpenNewIndexEntry = null;
 
-        public static event dlTOCClicked TOCClicked = null;
+        public static event dlTOCClicked? TOCClicked = null;
 
-        public static event dlTrackSelected TrackSelected = null;
+        public static event dlTrackSelected? TrackSelected = null;
 
 
-        public static event dlRefreshText RefreshText = null;
+        public static event dlRefreshText? RefreshText = null;
 
-        public static event dlUpdateAvailable UpdateAvailable = null;
+        public static event dlUpdateAvailable? UpdateAvailable = null;
 
-        public static event dlTranslationsChanged TranslationsChanged = null;
+        public static event dlTranslationsChanged? TranslationsChanged = null;
 
-        public static event dlBilingualChanged BilingualChanged = null;
+        public static event dlBilingualChanged? BilingualChanged = null;
 
         //public static event dlFontChanged FontChanged = null;
 
         //public static event dlAppearanceChanged AppearanceChanged = null;
 
-        public static event dlGridSplitter GridSplitterChanged = null;
+        public static event dlGridSplitter? GridSplitterChanged = null;
 
-        public static event dlMainWindowSizeChanged MainWindowSizeChanged = null;
+        public static event dlMainWindowSizeChanged? MainWindowSizeChanged = null;
 
-        public static event dlNewPaperShown NewPaperShown = null;
+        public static event dlNewPaperShown? NewPaperShown = null;
 
-        internal static event dlAnnotationsChanges AnnotationsChanges = null;
+        internal static event dlAnnotationsChanges? AnnotationsChanges = null;
 
-        internal static bool FireFatalError(string message, Exception ex = null)
+        internal static bool FireFatalError(string message, Exception? ex = null)
         {
             bool? ret = FatalError?.Invoke(message, ex);
             return ret != null ? ret.Value : false;

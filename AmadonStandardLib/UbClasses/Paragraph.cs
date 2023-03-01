@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     /// <summary>
     /// Represents the translation status of each paragraph being worked.
@@ -35,9 +36,9 @@ namespace AmadonBlazorLibrary.UbClasses
     public class Paragraph
     {
 
-        public string TranslatorNote { get; set; }
+        public string TranslatorNote { get; set; } = "";
 
-        public string Comment { get; set; }
+        public string Comment { get; set; } = "";
 
         public DateTime LastDate { get; set; }
 
@@ -54,7 +55,7 @@ namespace AmadonBlazorLibrary.UbClasses
         public int FormatInt { get; set; }
 
         [JsonIgnore]
-        private TOC_Entry entry = null;
+        private TOC_Entry? entry = null;
 
         /// <summary>
         /// Status is not to be exported to json files for UbStudyHelp
@@ -157,6 +158,15 @@ namespace AmadonBlazorLibrary.UbClasses
 
         [JsonIgnore]
         public bool IsEditTranslation { get; set; } = false;
+
+        [JsonIgnore]
+        public bool IsDivider
+        {
+            get
+            {
+                return Text.StartsWith("* * *") || Text.StartsWith("~ ~ ~");
+            }
+        }
 
 
         public Paragraph()

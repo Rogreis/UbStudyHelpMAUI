@@ -1,20 +1,23 @@
-﻿using AmadonBlazorLibrary.Classes;
-using AmadonBlazorLibrary.Helpers;
+﻿
+using AmadonStandardLib.Classes;
+using AmadonStandardLib.Helpers;
+using System;
+using System.Collections.Generic;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     public class Book
     {
         protected DatabaseReader DataFiles = new DatabaseReader();
 
 
-        public Translation LeftTranslation { get; set; }
+        public Translation? LeftTranslation { get; set; }
 
-        public Translation MiddleTranslation { get; set; }
+        public Translation? MiddleTranslation { get; set; }
 
-        public Translation RightTranslation { get; set; }
+        public Translation? RightTranslation { get; set; }
 
-        public List<Translation> Translations { get; set; } = null;
+        public List<Translation>? Translations { get; set; } = null;
 
         public List<Translation> ObservableTranslations
         {
@@ -26,7 +29,7 @@ namespace AmadonBlazorLibrary.UbClasses
             }
         }
 
-        public FormatTable FormatTableObject { get; set; } = null;
+        public FormatTable? FormatTableObject { get; set; } = null;
 
         /// <summary>
         /// Inicialize the list of available translations
@@ -57,14 +60,14 @@ namespace AmadonBlazorLibrary.UbClasses
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Translation GetTranslation(short id)
+        public Translation? GetTranslation(short id)
         {
             Translation trans = Translations.Find(o => o.LanguageID == id);
-            string message = "";
             if (trans == null)
             {
-                message = $"Missing translation number {id}. May be you do not have the correct data to use this tool.";
+                string message = $"Missing translation number {id}. May be you do not have the correct data to use this tool.";
                 EventsControl.FireFatalError(message);
+                return null;
             }
             return trans;
         }
@@ -72,7 +75,7 @@ namespace AmadonBlazorLibrary.UbClasses
         /// <summary>
         /// Initialize the format table used for editing translations
         /// </summary>
-        public FormatTable GetFormatTable()
+        public FormatTable? GetFormatTable()
         {
             try
             {
@@ -89,7 +92,7 @@ namespace AmadonBlazorLibrary.UbClasses
             }
         }
 
-        private Translation InitializeTranslation(short id)
+        private Translation? InitializeTranslation(short id)
         {
             if (id < 0) return null;
             Translation trans = DataFiles.GetTranslation(id);

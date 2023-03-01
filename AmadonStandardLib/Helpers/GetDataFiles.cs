@@ -1,14 +1,13 @@
-﻿using AmadonBlazorLibrary.Data;
-using AmadonBlazorLibrary.UbClasses;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.UbClasses;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace AmadonBlazorLibrary.Helpers
+namespace AmadonStandardLib.Helpers
 {
     public class GetDataFiles
     {
@@ -25,7 +24,7 @@ namespace AmadonBlazorLibrary.Helpers
         //private string currentAnnotationsFileNAme = "Annotations";
 
 
-        protected Parameters Param = null;
+        protected Parameters? Param = null;
 
         public GetDataFiles(Parameters param)
         {
@@ -146,7 +145,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// </summary>
         /// <param name="translationId"></param>
         /// <returns></returns>
-        protected string LoadJsonAnnotations(short translationId)
+        protected string? LoadJsonAnnotations(short translationId)
         {
             string pathAnnotationsFile = TranslationAnnotationsJsonFilePath(translationId);
             if (File.Exists(pathAnnotationsFile))
@@ -165,7 +164,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// <param name="translationId"></param>
         /// <param name="isZip"></param>
         /// <returns></returns>
-        protected string GetFile(short translationId, bool isZip = true)
+        protected string? GetFile(short translationId, bool isZip = true)
         {
             try
             {
@@ -217,7 +216,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// </summary>
         /// <param name="translationId"></param>
         /// <returns></returns>
-        public virtual Translation GetTranslation(short translationId, bool initializePapers = true)
+        public Translation? GetTranslation(short translationId, bool initializePapers = true)
         {
             Translation translation = StaticObjects.Book.GetTranslation(translationId);
             if (translation == null)
@@ -255,7 +254,7 @@ namespace AmadonBlazorLibrary.Helpers
         /// Get the zipped format table json and unzipp it to return
         /// </summary>
         /// <returns></returns>
-        public string GetFormatTable()
+        public string? GetFormatTable()
         {
             try
             {

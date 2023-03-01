@@ -9,7 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JsonFormatterPlus" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AmadonBlazorLibrary\AmadonBlazorLibrary.csproj" />
+    <ProjectReference Include="..\AmadonStandardLib\AmadonStandardLib.csproj" />
   </ItemGroup>
 
 </Project>

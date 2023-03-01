@@ -6,7 +6,7 @@ using log4net.Repository.Hierarchy;
 using System.Diagnostics;
 using UbStandardObjects;
 
-namespace AmadonBlazorLibrary.Classes
+namespace AmadonStandardLib.Classes
 {
     internal class LogMAUI : Log
     {

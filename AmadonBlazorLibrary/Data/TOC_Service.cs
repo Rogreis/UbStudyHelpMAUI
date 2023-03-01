@@ -1,5 +1,5 @@
-﻿using AmadonBlazorLibrary.Helpers;
-using AmadonBlazorLibrary.UbClasses;
+﻿using AmadonStandardLib.Helpers;
+using AmadonStandardLib.UbClasses;
 
 namespace AmadonBlazorLibrary.Data
 {

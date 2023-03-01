@@ -1,8 +1,10 @@
 ﻿using AmadonStandardLib.Helpers;
 using AmadonStandardLib.UbClasses;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 
-namespace AmadonBlazorLibrary.Data
+namespace AmadonStandardLib.Classes
 {
 
     public enum TextShowOption
@@ -18,9 +20,12 @@ namespace AmadonBlazorLibrary.Data
     public class Parameters
     {
 
+
+        //public ControlsAppearance Appearance = new ControlsAppearance();
+
         public const string FileName = "AmadonParameters.json";
 
-        public static string PathParameters { get; set; }
+        public static string? PathParameters { get; set; }
 
 
         /// <summary>
@@ -78,7 +83,7 @@ namespace AmadonBlazorLibrary.Data
 
         public string IndexOutputFilesPath { get; set; } = "";
 
-        public string SqlServerConnectionString { get; set; }
+        public string SqlServerConnectionString { get; set; } = "";
 
         public string FontFamilyInfo { get; set; } = "Verdana";
 
@@ -104,6 +109,8 @@ namespace AmadonBlazorLibrary.Data
         public double AnnotationWindowWidth { get; set; } = 800;
 
         public double AnnotationWindowHeight { get; set; } = 450;
+
+        public bool UseDarkThemme { get; set; } = true;
 
 
         /// <summary>
@@ -144,7 +151,7 @@ namespace AmadonBlazorLibrary.Data
         /// <summary>
         /// Work local repository for paragraphs
         /// </summary>
-        public string EditParagraphsRepositoryFolder { get; set; } = null;
+        public string? EditParagraphsRepositoryFolder { get; set; } = null;
 
         /// <summary>
         /// Github source for editing translation
@@ -154,12 +161,12 @@ namespace AmadonBlazorLibrary.Data
         /// <summary>
         /// Full book pages local repository
         /// </summary>
-        public string EditBookRepositoryFolder { get; set; } = null;
+        public string? EditBookRepositoryFolder { get; set; } = null;
 
         /// <summary>
         /// Github paragraphs repository
         /// </summary>
-        public string UrlRepository { get; set; } = null;
+        public string? UrlRepository { get; set; } = null;
 
         public float FontSize { get; set; } = 14;
 
@@ -179,49 +186,7 @@ namespace AmadonBlazorLibrary.Data
 
         public string LightTextGray { get; set; } = "bisque";
 
-        //public string BackTextColor
-        //{
-        //    get
-        //    {
-        //        return IsDarkTheme ? darkTheme : lightTheme;
-        //    }
-        //}
 
-        ///// <summary>
-        ///// Returns the classes for a paragraph depending on IsEditTranslation and IsDarkTheme
-        ///// </summary>
-        ///// <param name="ParagraphStatus"></param>
-        ///// <returns></returns>
-        //public virtual string ParagraphClass(Paragraph p)
-        //{
-        //    if (p != null && p.IsEditTranslation)
-        //    {
-        //        switch (p.Status)
-        //        {
-        //            case ParagraphStatus.Started:
-        //                return "parStarted";
-        //            case ParagraphStatus.Working:
-        //                return "parWorking";
-        //            case ParagraphStatus.Doubt:
-        //                return "parDoubt";
-        //            case ParagraphStatus.Ok:
-        //                return "parOk";
-        //            case ParagraphStatus.Closed:
-        //                return "parClosed";
-        //        }
-        //    }
-        //    return "parClosed";
-        //}
-
-
-        //public virtual string BackgroundParagraphColor(ParagraphStatus ParagraphStatus)
-        //{
-        //    return IsDarkTheme ? darkTheme : lightTheme;
-        //}
-
-        public bool UseDarkThemme { get; set; } = true;
-
-        //public ControlsAppearance Appearance = new ControlsAppearance();
 
 
         /// <summary>

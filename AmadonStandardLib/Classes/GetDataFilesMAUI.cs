@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UbStandardObjects;
 using UbStandardObjects.Objects;
 
-namespace AmadonBlazorLibrary.Classes
+namespace AmadonStandardLib.Classes
 {
     internal class GetDataFilesMAUI : GetDataFiles
     {

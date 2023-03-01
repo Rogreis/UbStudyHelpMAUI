@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;8602</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;8602</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Classes\ControlsAppearance.cs" />
+    <Compile Remove="Classes\GetDataFilesMAUI.cs" />
+    <Compile Remove="Classes\Initializer.cs" />
+    <Compile Remove="Classes\LogMAUI.cs" />
+    <Compile Remove="UbClasses\GetDataFiles.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Classes\ControlsAppearance.cs" />
+    <None Include="Classes\GetDataFilesMAUI.cs" />
+    <None Include="Classes\Initializer.cs" />
+    <None Include="Classes\LogMAUI.cs" />
+    <None Include="UbClasses\GetDataFiles.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0182" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Lucene.Net" Version="4.8.0-beta00016" />
+    <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00016" />
+    <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00016" />
+    <PackageReference Include="System.Text.Json" Version="8.0.0-preview.1.23110.8" />
+  </ItemGroup>
+
+</Project>

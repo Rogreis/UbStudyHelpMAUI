@@ -5,16 +5,17 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
-using AmadonBlazorLibrary.Helpers;
+using AmadonStandardLib.Helpers;
+using System.IO;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     public class Paper
     {
 
         private string RepositoryFolder { get; set; } = "";
         private short paperEditNo = -1;
-        private FormatTable Format = null;
+        private FormatTable? Format = null;
 
 
 
@@ -106,9 +107,9 @@ namespace AmadonBlazorLibrary.UbClasses
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public Paragraph GetParagraph(TOC_Entry entry)
+        public Paragraph? GetParagraph(TOC_Entry entry)
         {
-            Paragraph par = null;
+            Paragraph? par = null;
             if (Paragraphs.Count == 0)
             {
                 par= Paragraphs.Find(p => p.Section == entry.Section && p.ParagraphNo == entry.ParagraphNo);

@@ -1,13 +1,14 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
 
-namespace AmadonBlazorLibrary.UbClasses
+namespace AmadonStandardLib.UbClasses
 {
     public class FormatTable
     {
         #region Classes to read json file
         private class FormatTableRootobject
         {
-            public Paragraphsformat[] ParagraphsFormat { get; set; }
+            public Paragraphsformat[]? ParagraphsFormat { get; set; }
         }
 
         private class Paragraphsformat
