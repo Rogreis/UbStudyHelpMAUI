@@ -38,6 +38,26 @@ namespace AmadonStandardLib.UbClasses
             return entry;
         }
 
+        /// <summary>
+        /// Provide a list of paper for this entrey when the entry is an entry paper
+        /// </summary>
+        public List<TOC_Entry> Papers { get; set; } = new List<TOC_Entry>();
+
+        /// <summary>
+        /// Provide a list of sections for this entrey when the entry is an entry paper
+        /// </summary>
+        public List<TOC_Entry> Sections { get; set; } = new List<TOC_Entry>();
+
+
+
+        /// <summary>
+        /// Parameterless constructor used for xml serialization
+        /// </summary>
+        public TOC_Entry()
+        {
+
+        }
+
 
         [JsonIgnore]
         public string ParagraphID
@@ -120,51 +140,6 @@ namespace AmadonStandardLib.UbClasses
         }
 
 
-
-        /// <summary>
-        /// Provides a xml serialization
-        /// </summary>
-        [JsonIgnore]
-        public XmlElement Xml
-        {
-            get
-            {
-                XmlSerializer xsSubmit = new XmlSerializer(typeof(TOC_Entry));
-                var xml = "";
-                using (var sww = new StringWriter())
-                {
-                    using (XmlWriter writer = XmlWriter.Create(sww))
-                    {
-                        xsSubmit.Serialize(writer, this);
-                        xml = sww.ToString(); // Your XML
-                    }
-                }
-
-                return GetElement(xml);
-            }
-        }
-
-        /// <summary>
-        /// Provide a list of paper for this entrey when the entry is an entry paper
-        /// </summary>
-        [JsonIgnore]
-        public List<TOC_Entry> Papers { get; set; } = new List<TOC_Entry>();
-
-        /// <summary>
-        /// Provide a list of sections for this entrey when the entry is an entry paper
-        /// </summary>
-        [JsonIgnore]
-        public List<TOC_Entry> Sections { get; set; } = new List<TOC_Entry>();
-
-
-
-        /// <summary>
-        /// Parameterless constructor used for xml serialization
-        /// </summary>
-        public TOC_Entry()
-        {
-
-        }
 
 
         public TOC_Entry(Paragraph p, string? text = null)

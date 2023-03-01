@@ -3,6 +3,7 @@ using AmadonStandardLib.Classes;
 using AmadonStandardLib.Helpers;
 using System.Text.Json;
 using JsonFormatterPlus;
+using AmadonStandardLib.UbClasses;
 
 namespace WFormsTestAppAmadon2
 {
@@ -111,7 +112,7 @@ namespace WFormsTestAppAmadon2
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 SearchData searchDataReturned = JsonSerializer.Deserialize<SearchData>(jsonString, options);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                
+
                 if (searchDataReturned == null)
                 {
                     txInitializationMessages.AppendText("Error");
@@ -122,15 +123,6 @@ namespace WFormsTestAppAmadon2
 
         private void btSearchIndex_Click(object sender, EventArgs e)
         {
-            if (!DataInitializer.InitLogger())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitLogger");
-            }
-
-            if (!DataInitializer.InitParameters())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitParameters");
-            }
 
             if (!DataInitializer.InitTranslations())
             {
@@ -158,6 +150,38 @@ namespace WFormsTestAppAmadon2
                 }
                 else ShowJson($"Results: {searchDataReturned.ResultsList.Count}", jsonString);
             }
+        }
+
+        private void btTOC_test_Click(object sender, EventArgs e)
+        {
+            // 
+            if (!DataInitializer.InitTranslations())
+            {
+                StaticObjects_ShowMessage("**** ERROR: InitTranslations");
+            }
+
+            string jsonString = TOC_Service.GetToc(StaticObjects.Book.LeftTranslation.LanguageID);
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true,
+            };
+            if (jsonString != null && !string.IsNullOrWhiteSpace(jsonString))
+            {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+                TOC_Table toc = JsonSerializer.Deserialize<TOC_Table>(jsonString, options);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+                if (toc == null)
+                {
+                    txInitializationMessages.AppendText("Error");
+                }
+                else ShowJson($"Results: {toc.Parts.Count} parts", jsonString);
+            }
+        }
+
+        private void btSettings_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

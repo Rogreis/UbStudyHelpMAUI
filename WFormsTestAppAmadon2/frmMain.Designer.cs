@@ -31,6 +31,7 @@
             tabControlMain = new TabControl();
             tabPageInicialization = new TabPage();
             splitContainerInicialization = new SplitContainer();
+            btSearchIndex = new Button();
             btSearchTest = new Button();
             btTest = new Button();
             btInicializeParamLog = new Button();
@@ -44,7 +45,8 @@
             toolStripButton3 = new ToolStripButton();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabelMessages = new ToolStripStatusLabel();
-            btSearchIndex = new Button();
+            btTOC_test = new Button();
+            btSettings = new Button();
             tabControlMain.SuspendLayout();
             tabPageInicialization.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerInicialization).BeginInit();
@@ -87,6 +89,8 @@
             // 
             // splitContainerInicialization.Panel1
             // 
+            splitContainerInicialization.Panel1.Controls.Add(btSettings);
+            splitContainerInicialization.Panel1.Controls.Add(btTOC_test);
             splitContainerInicialization.Panel1.Controls.Add(btSearchIndex);
             splitContainerInicialization.Panel1.Controls.Add(btSearchTest);
             splitContainerInicialization.Panel1.Controls.Add(btTest);
@@ -98,6 +102,16 @@
             splitContainerInicialization.Size = new Size(1333, 783);
             splitContainerInicialization.SplitterDistance = 282;
             splitContainerInicialization.TabIndex = 0;
+            // 
+            // btSearchIndex
+            // 
+            btSearchIndex.Location = new Point(18, 138);
+            btSearchIndex.Name = "btSearchIndex";
+            btSearchIndex.Size = new Size(176, 54);
+            btSearchIndex.TabIndex = 3;
+            btSearchIndex.Text = "Search Index";
+            btSearchIndex.UseVisualStyleBackColor = true;
+            btSearchIndex.Click += btSearchIndex_Click;
             // 
             // btSearchTest
             // 
@@ -111,12 +125,13 @@
             // 
             // btTest
             // 
-            btTest.Location = new Point(31, 488);
+            btTest.Location = new Point(18, 486);
             btTest.Name = "btTest";
             btTest.Size = new Size(176, 54);
             btTest.TabIndex = 1;
             btTest.Text = "Test";
             btTest.UseVisualStyleBackColor = true;
+            btTest.Visible = false;
             btTest.Click += btTest_Click;
             // 
             // btInicializeParamLog
@@ -219,15 +234,25 @@
             toolStripStatusLabelMessages.Size = new Size(1332, 15);
             toolStripStatusLabelMessages.Spring = true;
             // 
-            // btSearchIndex
+            // btTOC_test
             // 
-            btSearchIndex.Location = new Point(18, 138);
-            btSearchIndex.Name = "btSearchIndex";
-            btSearchIndex.Size = new Size(176, 54);
-            btSearchIndex.TabIndex = 3;
-            btSearchIndex.Text = "Search Index";
-            btSearchIndex.UseVisualStyleBackColor = true;
-            btSearchIndex.Click += btSearchIndex_Click;
+            btTOC_test.Location = new Point(18, 198);
+            btTOC_test.Name = "btTOC_test";
+            btTOC_test.Size = new Size(176, 54);
+            btTOC_test.TabIndex = 4;
+            btTOC_test.Text = "TOC";
+            btTOC_test.UseVisualStyleBackColor = true;
+            btTOC_test.Click += btTOC_test_Click;
+            // 
+            // btSettings
+            // 
+            btSettings.Location = new Point(18, 258);
+            btSettings.Name = "btSettings";
+            btSettings.Size = new Size(176, 54);
+            btSettings.TabIndex = 5;
+            btSettings.Text = "Settings";
+            btSettings.UseVisualStyleBackColor = true;
+            btSettings.Click += btSettings_Click;
             // 
             // frmMain
             // 
@@ -276,5 +301,7 @@
         private Button btTest;
         private Button btSearchTest;
         private Button btSearchIndex;
+        private Button btTOC_test;
+        private Button btSettings;
     }
 }

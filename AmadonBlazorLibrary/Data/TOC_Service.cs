@@ -1,15 +1,30 @@
-﻿using AmadonStandardLib.Helpers;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.Helpers;
 using AmadonStandardLib.UbClasses;
+using System.Text.Json;
 
 namespace AmadonBlazorLibrary.Data
 {
     public class TOC_Service
     {
-        public static Task<TOC_Table> GetTocTableAsync(bool useRightTranslation)
+        public static string GetToc(short translationId)
         {
-            TOC_Table table = useRightTranslation ? StaticObjects.Book.RightTranslation.TOC : StaticObjects.Book.LeftTranslation.TOC;
-            table.Title = $"Tabela de conteúdos em {DateTime.Now}";
-            return Task.FromResult(table);
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true, 
+                IncludeFields = true, 
+            };
+            Translation translation = StaticObjects.Book.GetTranslation(translationId);
+            TOC_Table table = translation.TOC;
+            table.Title = $"TOC {translation.Description}";
+            var jsonString = JsonSerializer.Serialize(table, options);
+            return jsonString;
+        }
+
+        public static Task<string> GetTocTable(short translationId)
+        {
+            return Task.FromResult(GetToc(translationId));
         }
     }
 }
