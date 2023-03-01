@@ -25,4 +25,8 @@
 	  <ProjectReference Include="..\AmadonStandardLib\AmadonStandardLib.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Helpers\" />
+	</ItemGroup>
+
 </Project>
