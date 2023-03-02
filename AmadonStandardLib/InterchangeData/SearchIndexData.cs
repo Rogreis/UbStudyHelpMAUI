@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AmadonStandardLib.Classes
+namespace AmadonStandardLib.InterchangeData
 {
 
     public class IndexDetails
@@ -34,7 +34,7 @@ namespace AmadonStandardLib.Classes
         }
     }
 
-    public class SearchIndexData
+    public class SearchIndexData : InterchangeDataBase
     {
 
         public string IndexPathRoot { get; set; } = "";
@@ -42,7 +42,6 @@ namespace AmadonStandardLib.Classes
         public string Query { get; set; } = "";
 
         // Output data
-        public string ErrorMessage { get; set; } = "";  // Anything != string.Empty is an error
 
         public List<string>? ResultsList { get; set; } = null;
 

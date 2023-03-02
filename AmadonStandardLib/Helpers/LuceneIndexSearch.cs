@@ -1,4 +1,5 @@
 ﻿using AmadonStandardLib.Helpers;
+using AmadonStandardLib.InterchangeData;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;

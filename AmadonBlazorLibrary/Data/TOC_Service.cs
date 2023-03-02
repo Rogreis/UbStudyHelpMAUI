@@ -1,5 +1,6 @@
 ﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.Helpers;
+using AmadonStandardLib.InterchangeData;
 using AmadonStandardLib.UbClasses;
 using System.Text.Json;
 
@@ -7,7 +8,7 @@ namespace AmadonBlazorLibrary.Data
 {
     public class TOC_Service
     {
-        public static string GetToc(short translationId)
+        public static string GetToc(TOCdata data)
         {
             var options = new JsonSerializerOptions
             {
@@ -15,16 +16,16 @@ namespace AmadonBlazorLibrary.Data
                 WriteIndented = true, 
                 IncludeFields = true, 
             };
-            Translation translation = StaticObjects.Book.GetTranslation(translationId);
-            TOC_Table table = translation.TOC;
-            table.Title = $"TOC {translation.Description}";
-            var jsonString = JsonSerializer.Serialize(table, options);
+            Translation translation = StaticObjects.Book.GetTranslation(data.TranslationId);
+            data.Toc = translation.TOC;
+            data.Toc.Title = $"TOC {translation.Description}";
+            var jsonString = JsonSerializer.Serialize(data, options);
             return jsonString;
         }
 
-        public static Task<string> GetTocTable(short translationId)
+        public static Task<string> GetTocTable(TOCdata data)
         {
-            return Task.FromResult(GetToc(translationId));
+            return Task.FromResult(GetToc(data));
         }
     }
 }

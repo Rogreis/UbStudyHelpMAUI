@@ -2,6 +2,7 @@
 using AmadonStandardLib.UbClasses;
 using System;
 using System.IO;
+using static Lucene.Net.Queries.Function.ValueSources.MultiFunction;
 using static System.Environment;
 
 namespace AmadonStandardLib.Helpers
@@ -42,7 +43,7 @@ namespace AmadonStandardLib.Helpers
                 {
                     StaticObjects.Book.Translations = dataFiles.GetTranslations();
                 }
-                EventsControl.FireSendMessage($"{StaticObjects.Book.Translations.Count} translation found in available translations file");
+                EventsControl.FireSendUserAndLogMessage($"{StaticObjects.Book.Translations.Count} translation found in available translations file");
                 return true;
             }
             catch (Exception ex)
@@ -77,24 +78,25 @@ namespace AmadonStandardLib.Helpers
 
         private static bool InitTranslation(GetDataFiles dataFiles, short translationId, ref Translation? trans)
         {
+            EventsControl.FireSendUserAndLogMessage($"Initializing translation {translationId}");
             trans = null;
             if (translationId < 0) return true;
 
-            EventsControl.FireSendMessage($"Getting translation id {translationId}");
+            EventsControl.FireSendUserAndLogMessage($"Getting translation id {translationId}");
             trans = dataFiles.GetTranslation(translationId);
             if (trans == null)
             {
                 StaticObjects.Logger.Error($"Non existing translation: {translationId}");
                 return false;
             }
-            EventsControl.FireSendMessage($"Translation file read: {trans.Description}");
+            EventsControl.FireSendUserAndLogMessage($"Translation file read: {trans.Description}");
             if (trans.IsEditingTranslation)
             {
-                EventsControl.FireSendMessage($"Getting editing translation {trans.Description}");
-                EventsControl.FireSendMessage("Checking folders for editing translation");
+                EventsControl.FireSendUserAndLogMessage($"Getting editing translation {trans.Description}");
+                EventsControl.FireSendUserAndLogMessage("Checking folders for editing translation");
                 if (!Directory.Exists(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
                 {
-                    StaticObjects.Logger.Error("There is no repositoty set for editing translation");
+                    StaticObjects.Logger.Error("There is no repository set for editing translation");
                     return false;
                 }
                 if (!GitHelper.Instance.IsValid(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
@@ -102,7 +104,7 @@ namespace AmadonStandardLib.Helpers
                     StaticObjects.Logger.Error($"Folder is not a valid respository: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
                     return false;
                 }
-                EventsControl.FireSendMessage("Found a valid repository");
+                EventsControl.FireSendUserAndLogMessage("Found a valid repository");
                 // Format table must exist for editing translation
                 if (!GetFormatTable(dataFiles))
                 {
@@ -116,13 +118,13 @@ namespace AmadonStandardLib.Helpers
         {
             try
             {
-                EventsControl.FireSendMessage($"Verifying repository: {repository}");
+                EventsControl.FireSendUserAndLogMessage($"Verifying repository: {repository}");
                 if (!GitHelper.Instance.IsValid(repository))
                 {
-                    EventsControl.FireSendMessage("Cloning...");
+                    EventsControl.FireSendUserAndLogMessage("Cloning...");
                     if (!GitHelper.Instance.Clone(url, repository))
                     {
-                        EventsControl.FireSendMessage("Clone failed");
+                        EventsControl.FireSendUserAndLogMessage("Clone failed");
                         EventsControl.FireFatalError("Could not clone translations");
                         return false;
                     }
@@ -131,19 +133,19 @@ namespace AmadonStandardLib.Helpers
                 {
                     if (branch != null)
                     {
-                        EventsControl.FireSendMessage("Checkout...");
+                        EventsControl.FireSendUserAndLogMessage("Checkout...");
                         if (!GitHelper.Instance.Checkout(repository, branch))
                         {
-                            EventsControl.FireSendMessage("Checkout failed");
+                            EventsControl.FireSendUserAndLogMessage("Checkout failed");
                             EventsControl.FireFatalError("Could not checkout TUB translations");
                             return false;
                         }
                     }
 
-                    EventsControl.FireSendMessage("Pull...");
+                    EventsControl.FireSendUserAndLogMessage("Pull...");
                     if (!GitHelper.Instance.Pull(repository))
                     {
-                        EventsControl.FireSendMessage("Pull failed");
+                        EventsControl.FireSendUserAndLogMessage("Pull failed");
                         EventsControl.FireFatalError("Could not checkout TUB translations");
                         return false;
                     }
@@ -169,7 +171,7 @@ namespace AmadonStandardLib.Helpers
                 Logger.PathLog = Path.Combine(MakeProgramDataFolder(), Logger.FileName);
                 StaticObjects.Logger = new Logger();
                 StaticObjects.Logger.Initialize(Logger.PathLog, false);
-                EventsControl.FireSendMessage($"Log started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
+                EventsControl.FireSendUserAndLogMessage($"Log started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
                 return true;
             }
             catch (Exception ex)
@@ -188,12 +190,12 @@ namespace AmadonStandardLib.Helpers
                 Parameters.PathParameters = Path.Combine(MakeProgramDataFolder(), Parameters.FileName);
                 if (!File.Exists(Parameters.PathParameters))
                 {
-                    EventsControl.FireSendMessage($"Parameters not found, creating a new one.");
+                    EventsControl.FireSendUserAndLogMessage($"Parameters not found, creating a new one.");
                     StaticObjects.Parameters = new Parameters();
                 }
                 else
                 {
-                    EventsControl.FireSendMessage($"Parameters found, reading from disk.");
+                    EventsControl.FireSendUserAndLogMessage($"Parameters found, reading from disk.");
                     StaticObjects.Parameters = Parameters.Deserialize(Parameters.PathParameters);
                 }
 
@@ -208,6 +210,7 @@ namespace AmadonStandardLib.Helpers
                 // This application has a differente location for TUB Files
                 StaticObjects.Parameters.TUB_Files_RepositoryFolder = MakeProgramDataFolder("TUB_Files");
                 StaticObjects.Parameters.EditParagraphsRepositoryFolder = MakeProgramDataFolder("PtAlternative");
+                EventsControl.FireSendUserAndLogMessage($"Parameters started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
 
                 return true;
             }
@@ -224,25 +227,35 @@ namespace AmadonStandardLib.Helpers
         {
             try
             {
+                EventsControl.FireSendUserAndLogMessage("Initializing translations");
+
                 GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
                 StaticObjects.Book = new Book();
 
                 // Verify respository existence
                 if (!VerifyRepository(StaticObjects.Parameters.TUB_Files_RepositoryFolder, StaticObjects.Parameters.TUB_Files_Url))
                 {
+                    EventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}");
                     return false;
                 }
 
-                // Verify respository existence
-                if (!VerifyRepository(StaticObjects.Parameters.EditParagraphsRepositoryFolder, StaticObjects.Parameters.EditParagraphsUrl))
+
+                // Edit repositpry is only checked when editing translation is used
+                EventsControl.FireSendUserAndLogMessage($"Is editing enabled: {StaticObjects.Parameters.IsEditingEnabled}");
+                if (StaticObjects.Parameters.IsEditingEnabled)
                 {
-                    return false;
+                    if (!VerifyRepository(StaticObjects.Parameters.EditParagraphsRepositoryFolder, StaticObjects.Parameters.EditParagraphsUrl))
+                    {
+                        EventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
+                        return false;
+                    }
                 }
 
 
-                EventsControl.FireSendMessage("Getting translations list");
+                EventsControl.FireSendUserAndLogMessage("Getting translations list");
                 if (!InicializeTranslations(dataFiles))
                 {
+                    EventsControl.FireSendUserAndLogMessage("Translations list not got");
                     return false;
                 }
 
@@ -269,7 +282,7 @@ namespace AmadonStandardLib.Helpers
                     return false;
                 }
                 StaticObjects.Book.RightTranslation = trans;
-                EventsControl.FireSendMessage("Initialization finished succesfully.");
+                EventsControl.FireSendUserAndLogMessage("Initialization finished succesfully.");
                 return true;
             }
             catch (Exception ex)

@@ -223,13 +223,6 @@ namespace AmadonStandardLib.UbClasses
         }
 
 
-        private static XmlElement GetElement(string xml)
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xml);
-            return doc.DocumentElement;
-        }
-
         #region Operators
         public override bool Equals(object obj)
         {
@@ -334,6 +327,11 @@ namespace AmadonStandardLib.UbClasses
             return Paper * 100000 + Section * 1000 + ParagraphNo;
         }
         #endregion
+
+        public string ToShortString()
+        {
+            return $"{ParagraphID} {(Text.Length > 30 ? Text.Substring(0, 30) : Text)}";
+        }
 
         public override string ToString()
         {

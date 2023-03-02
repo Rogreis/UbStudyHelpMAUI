@@ -1,4 +1,5 @@
-﻿using AmadonStandardLib.UbClasses;
+﻿using AmadonStandardLib.Helpers;
+using AmadonStandardLib.UbClasses;
 using System;
 using System.Collections.Generic;
 using static AmadonStandardLib.Classes.EventsControl;
@@ -206,7 +207,14 @@ namespace AmadonStandardLib.Classes
 
         public static void FireMainWindowSizeChanged(double width, double height) => MainWindowSizeChanged?.Invoke(width, height);
 
-        public static void FireSendMessage(string Message) => SendMessage?.Invoke(Message);
+        public static void FireSendMessage(string message) => SendMessage?.Invoke(message);
+
+        public static void FireSendUserAndLogMessage(string message) 
+        {
+            FireSendMessage(message);
+            StaticObjects.Logger.Info(message);
+        }
+
 
         public static void FireRefreshText() => RefreshText?.Invoke();
 

@@ -185,33 +185,19 @@ namespace AmadonStandardLib.Helpers
 
 
         /// <summary>
-        /// Shoe log file
+        /// Returns all current lines on log
         /// </summary>
-        public void ShowLog()
+        public string GetLog()
         {
-            //Close();
-            //Process.Start("notepad.exe", PathLog);
-
-            //using (var fs = new FileStream(PathLog, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            //using (var sr = new StreamReader(fs, Encoding.Default))
-            //{
-            //    string text = sr.ReadToEnd();
-            //}
-
+            Close();
+            return File.ReadAllText(PathLog);
         }
 
-        /// <summary>
-        /// Enable the log again
-        /// </summary>
-        public void Show()
-        {
-            LogManager.GetRepository().Shutdown();
-            _logIniciado = false;
-        }
 
         public void Close()
         {
-            throw new NotImplementedException();
+            LogManager.GetRepository().Shutdown();
+            _logIniciado = false;
         }
     }
 }

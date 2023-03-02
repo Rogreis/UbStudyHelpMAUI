@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmadonStandardLib.Classes
+namespace AmadonStandardLib.InterchangeData
 {
     /// <summary>
     /// Used to send/receive data to/from the book search engine
     /// </summary>
-    public class SearchData
+    public class SearchData : InterchangeDataBase
     {
         private bool OrderedByParagraphs = false;
 
@@ -36,18 +36,16 @@ namespace AmadonStandardLib.Classes
 
 
 
-        // Output data
-        public string ErrorMessage { get; set; } = "";  // Anything != string.Empty is an error
 
         public List<SearchResult> SearchResults { get; set; } = new List<SearchResult>();
 
         public List<string> Words { get; set; } = new List<string>();
 
-        public bool IsPaperIncluded(int PaperNo) => (
-                    (Part1Included && PaperNo < 32) ||
-                    (Part2Included && PaperNo >= 32 && PaperNo <= 56) ||
-                    (Part3Included && PaperNo >= 57 && PaperNo <= 119) ||
-                    (Part4Included && PaperNo >= 120));
+        public bool IsPaperIncluded(int PaperNo) =>
+                    Part1Included && PaperNo < 32 ||
+                    Part2Included && PaperNo >= 32 && PaperNo <= 56 ||
+                    Part3Included && PaperNo >= 57 && PaperNo <= 119 ||
+                    Part4Included && PaperNo >= 120;
 
 
         ///// <summary>

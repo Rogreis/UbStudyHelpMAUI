@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmadonStandardLib.Classes
+namespace AmadonStandardLib.InterchangeData
 {
     /// <summary>
     /// Stores a search result
     /// </summary>
-    public class SearchResult
+    public class SearchResult : InterchangeDataBase
     {
         public TOC_Entry Entry { get; set; }
 
@@ -28,6 +28,11 @@ namespace AmadonStandardLib.Classes
         public SearchResult(TOC_Entry entry)
         {
             Entry = entry;
+        }
+
+        public override string ToString()
+        {
+            return Entry.ToShortString();
         }
 
     }

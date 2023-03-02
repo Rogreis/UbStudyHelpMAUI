@@ -4,11 +4,21 @@ using AmadonStandardLib.Helpers;
 using System.Text.Json;
 using JsonFormatterPlus;
 using AmadonStandardLib.UbClasses;
+using System.Net.Http.Headers;
+using AmadonStandardLib.InterchangeData;
+using System.Windows.Forms;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WFormsTestAppAmadon2
 {
     public partial class frmMain : Form
     {
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            AllowTrailingCommas = true,
+            WriteIndented = true,
+        };
+
         public frmMain()
         {
             InitializeComponent();
@@ -17,7 +27,12 @@ namespace WFormsTestAppAmadon2
 
         private void EventsControl_SendMessage(string message)
         {
-            txLog.AppendText(message + Environment.NewLine);
+            if (message == null)
+            {
+                toolStripStatusLabelMessages.Text = "";
+                Application.DoEvents();
+                return;
+            }
             toolStripStatusLabelMessages.Text = message;
             txInitializationMessages.AppendText(message + Environment.NewLine);
             Application.DoEvents();
@@ -25,34 +40,9 @@ namespace WFormsTestAppAmadon2
 
         private void StaticObjects_ShowMessage(string message, bool isError = false, bool isFatal = false)
         {
-            txLog.AppendText(message + Environment.NewLine);
-            toolStripStatusLabelMessages.Text = message;
-            txInitializationMessages.AppendText(message + Environment.NewLine);
-            Application.DoEvents();
+            EventsControl_SendMessage(message);
         }
 
-        private void btInicializeParamLog_Click(object sender, EventArgs e)
-        {
-            if (!DataInitializer.InitTranslations())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitTranslations");
-            }
-        }
-
-        private void btTest_Click(object sender, EventArgs e)
-        {
-            //string branch = "correcoes";
-            ////string url = "https://github.com/Rogreis/UbReviewer.git";
-            //string repository = "C:\\ProgramData\\UbStudyHelp\\PtAlternative";
-            //string username = "rogreis";
-            //string password = "Uversa_250";
-            //string email = "rogreis@gmail.com";
-
-            ////if (!GitHelper.Instance.Push(repository, username, password, email, branch))
-            ////{
-            ////    StaticObjects_ShowMessage("**** ERROR: btTest_Click");
-            ////}
-        }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -69,26 +59,28 @@ namespace WFormsTestAppAmadon2
 
         void ShowJson(string title, string json)
         {
-            txInitializationMessages.Text = title + Environment.NewLine + Environment.NewLine + JsonFormatter.Format(json);
+            txInitializationMessages.AppendText(title + Environment.NewLine + Environment.NewLine + JsonFormatter.Format(json));
         }
+
+        private async void Initialize()
+        {
+            InitResult initResult = new InitResult();
+            string json = await InitializationService.InitAll(initResult);
+            InitResult? result = InitResult.Deserialize<InitResult>(json);
+            InterchangeDataBase.DumpProperties(result);
+            txLog.Text = StaticObjects.Logger.GetLog();
+        }
+
+        private void btInicializeParamLog_Click(object sender, EventArgs e)
+        {
+            Initialize();
+        }
+
+
 
         private void btSearchTest_Click(object sender, EventArgs e)
         {
-
-            if (!DataInitializer.InitLogger())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitLogger");
-            }
-
-            if (!DataInitializer.InitParameters())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitParameters");
-            }
-
-            if (!DataInitializer.InitTranslations())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitTranslations");
-            }
+            Initialize();
 
             SearchData data = new SearchData();
             data.Translation = StaticObjects.Book.LeftTranslation;
@@ -102,85 +94,41 @@ namespace WFormsTestAppAmadon2
             data.QueryString = "terminology";
 
             string jsonString = SearchBookService.DoSearch(data);
-            var options = new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                WriteIndented = true,
-            };
-            if (jsonString != null && !string.IsNullOrWhiteSpace(jsonString))
-            {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-                SearchData searchDataReturned = JsonSerializer.Deserialize<SearchData>(jsonString, options);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-
-                if (searchDataReturned == null)
-                {
-                    txInitializationMessages.AppendText("Error");
-                }
-                else ShowJson($"Results: {searchDataReturned.SearchResults.Count}", jsonString);
-            }
+            SearchData? result = InitResult.Deserialize<SearchData>(jsonString);
+            InterchangeDataBase.DumpProperties(result);
+            txLog.Text = StaticObjects.Logger.GetLog();
         }
 
         private void btSearchIndex_Click(object sender, EventArgs e)
         {
-
-            if (!DataInitializer.InitTranslations())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitTranslations");
-            }
+            Initialize();
 
             SearchIndexData data = new SearchIndexData();
             data.IndexPathRoot = StaticObjects.Parameters.IndexSearchFolders;
             data.Query = "god AND absolute"; //, "dynamic AND perfect";  // 1 result
 
             string jsonString = SearchIndexService.DoSearch(data);
-            var options = new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                WriteIndented = true,
-            };
-            if (jsonString != null && !string.IsNullOrWhiteSpace(jsonString))
-            {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-                SearchIndexData searchDataReturned = JsonSerializer.Deserialize<SearchIndexData>(jsonString, options);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                if (searchDataReturned == null)
-                {
-                    txInitializationMessages.AppendText("Error");
-                }
-                else ShowJson($"Results: {searchDataReturned.ResultsList.Count}", jsonString);
-            }
+            SearchIndexData? result = InitResult.Deserialize<SearchIndexData>(jsonString);
+            InterchangeDataBase.DumpProperties(result);
+            txLog.Text = StaticObjects.Logger.GetLog();
         }
 
         private void btTOC_test_Click(object sender, EventArgs e)
         {
-            // 
-            if (!DataInitializer.InitTranslations())
-            {
-                StaticObjects_ShowMessage("**** ERROR: InitTranslations");
-            }
+            Initialize();
 
-            string jsonString = TOC_Service.GetToc(StaticObjects.Book.LeftTranslation.LanguageID);
-            var options = new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                WriteIndented = true,
-            };
-            if (jsonString != null && !string.IsNullOrWhiteSpace(jsonString))
-            {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-                TOC_Table toc = JsonSerializer.Deserialize<TOC_Table>(jsonString, options);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                if (toc == null)
-                {
-                    txInitializationMessages.AppendText("Error");
-                }
-                else ShowJson($"Results: {toc.Parts.Count} parts", jsonString);
-            }
+            TOCdata toCdata = new TOCdata();
+            toCdata.TranslationId= StaticObjects.Book.LeftTranslation.LanguageID;
+            string jsonString = TOC_Service.GetToc(toCdata);
+            TOCdata? result = InitResult.Deserialize<TOCdata>(jsonString);
+            InterchangeDataBase.DumpProperties(result);
+            txLog.Text = StaticObjects.Logger.GetLog();
         }
 
         private void btSettings_Click(object sender, EventArgs e)
         {
+
+            SettingsData settingsData = new SettingsData();
 
         }
     }
