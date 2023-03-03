@@ -30,30 +30,6 @@ namespace AmadonStandardLib.Helpers
             return folder;
         }
 
-        /// <summary>
-        /// Inicialize the list of available translations
-        /// </summary>
-        /// <param name="dataFiles"></param>
-        /// <returns></returns>
-        private static bool InicializeTranslations(GetDataFiles dataFiles)
-        {
-            try
-            {
-                if (StaticObjects.Book.Translations == null)
-                {
-                    StaticObjects.Book.Translations = dataFiles.GetTranslations();
-                }
-                EventsControl.FireSendUserAndLogMessage($"{StaticObjects.Book.Translations.Count} translation found in available translations file");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                string message = $"Could not initialize available translations. See log.";
-                StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError(message);
-                return false;
-            }
-        }
 
         /// <summary>
         /// Initialize the format table used for editing translations
@@ -121,11 +97,10 @@ namespace AmadonStandardLib.Helpers
                 EventsControl.FireSendUserAndLogMessage($"Verifying repository: {repository}");
                 if (!GitHelper.Instance.IsValid(repository))
                 {
-                    EventsControl.FireSendUserAndLogMessage("Cloning...");
+                    EventsControl.FireSendUserAndLogMessage("Getting translations from server... (it can take longer)");
                     if (!GitHelper.Instance.Clone(url, repository))
                     {
-                        EventsControl.FireSendUserAndLogMessage("Clone failed");
-                        EventsControl.FireFatalError("Could not clone translations");
+                        EventsControl.FireSendUserAndLogMessage("Getting translations failed");
                         return false;
                     }
                 }
@@ -133,20 +108,18 @@ namespace AmadonStandardLib.Helpers
                 {
                     if (branch != null)
                     {
-                        EventsControl.FireSendUserAndLogMessage("Checkout...");
+                        EventsControl.FireSendUserAndLogMessage("Updating translations text... (it can take longer)");
                         if (!GitHelper.Instance.Checkout(repository, branch))
                         {
-                            EventsControl.FireSendUserAndLogMessage("Checkout failed");
-                            EventsControl.FireFatalError("Could not checkout TUB translations");
+                            EventsControl.FireSendUserAndLogMessage("Updating translations text failed");
                             return false;
                         }
                     }
 
-                    EventsControl.FireSendUserAndLogMessage("Pull...");
+                    EventsControl.FireSendUserAndLogMessage("Updating translations text... (it can take longer)");
                     if (!GitHelper.Instance.Pull(repository))
                     {
-                        EventsControl.FireSendUserAndLogMessage("Pull failed");
-                        EventsControl.FireFatalError("Could not checkout TUB translations");
+                        EventsControl.FireSendUserAndLogMessage("Updating translations text failed");
                         return false;
                     }
                 }
@@ -157,7 +130,7 @@ namespace AmadonStandardLib.Helpers
             {
                 string message = $"Could not verify repository {repository}";
                 StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError(message);
+                EventsControl.FireSendUserAndLogMessage(message);
                 return false;
             }
             // Verify respository existence
@@ -178,7 +151,7 @@ namespace AmadonStandardLib.Helpers
             {
                 string message = "Could not initialize logger";
                 StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError(message);
+                EventsControl.FireSendUserAndLogMessage(message);
                 return false;
             }
         }
@@ -223,73 +196,100 @@ namespace AmadonStandardLib.Helpers
             }
         }
 
-        public static bool InitTranslations()
+        public static bool Repositories(bool initEditRepository = false)
+        {
+            GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
+            StaticObjects.Book = new Book();
+            // Verify respository existence
+            if (!VerifyRepository(StaticObjects.Parameters.TUB_Files_RepositoryFolder, StaticObjects.Parameters.TUB_Files_Url))
+            {
+                EventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}");
+                return false;
+            }
+
+
+            // Edit repositpry is only checked when editing translation is used
+            EventsControl.FireSendUserAndLogMessage($"Is editing enabled: {StaticObjects.Parameters.IsEditingEnabled}");
+            if (StaticObjects.Parameters.IsEditingEnabled)
+            {
+                if (!VerifyRepository(StaticObjects.Parameters.EditParagraphsRepositoryFolder, StaticObjects.Parameters.EditParagraphsUrl))
+                {
+                    EventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// Inicialize the list of available translations
+        /// </summary>
+        /// <param name="dataFiles"></param>
+        /// <returns></returns>
+        public static bool InitTranslationsList()
         {
             try
             {
+                GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
                 EventsControl.FireSendUserAndLogMessage("Initializing translations");
+                if (StaticObjects.Book.Translations == null)
+                {
+                    StaticObjects.Book.Translations = dataFiles.GetTranslations();
+                }
+                EventsControl.FireSendUserAndLogMessage($"{StaticObjects.Book.Translations.Count} translation found in available translations file");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                string message = "Could not initialize translations.";
+                EventsControl.FireSendUserAndLogMessage(message);
+                return false;
+            }
+        }
+
+
+        public static bool InitTranslation(string transToInit, short id)
+        {
+            try
+            {
+                if (id < 0)
+                {
+                    return true;
+                }
+
+                //Translation trans = TranslationToShow == "Left" ? StaticObjects.Book.LeftTranslation : (TranslationToShow == "Right" ? StaticObjects.Book.RightTranslation : StaticObjects.Book.MiddleTranslation);
+
 
                 GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
-                StaticObjects.Book = new Book();
+                EventsControl.FireSendUserAndLogMessage($"Initializing translation: {transToInit} - {id}");
 
-                // Verify respository existence
-                if (!VerifyRepository(StaticObjects.Parameters.TUB_Files_RepositoryFolder, StaticObjects.Parameters.TUB_Files_Url))
-                {
-                    EventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}");
-                    return false;
-                }
-
-
-                // Edit repositpry is only checked when editing translation is used
-                EventsControl.FireSendUserAndLogMessage($"Is editing enabled: {StaticObjects.Parameters.IsEditingEnabled}");
-                if (StaticObjects.Parameters.IsEditingEnabled)
-                {
-                    if (!VerifyRepository(StaticObjects.Parameters.EditParagraphsRepositoryFolder, StaticObjects.Parameters.EditParagraphsUrl))
-                    {
-                        EventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
-                        return false;
-                    }
-                }
-
-
-                EventsControl.FireSendUserAndLogMessage("Getting translations list");
-                if (!InicializeTranslations(dataFiles))
-                {
-                    EventsControl.FireSendUserAndLogMessage("Translations list not got");
-                    return false;
-                }
-
-                Translation trans = StaticObjects.Book.LeftTranslation;
+                Translation trans = null;
                 if (!InitTranslation(dataFiles, StaticObjects.Parameters.LanguageIDLeftTranslation, ref trans))
                 {
                     StaticObjects.Book.LeftTranslation = null;
                     return false;
                 }
-                StaticObjects.Book.LeftTranslation = trans;
-
-                trans = StaticObjects.Book.MiddleTranslation;
-                if (!InitTranslation(dataFiles, StaticObjects.Parameters.LanguageIDMiddleTranslation, ref trans))
+                switch(transToInit)
                 {
-                    StaticObjects.Book.MiddleTranslation = null;
-                    return false;
+                    case "Left":
+                        StaticObjects.Book.LeftTranslation = trans;
+                        break;
+                    case "Right":
+                        StaticObjects.Book.RightTranslation = trans;
+                        break;
+                    case "Middle":
+                        StaticObjects.Book.MiddleTranslation = trans;
+                        break;
                 }
-                StaticObjects.Book.MiddleTranslation = trans;
 
-                trans = StaticObjects.Book.RightTranslation;
-                if (!InitTranslation(dataFiles, StaticObjects.Parameters.LanguageIDRightTranslation, ref trans))
-                {
-                    StaticObjects.Book.RightTranslation = null;
-                    return false;
-                }
-                StaticObjects.Book.RightTranslation = trans;
-                EventsControl.FireSendUserAndLogMessage("Initialization finished succesfully.");
+                EventsControl.FireSendUserAndLogMessage("Translation initialized succesfully.");
                 return true;
             }
             catch (Exception ex)
             {
-                string message = "Could not initialize translations 2. See log.";
-                StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError(message);
+                string message = $"Could not initialize translation: {transToInit} - {id}";
+                EventsControl.FireSendUserAndLogMessage(message);
                 return false;
             }
         }

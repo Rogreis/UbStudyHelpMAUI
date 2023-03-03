@@ -19,17 +19,17 @@ namespace AmadonBlazorLibrary.Data
             IncludeFields = true,
         };
 
-        public static Task<string> Set(string json)
+        public static Task<Parameters> Set(string json)
         {
             StaticObjects.Parameters= JsonSerializer.Deserialize<Parameters>(json);
             Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
-            var jsonString = JsonSerializer.Serialize(StaticObjects.Parameters, options);
-            return Task.FromResult(jsonString);
+            //var jsonString = JsonSerializer.Serialize(StaticObjects.Parameters, options);
+            return Task.FromResult(StaticObjects.Parameters);
         }
 
         public static Task<Parameters> Get()
         {
-            var jsonString = JsonSerializer.Serialize(StaticObjects.Parameters, options);
+            //var jsonString = JsonSerializer.Serialize(StaticObjects.Parameters, options);
             return Task.FromResult(StaticObjects.Parameters);
         }
     }

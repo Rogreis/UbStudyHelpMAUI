@@ -1,0 +1,51 @@
+﻿@using AmadonStandardLib.Classes;
+@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.UbClasses;
+<div class="input-group input-group-sm mb-3">
+    <span class="input-group-text">@Title</span>
+    <select class="form-control" id="combo2" @bind="ComboValue">
+        <option value="">--Select--</option>
+        @foreach (var item in Items)
+        {
+            <option value="@item.Value">@item.DisplayText</option>
+        }
+    </select>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public string TranslationToShow { get; set; } = "Left";
+
+
+    [Parameter]
+    public string ComboValue { get; set; } = "English";
+
+    private string SelectedValue { get; set; }
+
+    private List<SelectListItem> Items { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        // initialize the list of items
+        Items = new List<SelectListItem>();
+        foreach (Translation trans in StaticObjects.Book.Translations)
+        {
+            Items.Add(new SelectListItem { Value = trans.LanguageID.ToString(), DisplayText = trans.Description });
+        }
+    }
+
+    public class SelectListItem
+    {
+        public string Value { get; set; }
+        public string DisplayText { get; set; }
+    }
+
+
+}

@@ -1,0 +1,15 @@
+﻿
+<textarea class="form-control" rows="10" @bind="LogText" readonly></textarea>
+
+@code {
+
+    [Parameter]
+    public string LogText { get; set; } = "";
+
+    public void AppendLogText(string message)
+    {
+        LogText += message + "\n";
+        StateHasChanged();
+    }
+
+}

@@ -2,32 +2,181 @@
 @using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
 @using AmadonStandardLib.InterchangeData;
+@inject IJSRuntime JS
 
 @page "/settings"
 
 <h3>Settings</h3>
 
-<SwitchControl LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle />
-<SwitchControl LabelText="Show Right Tralsnation" IsToggled=@parameters.ShowRight />
-<SwitchControl LabelText="Show Compare" IsToggled=@parameters.ShowCompare />
+@if (@IsInitialized)
+{
+<LogControl @ref="logViewer"></LogControl>
+    @if (IsInitializedFinished)
+    {
+        <button class="btn success" @onclick="StartShowingData">Start</button>
+    }
+}
+else
+{
+
+<div class="row">
+        <SwitchControl LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle />
+    <SwitchControl LabelText="Show Right Tralsnation" IsToggled=@parameters.ShowRight />
+    <SwitchControl LabelText="Show Compare" IsToggled=@parameters.ShowCompare />
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+            <TranslationListControl Title="Left Translation" TranslationToShow="Left"></TranslationListControl>
+    </div>
+    <div class="col-sm-4">
+            <TranslationListControl Title="Middle Translation" TranslationToShow="Middle"></TranslationListControl>
+    </div>
+<div class="col-sm-4">
+            <TranslationListControl Title="Right Translation" TranslationToShow="Right"></TranslationListControl>
+    </div>
+</div>
+
+
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="combo1">Combo 1</label>
+            <select class="form-control" id="combo1" @bind="Combo1Value">
+                <option value="">--Select--</option>
+                <option value="Option 1">Option 1</option>
+                <option value="Option 2">Option 2</option>
+                <option value="Option 3">Option 3</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="combo2">Combo 2</label>
+            <select class="form-control" id="combo2" @bind="Combo2Value">
+                <option value="">--Select--</option>
+                <option value="Option A">Option A</option>
+                <option value="Option B">Option B</option>
+                <option value="Option C">Option C</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="combo3">Combo 3</label>
+            <select class="form-control" id="combo3" @bind="Combo3Value">
+                <option value="">--Select--</option>
+                <option value="Option X">Option X</option>
+                <option value="Option Y">Option Y</option>
+                <option value="Option Z">Option Z</option>
+            </select>
+        </div>
+    </div>
+
+}
 
 
 
 @code {
+
     Parameters parameters = new Parameters();
+    private LogControl logViewer;
+
+    [Parameter]
+    public bool IsInitialized { get; set; } = true;
+
+    [Parameter]
+    public bool IsInitializedFinished { get; set; } = false;
+
+    private string Combo1Value { get; set; }
+    private string Combo2Value { get; set; }
+    private string Combo3Value { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
+        EventsControl.SendMessage += HandleSendMessage;
+    }
+
+    private void StartShowingData()
+    {
+        IsInitialized = false;
+        StateHasChanged();
+    }
+
+
+
+    private void HandleSendMessage(string Message)
+    {
+        logViewer.AppendLogText(Message);
+        StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            InitResult init = new InitResult();
-            init.TranslationsOnly = false;
-            InitResult result = await InitializationService.InitAll(init);
-            parameters = await SettingsService.Get();
+
+            bool ret= await InitializationService.InitLooger();
+            if (!ret)
+            {
+                HandleSendMessage("Init logger failed");
+                HandleSendMessage("App cannot be started.");
+                return;
+            }
+
+
+            ret = await InitializationService.InitParameters();
+            if (!ret)
+            {
+                HandleSendMessage("Parameters initialization failed");
+                HandleSendMessage("App cannot be started.");
+                return;
+            }
+
+            ret = await InitializationService.InitRepositories();
+            if (!ret)
+            {
+                HandleSendMessage("Repositories initialization failed");
+                HandleSendMessage("App cannot be started.");
+                return;
+            }
+
+            ret = await InitializationService.InitTranslations();
+            if (!ret)
+            {
+                HandleSendMessage("Translations list initialization failed");
+                HandleSendMessage("App cannot be started.");
+                return;
+            }
+
+            Parameters parameters = await SettingsService.Get();
+            ret = await InitializationService.InitTranslation("Left", parameters.LanguageIDLeftTranslation);
+            if (!ret)
+            {
+                HandleSendMessage("Translations list initialization failed");
+                HandleSendMessage("App cannot be started.");
+                return;
+            }
+
+            ret = await InitializationService.InitTranslation("Middle", parameters.LanguageIDMiddleTranslation);
+            if (!ret)
+            {
+                HandleSendMessage("Translations list initialization failed");
+                HandleSendMessage("App cannot be started.");
+                return;
+            }
+
+            ret = await InitializationService.InitTranslation("Right", parameters.LanguageIDRightTranslation);
+            if (!ret)
+            {
+                HandleSendMessage("Translations list initialization failed");
+                HandleSendMessage("App cannot be started.");
+                return;
+            }
+
+
+            HandleSendMessage("Init ok");
+            IsInitializedFinished= true;
+            StateHasChanged();
 
             // initialize the JavaScript interop library after the page has loaded
             //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");

@@ -35,6 +35,13 @@
             </NavLink>
         </div>
 
+        <div class="nav-item px-3">
+            <form action="/action_page.php">
+                <input type="text" placeholder="Search.." name="search" @onkeydown="HandleKeyDown">
+            </form>
+        </div>
+
+
         <div class="nav-item px-3 fixed-bottom">
             <NavLink class="nav-link" href="help">
                 <span class="oi oi-question-mark" aria-hidden="true"></span> Help
@@ -57,8 +64,18 @@
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+        }
+    }
+
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 }
+
+

@@ -1,12 +1,7 @@
-﻿using AmadonStandardLib.Helpers;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.Helpers;
 using AmadonStandardLib.InterchangeData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Xml.Schema;
 
 namespace AmadonBlazorLibrary.Data
 {
@@ -22,31 +17,36 @@ namespace AmadonBlazorLibrary.Data
             return DataInitializer.InitParameters();
         }
 
-        public static bool Translation()
+        public static bool Translations()
         {
-            return DataInitializer.InitTranslations();
+            return DataInitializer.InitTranslationsList();
         }
 
-        public static Task<InitResult> InitAll(InitResult init)
-        {
-            if (init.TranslationsOnly) 
-            {
-                init.TranslationsOk = Translation();
-            }
-            else
-            {
-                init.LoggerOk = Looger();
-                init.ParameterOk = Parameters();
-                init.TranslationsOk = Translation();
-            }
-            var options = new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                WriteIndented = true,
-            };
 
-            var jsonString = JsonSerializer.Serialize(init, options);
-            return Task.FromResult(init);
+
+        public static Task<bool> InitLooger()
+        {
+            return Task.FromResult(Looger());
+        }
+
+        public static Task<bool> InitParameters()
+        {
+            return Task.FromResult(Parameters());
+        }
+
+        public static Task<bool> InitRepositories()
+        {
+            return Task.FromResult(DataInitializer.Repositories());
+        }
+
+        public static Task<bool> InitTranslations()
+        {
+            return Task.FromResult(Translations());
+        }
+
+        public static Task<bool> InitTranslation(string transToInit, short id)
+        {
+            return Task.FromResult(DataInitializer.InitTranslation(transToInit, id));
         }
 
 

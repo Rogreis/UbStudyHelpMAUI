@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonStandardLib", "Amadon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonBlazorLibrary", "AmadonBlazorLibrary\AmadonBlazorLibrary.csproj", "{DA0864B0-82C5-43F4-8F66-602BBB27475C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amadon", "Amadon\Amadon.csproj", "{CC8943DA-DA87-49DB-A242-C7BD9DD7E960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amadon", "Amadon\Amadon.csproj", "{CC8943DA-DA87-49DB-A242-C7BD9DD7E960}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmadonBlazor2", "AmadonBlazor2\AmadonBlazor2.csproj", "{0CE31DFF-11E6-41C6-825B-9B5DCED0CDCF}"
 EndProject
