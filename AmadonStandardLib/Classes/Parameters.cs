@@ -39,13 +39,15 @@ namespace AmadonStandardLib.Classes
 
         public short LanguageIDMiddleTranslation { get; set; } = -1;  // -1 indicate not to be shown
 
+        // Show pages options
+        public bool ShowMiddle { get; set; } = true;
+        public bool ShowRight { get; set; } = true;
         public bool ShowCompare { get; set; } = false;
 
         public int SearchPageSize { get; set; } = 20;
 
         public bool ShowParagraphIdentification { get; set; } = true;
 
-        public bool ShowBilingual { get; set; } = true;
 
         public TextShowOption TextShowOption { get; set; } = TextShowOption.LeftRight;
 

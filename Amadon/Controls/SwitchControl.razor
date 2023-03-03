@@ -1,0 +1,30 @@
+﻿<strong>@LabelText</strong>
+
+<label class="switch">
+    <input type="checkbox" @bind="IsToggled">
+    <span class="slider round"></span>
+</label>
+
+
+@code {
+
+    private string _labelText = "Hello from code-behind!";
+    private bool _isToggled = false;
+
+    [Parameter]
+    public string LabelText
+    {
+        get { return _labelText; }
+        set { _labelText = value; }
+    }
+
+    [Parameter]
+    public bool IsToggled
+    {
+        get { return _isToggled; }
+        set { _isToggled = value; }
+    }
+
+
+
+}

@@ -27,7 +27,7 @@ namespace AmadonBlazorLibrary.Data
             return DataInitializer.InitTranslations();
         }
 
-        public static Task<string> InitAll(InitResult init)
+        public static Task<InitResult> InitAll(InitResult init)
         {
             if (init.TranslationsOnly) 
             {
@@ -46,7 +46,7 @@ namespace AmadonBlazorLibrary.Data
             };
 
             var jsonString = JsonSerializer.Serialize(init, options);
-            return Task.FromResult(jsonString);
+            return Task.FromResult(init);
         }
 
 

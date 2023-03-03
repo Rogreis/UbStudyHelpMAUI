@@ -53,4 +53,9 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AmadonBlazorLibrary\AmadonBlazorLibrary.csproj" />
+      <ProjectReference Include="..\AmadonStandardLib\AmadonStandardLib.csproj" />
+    </ItemGroup>
+
 </Project>

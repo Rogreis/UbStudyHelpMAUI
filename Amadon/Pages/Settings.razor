@@ -1,0 +1,40 @@
+﻿@using Amadon.Controls
+@using AmadonBlazorLibrary.Data;
+@using AmadonStandardLib.Classes;
+@using AmadonStandardLib.InterchangeData;
+
+@page "/settings"
+
+<h3>Settings</h3>
+
+<SwitchControl LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle />
+<SwitchControl LabelText="Show Right Tralsnation" IsToggled=@parameters.ShowRight />
+<SwitchControl LabelText="Show Compare" IsToggled=@parameters.ShowCompare />
+
+
+
+@code {
+    Parameters parameters = new Parameters();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            InitResult init = new InitResult();
+            init.TranslationsOnly = false;
+            InitResult result = await InitializationService.InitAll(init);
+            parameters = await SettingsService.Get();
+
+            // initialize the JavaScript interop library after the page has loaded
+            //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");
+        }
+    }
+
+
+
+}
+

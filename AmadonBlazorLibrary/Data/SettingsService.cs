@@ -27,10 +27,10 @@ namespace AmadonBlazorLibrary.Data
             return Task.FromResult(jsonString);
         }
 
-        public static Task<string> Get()
+        public static Task<Parameters> Get()
         {
             var jsonString = JsonSerializer.Serialize(StaticObjects.Parameters, options);
-            return Task.FromResult(jsonString);
+            return Task.FromResult(StaticObjects.Parameters);
         }
     }
 }
