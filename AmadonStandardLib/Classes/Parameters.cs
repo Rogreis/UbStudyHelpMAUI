@@ -3,13 +3,14 @@ using AmadonStandardLib.UbClasses;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AmadonStandardLib.Classes
 {
 
     public enum TextShowOption
     {
-        RightOnly = 0,
+        LeftOnly = 0,
         LeftRight = 1,
         LeftMiddleRight = 2,
         LeftRightCompare = 3,
@@ -45,21 +46,45 @@ namespace AmadonStandardLib.Classes
         public bool ShowRight { get; set; } = true;
         public bool ShowCompare { get; set; } = false;
 
+        [JsonIgnore]
+        public TextShowOption TextShowOption 
+        { 
+            get
+            {
+                if (ShowMiddle && ShowRight && ShowCompare)
+                    return TextShowOption.LeftMiddleRightCompare;
+                else if (ShowMiddle && ShowRight)
+                    return TextShowOption.LeftMiddleRight;
+                else if (ShowRight && ShowCompare)
+                    return TextShowOption.LeftRightCompare;
+                else if (ShowRight)
+                    return TextShowOption.LeftRight;
+                else
+                    return TextShowOption.LeftOnly;
+            }
+        }
+
+        public bool UseDarkThemme { get; set; } = true;
+
+        public bool UseSerifFont { get; set; } = true;
+
         public int SearchPageSize { get; set; } = 20;
 
         public bool ShowParagraphIdentification { get; set; } = true;
 
-
-        public TextShowOption TextShowOption { get; set; } = TextShowOption.LeftRight;
 
         /// <summary>
         /// Max items stored for  search and index text
         /// </summary>
         public int MaxExpressionsStored { get; set; } = 50;
 
-        public List<string> SearchStrings { get; set; } = new List<string>();
 
         public List<string> IndexLetters { get; set; } = new List<string>();
+
+        public List<string> SearchIndexEntries { get; set; } = new List<string>();
+
+        #region Search Options
+        public List<string> SearchStrings { get; set; } = new List<string>();
 
         public bool SimpleSearchIncludePartI { get; set; } = true;
 
@@ -71,26 +96,16 @@ namespace AmadonStandardLib.Classes
 
         public bool SimpleSearchCurrentPaperOnly { get; set; } = false;
 
-        public double SpliterDistance { get; set; } = 550;  // BUG: Default value needs to be proportional to user screen resolution
+        #endregion
 
-        public List<string> SearchIndexEntries { get; set; } = new List<string>();
 
         public List<TOC_Entry> TrackEntries { get; set; } = new List<TOC_Entry>();
 
         public string LastTrackFileSaved { get; set; } = "";
 
-
-        public string InputHtmlFilesPath { get; set; } = "";
-
-        public string IndexDownloadedFiles { get; set; } = "";
-
-        public string IndexOutputFilesPath { get; set; } = "";
-
-        public string SqlServerConnectionString { get; set; } = "";
-
         public string FontFamilyInfo { get; set; } = "Verdana";
 
-        public virtual double FontSizeInfo { get; set; } = 10;
+        public double FontSizeInfo { get; set; } = 18;
 
         //public virtual ColorSerial HighlightColor { get; set; } = new ColorSerial(0, 0, 102, 255); // rgb(0, 102, 255)
 
@@ -113,7 +128,6 @@ namespace AmadonStandardLib.Classes
 
         public double AnnotationWindowHeight { get; set; } = 450;
 
-        public bool UseDarkThemme { get; set; } = true;
 
 
         /// <summary>
@@ -176,26 +190,9 @@ namespace AmadonStandardLib.Classes
         /// </summary>
         public string? UrlRepository { get; set; } = null;
 
-        public float FontSize { get; set; } = 14;
+        public int FontSize { get; set; } = 18;
 
-        public string FontFamily { get; set; } = "Verdana,Arial,Helvetica";
-
-        public bool IsDarkTheme { get; set; } = true;
-
-        public string DarkText { get; set; } = "black";
-
-        public string LightText { get; set; } = "white";
-
-        public string DarkTextHighlihted { get; set; } = "yellow";
-
-        public string LightTextHighlihted { get; set; } = "blue";
-
-        public string DarkTextGray { get; set; } = "yellow";
-
-        public string LightTextGray { get; set; } = "bisque";
-
-
-
+  
 
         /// <summary>
         /// Serialize the parameters instance

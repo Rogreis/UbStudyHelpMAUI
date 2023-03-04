@@ -136,6 +136,10 @@ namespace AmadonStandardLib.Helpers
             // Verify respository existence
         }
 
+        /// <summary>
+        /// Initialize the log object
+        /// </summary>
+        /// <returns></returns>
         public static bool InitLogger()
         {
             try
@@ -156,6 +160,10 @@ namespace AmadonStandardLib.Helpers
             }
         }
 
+        /// <summary>
+        /// Initialize the parameters object
+        /// </summary>
+        /// <returns></returns>
         public static bool InitParameters()
         {
             try
@@ -190,16 +198,46 @@ namespace AmadonStandardLib.Helpers
             catch (Exception ex)
             {
                 string message = "Could not initialize parameters";
-                StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError(message);
+                EventsControl.FireSendUserAndLogMessage(message);
                 return false;
             }
         }
 
-        public static bool Repositories(bool initEditRepository = false)
+        /// <summary>
+        /// Initialize the repositories object
+        /// </summary>
+        /// <param name="initEditRepository"></param>
+        /// <returns></returns>
+        public static bool Repositories(bool recreate = false)
         {
             GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
             StaticObjects.Book = new Book();
+
+            if (recreate)
+            {
+                try
+                {
+                    Directory.Delete(StaticObjects.Parameters.TUB_Files_RepositoryFolder, true);
+                }
+                catch (Exception ex)
+                {
+                    EventsControl.FireSendUserAndLogMessage($"Failure removing repository not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}", ex);
+                    return false;
+                }
+                try
+                {
+                    if (StaticObjects.Parameters.IsEditingEnabled)
+                    {
+                        Directory.Delete(StaticObjects.Parameters.EditParagraphsRepositoryFolder, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EventsControl.FireSendUserAndLogMessage($"Failure removing repository not verified: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}", ex);
+                    return false;
+                }
+            }
+
             // Verify respository existence
             if (!VerifyRepository(StaticObjects.Parameters.TUB_Files_RepositoryFolder, StaticObjects.Parameters.TUB_Files_Url))
             {

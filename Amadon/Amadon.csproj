@@ -58,4 +58,8 @@
       <ProjectReference Include="..\AmadonStandardLib\AmadonStandardLib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>

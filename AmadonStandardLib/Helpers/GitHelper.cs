@@ -46,7 +46,7 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                EventsControl.FireFatalError($"Fetch Error, repository= {repo.Head.FriendlyName}: ", ex);
+                EventsControl.FireSendUserAndLogMessage($"Fetch Error, repository= {repo.Head.FriendlyName}: ", ex);
                 return false;
             }
         }
@@ -105,13 +105,12 @@ namespace AmadonStandardLib.Helpers
                 PullOptions pullOptions = new PullOptions();
                 pullOptions.FetchOptions = new FetchOptions();
                 //options.CredentialsProvider = Credentials(string username, string password)
-                Commands.Pull(localRepo, new Signature("username", "rogreis@gmail.com", new DateTimeOffset(DateTime.Now)), pullOptions);
+                Commands.Pull(localRepo, new Signature("rogreis", "rogreis@gmail.com", new DateTimeOffset(DateTime.Now)), pullOptions);
                 return true;
             }
             catch (Exception ex)
             {
-                EventsControl.FireFatalError($"Pull Error, repository= {repositoryPath}: ", ex);
-                StaticObjects.Logger.Error($"Pull Error, repository= {repositoryPath}: ", ex);
+                EventsControl.FireSendUserAndLogMessage($"Pull Error, repository= {repositoryPath}: ", ex);
                 return false;
             }
         }
@@ -157,8 +156,7 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                EventsControl.FireFatalError($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
-                StaticObjects.Logger.Error($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
+                EventsControl.FireSendUserAndLogMessage($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
                 return false;
             }
         }
@@ -174,8 +172,7 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                EventsControl.FireFatalError($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
-                StaticObjects.Logger.Error($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
+                EventsControl.FireSendUserAndLogMessage($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
                 return false;
             }
         }
@@ -290,7 +287,7 @@ namespace AmadonStandardLib.Helpers
         //    }
         //    catch (Exception ex)
         //    {
-        //        EventsControl.FireFatalError($"Push Error, repository= {repositoryPath}, branch= {branch}: ", ex);
+        //        EventsControl.FireSendUserAndLogMessage($"Push Error, repository= {repositoryPath}, branch= {branch}: ", ex);
         //        StaticObjects.Logger.Error("Push error", ex);
         //        return false;
         //    }

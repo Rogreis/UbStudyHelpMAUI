@@ -1,0 +1,58 @@
+﻿@using AmadonStandardLib.Classes;
+<div class="row">
+    <div class="col-sm-4">
+        <SwitchControl LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle />
+    </div>
+    <div class="col-sm-4">
+        <SwitchControl LabelText="Show Right Tralsnation" IsToggled=@parameters.ShowRight />
+    </div>
+    <div class="col-sm-4">
+        <SwitchControl LabelText="Show Compare" IsToggled=@parameters.ShowCompare />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <TranslationListControl Title="Left Translation" TranslationToShow="Left"></TranslationListControl>
+    </div>
+    <div class="col-sm-4">
+        <TranslationListControl Title="Middle Translation" TranslationToShow="Middle"></TranslationListControl>
+    </div>
+    <div class="col-sm-4">
+        <TranslationListControl Title="Right Translation" TranslationToShow="Right"></TranslationListControl>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <SwitchControl LabelText="Dark Mode" IsToggled=@parameters.UseDarkThemme />
+    </div>
+    <div class="col-sm-4">
+        <SwitchControl LabelText="Show Paragraph Numnber" IsToggled=@parameters.ShowParagraphIdentification />
+    </div>
+    <div class="col-sm-4">
+        <SwitchControl LabelText="Use Serif Font" IsToggled=@parameters.ShowCompare />
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <NumberControl LabelText="Search Page Size" MinValue="10" MaxValue="100" Value=@parameters.SearchPageSize></NumberControl>
+    </div>
+    <div class="col-sm-4">
+        <NumberControl LabelText="Max Search Expression Stored" MinValue="10" MaxValue="100" Value=@parameters.MaxExpressionsStored></NumberControl>
+    </div>
+    <div class="col-sm-4">
+        <NumberControl LabelText="Font Size" MinValue="10" MaxValue="30" Value=@parameters.FontSize></NumberControl>
+    </div>
+</div>
+
+
+
+
+@code {
+    Parameters parameters = new Parameters();
+
+}

@@ -215,6 +215,11 @@ namespace AmadonStandardLib.Classes
             StaticObjects.Logger.Info(message);
         }
 
+        public static void FireSendUserAndLogMessage(string message, Exception ex)
+        {
+            FireSendMessage(message, ex);
+            StaticObjects.Logger.Error(message, ex);
+        }
 
         public static void FireRefreshText() => RefreshText?.Invoke();
 

@@ -103,7 +103,7 @@ namespace AmadonBlazorLibrary.Data
             PaperText papertext = new PaperText();
             switch (StaticObjects.Parameters.TextShowOption)
             {
-                case TextShowOption.RightOnly:
+                case TextShowOption.LeftOnly:
                     papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, entry));
                     break;
                 case TextShowOption.LeftRight:

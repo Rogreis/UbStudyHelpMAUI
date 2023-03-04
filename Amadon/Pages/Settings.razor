@@ -2,106 +2,72 @@
 @using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
 @using AmadonStandardLib.InterchangeData;
-@inject IJSRuntime JS
+@inject IJSRuntime JsRuntime
 
-@page "/settings"
+@page "/"
 
 <h3>Settings</h3>
 
-@if (@IsInitialized)
+<LogControl @ref="logViewer" Visibility=@LogShown></LogControl>
+
+@switch (Status)
 {
-<LogControl @ref="logViewer"></LogControl>
-    @if (IsInitializedFinished)
-    {
-        <button class="btn success" @onclick="StartShowingData">Start</button>
-    }
-}
-else
-{
-
-<div class="row">
-        <SwitchControl LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle />
-    <SwitchControl LabelText="Show Right Tralsnation" IsToggled=@parameters.ShowRight />
-    <SwitchControl LabelText="Show Compare" IsToggled=@parameters.ShowCompare />
-</div>
-
-<div class="row">
-    <div class="col-sm-4">
-            <TranslationListControl Title="Left Translation" TranslationToShow="Left"></TranslationListControl>
-    </div>
-    <div class="col-sm-4">
-            <TranslationListControl Title="Middle Translation" TranslationToShow="Middle"></TranslationListControl>
-    </div>
-<div class="col-sm-4">
-            <TranslationListControl Title="Right Translation" TranslationToShow="Right"></TranslationListControl>
-    </div>
-</div>
-
-
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="combo1">Combo 1</label>
-            <select class="form-control" id="combo1" @bind="Combo1Value">
-                <option value="">--Select--</option>
-                <option value="Option 1">Option 1</option>
-                <option value="Option 2">Option 2</option>
-                <option value="Option 3">Option 3</option>
-            </select>
+    case InitializationStatus.InitializedFinished:
+        <SettingsFields></SettingsFields>
+        break;
+    case InitializationStatus.TranslationError:
+    case InitializationStatus.RepositoryError:
+        <p></p>
+        <div class="alert alert-danger">
+            <strong>Error!</strong> Repositories are not running, impossible to show any translation text.  Please click the button below to restart them.
         </div>
-        <div class="form-group col-md-6">
-            <label for="combo2">Combo 2</label>
-            <select class="form-control" id="combo2" @bind="Combo2Value">
-                <option value="">--Select--</option>
-                <option value="Option A">Option A</option>
-                <option value="Option B">Option B</option>
-                <option value="Option C">Option C</option>
-            </select>
+        <button class="btn btn-danger" @onclick="TryToFixRepositories">Re-Start Repositories</button>
+        break;
+    case InitializationStatus.LogError:
+    case InitializationStatus.ParametersError:
+        <p></p>
+        <div class="alert alert-danger">
+            <strong>Error!</strong> Repositories are not running, impossible to show any translation text.  Please click the button below to restart them.
         </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="combo3">Combo 3</label>
-            <select class="form-control" id="combo3" @bind="Combo3Value">
-                <option value="">--Select--</option>
-                <option value="Option X">Option X</option>
-                <option value="Option Y">Option Y</option>
-                <option value="Option Z">Option Z</option>
-            </select>
-        </div>
-    </div>
-
+        <button class="btn btn-danger" @onclick="TryToFixRepositories">Re-Start Repositories</button>
+        break;
 }
 
 
 
 @code {
 
-    Parameters parameters = new Parameters();
     private LogControl logViewer;
 
-    [Parameter]
-    public bool IsInitialized { get; set; } = true;
+    private bool LogShown { get; set; } = true;
 
-    [Parameter]
-    public bool IsInitializedFinished { get; set; } = false;
+    private InitializationStatus Status { get; set; } = InitializationStatus.NotInitialized;
 
-    private string Combo1Value { get; set; }
-    private string Combo2Value { get; set; }
-    private string Combo3Value { get; set; }
-
-
-    protected override async Task OnInitializedAsync()
+    enum InitializationStatus
     {
-        EventsControl.SendMessage += HandleSendMessage;
+        NotInitialized,
+        LogError,
+        ParametersError,
+        RepositoryError,
+        TranslationError,
+        InitializedFinished
     }
+
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //}
 
     private void StartShowingData()
     {
-        IsInitialized = false;
         StateHasChanged();
     }
 
+    private async void TryToFixRepositories()
+    {
+        Status = await DoInitialization(true);
+        StateHasChanged();
+    }
 
 
     private void HandleSendMessage(string Message)
@@ -110,74 +76,77 @@ else
         StateHasChanged();
     }
 
+    private async Task<InitializationStatus> DoInitialization(bool recreate = false)
+    {
+        EventsControl.SendMessage += HandleSendMessage;
+        bool ret = await InitializationService.InitLooger();
+        if (!ret)
+        {
+            HandleSendMessage("Init logger failed");
+            HandleSendMessage("App cannot be started.");
+            return InitializationStatus.LogError;
+        }
+
+
+        ret = await InitializationService.InitParameters();
+        if (!ret)
+        {
+            HandleSendMessage("Parameters initialization failed");
+            HandleSendMessage("App cannot be started.");
+            return InitializationStatus.ParametersError;
+        }
+
+        ret = await InitializationService.InitRepositories(recreate);
+        if (!ret)
+        {
+            HandleSendMessage("Repositories initialization failed");
+            HandleSendMessage("App cannot be started.");
+            return InitializationStatus.RepositoryError;
+        }
+
+        ret = await InitializationService.InitTranslations();
+        if (!ret)
+        {
+            HandleSendMessage("Translations list initialization failed");
+            HandleSendMessage("App cannot be started.");
+            return InitializationStatus.RepositoryError;
+        }
+
+        Parameters parameters = await SettingsService.Get();
+        ret = await InitializationService.InitTranslation("Left", parameters.LanguageIDLeftTranslation);
+        if (!ret)
+        {
+            HandleSendMessage("Translations list initialization failed");
+            HandleSendMessage("App cannot be started.");
+            return InitializationStatus.RepositoryError;
+        }
+
+        ret = await InitializationService.InitTranslation("Middle", parameters.LanguageIDMiddleTranslation);
+        if (!ret)
+        {
+            HandleSendMessage("Translations list initialization failed");
+            HandleSendMessage("App cannot be started.");
+            return InitializationStatus.RepositoryError;
+        }
+
+        ret = await InitializationService.InitTranslation("Right", parameters.LanguageIDRightTranslation);
+        if (!ret)
+        {
+            HandleSendMessage("Translations list initialization failed");
+            HandleSendMessage("App cannot be started.");
+            return InitializationStatus.RepositoryError;
+        }
+        HandleSendMessage("Init ok");
+        return InitializationStatus.InitializedFinished;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-
-            bool ret= await InitializationService.InitLooger();
-            if (!ret)
-            {
-                HandleSendMessage("Init logger failed");
-                HandleSendMessage("App cannot be started.");
-                return;
-            }
-
-
-            ret = await InitializationService.InitParameters();
-            if (!ret)
-            {
-                HandleSendMessage("Parameters initialization failed");
-                HandleSendMessage("App cannot be started.");
-                return;
-            }
-
-            ret = await InitializationService.InitRepositories();
-            if (!ret)
-            {
-                HandleSendMessage("Repositories initialization failed");
-                HandleSendMessage("App cannot be started.");
-                return;
-            }
-
-            ret = await InitializationService.InitTranslations();
-            if (!ret)
-            {
-                HandleSendMessage("Translations list initialization failed");
-                HandleSendMessage("App cannot be started.");
-                return;
-            }
-
-            Parameters parameters = await SettingsService.Get();
-            ret = await InitializationService.InitTranslation("Left", parameters.LanguageIDLeftTranslation);
-            if (!ret)
-            {
-                HandleSendMessage("Translations list initialization failed");
-                HandleSendMessage("App cannot be started.");
-                return;
-            }
-
-            ret = await InitializationService.InitTranslation("Middle", parameters.LanguageIDMiddleTranslation);
-            if (!ret)
-            {
-                HandleSendMessage("Translations list initialization failed");
-                HandleSendMessage("App cannot be started.");
-                return;
-            }
-
-            ret = await InitializationService.InitTranslation("Right", parameters.LanguageIDRightTranslation);
-            if (!ret)
-            {
-                HandleSendMessage("Translations list initialization failed");
-                HandleSendMessage("App cannot be started.");
-                return;
-            }
-
-
-            HandleSendMessage("Init ok");
-            IsInitializedFinished= true;
+            Status = await DoInitialization();
+            LogShown = Status != InitializationStatus.InitializedFinished;
             StateHasChanged();
-
             // initialize the JavaScript interop library after the page has loaded
             //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");
         }

@@ -1,10 +1,29 @@
 ﻿
-<textarea class="form-control" rows="10" @bind="LogText" readonly></textarea>
+<textarea class="form-control" rows="20" @bind="LogText" style=@TextAreaVisibility readonly></textarea>
 
 @code {
 
     [Parameter]
     public string LogText { get; set; } = "";
+
+    private string TextAreaVisibility = "display: block";
+    private bool _visibility = true;
+
+
+    [Parameter]
+    public bool Visibility
+    {
+        set
+        {
+            TextAreaVisibility = value ? "display: block" : "display: none";
+            _visibility = value;
+            StateHasChanged();
+        }
+        get
+        {
+            return _visibility;
+        }
+    }
 
     public void AppendLogText(string message)
     {

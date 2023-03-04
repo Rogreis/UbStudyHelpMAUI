@@ -34,9 +34,9 @@ namespace AmadonBlazorLibrary.Data
             return Task.FromResult(Parameters());
         }
 
-        public static Task<bool> InitRepositories()
+        public static Task<bool> InitRepositories(bool recreate= false)
         {
-            return Task.FromResult(DataInitializer.Repositories());
+            return Task.FromResult(DataInitializer.Repositories(recreate));
         }
 
         public static Task<bool> InitTranslations()

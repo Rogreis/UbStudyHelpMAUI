@@ -2,17 +2,13 @@
 <div class="input-group input-group-sm mb-3">
     <span class="input-group-text">@LabelText</span>
     <label class="switch">
-        <input type="checkbox" @bind="IsToggled">
-        <span class="slider round"></span>
+        <input type="number" class="form-control" id="numberInput" name="numberInput" min=@MinValue max=MaxValue value=@MaxValue>
     </label>
 </div>
-
-
 
 @code {
 
     private string _labelText = "";
-    private bool _isToggled = false;
 
     [Parameter]
     public string LabelText
@@ -22,12 +18,12 @@
     }
 
     [Parameter]
-    public bool IsToggled
-    {
-        get { return _isToggled; }
-        set { _isToggled = value; }
-    }
+    public int MinValue { get; set; } = 1;
 
+    [Parameter]
+    public int MaxValue { get; set; } = 100;
 
+    [Parameter]
+    public int Value { get; set; } = 1;
 
 }

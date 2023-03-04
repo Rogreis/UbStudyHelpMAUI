@@ -1,7 +1,15 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+
+:root {
+    --font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-size: 18px;
+}
+
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
 }
 
 h1:focus {
@@ -86,7 +94,7 @@ a, .btn-link {
 
 /* Ub Specific ================================================ */
 
-/* Ub Specific */
+
 
 /* The switch - the box around the slider */
 .switch {

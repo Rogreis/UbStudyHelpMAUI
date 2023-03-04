@@ -1,5 +1,4 @@
-﻿using Amadon.Data;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Amadon
 {
@@ -22,7 +21,7 @@ namespace Amadon
 		builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<WeatherForecastService>();
+            //builder.Services.AddSingleton<WeatherForecastService>();
 
             return builder.Build();
         }
