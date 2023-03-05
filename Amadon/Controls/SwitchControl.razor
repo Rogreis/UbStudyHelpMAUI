@@ -1,14 +1,9 @@
 ﻿
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text">@LabelText</span>
-    <label class="switch">
-        <input type="checkbox" @bind="IsToggled">
-        <span class="slider round"></span>
-    </label>
+<div class="form-check form-switch">
+    <label class="form-check-label" for="mySwitch">@LabelText</label>
+    <input class="form-check-input" type="checkbox" @bind="IsToggled" id="mySwitch" name="darkmode" value="yes">
 </div>
-
-
-
+6
 @code {
 
     private string _labelText = "";
