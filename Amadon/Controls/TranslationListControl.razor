@@ -4,8 +4,7 @@
 
 <div class="input-group input-group-sm mb-3">
     <span class="input-group-text">@Title</span>
-    <select class="form-control" id="combo2" @bind="ComboValue">
-        <option value="">--Select--</option>
+    <select class="form-control" @bind="SelectedValue">
         @foreach (var item in Items)
         {
             <option value="@item.Value">@item.DisplayText</option>
@@ -18,14 +17,11 @@
     [Parameter]
     public string Title { get; set; } = "";
 
-    [Parameter]
-    public string TranslationToShow { get; set; } = "Left";
-
 
     [Parameter]
-    public string ComboValue { get; set; } = "English";
+    public string ComboValue { get; set; } = "0";
 
-    private string SelectedValue { get; set; }
+    private string SelectedValue { get; set; } = "";
 
     private List<SelectListItem> Items { get; set; }
 
@@ -40,7 +36,19 @@
         {
             Items.Add(new SelectListItem { Value = trans.LanguageID.ToString(), DisplayText = trans.Description });
         }
+        SelectedValue = ComboValue;
     }
+
+    public void SetValue(short translationId)
+    {
+        SelectedValue = translationId.ToString();
+    }
+
+    //private void HandleSelectChange(ChangeEventArgs e)
+    //{
+    //    ComboValue = e.Value.ToString();
+    //}
+
 
     public class SelectListItem
     {

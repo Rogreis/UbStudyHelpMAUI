@@ -13,7 +13,7 @@
 @switch (Status)
 {
     case InitializationStatus.InitializedFinished:
-        <SettingsFields></SettingsFields>
+        <SettingsFields @ref="fields"></SettingsFields>
         break;
     case InitializationStatus.TranslationError:
     case InitializationStatus.RepositoryError:
@@ -38,6 +38,7 @@
 @code {
 
     private LogControl logViewer;
+    private SettingsFields fields;
 
     private bool LogShown { get; set; } = true;
 
@@ -147,6 +148,11 @@
             Status = await DoInitialization();
             LogShown = Status != InitializationStatus.InitializedFinished;
             StateHasChanged();
+
+            // Wait for the button to be rendered
+            await Task.Delay(1);
+            fields.Initialize();
+
             // initialize the JavaScript interop library after the page has loaded
             //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");
         }
