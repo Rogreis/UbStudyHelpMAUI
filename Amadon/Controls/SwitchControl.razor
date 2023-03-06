@@ -22,6 +22,9 @@
     }
 
     [Parameter]
+    public int SwitchType { get; set; } = -1;
+
+    [Parameter]
     public bool IsToggled
     {
         get { return _isToggled; }
@@ -30,7 +33,7 @@
             if (_isToggled != value)
             {
                 _isToggled = value;
-                FieldChanged?.Invoke(_isToggled);
+                FieldChanged?.Invoke(_isToggled, SwitchType);
             }
         }
     }

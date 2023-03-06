@@ -1,5 +1,6 @@
 ﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.UbClasses;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace AmadonStandardLib.Helpers
@@ -22,6 +23,22 @@ namespace AmadonStandardLib.Helpers
         public static Parameters? Parameters { get; set; }
 
         public static Book Book { get; set; } = new Book();
+
+        public static int InitializationStatus { get; set; } = 0;
+
+        public static void OpenLocalFolder(string path)
+        {
+            if (System.IO.Directory.Exists(path))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = path,
+                    UseShellExecute = true
+                };
+
+                Process.Start(startInfo);
+            }
+        }
 
         /// <summary>
         /// Serialize an object to string using json

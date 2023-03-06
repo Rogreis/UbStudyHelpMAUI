@@ -1,27 +1,29 @@
 ﻿@using AmadonStandardLib.Classes;
 @using System.Diagnostics;
 @using AmadonStandardLib.Helpers;
+
+
 <div class="row">
     <div class="col-sm-4">
-        <SwitchControl LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle />
+        <SwitchControl @ref=SwitchMiddleTranslation LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle SwitchType=(int)SwitchType.ShowMiddleTranslation />
     </div>
     <div class="col-sm-4">
-        <SwitchControl LabelText="Show Right Translation" IsToggled=@parameters.ShowRight />
+        <SwitchControl @ref=SwitchRightTranslation LabelText="Show Right Translation" IsToggled=@parameters.ShowRight SwitchType=(int)SwitchType.ShowRightTranslation />
     </div>
     <div class="col-sm-4">
-        <SwitchControl LabelText="Show Compare" IsToggled=@parameters.ShowCompare />
+        <SwitchControl @ref=SwitchCompare LabelText="Show Compare" IsToggled=@parameters.ShowCompare SwitchType=(int)SwitchType.ShowCompare />
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm-4">
-        <SwitchControl LabelText="Dark Mode" IsToggled=@parameters.UseDarkThemme />
+        <SwitchControl @ref=SwitchDarkMode LabelText="Dark Mode" IsToggled=@parameters.UseDarkThemme SwitchType=(int)SwitchType.UseDarkTheme />
     </div>
     <div class="col-sm-4">
-        <SwitchControl @ref=SwitchParNumber LabelText="Show Paragraph Numnber" IsToggled=@parameters.ShowParagraphIdentification/>
+        <SwitchControl @ref=SwitchParNumber LabelText="Show Paragraph Numnber" IsToggled=@parameters.ShowParagraphIdentification SwitchType=(int)SwitchType.ShowParagraphIdentification />
     </div>
     <div class="col-sm-4">
-        <SwitchControl LabelText="Use Serif Font" IsToggled=@parameters.ShowCompare />
+        <SwitchControl @ref=SwitchSerifFont LabelText="Use Serif Font" IsToggled=@parameters.ShowCompare SwitchType=(int)SwitchType.UseSerifFont />
     </div>
 </div>
 
@@ -56,12 +58,27 @@
         <button class="btn btn-primary" @onclick="OpenLocalRepository">Local Translation Repository</button>
     </div>
     <div class="col-sm-6">
-        <button class="btn btn-primary" @onclick="OpenHelp">Open Help</button>
+        <span class="text-nowrap">
+            Here you can get some help information and also the source code of this tool:
+            <a target="_blank" class="font-weight-bold link-dark" href="https://github.com/Rogreis/UbStudyHelpMAUI">Help && Source Code</a>
+        </span>
     </div>
 </div>
 
 
 @code {
+
+    enum SwitchType
+    {
+        None,
+        ShowParagraphIdentification,
+        ShowMiddleTranslation,
+        ShowRightTranslation,
+        ShowCompare,
+        UseDarkTheme,
+        UseSerifFont
+    }
+
 
     private Parameters parameters = new Parameters();
 
@@ -70,8 +87,15 @@
     private TranslationListControl rightTranslationCombo;
 
     private SwitchControl SwitchParNumber;
+    private SwitchControl SwitchMiddleTranslation;
+    private SwitchControl SwitchRightTranslation;
+    private SwitchControl SwitchCompare;
+    private SwitchControl SwitchDarkMode;
+    private SwitchControl SwitchSerifFont;
 
     private bool Initialized = false;
+
+    private string localReporitoryUrl = "";
 
     //protected override async Task OnInitializedAsync()
     //{
@@ -89,28 +113,52 @@
         if (!Initialized)
         {
             await Task.Delay(1);
+
+            // Replace Windows directory separator character with macOS directory separator character
+            localReporitoryUrl = $"file:///{parameters.TUB_Files_RepositoryFolder.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}";
             SwitchParNumber.FieldChanged += SwitchParNumber_FieldChanged;
+            SwitchMiddleTranslation.FieldChanged += SwitchParNumber_FieldChanged;
+            SwitchRightTranslation.FieldChanged += SwitchParNumber_FieldChanged;
+            SwitchCompare.FieldChanged += SwitchParNumber_FieldChanged;
+            SwitchDarkMode.FieldChanged += SwitchParNumber_FieldChanged;
+            SwitchSerifFont.FieldChanged += SwitchParNumber_FieldChanged;
             Initialized = true;
         }
     }
 
-    private void SwitchParNumber_FieldChanged(object value)
+    private void SwitchParNumber_FieldChanged(object value, int fieldType)
     {
-        parameters.ShowParagraphIdentification= (bool)value;
+        switch ((SwitchType)fieldType)
+        {
+            case SwitchType.ShowParagraphIdentification:
+                parameters.ShowParagraphIdentification = (bool)value;
+                break;
+            case SwitchType.UseSerifFont:
+                parameters.UseSerifFont = (bool)value;
+                break;
+            case SwitchType.ShowRightTranslation:
+                parameters.ShowRight = (bool)value;
+                break;
+            case SwitchType.ShowMiddleTranslation:
+                parameters.ShowMiddle = (bool)value;
+                break;
+            case SwitchType.ShowCompare:
+                parameters.ShowCompare = (bool)value;
+                break;
+            case SwitchType.UseDarkTheme:
+                parameters.UseDarkThemme = (bool)value;
+                break;
+        }
+        EventsControl.FireRedrawText();
     }
 
     private Task OpenLocalRepository()
     {
-       //Process.Start(parameters.TUB_Files_RepositoryFolder);
+        StaticObjects.OpenLocalFolder(parameters.TUB_Files_RepositoryFolder);
         return Task.CompletedTask;
     }
 
 
-    private Task OpenHelp()
-    {
-        //Process.Start("https://github.com/Rogreis/UbStudyHelpMAUI");
-        return Task.CompletedTask;
-    }
 
     private void ThemeChanged(bool isToggled)
     {

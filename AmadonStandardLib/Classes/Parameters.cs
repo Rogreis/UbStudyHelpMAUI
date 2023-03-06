@@ -70,19 +70,7 @@ namespace AmadonStandardLib.Classes
 
         public int SearchPageSize { get; set; } = 20;
 
-        private bool _showParagraphIdentification = true;
-        public bool ShowParagraphIdentification
-        {
-            get => showParagraphIdentification;
-            set
-            {
-                if (_showParagraphIdentification != value)
-                {
-                    showParagraphIdentification = value;
-                    EventsControl.FireRedrawText();
-                }
-            } 
-        }
+        public bool ShowParagraphIdentification { get; set; } = true;
 
         /// <summary>
         /// Max items stored for  search and index text
@@ -165,7 +153,6 @@ namespace AmadonStandardLib.Classes
 		/// Source of TUB Files used only by UbStudyHelp
 		/// </summary>
 		public string UbStudyHelpTubFilesSourcePath = "";
-        private bool showParagraphIdentification = true;
 
         /// <summary>
         /// Git associated repository folder

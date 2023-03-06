@@ -1,6 +1,7 @@
 ﻿@using Amadon.Controls
 @using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
+@using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.InterchangeData;
 @inject IJSRuntime JsRuntime
 
@@ -46,12 +47,12 @@
 
     enum InitializationStatus
     {
-        NotInitialized,
-        LogError,
-        ParametersError,
-        RepositoryError,
-        TranslationError,
-        InitializedFinished
+        NotInitialized= 0,
+        LogError= 1,
+        ParametersError= 2,
+        RepositoryError= 3,
+        TranslationError= 4,
+        InitializedFinished= 5
     }
 
 
@@ -140,9 +141,14 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        Status = (InitializationStatus)StaticObjects.InitializationStatus;
         if (firstRender)
         {
-            Status = await DoInitialization();
+            if (Status == InitializationStatus.NotInitialized)
+            {
+                Status = await DoInitialization();
+                StaticObjects.InitializationStatus = (int)Status;
+            }
             LogShown = Status != InitializationStatus.InitializedFinished;
             StateHasChanged();
 

@@ -91,65 +91,54 @@ namespace AmadonBlazorLibrary.Data
         /// </summary>
         /// <param name="href"></param>
         /// <returns>Json string for the object PaperText</returns>
-        public static Task<string> GetHtml(string href)
+        public static Task<PaperTextFormatted> GetHtml()
         {
-            TOC_Entry entry = TOC_Entry.FromHref(href);
-
-            List<Paragraph> leftParagraphs = null;
-            List<Paragraph> rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, entry);
-            List<Paragraph> middleParagraphs = null;
-            List<Paragraph> compareParagraphs = null;
-
+            PaperTextFormatted paperTextFormatted = new PaperTextFormatted();
+            paperTextFormatted.Entry= StaticObjects.Parameters.Entry;
             PaperText papertext = new PaperText();
             switch (StaticObjects.Parameters.TextShowOption)
             {
                 case TextShowOption.LeftOnly:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
                     break;
                 case TextShowOption.LeftRight:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, entry));
-                    leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, entry);
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
                     break;
                 case TextShowOption.LeftRightCompare:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
                     papertext.Titles.Add("Compare");
-                    leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, entry);
-                    compareParagraphs = null; // TO DO implement compare
+                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+                    paperTextFormatted.compareParagraphs = null; // TO DO implement compare
                     break;
                 case TextShowOption.LeftMiddleRight:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, entry));
-                    leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, entry);
-                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, entry);
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+                    paperTextFormatted.middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
                     break;
                 case TextShowOption.LeftMiddleRightCompare:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
+                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
                     papertext.Titles.Add("Compare");
-                    leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, entry);
-                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, entry);
-                    compareParagraphs = null; // TO DO implement compare
+                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+                    paperTextFormatted.middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
+                    paperTextFormatted.compareParagraphs = null; // TO DO implement compare
                     break;
             }
 
-            foreach(Paragraph p in rightParagraphs)
+            foreach(Paragraph p in paperTextFormatted.rightParagraphs)
             {
                 StringBuilder sb = new StringBuilder();
-                GetParagraphsLine(sb, p, leftParagraphs, middleParagraphs, compareParagraphs);
+                GetParagraphsLine(sb, p, paperTextFormatted.leftParagraphs, paperTextFormatted.middleParagraphs, paperTextFormatted.compareParagraphs);
                 papertext.Lines.Add(sb.ToString());
             }
 
-            var options = new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                WriteIndented = true,
-            };
-            var jsonString = JsonSerializer.Serialize(papertext, options);
-            return Task.FromResult(jsonString);
+            return Task.FromResult(paperTextFormatted);
         }
     }
 }

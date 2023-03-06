@@ -1,28 +1,88 @@
 ﻿@page "/booktext"
+@using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
 
-<h3>Hello, world from Book Text!</h3>
+<div class="container-fluid panelMain bg-dark">
+    <div class="row bg-dark text-white overflow-auto">
 
-Welcome to your new app.
+        @if (@PaperLines != null)
+        {
+            <table class="table-borderless">
+                <thead>
+                    <tr>
+                        @foreach (string line in @PaperLines.Titles)
+                        {
+                            @((MarkupString)@line)
+                        }
+                    </tr>
+                </thead>
+                <tbody>
 
-<SurveyPrompt Title=@Test />
+                    @foreach (string line in @PaperLines.Lines)
+                    {
+                        <tr>
+                            @((MarkupString)@line)
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+
 
 @code {
+
+    internal class PaperText
+    {
+        public List<string> Titles { get; set; } = new List<string>();
+        public List<string> Lines { get; set; } = new List<string>();
+    }
+
+    [Parameter]
+    public string EntryHref { get; set; }
+
+    private PaperText PaperLines { get; set; }
+
+    private bool RedrawAsked { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        EventsControl.RedrawText += EventsControl_RedrawText;   
+        EventsControl.RedrawText += EventsControl_RedrawText;
     }
-
-    int count = 0;
-    private string Test { get; set; } = $"Valor inicial";
 
     protected void EventsControl_RedrawText()
     {
-        count++;
-        Test= $"{count}";
-        StateHasChanged();
+        RedrawAsked = true;
     }
+
+    private async void GetTexts()
+    {
+        if (RedrawAsked)
+        {
+            RedrawAsked = false;
+            PaperLines = new PaperText();
+            PaperTextFormatted paperTextFormatted= await TextService.GetHtml();
+
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+            // Wait for the button to be rendered
+            await Task.Delay(1);
+            StateHasChanged();
+            GetTexts();
+            // initialize the JavaScript interop library after the page has loaded
+            //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");
+        }
+    }
+
 
 }
