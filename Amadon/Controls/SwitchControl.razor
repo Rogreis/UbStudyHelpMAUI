@@ -1,13 +1,18 @@
-﻿
+﻿@using AmadonStandardLib.Classes;
+
 <div class="form-check form-switch">
     <label class="form-check-label" for="mySwitch">@LabelText</label>
-    <input class="form-check-input" type="checkbox" @bind="IsToggled" id="mySwitch" name="darkmode" value="yes">
+    <input class="form-check-input" type="checkbox" @bind=@IsToggled>
 </div>
-6
+
 @code {
 
     private string _labelText = "";
     private bool _isToggled = false;
+
+    private bool isChecked;
+
+    public event FieldChangedDelegate FieldChanged = null;
 
     [Parameter]
     public string LabelText
@@ -20,8 +25,30 @@
     public bool IsToggled
     {
         get { return _isToggled; }
-        set { _isToggled = value; }
+        set 
+        { 
+            if (_isToggled != value)
+            {
+                _isToggled = value;
+                FieldChanged?.Invoke(_isToggled);
+            }
+        }
     }
+
+    //private void HandleCheckboxChange(ChangeEventArgs e)
+    //{
+    //    //  @onchange="HandleCheckboxChange"
+    //}
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    //if (firstRender)
+    //    //{
+    //    //    // Wait for the button to be rendered
+    //    //    await Task.Delay(1);
+    //    //    StateHasChanged();
+    //    //}
+    //}
 
 
 

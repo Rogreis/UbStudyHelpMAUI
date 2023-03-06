@@ -47,8 +47,8 @@ namespace AmadonStandardLib.Classes
         public bool ShowCompare { get; set; } = false;
 
         [JsonIgnore]
-        public TextShowOption TextShowOption 
-        { 
+        public TextShowOption TextShowOption
+        {
             get
             {
                 if (ShowMiddle && ShowRight && ShowCompare)
@@ -70,8 +70,19 @@ namespace AmadonStandardLib.Classes
 
         public int SearchPageSize { get; set; } = 20;
 
-        public bool ShowParagraphIdentification { get; set; } = true;
-
+        private bool _showParagraphIdentification = true;
+        public bool ShowParagraphIdentification
+        {
+            get => showParagraphIdentification;
+            set
+            {
+                if (_showParagraphIdentification != value)
+                {
+                    showParagraphIdentification = value;
+                    EventsControl.FireRedrawText();
+                }
+            } 
+        }
 
         /// <summary>
         /// Max items stored for  search and index text
@@ -154,6 +165,7 @@ namespace AmadonStandardLib.Classes
 		/// Source of TUB Files used only by UbStudyHelp
 		/// </summary>
 		public string UbStudyHelpTubFilesSourcePath = "";
+        private bool showParagraphIdentification = true;
 
         /// <summary>
         /// Git associated repository folder
@@ -192,7 +204,7 @@ namespace AmadonStandardLib.Classes
 
         public int FontSize { get; set; } = 18;
 
-  
+
 
         /// <summary>
         /// Serialize the parameters instance

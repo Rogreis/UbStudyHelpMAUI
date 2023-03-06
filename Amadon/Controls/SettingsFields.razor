@@ -6,7 +6,7 @@
         <SwitchControl LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle />
     </div>
     <div class="col-sm-4">
-        <SwitchControl LabelText="Show Right Tralsnation" IsToggled=@parameters.ShowRight />
+        <SwitchControl LabelText="Show Right Translation" IsToggled=@parameters.ShowRight />
     </div>
     <div class="col-sm-4">
         <SwitchControl LabelText="Show Compare" IsToggled=@parameters.ShowCompare />
@@ -18,7 +18,7 @@
         <SwitchControl LabelText="Dark Mode" IsToggled=@parameters.UseDarkThemme />
     </div>
     <div class="col-sm-4">
-        <SwitchControl LabelText="Show Paragraph Numnber" IsToggled=@parameters.ShowParagraphIdentification />
+        <SwitchControl @ref=SwitchParNumber LabelText="Show Paragraph Numnber" IsToggled=@parameters.ShowParagraphIdentification/>
     </div>
     <div class="col-sm-4">
         <SwitchControl LabelText="Use Serif Font" IsToggled=@parameters.ShowCompare />
@@ -69,17 +69,52 @@
     private TranslationListControl middleTranslationCombo;
     private TranslationListControl rightTranslationCombo;
 
+    private SwitchControl SwitchParNumber;
+
+    private bool Initialized = false;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await base.OnInitializedAsync();
+    //}
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Wait for the button to be rendered
+            StateHasChanged();
+        }
+
+        if (!Initialized)
+        {
+            await Task.Delay(1);
+            SwitchParNumber.FieldChanged += SwitchParNumber_FieldChanged;
+            Initialized = true;
+        }
+    }
+
+    private void SwitchParNumber_FieldChanged(object value)
+    {
+        parameters.ShowParagraphIdentification= (bool)value;
+    }
+
     private Task OpenLocalRepository()
     {
-        Process.Start(parameters.TUB_Files_RepositoryFolder);
+       //Process.Start(parameters.TUB_Files_RepositoryFolder);
         return Task.CompletedTask;
     }
 
 
     private Task OpenHelp()
     {
-        Process.Start("https://github.com/Rogreis/UbStudyHelpMAUI");
+        //Process.Start("https://github.com/Rogreis/UbStudyHelpMAUI");
         return Task.CompletedTask;
+    }
+
+    private void ThemeChanged(bool isToggled)
+    {
+        parameters.UseDarkThemme = isToggled;
     }
 
     public void Initialize()

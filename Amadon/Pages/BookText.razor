@@ -1,11 +1,28 @@
 ﻿@page "/booktext"
+@using AmadonStandardLib.Classes;
 
 <h3>Hello, world from Book Text!</h3>
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<SurveyPrompt Title=@Test />
 
 @code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        EventsControl.RedrawText += EventsControl_RedrawText;   
+    }
+
+    int count = 0;
+    private string Test { get; set; } = $"Valor inicial";
+
+    protected void EventsControl_RedrawText()
+    {
+        count++;
+        Test= $"{count}";
+        StateHasChanged();
+    }
 
 }
