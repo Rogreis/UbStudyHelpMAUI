@@ -27,6 +27,7 @@
 
     public void AppendLogText(string message)
     {
+        if (!Visibility) return;
         LogText += message + "\n";
         StateHasChanged();
     }

@@ -6,11 +6,6 @@ using System.Text.Json;
 
 namespace AmadonBlazorLibrary.Data
 {
-    public class PaperText
-    {
-        public List<string> Titles { get; set; }= new List<string>();
-        public List<string> Lines { get; set; }= new List<string>();
-    }
 
     public class TextService
     {
@@ -64,15 +59,15 @@ namespace AmadonBlazorLibrary.Data
         /// <param name="leftParagraphs"></param>
         /// <param name="middleParagraphs"></param>
         /// <param name="compareParagraphs"></param>
-        private static void GetParagraphsLine(StringBuilder sb, Paragraph rightParagraph, 
-                                            List<Paragraph> leftParagraphs, 
-                                            List<Paragraph> middleParagraphs,
-                                            List<Paragraph> compareParagraphs)
+        private static void GetParagraphsLine(StringBuilder sb, Paragraph leftParagraph, 
+                                              List<Paragraph> rightParagraphs, 
+                                              List<Paragraph> middleParagraphs,
+                                              List<Paragraph> compareParagraphs)
         {
-            GetText(sb, leftParagraphs, rightParagraph.Entry, false, false);
-            GetText(sb, middleParagraphs, rightParagraph.Entry, false, false);
-            Columntext(sb, rightParagraph, false, true);
-            GetText(sb, compareParagraphs, rightParagraph.Entry, false, false);
+            Columntext(sb, leftParagraph, false, false);
+            GetText(sb, middleParagraphs, leftParagraph.Entry, false, false);
+            GetText(sb, rightParagraphs, leftParagraph.Entry, false, false);
+            GetText(sb, compareParagraphs, leftParagraph.Entry, false, false);
         }
 
         /// <summary>
@@ -95,47 +90,58 @@ namespace AmadonBlazorLibrary.Data
         {
             PaperTextFormatted paperTextFormatted = new PaperTextFormatted();
             paperTextFormatted.Entry= StaticObjects.Parameters.Entry;
-            PaperText papertext = new PaperText();
+
+            // Get the paragraphs texts folowing what was required by user (StaticObjects.Parameters.TextShowOption)
+            List<Paragraph>? leftParagraphs = null;
+            List<Paragraph>? rightParagraphs = null;
+            List<Paragraph>? middleParagraphs = null;
+            List<Paragraph>? compareParagraphs = null;
+
+            // Left is always shown
+            leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+
             switch (StaticObjects.Parameters.TextShowOption)
             {
                 case TextShowOption.LeftOnly:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
                     break;
                 case TextShowOption.LeftRight:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
                     break;
                 case TextShowOption.LeftRightCompare:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add("Compare");
-                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
-                    paperTextFormatted.compareParagraphs = null; // TO DO implement compare
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add("Compare");
+                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
+                    leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+                    compareParagraphs = null; // TO DO implement compare
                     break;
                 case TextShowOption.LeftMiddleRight:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
-                    paperTextFormatted.middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
+                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
                     break;
                 case TextShowOption.LeftMiddleRightCompare:
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    papertext.Titles.Add("Compare");
-                    paperTextFormatted.leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
-                    paperTextFormatted.middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
-                    paperTextFormatted.compareParagraphs = null; // TO DO implement compare
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add("Compare");
+                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
+                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
+                    compareParagraphs = null; // TO DO implement compare
                     break;
             }
 
-            foreach(Paragraph p in paperTextFormatted.rightParagraphs)
+            // Format line
+            foreach(Paragraph p in leftParagraphs)
             {
                 StringBuilder sb = new StringBuilder();
-                GetParagraphsLine(sb, p, paperTextFormatted.leftParagraphs, paperTextFormatted.middleParagraphs, paperTextFormatted.compareParagraphs);
-                papertext.Lines.Add(sb.ToString());
+                GetParagraphsLine(sb, p, leftParagraphs, middleParagraphs, compareParagraphs);
+                paperTextFormatted.Lines.Add(sb.ToString());
             }
 
             return Task.FromResult(paperTextFormatted);

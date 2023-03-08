@@ -12,25 +12,16 @@ namespace AmadonBlazorLibrary.Data
 {
     public class SettingsService
     {
-        private static JsonSerializerOptions options = new JsonSerializerOptions
+        public static Task Store()
         {
-            AllowTrailingCommas = true,
-            WriteIndented = true,
-            IncludeFields = true,
-        };
-
-        public static Task<Parameters> Set(string json)
-        {
-            StaticObjects.Parameters= JsonSerializer.Deserialize<Parameters>(json);
             Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
-            //var jsonString = JsonSerializer.Serialize(StaticObjects.Parameters, options);
-            return Task.FromResult(StaticObjects.Parameters);
+            return Task.CompletedTask;
         }
 
-        public static Task<Parameters> Get()
+        public static Task Get()
         {
-            //var jsonString = JsonSerializer.Serialize(StaticObjects.Parameters, options);
-            return Task.FromResult(StaticObjects.Parameters);
+            StaticObjects.Parameters= Parameters.Deserialize(Parameters.PathParameters);
+            return Task.CompletedTask;
         }
     }
 }

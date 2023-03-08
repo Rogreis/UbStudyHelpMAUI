@@ -10,12 +10,9 @@ namespace AmadonStandardLib.Classes
     {
         public TOC_Entry? Entry { get; set; } = null;
 
-        public List<Paragraph>? leftParagraphs { get; set; } = null;
+        public List<string> Titles { get; set; } = new List<string>();
 
-        public List<Paragraph>? rightParagraphs { get; set; } = null;
+        public List<string> Lines { get; set; } = new List<string>();
 
-        public List<Paragraph>? middleParagraphs { get; set; } = null;
-
-        public List<Paragraph>? compareParagraphs { get; set; } = null;
     }
 }

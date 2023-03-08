@@ -35,16 +35,11 @@
 
 @code {
 
-    internal class PaperText
-    {
-        public List<string> Titles { get; set; } = new List<string>();
-        public List<string> Lines { get; set; } = new List<string>();
-    }
 
     [Parameter]
     public string EntryHref { get; set; }
 
-    private PaperText PaperLines { get; set; }
+    private PaperTextFormatted PaperLines { get; set; }
 
     private bool RedrawAsked { get; set; } = true;
 
@@ -63,10 +58,11 @@
     {
         if (RedrawAsked)
         {
+            await Task.Delay(1);
             RedrawAsked = false;
-            PaperLines = new PaperText();
-            PaperTextFormatted paperTextFormatted= await TextService.GetHtml();
-
+            PaperLines = await TextService.GetHtml();
+            RedrawAsked = false;
+            StateHasChanged();
         }
     }
 
@@ -76,8 +72,6 @@
         {
 
             // Wait for the button to be rendered
-            await Task.Delay(1);
-            StateHasChanged();
             GetTexts();
             // initialize the JavaScript interop library after the page has loaded
             //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");

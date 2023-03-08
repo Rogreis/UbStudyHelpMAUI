@@ -192,6 +192,7 @@ namespace AmadonStandardLib.Helpers
                 StaticObjects.Parameters.TUB_Files_RepositoryFolder = MakeProgramDataFolder("TUB_Files");
                 StaticObjects.Parameters.EditParagraphsRepositoryFolder = MakeProgramDataFolder("PtAlternative");
                 EventsControl.FireSendUserAndLogMessage($"Parameters started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
+                Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
 
                 return true;
             }
@@ -287,48 +288,38 @@ namespace AmadonStandardLib.Helpers
         }
 
 
-        public static bool InitTranslation(string transToInit, short id)
+        public static Translation? InitTranslation(Translation? previousTranslation, short newId, Diagnostic diagnostic)
         {
             try
             {
-                if (id < 0)
+                if (newId < 0)
                 {
-                    return true;
+                    diagnostic.IsError = true;
+                    diagnostic.Message = "Translation id must be greater than 0";
+                    return previousTranslation;
                 }
-
-                //Translation trans = TranslationToShow == "Left" ? StaticObjects.Book.LeftTranslation : (TranslationToShow == "Right" ? StaticObjects.Book.RightTranslation : StaticObjects.Book.MiddleTranslation);
-
 
                 GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
-                EventsControl.FireSendUserAndLogMessage($"Initializing translation: {transToInit} - {id}");
+                EventsControl.FireSendUserAndLogMessage($"Initializing translation: {newId}");
 
-                Translation trans = null;
-                if (!InitTranslation(dataFiles, StaticObjects.Parameters.LanguageIDLeftTranslation, ref trans))
+                Translation? trans = null;
+                if (!InitTranslation(dataFiles, newId, ref trans))
                 {
-                    StaticObjects.Book.LeftTranslation = null;
-                    return false;
+                    diagnostic.IsError = true;
+                    diagnostic.Message = "Translation was not initialized";
+                    return previousTranslation;
                 }
-                switch(transToInit)
-                {
-                    case "Left":
-                        StaticObjects.Book.LeftTranslation = trans;
-                        break;
-                    case "Right":
-                        StaticObjects.Book.RightTranslation = trans;
-                        break;
-                    case "Middle":
-                        StaticObjects.Book.MiddleTranslation = trans;
-                        break;
-                }
-
+                diagnostic.IsError= false; 
+                diagnostic.Message = "";
                 EventsControl.FireSendUserAndLogMessage("Translation initialized succesfully.");
-                return true;
+                return trans;
             }
             catch (Exception ex)
             {
-                string message = $"Could not initialize translation: {transToInit} - {id}";
-                EventsControl.FireSendUserAndLogMessage(message);
-                return false;
+                diagnostic.IsError = true;
+                diagnostic.Message = $"Could not initialize translation: {newId}";
+                EventsControl.FireSendUserAndLogMessage(diagnostic.Message);
+                return previousTranslation;
             }
         }
     }

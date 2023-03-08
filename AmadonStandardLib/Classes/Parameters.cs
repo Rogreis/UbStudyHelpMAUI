@@ -1,5 +1,6 @@
 ﻿using AmadonStandardLib.Helpers;
 using AmadonStandardLib.UbClasses;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -210,7 +211,10 @@ namespace AmadonStandardLib.Classes
                 var jsonString = JsonSerializer.Serialize<Parameters>(p, options);
                 File.WriteAllText(pathParameters, jsonString);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                StaticObjects.Logger.Error("Serialize Parameters failure", ex);
+            }
         }
 
         /// <summary>
@@ -226,9 +230,9 @@ namespace AmadonStandardLib.Classes
                 var jsonString = File.ReadAllText(pathParameters);
                 return StaticObjects.DeserializeObject<Parameters>(jsonString);
             }
-            catch
+            catch (Exception ex)
             {
-                StaticObjects.Logger.Info("»»»» Deserialize Parameters creating default");
+                StaticObjects.Logger.Error("»»»» Deserialize Parameters failure, returning default", ex);
                 return new Parameters();
             }
         }

@@ -33,9 +33,19 @@
             if (_isToggled != value)
             {
                 _isToggled = value;
-                FieldChanged?.Invoke(_isToggled, SwitchType);
+                FieldChanged?.Invoke();
             }
         }
+    }
+
+    public void SetValue(bool value)
+    {
+        IsToggled = value;
+    }   
+
+    public bool GetValue()
+    {
+        return IsToggled;
     }
 
     //private void HandleCheckboxChange(ChangeEventArgs e)

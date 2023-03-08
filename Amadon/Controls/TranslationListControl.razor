@@ -14,6 +14,9 @@
 
 @code {
 
+    private string _selectedValue = "";
+    public event FieldChangedDelegate FieldChanged = null;
+
     [Parameter]
     public string Title { get; set; } = "";
 
@@ -21,7 +24,7 @@
     [Parameter]
     public string ComboValue { get; set; } = "0";
 
-    private string SelectedValue { get; set; } = "";
+    //private string SelectedValue { get; set; } = "";
 
     private List<SelectListItem> Items { get; set; }
 
@@ -39,9 +42,38 @@
         SelectedValue = ComboValue;
     }
 
+    private void WarnOtherPages()
+    {
+        Task.Run(async () =>
+        {
+            // Call an async function without waiting for it to complete
+            FieldChanged?.Invoke();
+        });
+
+        // The method returns immediately without waiting for the async function to complete
+        return;
+    }
+
+    [Parameter]
+    public string SelectedValue
+    {
+        get => _selectedValue;
+        set
+        {
+            _selectedValue = value;
+            WarnOtherPages();
+        }
+    }
+
+
     public void SetValue(short translationId)
     {
         SelectedValue = translationId.ToString();
+    }
+
+    public short GetValue()
+    {
+        return SelectedValue == null? (short)-1 : Convert.ToInt16(SelectedValue);
     }
 
     //private void HandleSelectChange(ChangeEventArgs e)

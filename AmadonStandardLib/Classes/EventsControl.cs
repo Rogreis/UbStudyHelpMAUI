@@ -11,7 +11,7 @@ namespace AmadonStandardLib.Classes
 
     public delegate void RedrawTextDelegate();
 
-    public delegate void FieldChangedDelegate(object newValue, int fieldType);
+    public delegate void FieldChangedDelegate();
 
     #endregion
 
@@ -152,7 +152,7 @@ namespace AmadonStandardLib.Classes
         public static void FireRedrawText() => RedrawText?.Invoke();
 
         public static event FieldChangedDelegate? FieldChanged = null;
-        public static void FireFieldChanged(object newValue, int fieldType) => FieldChanged?.Invoke(newValue, fieldType);
+        public static void FireFieldChanged() => FieldChanged?.Invoke();
 
 
         public static event FatalErrorDelegate? FatalError = null;

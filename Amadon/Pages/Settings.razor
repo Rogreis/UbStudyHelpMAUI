@@ -71,12 +71,27 @@
 
     private void HandleSendMessage(string Message)
     {
+        if (Status == InitializationStatus.InitializedFinished) return;
         logViewer.AppendLogText(Message);
         StateHasChanged();
     }
 
+    private async Task<bool> DoInitializeTranslations()
+    {
+        EventsControl.SendMessage += HandleSendMessage;
+        Diagnostic diagnostic = await InitializationService.InitLeftTranslation(StaticObjects.Parameters.LanguageIDLeftTranslation);
+        if (diagnostic.IsError) HandleSendMessage(diagnostic.Message);
+        diagnostic = await InitializationService.InitMiddleTranslation(StaticObjects.Parameters.LanguageIDMiddleTranslation);
+        if (diagnostic.IsError) HandleSendMessage(diagnostic.Message);
+        diagnostic = await InitializationService.InitRightTranslation(StaticObjects.Parameters.LanguageIDRightTranslation);
+        if (diagnostic.IsError) HandleSendMessage(diagnostic.Message);
+        return true;
+    }
+
+
     private async Task<InitializationStatus> DoInitialization(bool recreate = false)
     {
+
         EventsControl.SendMessage += HandleSendMessage;
         bool ret = await InitializationService.InitLooger();
         if (!ret)
@@ -111,30 +126,8 @@
             return InitializationStatus.RepositoryError;
         }
 
-        Parameters parameters = await SettingsService.Get();
-        ret = await InitializationService.InitTranslation("Left", parameters.LanguageIDLeftTranslation);
-        if (!ret)
-        {
-            HandleSendMessage("Translations list initialization failed");
-            HandleSendMessage("App cannot be started.");
-            return InitializationStatus.RepositoryError;
-        }
+        ret = await DoInitializeTranslations();
 
-        ret = await InitializationService.InitTranslation("Middle", parameters.LanguageIDMiddleTranslation);
-        if (!ret)
-        {
-            HandleSendMessage("Translations list initialization failed");
-            HandleSendMessage("App cannot be started.");
-            return InitializationStatus.RepositoryError;
-        }
-
-        ret = await InitializationService.InitTranslation("Right", parameters.LanguageIDRightTranslation);
-        if (!ret)
-        {
-            HandleSendMessage("Translations list initialization failed");
-            HandleSendMessage("App cannot be started.");
-            return InitializationStatus.RepositoryError;
-        }
         HandleSendMessage("Init ok");
         return InitializationStatus.InitializedFinished;
     }
@@ -150,11 +143,24 @@
                 StaticObjects.InitializationStatus = (int)Status;
             }
             LogShown = Status != InitializationStatus.InitializedFinished;
-            StateHasChanged();
 
             // Wait for the button to be rendered
+            StateHasChanged();
             await Task.Delay(1);
-            fields.Initialize();
+            switch (Status)
+            {
+                case InitializationStatus.InitializedFinished:
+                    bool ret = await DoInitializeTranslations();
+                    fields.Initialize();
+                    break;
+                case InitializationStatus.TranslationError:
+                case InitializationStatus.RepositoryError:
+                case InitializationStatus.LogError:
+                case InitializationStatus.ParametersError:
+                    break;
+            }
+            StateHasChanged();
+            await Task.Delay(1);
 
             // initialize the JavaScript interop library after the page has loaded
             //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");
