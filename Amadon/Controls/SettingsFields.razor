@@ -32,13 +32,13 @@
 
 <div class="row">
     <div class="col-sm-4">
-        <TranslationListControl @ref="leftTranslationCombo" Title="Left Translation" ComboValue="0"></TranslationListControl>
+        <TranslationListControl @ref="leftTranslationCombo" Title="Left Translation" SelectedValue=@parameters.LanguageIDLeftTranslation.ToString()></TranslationListControl>
     </div>
     <div class="col-sm-4">
-        <TranslationListControl @ref="middleTranslationCombo" Title="Middle Translation" ComboValue="37"></TranslationListControl>
+        <TranslationListControl @ref="middleTranslationCombo" Title="Middle Translation" SelectedValue=@parameters.LanguageIDMiddleTranslation.ToString()></TranslationListControl>
     </div>
     <div class="col-sm-4">
-        <TranslationListControl @ref="rightTranslationCombo" Title="Right Translation" ComboValue="34"></TranslationListControl>
+        <TranslationListControl @ref="rightTranslationCombo" Title="Right Translation" SelectedValue=@parameters.LanguageIDRightTranslation.ToString()></TranslationListControl>
     </div>
 </div>
 
