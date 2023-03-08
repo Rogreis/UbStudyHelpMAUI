@@ -280,6 +280,10 @@ namespace AmadonStandardLib.UbClasses
             sb.Append($"{startTag}{(insertAnchor ? $"<a name =\"{AName}\"/>" : "")} {ID} {Text}{endTag}");
         }
 
+        private void FormatTitle(StringBuilder sb, bool isEdit, bool insertAnchor, string startTag, string endTag)
+        {
+            sb.Append($"{startTag}{(insertAnchor ? $"<a name =\"{AName}\"/>" : "")} {Text}{endTag}");
+        }
 
 
         // Add this if using nested MemberwiseClone.
@@ -302,10 +306,10 @@ namespace AmadonStandardLib.UbClasses
                     FormatText(sb, isEdit, false, "<h1>", "</h1>");
                     break;
                 case ParagraphHtmlType.PaperTitle:
-                    FormatText(sb, isEdit, insertAnchor, "<h2>", "</h2>");
+                    FormatTitle(sb, isEdit, insertAnchor, "<h2>", "</h2>");
                     break;
                 case ParagraphHtmlType.SectionTitle:
-                    FormatText(sb, isEdit, insertAnchor, "<h3>", "</h3>");
+                    FormatTitle(sb, isEdit, insertAnchor, "<h3>", "</h3>");
                     break;
                 case ParagraphHtmlType.NormalParagraph:
                     FormatText(sb, isEdit, insertAnchor, "<p>", "</p>");

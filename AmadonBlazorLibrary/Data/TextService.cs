@@ -64,7 +64,8 @@ namespace AmadonBlazorLibrary.Data
                                               List<Paragraph> middleParagraphs,
                                               List<Paragraph> compareParagraphs)
         {
-            Columntext(sb, leftParagraph, false, false);
+            // Only first column has anchor
+            Columntext(sb, leftParagraph, false, true);
             GetText(sb, middleParagraphs, leftParagraph.Entry, false, false);
             GetText(sb, rightParagraphs, leftParagraph.Entry, false, false);
             GetText(sb, compareParagraphs, leftParagraph.Entry, false, false);
@@ -78,7 +79,12 @@ namespace AmadonBlazorLibrary.Data
         /// <returns></returns>
         private static string FormatTitle(Translation trans, TOC_Entry entry)
         {
-            return $"<th><div class=\"p-3 mb-2 parClosed\"><h2>{trans.PaperTranslation} {entry.Paper}</h2></div></th>";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<div class=\"mt-4 p-3 bg-primary text-white rounded\"> ");
+            sb.AppendLine($"  <h2>{trans.PaperTranslation} {entry.Paper}</h2>  ");
+            sb.AppendLine($"  <p>{trans.Description}</p>  ");
+            sb.AppendLine("</div> ");
+            return $"<th><div class=\"p-3 mb-2 parClosed\">{sb}</div></th>";
         }
 
         /// <summary>
