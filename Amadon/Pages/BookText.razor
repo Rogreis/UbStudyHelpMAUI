@@ -3,31 +3,40 @@
 @using AmadonStandardLib.Classes;
 
 <div class="container-fluid">
-    <div class="row overflow-auto">
+    <div id="leftColumn" class="black splitLeft left mt-4 bg_left text-white overflow-auto">
+        <p>1111</p>
+        <p>2222</p>
+        <p>3333</p>
+        <p>4444</p>
+        <p>5555</p>
+    </div>
+    <div id="rightColumn" class="black splitRight right mt-0 bg-dark text-white overflow-auto">
+            <div class="row overflow-auto">
 
-        @if (@PaperLines != null)
-        {
-            <table class="table-borderless">
-                <thead>
-                    <tr>
-                        @foreach (string line in @PaperLines.Titles)
-                        {
-                            @((MarkupString)@line)
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (string line in @PaperLines.Lines)
-                    {
+            @if (@PaperLines != null)
+            {
+                <table class="table-borderless">
+                    <thead>
                         <tr>
-                            @((MarkupString)@line)
+                            @foreach (string line in @PaperLines.Titles)
+                            {
+                                @((MarkupString)@line)
+                            }
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
 
-                </tbody>
-            </table>
-        }
+                        @foreach (string line in @PaperLines.Lines)
+                        {
+                            <tr>
+                                @((MarkupString)@line)
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+        </div>
     </div>
 </div>
 

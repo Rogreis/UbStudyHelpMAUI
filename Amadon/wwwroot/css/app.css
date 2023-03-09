@@ -94,6 +94,14 @@ a, .btn-link {
 
 /* Ub Specific ================================================ */
 
+.bg_left {
+    background-color: #000066;
+}
+
+.element {
+    height: 95vh;
+}
+
 .panelMain {
     padding-top: 0px;
     padding-right: 0px;
@@ -114,17 +122,17 @@ a, .btn-link {
     z-index: 1;
     top: 2;
     overflow-x: hidden;
-    padding-top: 0px;
+    padding: 30px 15px 15px 15px; /* top right bottom left  */
 }
 
 .splitRight {
-    height: 95%;
+    height: 98%;
     width: 75%;
     position: fixed;
     z-index: 1;
     top: 2;
     overflow-x: hidden;
-    padding-top: 0px;
+    padding: 30px 15px 15px 15px; /* top right bottom left  */
 }
 
 .left {
