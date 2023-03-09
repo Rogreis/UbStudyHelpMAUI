@@ -1,17 +1,13 @@
-﻿@page "/booktext"
+﻿@page "/{control?}"
+
 @using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
+@using Amadon.Controls;
 
 <div class="container-fluid">
-    <div id="leftColumn" class="black splitLeft left mt-4 bg_left text-white overflow-auto">
-        <p>1111</p>
-        <p>2222</p>
-        <p>3333</p>
-        <p>4444</p>
-        <p>5555</p>
-    </div>
+    <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
     <div id="rightColumn" class="black splitRight right mt-0 bg-dark text-white overflow-auto">
-            <div class="row overflow-auto">
+        <div class="row overflow-auto">
 
             @if (@PaperLines != null)
             {
@@ -43,14 +39,17 @@
 
 
 @code {
-
-
-    [Parameter]
-    public string EntryHref { get; set; }
-
     private PaperTextFormatted PaperLines { get; set; }
 
     private bool RedrawAsked { get; set; } = true;
+
+    private LeftColumn LeftControl;
+
+    [Parameter]
+    public string control { get; set; } = "";
+
+    [Parameter]
+    public string EntryHref { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -82,10 +81,45 @@
 
             // Wait for the button to be rendered
             GetTexts();
+
+            if (control == "settings")
+            {
+                LeftControl.SetControl("settings");
+            }
+            else if (control == "search")
+            {
+                LeftControl.SetControl("search");
+            }
+            else if (control == "help")
+            {
+                LeftControl.SetControl("help");
+            }
+            else if (control == "track")
+            {
+                LeftControl.SetControl("track");
+            }
+            else if (control == "index")
+            {
+                LeftControl.SetControl("index");
+            }
+            else if (control == "toc")
+            {
+                LeftControl.SetControl("toc");
+            }
+            else
+            {
+                
+            }
             // initialize the JavaScript interop library after the page has loaded
             //await JSRuntime.InvokeAsync<object>("myInteropLibrary.initialize");
         }
     }
+
+    //<a class="nav-link" href="/?control=text"><span class="oi oi-text" aria-hidden="true"></span> Book Text</a>
+    //</li>
+    //<li class="nav-item">
+    //    <a class="nav-link" href="/?control=toc"><span class="oi oi-list" aria-hidden="true"></span> Table of Contents</a>
+
 
 
 }

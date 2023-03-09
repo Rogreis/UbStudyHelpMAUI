@@ -1,0 +1,40 @@
+﻿<div id="leftColumn" class="black splitLeft left mt-4 bg_left text-white overflow-auto">
+    @if (ControlName == "settings")
+{
+        <Amadon.Controls.Settings></Amadon.Controls.Settings>
+    }
+    else if (ControlName == "search")
+    {
+        <Amadon.Controls.Search></Amadon.Controls.Search>
+    }
+    else if (ControlName == "help")
+    {
+        <Amadon.Controls.Help></Amadon.Controls.Help>
+    }
+    else if (ControlName == "track")
+    {
+        <Amadon.Controls.Track></Amadon.Controls.Track>
+    }
+    else if (ControlName == "index")
+    {
+        <Amadon.Controls.TubIndex></Amadon.Controls.TubIndex>
+    }
+    else if (ControlName == "toc")
+    {
+        <Amadon.Controls.TableOfContents></Amadon.Controls.TableOfContents>
+    }
+</div>
+
+
+@code {
+
+    [Parameter]
+    public string ControlName { get; set; } = "";
+
+    public void SetControl(string controlName)
+    {
+        ControlName = controlName;
+    }
+
+
+}
