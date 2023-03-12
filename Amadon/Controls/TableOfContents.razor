@@ -1,11 +1,10 @@
 ﻿@using AmadonBlazorLibrary.Data;
+@using AmadonStandardLib.Classes;
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.InterchangeData;
 @using AmadonStandardLib.UbClasses;
 @using Blazorise.TreeView
 
-@inject Microsoft.AspNetCore.Components.NavigationManager Navigation
-@inject IJSRuntime JS
 
 <link href="_content/Blazorise.TreeView/blazorise.treeview.css" rel="stylesheet" />
 
@@ -15,7 +14,7 @@
 *@
 
 
-<TreeView Nodes="Items"
+<TreeView @ref="@treeViewTranslation1" Nodes="data.Items"
           GetChildNodes="@(item => item.Children)"
           HasChildNodes="@(item => item.Children?.Any() == true)"
           @bind-SelectedNode="selectedNode"
@@ -26,39 +25,27 @@
 </TreeView>
 
 @code{
-    public class Item
-    {
-        public string Text { get; set; }
-        public IEnumerable<Item> Children { get; set; }
-    }
 
-    IEnumerable<Item> Items = new[]
-    {
-        new Item { Text = "Item 1" },
-        new Item
-        {
-            Text = "Item 2",
-            Children = new []
-            {
-                new Item { Text = "Item 2.1" },
-                new Item
-                {
-                    Text = "Item 2.2",
-                    Children = new []
-                    {
-                        new Item { Text = "Item 2.2.1" },
-                        new Item { Text = "Item 2.2.2" },
-                        new Item { Text = "Item 2.2.3" },
-                        new Item { Text = "Item 2.2.4" }
-                    }
-                },
-                new Item { Text = "Item 2.3" },
-                new Item { Text = "Item 2.4" }
-            }
-        },
-        new Item { Text = "Item 3" },
-    };
+    TreeView<Item> treeViewTranslation1;
+    TOCdata data = new TOCdata();
 
     IList<Item> expandedNodes = new List<Item>();
     Item selectedNode;
+
+    public async void UpdateAll()
+    {
+        data.TranslationId1 = StaticObjects.Parameters.LanguageIDLeftTranslation;
+        data.TranslationId2 = StaticObjects.Parameters.LanguageIDMiddleTranslation;
+        data.TranslationId3 = StaticObjects.Parameters.LanguageIDRightTranslation;
+        data= await TOC_Service.GetTocTable(data);
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        UpdateAll();
+        await base.OnInitializedAsync();
+    }
+
+
 }

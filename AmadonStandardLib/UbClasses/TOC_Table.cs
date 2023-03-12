@@ -11,6 +11,5 @@ namespace AmadonStandardLib.UbClasses
         public string Title { get; set; } = "";
 
         public List<TOC_Entry> Parts { get; set; } = new List<TOC_Entry>();
-
     }
 }

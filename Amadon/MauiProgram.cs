@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Amadon
 {
+    // Initial config for Blazorise https://blazorise.com/docs/start/#4a-blazor-webassembly
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()
