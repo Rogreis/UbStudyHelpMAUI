@@ -142,3 +142,9 @@ a, .btn-link {
 .right {
     right: 0;
 }
+
+.nav-link:hover {
+    cursor: pointer;
+}
+
+

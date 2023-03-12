@@ -1,6 +1,6 @@
 ﻿<div id="leftColumn" class="black splitLeft left mt-4 bg_left text-white overflow-auto">
     @if (ControlName == "settings")
-{
+    {
         <Amadon.Controls.Settings></Amadon.Controls.Settings>
     }
     else if (ControlName == "search")
@@ -31,9 +31,21 @@
     [Parameter]
     public string ControlName { get; set; } = "";
 
-    public void SetControl(string controlName)
+    protected override async Task OnInitializedAsync()
+    {
+        AmadonEvents.OnLeftColumnControl += AmadonEvents_OnLeftColumnControl;
+        await base.OnInitializedAsync();
+        return;
+    }
+
+    private void AmadonEvents_OnLeftColumnControl(string controlName)
     {
         ControlName = controlName;
+        StateHasChanged();
+    }
+
+    public void SetControl(string controlName)
+    {
     }
 
 

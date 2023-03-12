@@ -10,7 +10,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="mynavbar">
+        <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" @onclick="LinkToTOC">
@@ -62,17 +62,17 @@
 
 @code
 {
+    private void LinkToTOC() => AmadonEvents.LeftColumnControl("toc");
 
-    private void LinkToTOC() => NavigationManager.NavigateTo("/?control=toc", true);
+    private void LinkToIndex() => AmadonEvents.LeftColumnControl("index");
 
-    private void LinkToIndex() => NavigationManager.NavigateTo("/?control=index");
+    private void LinkToSearch() => AmadonEvents.LeftColumnControl("search");
 
-    private void LinkToSearch() => NavigationManager.NavigateTo("/?control=search");
+    private void LinkToTrack() => AmadonEvents.LeftColumnControl("track");
 
-    private void LinkToTrack() => NavigationManager.NavigateTo("/?control=track");
- 
-    private void LinkToSettings() => NavigationManager.NavigateTo("/?control=settings");
+    private void LinkToSettings() => AmadonEvents.LeftColumnControl("settings");
 
-    private void LinkToHelp() => NavigationManager.NavigateTo("/?control=help");
+    private void LinkToHelp() => AmadonEvents.LeftColumnControl("help");
+
 
 }
