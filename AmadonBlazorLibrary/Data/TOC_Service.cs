@@ -8,22 +8,15 @@ namespace AmadonBlazorLibrary.Data
 {
     public class TOC_Service
     {
-        public static string GetToc(TOCdata data)
+        public static TOCdata GetToc(TOCdata data)
         {
-            var options = new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                WriteIndented = true, 
-                IncludeFields = true, 
-            };
-            Translation translation = StaticObjects.Book.GetTranslation(data.TranslationId);
+             Translation translation = StaticObjects.Book.GetTranslation(data.TranslationId1);
             data.Toc = translation.TOC;
             data.Toc.Title = $"TOC {translation.Description}";
-            var jsonString = JsonSerializer.Serialize(data, options);
-            return jsonString;
+            return data;
         }
 
-        public static Task<string> GetTocTable(TOCdata data)
+        public static Task<TOCdata> GetTocTable(TOCdata data)
         {
             return Task.FromResult(GetToc(data));
         }

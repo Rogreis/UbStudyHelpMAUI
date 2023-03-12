@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+
+using Microsoft.Extensions.Logging;
 
 namespace Amadon
 {
@@ -21,7 +25,13 @@ namespace Amadon
 		builder.Logging.AddDebug();
 #endif
 
-            //builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services
+                .AddBlazorise(options =>
+                {
+                    options.Immediate = true;
+                })
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
 
             return builder.Build();
         }
