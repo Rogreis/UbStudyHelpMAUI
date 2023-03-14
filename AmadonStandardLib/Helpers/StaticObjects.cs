@@ -14,6 +14,7 @@ namespace AmadonStandardLib.Helpers
 
     public static class StaticObjects
     {
+        public static bool InitializationDone = false;
 
         /// <summary>
         /// This is the object to store log

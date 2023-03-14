@@ -129,6 +129,7 @@
         ret = await DoInitializeTranslations();
 
         HandleSendMessage("Init ok");
+        StaticObjects.InitializationDone = true;
         return InitializationStatus.InitializedFinished;
     }
 

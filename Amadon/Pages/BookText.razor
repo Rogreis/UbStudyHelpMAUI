@@ -3,6 +3,7 @@
 @using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
 @using Amadon.Controls;
+@using AmadonStandardLib.Helpers;
 
 <div class="container-fluid">
     <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
@@ -64,7 +65,7 @@
 
     private async void GetTexts()
     {
-        if (RedrawAsked)
+        if (RedrawAsked && StaticObjects.InitializationDone)
         {
             await Task.Delay(1);
             RedrawAsked = false;
@@ -79,7 +80,6 @@
         if (firstRender)
         {
 
-            // Wait for the button to be rendered
             GetTexts();
 
             if (control == "settings")

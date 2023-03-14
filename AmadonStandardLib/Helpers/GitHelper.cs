@@ -111,7 +111,8 @@ namespace AmadonStandardLib.Helpers
             catch (Exception ex)
             {
                 EventsControl.FireSendUserAndLogMessage($"Pull Error, repository= {repositoryPath}: ", ex);
-                return false;
+                EventsControl.FireSendUserAndLogMessage($"Check your internet connection");
+                return true; // Pocess continues, pull errors  are ignored
             }
         }
 
