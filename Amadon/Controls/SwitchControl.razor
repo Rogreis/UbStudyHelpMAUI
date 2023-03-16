@@ -1,15 +1,12 @@
 ﻿@using AmadonStandardLib.Classes;
 
-<div class="form-check form-switch">
-    <label class="form-check-label" for="mySwitch">@LabelText</label>
-    <input class="form-check-input" type="checkbox" @bind=@IsToggled>
-</div>
+<Check TValue="bool" Checked="@_isToggled" CheckedChanged="@OnRememberMeChanged">@LabelText</Check>
 
 @code {
 
     private string _labelText = "";
     private bool _isToggled = false;
-
+ 
     private bool isChecked;
 
     public event FieldChangedDelegate FieldChanged = null;
@@ -37,6 +34,17 @@
             }
         }
     }
+
+ 
+    void OnRememberMeChanged(bool value)
+    {
+        if (_isToggled != value)
+        {
+            _isToggled = value;
+            FieldChanged?.Invoke();
+        }
+     }
+
 
     public void SetValue(bool value)
     {

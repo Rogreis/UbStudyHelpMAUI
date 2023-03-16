@@ -6,7 +6,7 @@
 
 
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-4 text-black">
         <SwitchControl @ref=SwitchMiddleTranslation LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle SwitchType=(int)SwitchType.ShowMiddleTranslation />
     </div>
     <div class="col-sm-4">
@@ -59,8 +59,11 @@
     <div class="col-sm-6">
         <button class="btn btn-primary" @onclick="OpenLocalRepository">Local Translation Repository</button>
     </div>
-    <div class="col-sm-6">
-        <span class="text-nowrap">
+</div>
+
+<div class="row">
+     <div class="col-sm-12">
+        <span class="text-wrap">
             Here you can get some help information and also the source code of this tool:
             <a target="_blank" class="font-weight-bold link-dark" href="https://github.com/Rogreis/UbStudyHelpMAUI">Help && Source Code</a>
         </span>

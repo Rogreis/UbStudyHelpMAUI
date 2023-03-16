@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AmadonStandardLib.Helpers
 {
@@ -275,6 +277,24 @@ namespace AmadonStandardLib.Helpers
                 StaticObjects.Logger.Error("GetFormatTable", ex);
                 return null;
             }
+        }
+
+
+
+        static async Task Main()
+        {
+            //    HttpClient httpClient = new HttpClient();
+            //    httpClient.DefaultRequestHeaders.Add("User-Agent", "MyApp");
+            //    HttpResponseMessage response = await httpClient.GetAsync("https://github.com/username/repository/raw/branch/path/to/file");
+            //    byte[] content = await response.Content.ReadAsByteArrayAsync();
+            //    byte[] hash;
+            //    using (SHA256Managed sha256 = new SHA256Managed())
+            //    {
+            //        hash = sha256.ComputeHash(content);
+            //    }
+            //    string hashString = BitConverter.ToString(hash).Replace("-", "").ToLower();
+            //    File.WriteAllBytes("path/to/local/file", content);
+            //    Console.WriteLine("File downloaded and saved to disk with hash: " + hashString);
         }
 
 

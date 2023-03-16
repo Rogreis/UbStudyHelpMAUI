@@ -6,15 +6,13 @@
 @using Blazorise.TreeView
 
 
-<link href="_content/Blazorise.TreeView/blazorise.treeview.css" rel="stylesheet" />
-
 
 @*  Based in: 
     https://blazorise.com/docs/extensions/treeview
 *@
 
 
-<TreeView @ref="@treeViewTranslation1" Nodes="Items"
+<TreeView @ref="@treeViewTrans" Nodes="Items"
           GetChildNodes="@(item => item.Children)"
           HasChildNodes="@(item => item.Children?.Any() == true)"
           @bind-SelectedNode="selectedNode"
@@ -51,7 +49,7 @@
         }
     }
 
-    TreeView<Item> treeViewTranslation1;
+    TreeView<Item> treeViewTrans;
     TOCdata data = new TOCdata();
 
     IList<Item> expandedNodes = new List<Item>();
@@ -96,13 +94,13 @@
                         indPart++;
                     }
                 }
-                return itens;
+                return itens.ToArray();
 
             }
             catch (Exception ex)
             {
                 string xxx = ex.Message;
-                return itens;
+                return itens.ToArray();
             }
  
             //    List<Item> items = new List<Item>();

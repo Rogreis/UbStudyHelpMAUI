@@ -1,0 +1,49 @@
+﻿<button class="btn btn-primary" @onclick="() => ShowModal()">Open Modal</button>
+
+@if (IsModalVisible)
+{
+    <div class="modal-backdrop fade show"></div>
+
+    <div class="modal fade show d-flex " style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title">Modal Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => HideModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-black">
+                    <SettingsFields></SettingsFields>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => HideModal()">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="() => SaveChanges()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool IsModalVisible { get; set; } = false;
+
+    private void ShowModal()
+    {
+        IsModalVisible = true;
+        StateHasChanged();
+    }
+
+    private void HideModal()
+    {
+        IsModalVisible = false;
+        StateHasChanged();
+    }
+
+    private void SaveChanges()
+    {
+        // Do something when the "Save Changes" button is clicked
+        HideModal();
+    }
+}
+
