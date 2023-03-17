@@ -1,13 +1,13 @@
-﻿using System;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.Helpers;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Text.Json;
-using System.Threading.Tasks;
-using AmadonStandardLib.Helpers;
-using AmadonStandardLib.Classes;
-using System.IO;
+using System.Text.Json.Serialization;
+
 
 namespace AmadonStandardLib.UbClasses
 {
@@ -16,6 +16,7 @@ namespace AmadonStandardLib.UbClasses
         public const short NoTranslation = -1;
         private string? LocalRepositoryFolder = null;
         private readonly string TocTableFileName = "TOC_Table.json";
+        private List<ItemForToc>? _tableOfContents = null;
 
         public short LanguageID { get; set; }
         public string Description { get; set; } = "";
@@ -43,82 +44,102 @@ namespace AmadonStandardLib.UbClasses
         //public List<UbAnnotationsStoreData> Annotations { get; set; } = new List<UbAnnotationsStoreData>();
 
 
+        // Colocar isto no Json, diferente para cada tradução
+        public List<string> PartTitles = new List<string>()
+        {
+            "Introdução",
+            "Parte I",
+            "Parte II",
+            "Parte III",
+            "Parte IV",
+        };
+
+        // First papers list for each part
         [JsonIgnore]
-        public List<TOC_Entry> TableOfContents
+        public short[] FistPapers = new short[]
+        {
+            0,
+            1,
+            32,
+            57,
+            120,
+            197
+        };
+
+        private List<TOC_Entry> Sections(Paper p)
+        {
+            return (from par in p.Paragraphs
+                    where par.ParagraphNo == 0 && par.Section > 0
+                    orderby par.Section ascending
+                    select par.Entry).ToList();
+        }
+
+        private void GetSections(Paper paper, List<ItemForToc> children)
+        {
+            foreach (TOC_Entry entrySection in Sections(paper))
+            {
+                ItemForToc itemSection = new ItemForToc();
+                children.Add(itemSection);
+                itemSection.Text = entrySection.Text;
+            }
+        }
+
+        private void GetPapers(int partNumber, List<ItemForToc> children)
+        {
+            List<TOC_Entry> papers = (from paper in Papers
+                                      where paper.PaperNo >= FistPapers[partNumber] && paper.PaperNo < FistPapers[partNumber + 1]
+                                      orderby paper.PaperNo ascending
+                                      select paper.Entry).ToList();
+
+            foreach (TOC_Entry entryPaper in papers)
+            {
+                ItemForToc itemPaper = new ItemForToc();
+                children.Add(itemPaper);
+                itemPaper.Text = $"{entryPaper.Paper}  {entryPaper.Text}";
+                Paper paper = Papers[entryPaper.Paper];
+                GetSections(paper, itemPaper.WorkChildren);
+            }
+        }
+
+
+        private void GetIntroToc(List<ItemForToc> children)
+        {
+            Paper paperIntro = Papers[0];
+            foreach (TOC_Entry entrySection in Sections(paperIntro))
+            {
+                ItemForToc itemSection = new ItemForToc();
+                children.Add(itemSection);
+                itemSection.Text = entrySection.Text;
+            }
+        }
+
+
+        [JsonIgnore]
+        public List<ItemForToc> TableOfContents
         {
             get
             {
-                List<TOC_Entry> toc = new List<TOC_Entry>();
-                foreach (Paper paper in Papers)
+                if (_tableOfContents != null)
                 {
-                    var paragraphEntries = from p in paper.Paragraphs
-                                           where p.ParagraphNo == 0
-                                           orderby p.PK_Seq ascending
-                                           select p.Entry;
-                    toc.AddRange(paragraphEntries);
+                    return _tableOfContents;
                 }
-
-                return toc;
-            }
-        }
-
-
-        private TOC_Entry GetFirstPartParagraph(short paperNo, string text)
-        {
-            Paragraph p = (from paper in Papers
-                           from par in paper.Paragraphs
-                           where par.Paper == paperNo && par.ParagraphNo == 0
-                           select par).First();
-            return new TOC_Entry(p, text);
-        }
-
-        private void GetPartPapersSections(TOC_Entry entry, short startPaperNo, short endPaperNo)
-        {
-            entry.Papers = (from paper in Papers
-                            where paper.PaperNo >= startPaperNo && paper.PaperNo <= endPaperNo
-                            orderby paper.PaperNo ascending
-                            select paper.Entry).ToList();
-            foreach (TOC_Entry entryPaper in entry.Papers)
-            {
-                entryPaper.Sections = (from paper in Papers
-                                       from p in paper.Paragraphs
-                                       where p.Paper == entryPaper.Paper && p.ParagraphNo == 0 && p.Section > 0
-                                       orderby p.Section ascending
-                                       select p.Entry).ToList();
-            }
-        }
-
-
-        [JsonIgnore]
-        public TOC_Table TOC
-        {
-            get
-            {
-                TOC_Table toc = new TOC_Table();
-
-                toc.Title = "Lista ded Documentos parea " + Description;
-
-                TOC_Entry intro = GetFirstPartParagraph(0, "Introdução");
-                GetPartPapersSections(intro, 0, 0);
-                TOC_Entry partI = GetFirstPartParagraph(1, "Parte I");
-                GetPartPapersSections(partI, 1, 31);
-                TOC_Entry partII = GetFirstPartParagraph(32, "Parte II");
-                GetPartPapersSections(partII, 32, 56);
-                TOC_Entry partIII = GetFirstPartParagraph(56, "Parte III");
-                GetPartPapersSections(partIII, 57, 119);
-                TOC_Entry partIV = GetFirstPartParagraph(120, "Parte IV");
-                GetPartPapersSections(partIV, 119, 196);
-
-                toc.Parts = new List<TOC_Entry>()
+                List<ItemForToc> items = new List<ItemForToc>();
+                for (int index = 0; index < 5; index++)
                 {
-                    intro,
-                    partI,
-                    partII,
-                    partIII,
-                    partIV
-                };
-
-                return toc;
+                    ItemForToc itemPart = new ItemForToc();
+                    items.Add(itemPart);
+                    itemPart.Text = PartTitles[index];
+                    if (FistPapers[index] == 0)
+                    {
+                        GetIntroToc(itemPart.WorkChildren);
+                    }
+                    else
+                    {
+                        GetPapers(index, itemPart.WorkChildren);
+                    }
+                }
+                _tableOfContents = items;
+                return _tableOfContents;
             }
         }
 

@@ -28,95 +28,14 @@
 
 @code {
 
-    public class Item
-    {
-        public string Text { get; set; } = "";
-        public Item[] Children
-        {
-            get
-            {
-                return WorkChildren.ToArray();
-            }
-        }
-        public List<Item> WorkChildren { get; set; } = new List<Item>();
 
-        public override string ToString()
-        {
-            return $"{Text}{WorkChildren?.ToList().Count}";
-        }
-    }
-
-    TreeView<Item> treeViewTrans;
+    TreeView<ItemForToc> treeViewTrans;
     TOCdata data = new TOCdata();
     bool TocGotFromData = false;
-    IEnumerable<Item> Items = new Item[0];
+    IEnumerable<ItemForToc> Items = new ItemForToc[0];
 
-    IList<Item> expandedNodes = new List<Item>();
-    Item selectedNode;
-
-    private void GetIntroToc(TOC_Entry entry, List<Item> children)
-    {
-        TOC_Entry entryPaper= entry.Papers[0];
-        foreach (TOC_Entry entrySection in entryPaper.Sections)
-        {
-            Item itemSection = new Item();
-            children.Add(itemSection);
-            itemSection.Text = entrySection.Text;
-        }
-    }
-
-
-    private void GetPartPapersSections(TOC_Entry entry, List<Item> children)
-    {
-        if (entry.Paper == 0)
-        {
-            GetIntroToc(entry, children);
-            return;
-        }
-        foreach (TOC_Entry entryPaper in entry.Papers)
-        {
-            Item itemPaper = new Item();
-            itemPaper.Text = $"{entryPaper.Paper}-{entryPaper.Text}";
-            children.Add(itemPaper);
-
-            foreach (TOC_Entry entrySection in entryPaper.Sections)
-            {
-                Item itemSection = new Item();
-                itemPaper.WorkChildren.Add(itemSection);
-                itemSection.Text = entrySection.Text;
-            }
-        }
-    }
-
-
-    public IEnumerable<Item> ItemsBuild
-    {
-        get
-        {
-            List<Item> itens = new List<Item>();
-            try
-            {
-                if (data.Toc != null)
-                {
-                    foreach (TOC_Entry entry in data.Toc.Parts)
-                    {
-                        Item item = new Item();
-                        item.Text = entry.Text;
-                        itens.Add(item);
-                        GetPartPapersSections(entry, item.WorkChildren);
-                    }
-                }
-                return itens.ToArray();
-            }
-            catch (Exception ex)
-            {
-                string xxx = ex.Message;
-                return itens.ToArray();
-            }
-
-        }
-
-    }
+    IList<ItemForToc> expandedNodes = new List<ItemForToc>();
+    ItemForToc selectedNode;
 
     public async void UpdateAll()
     {
@@ -124,7 +43,7 @@
         data.TranslationId2 = StaticObjects.Parameters.LanguageIDMiddleTranslation;
         data.TranslationId3 = StaticObjects.Parameters.LanguageIDRightTranslation;
         data = await TOC_Service.GetTocTable(data);
-        Items = ItemsBuild;
+        Items = data.Toc;
         TocGotFromData = true;
         StateHasChanged();
     }

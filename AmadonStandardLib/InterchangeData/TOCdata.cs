@@ -1,4 +1,5 @@
-﻿using AmadonStandardLib.UbClasses;
+﻿using AmadonStandardLib.Classes;
+using AmadonStandardLib.UbClasses;
 using System.Collections.Generic;
 
 namespace AmadonStandardLib.InterchangeData
@@ -18,7 +19,7 @@ namespace AmadonStandardLib.InterchangeData
         public short TranslationId3 { get; set; } = -1;
 
         // Output data
-        public TOC_Table? Toc { get; set; } = null;
+        public List<ItemForToc>? Toc { get; set; } = null;
 
  
 

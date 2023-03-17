@@ -11,8 +11,7 @@ namespace AmadonBlazorLibrary.Data
         public static TOCdata GetToc(TOCdata data)
         {
             Translation translation = StaticObjects.Book.GetTranslation(data.TranslationId1);
-            data.Toc = translation.TOC;
-            data.Toc.Title = $"TOC {translation.Description}";
+            data.Toc = translation.TableOfContents;
             return data;
         }
 
