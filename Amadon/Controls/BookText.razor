@@ -1,40 +1,33 @@
-﻿@page "/{control?}"
-
-@using AmadonBlazorLibrary.Data;
+﻿@using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
 @using Amadon.Controls;
 @using AmadonStandardLib.Helpers;
 
-<div class="container-fluid">
-    <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
-    <div id="rightColumn" class="black splitRight right mt-0 bg-dark text-white overflow-auto">
-        <div class="row overflow-auto">
-            <ModalSettings></ModalSettings>
-
-            @if (@PaperLines != null)
-            {
-                <table class="table-borderless">
-                    <thead>
-                        <tr>
-                            @foreach (string line in @PaperLines.Titles)
-                            {
-                                @((MarkupString)@line)
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach (string line in @PaperLines.Lines)
+<div id="rightColumn" class="black splitRight right mt-0 bg-dark text-white overflow-auto">
+    <div class="row overflow-auto">
+        @if (@PaperLines != null)
+        {
+            <table class="table-borderless">
+                <thead>
+                    <tr>
+                        @foreach (string line in @PaperLines.Titles)
                         {
-                            <tr>
-                                @((MarkupString)@line)
-                            </tr>
+                            @((MarkupString)@line)
                         }
+                    </tr>
+                </thead>
+                <tbody>
 
-                    </tbody>
-                </table>
-            }
-        </div>
+                    @foreach (string line in @PaperLines.Lines)
+                    {
+                        <tr>
+                            @((MarkupString)@line)
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
     </div>
 </div>
 

@@ -50,7 +50,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blazorise.Bootstrap" Version="1.2.1" />
+        <PackageReference Include="Blazorise.Bootstrap5" Version="1.2.1" />
         <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.1" />
         <PackageReference Include="Blazorise.TreeView" Version="1.2.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />

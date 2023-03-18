@@ -1,0 +1,75 @@
+﻿@using Amadon.Controls
+@using AmadonBlazorLibrary.Data;
+@using AmadonStandardLib.Classes;
+@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.InterchangeData;
+
+
+<h3>Choose translations to use:</h3>
+<h3>Choose translations to use:</h3>
+<h3>Choose translations to use:</h3>
+<h3>Choose translations to use:</h3>
+
+<Fields>
+    <Field>
+        <FieldLabel><h3>Choose translations to use:</h3></FieldLabel>
+        <Select TValue="int" SelectedValue="@selectedValue" SelectedValueChanged="@OnSelectedValueChanged">
+            <SelectItem Value="1">One</SelectItem>
+            <SelectItem Value="2">Two</SelectItem>
+            <SelectItem Value="3">Three</SelectItem>
+            <SelectItem Value="4">Four</SelectItem>
+        </Select>
+    </Field>
+    <Field>
+        <FieldLabel>Password</FieldLabel>
+        <TextEdit>
+            <FieldHelp>Password strength: <Text TextColor="TextColor.Danger">weak</Text></FieldHelp>
+        </TextEdit>
+    </Field>
+</Fields>
+
+
+
+@*            <Field>
+                    <FieldLabel>Name</FieldLabel>
+                    <TextEdit Autofocus Placeholder="Enter name..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Surname</FieldLabel>
+                    <TextEdit Placeholder="Enter surname..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Date of birth</FieldLabel>
+                    <DateEdit TValue="DateTime?" Placeholder="Pick a date" />
+                </Field>
+                <Field>
+                    <Button Color="Color.Primary" Clicked="@ShowModal2">Show second modal</Button>
+                </Field>
+    *@
+
+
+@code {
+
+    int selectedValue;
+
+    Task OnSelectedValueChanged(int value)
+    {
+        selectedValue = value;
+        Console.WriteLine(selectedValue);
+
+        return Task.CompletedTask;
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+ 
+  
+
+}
+
