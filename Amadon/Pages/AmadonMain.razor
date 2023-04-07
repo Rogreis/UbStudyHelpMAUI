@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/xx"
 @using Amadon.Controls;
 @using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
@@ -6,14 +6,15 @@
 
 @using Blazorise
 
-<Container Class="div1">
+<Container>
     <Row>
-        <Column ColumnSize="ColumnSize.Is12">
+        <Amadon.Controls.TopNavbar></Amadon.Controls.TopNavbar>
+
+@*        <Column ColumnSize="ColumnSize.Is12">
             <Heading Size="HeadingSize.Is3">Div 1 (5% height)</Heading>
         </Column>
-    </Row>
-</Container>
-<Container Class="div2" Border="Border.Danger.OnAll.Is4">
+*@    </Row>
+
     <Row>
         <Column ColumnSize="ColumnSize.Is12">
             @switch (InitializationStatus)
@@ -44,10 +45,11 @@
     </Row>
 
 
-
-
 </Container>
 
+@*<Container Class="div2" Border="Border.Danger.OnAll.Is4">
+</Container>
+*@
 
 
     <Modal @ref="modalRef" Animated="animation" AnimationDuration="animationDuration" Border="Border.Is4.Rounded.Warning">

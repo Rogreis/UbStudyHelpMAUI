@@ -1,12 +1,13 @@
-﻿@inherits LayoutComponentBase
+﻿@using Amadon.Controls
+@inherits LayoutComponentBase
 
-<div class="page bg-dark text-white">
-    <main>
-        <article class="content bg-dark text-white p-4">
-            <Amadon.Controls.TopNavbar></Amadon.Controls.TopNavbar>
-            <div class="container-fluid">
-                @Body
-            </div>
-        </article>
-    </main>
+<div class="flex-container bg-dark text-white m-0 p-0">
+    <TopNavbar />
+    <div class="jumptop" />
+    <div class="flex-grow">
+        @Body
+    </div>
 </div>
+
+
+
