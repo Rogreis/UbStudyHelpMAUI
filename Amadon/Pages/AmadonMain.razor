@@ -4,19 +4,58 @@
 @using AmadonStandardLib.Classes;
 @using AmadonStandardLib.Helpers;
 
-<div class="container-fluid bg-dark text-white">
-    @if (InitializationStatus == Status.ReadyToGo)
-    {
-        <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
-        <BookText></BookText>
-    }
+@using Blazorise
+
+<Container Class="div1">
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            <Heading Size="HeadingSize.Is3">Div 1 (5% height)</Heading>
+        </Column>
+    </Row>
+</Container>
+<Container Class="div2" Border="Border.Danger.OnAll.Is4">
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            @switch (InitializationStatus)
+            {
+                case Status.NotInitialized:
+                case Status.LogInitialized:
+                case Status.ParametersInitialized:
+                    <LogControl @ref="logViewer"></LogControl>
+                    break;
+                case Status.RepositoryInitialized:
+                    <TranslationsChoice></TranslationsChoice>
+                    break;
+                case Status.ReadyToGo:
+                    <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
+                    <BookText></BookText>
+                    break;
+            }
+            <Alert Color="@AlertColor" @bind-Visible="@alertVisible">
+                <AlertDescription>
+                    @AlertDescription
+                </AlertDescription>
+                <AlertMessage>
+                    Inicialization ok.
+                </AlertMessage>
+                <CloseButton />
+            </Alert>
+        </Column>
+    </Row>
+
+
+
+
+</Container>
+
+
 
     <Modal @ref="modalRef" Animated="animation" AnimationDuration="animationDuration" Border="Border.Is4.Rounded.Warning">
         <ModalContent Size="@modalSize" Centered="@centered">
             <ModalHeader Class="bg-primary">
                 <ModalTitle>
-                    <Icon Name="IconName.Edit" />
-                    Employee edit
+                <Icon Name="IconName.InfoCircle" />
+                    Get data
                 </ModalTitle>
                 <CloseButton />
             </ModalHeader>
@@ -24,11 +63,6 @@
 
                 @switch (InitializationStatus)
                 {
-                    case Status.NotInitialized:
-                    case Status.LogInitialized:
-                    case Status.ParametersInitialized:
-                        <LogControl @ref="logViewer"></LogControl>
-                        break;
                     case Status.RepositoryInitialized:
                         <TranslationsChoice></TranslationsChoice>
                         break;
@@ -43,36 +77,6 @@
         </ModalContent>
     </Modal>
 
-    <Modal @ref="modalRef2" Animated="animation" AnimationDuration="animationDuration">
-        <ModalContent Size="ModalSize.Small" Centered>
-            <ModalHeader Class="bg-primary">
-                <ModalTitle>
-                    Hello
-                </ModalTitle>
-                <CloseButton />
-            </ModalHeader>
-            <ModalBody Class="bg-dark text-white">
-                I am a second modal with some message.
-            </ModalBody>
-            <ModalFooter Class="bg-dark">
-                <Button Color="Color.Secondary" Clicked="@HideModal2">Close</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
-
-    <Alert Color="Color.Success" @bind-Visible="@alertVisible">
-        <AlertDescription>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        </AlertDescription>
-        <AlertMessage>
-            Inicialization ok.
-        </AlertMessage>
-        <CloseButton />
-    </Alert>
-
-</div>
-
-
 @code {
 
     enum Status
@@ -81,6 +85,7 @@
         LogInitialized,
         ParametersInitialized,
         RepositoryInitialized,
+        WaitingTranslationChoice,
         TranslationsInitialized,
         ReadyToGo,
         Error
@@ -88,14 +93,13 @@
 
     // Local blazor components
     private LeftColumn LeftControl;
-    private Modal modalRef;
-    private Modal modalRef2;
     private LogControl logViewer;
 
     // Page status control
     private Status InitializationStatus = Status.NotInitialized;
 
     // Modal parameters
+    private Modal modalRef;
     private bool centered = false;
     private ModalSize modalSize = ModalSize.Default;
     private int? maxHeight = null;
@@ -104,44 +108,60 @@
 
     // Alert parameters
     bool alertVisible = false;
+    string AlertDescription = "";
+    string AlertMessage = "";
+    Color AlertColor= Color.Success;
+
 
     #region Modal routines
+    private Task ShowAlert(Color color, string description, string message)
+    {
+        this.AlertColor = color;
+        this.AlertDescription = description;
+        this.AlertMessage = message;
+        this.alertVisible = true;
+        return modalRef.Show();
+    }
+
+
     private Task ShowModal(ModalSize modalSize, int? maxHeight = null, bool centered = false)
     {
         this.centered = centered;
         this.modalSize = modalSize;
         this.maxHeight = maxHeight;
-
         return modalRef.Show();
     }
 
     private Task HideModalCancel()
     {
-        return modalRef.Hide();
-    }
-
-    private Task HideModalOk()
-    {
         InitializationStatus = Status.Error;
         return modalRef.Hide();
     }
 
-
-    private Task ShowModal2()
+    private async Task HideModalOk()
     {
-        return modalRef2.Show();
-    }
+        switch(InitializationStatus)
+        {
+            case Status.WaitingTranslationChoice:
+                InitializationStatus = Status.TranslationsInitialized;
+                Status status = await DoInitialization();
+                break;
+            default:
+                InitializationStatus = Status.Error;
+                await ShowAlert(Color.Danger, "Error", "Translations choice cancelled. Cannot continue!");
+                break;
 
-
-    private Task HideModal2()
-    {
-        return modalRef2.Hide();
+        }
+        await modalRef.Hide();
+        return;
     }
+    #endregion
 
     private void HandleSendMessage(string Message)
     {
         //if (Status == Status.InitializedFinished) return;
         logViewer.AppendLogText(Message);
+        Task.Delay(1);
         StateHasChanged();
     }
 
@@ -155,11 +175,18 @@
     {
         if (firstRender)
         {
-            await ShowModal(ModalSize.Large, 50, true);
-            await DoInitialization();
+            //await ShowModal(ModalSize.Large, 50, true);
+            Status status= await DoInitialization();
+            if (status == Status.Error)
+            {
+                await ShowModal(ModalSize.Large, 50, true);
+            }
+            else
+            {
+                InitializationStatus = Status.ReadyToGo;
+            }
         }
     }
-    #endregion
 
 
     #region Initialization
@@ -228,6 +255,16 @@
                     break;
 
                 case Status.RepositoryInitialized:
+                    if (!StaticObjects.Parameters.TranslationsChoiceDone)
+                    {
+                        await ShowModal(ModalSize.Large, 50, true);
+                        return Status.WaitingTranslationChoice;
+                    }
+                    else
+                    {
+                        InitializationStatus = Status.TranslationsInitialized;
+                    }
+                    await ShowModal(ModalSize.Large, 50, true);
                     ret = await InitializationService.InitTranslations();
                     if (!ret)
                     {
@@ -240,6 +277,7 @@
                     {
                         InitializationStatus = Status.TranslationsInitialized;
                         alertVisible = true;
+                        await Task.Delay(1);
                         StateHasChanged();
                         return InitializationStatus;
                     }

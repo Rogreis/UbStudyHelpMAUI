@@ -30,6 +30,8 @@ namespace AmadonStandardLib.Classes
 
         public static string? PathParameters { get; set; }
 
+        // Controls if the choise for translations to be shown are done
+        public bool TranslationsChoiceDone { get; set; } = false;
 
         /// <summary>
         /// Last position in the text, default for first paragraph
