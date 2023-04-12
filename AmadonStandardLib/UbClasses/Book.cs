@@ -49,7 +49,7 @@ namespace AmadonStandardLib.UbClasses
             {
                 string message = $"Could not initialize available translations. See log.";
                 StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError(message);
+                LibraryEventsControl.FireFatalError(message);
                 return false;
             }
         }
@@ -66,7 +66,7 @@ namespace AmadonStandardLib.UbClasses
             if (trans == null)
             {
                 string message = $"Missing translation number {id}. May be you do not have the correct data to use this tool.";
-                EventsControl.FireFatalError(message);
+                LibraryEventsControl.FireFatalError(message);
                 return null;
             }
             return trans;
@@ -123,7 +123,7 @@ namespace AmadonStandardLib.UbClasses
             {
                 string message = $"Could not initialize translations. See log.";
                 StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError(message);
+                LibraryEventsControl.FireFatalError(message);
                 return false;
             }
         }
@@ -164,13 +164,13 @@ namespace AmadonStandardLib.UbClasses
                         return;
                     }
                 }
-                EventsControl.FireTranslationsChanged();
+                LibraryEventsControl.FireTranslationsChanged();
             }
             catch (Exception ex)
             {
                 string message = $"General error changing translation: {ex.Message}. May be you do not have the correct data to use this tool.";
                 StaticObjects.Logger.Error(message, ex);
-                EventsControl.FireFatalError("Data not loaded!");
+                LibraryEventsControl.FireFatalError("Data not loaded!");
 
             }
         }

@@ -1,0 +1,60 @@
+﻿@using AmadonStandardLib.Classes;
+@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.UbClasses;
+@using Blazorise
+
+<h5>Translations to Show</h5>
+
+@if (translationListCreated)
+{
+    <Table Borderless="true" Striped="true">
+        <TableBody>
+            <TableRow>
+                <TableRowCell Class="text-white bg-dark">
+                    @for (int i = 0; i <= firstTransColumnNo; i++)
+                    {
+                        TranslationToShow trans = StaticObjects.Parameters.TranslationsToShow[i];
+                        <Check TValue="bool" @bind-Checked="@trans.Show">@trans.LanguageName</Check>
+                    }
+                </TableRowCell>
+                <TableRowCell Class="text-white bg-dark">
+                    @for (int i = firstTransColumnNo + 1; i < StaticObjects.Parameters.TranslationsToShow.Count; i++)
+                    {
+                        TranslationToShow trans = StaticObjects.Parameters.TranslationsToShow[i];
+                        <Check TValue="bool" @bind-Checked="@trans.Show">@trans.LanguageName</Check>
+                    }
+                </TableRowCell>
+            </TableRow>
+        </TableBody>
+    </Table>
+
+}
+
+@code {
+    private bool translationListCreated = false;
+    private int firstTransColumnNo = 0;
+
+    private void HandleTranslationsListInitialized()
+    {
+        foreach (Translation trans in StaticObjects.Book.Translations)
+        {
+            TranslationToShow transToShow = StaticObjects.Parameters.TranslationsToShow.Find(t => t.LanguageID == trans.LanguageID);
+            if (transToShow == null)
+            {
+                StaticObjects.Parameters.TranslationsToShow.Add(new TranslationToShow() { LanguageID = trans.LanguageID, LanguageName = trans.Description });
+            }
+            StaticObjects.Parameters.TranslationsToShow.Sort((t1, t2) => t1.LanguageName.CompareTo(t2.LanguageName));
+        }
+        firstTransColumnNo = Convert.ToInt32(Math.Ceiling(((double)StaticObjects.Parameters.TranslationsToShow.Count) / 2.0));
+        translationListCreated = true;
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        AmadonEvents.OnTranslationsListInitialized += HandleTranslationsListInitialized;
+    }
+
+
+}

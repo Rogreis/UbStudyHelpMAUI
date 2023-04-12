@@ -3,7 +3,7 @@ using AmadonStandardLib.UbClasses;
 using Lucene.Net.Documents;
 using System;
 using System.Collections.Generic;
-using static AmadonStandardLib.Classes.EventsControl;
+using static AmadonStandardLib.Classes.LibraryEventsControl;
 
 namespace AmadonStandardLib.Classes
 {
@@ -145,7 +145,7 @@ namespace AmadonStandardLib.Classes
     /// <summary>
     /// Implement the delegates and fire routines for the several events used
     /// </summary>
-    public static class EventsControl
+    public static class LibraryEventsControl
     {
 
         public static event RedrawTextDelegate? RedrawText = null;

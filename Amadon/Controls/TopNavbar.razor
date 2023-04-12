@@ -46,7 +46,7 @@
 
             <form class="d-flex">
                 <input class="form-control me-2" type="text" placeholder="Quick Search">
-                <button class="btn btn-primary" type="button">Search</button>
+                <button class="btn btn-primary" @onclick="QuickSearch" type="button">Search</button>
             </form>
 
         </div>
@@ -55,16 +55,21 @@
 
 @code
 {
-    private void LinkToTOC() => AmadonEvents.LeftColumnControl("toc");
+    private void LinkToTOC() => AmadonEvents.TopNavCommand("toc");
 
-    private void LinkToIndex() => AmadonEvents.LeftColumnControl("index");
+    private void LinkToIndex() => AmadonEvents.TopNavCommand("index");
 
-    private void LinkToSearch() => AmadonEvents.LeftColumnControl("search");
+    private void LinkToSearch() => AmadonEvents.TopNavCommand("search");
 
-    private void LinkToTrack() => AmadonEvents.LeftColumnControl("track");
+    private void LinkToTrack() => AmadonEvents.TopNavCommand("track");
 
-    private void LinkToSettings() => AmadonEvents.LeftColumnControl("settings");
+    private void LinkToSettings() => AmadonEvents.TopNavCommand("settings");
 
-    private void LinkToHelp() => AmadonEvents.LeftColumnControl("help");
+    private void LinkToHelp() => AmadonEvents.TopNavCommand("help");
+
+    private void QuickSearch()
+    {
+        NavigationManager.NavigateTo("/search");
+    }
 
 }

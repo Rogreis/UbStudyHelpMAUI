@@ -18,6 +18,13 @@ namespace AmadonStandardLib.Classes
         LeftMiddleRightCompare = 4
     }
 
+    public class TranslationToShow
+    {
+        public short LanguageID { get; set; }
+        public string LanguageName { get; set; } = "";
+        public bool Show { get; set; } = false;
+    }
+
 
 
     public class Parameters
@@ -48,6 +55,8 @@ namespace AmadonStandardLib.Classes
         public bool ShowMiddle { get; set; } = true;
         public bool ShowRight { get; set; } = true;
         public bool ShowCompare { get; set; } = false;
+
+        public List<TranslationToShow> TranslationsToShow { get; set; } = new List<TranslationToShow>();
 
         [JsonIgnore]
         public TextShowOption TextShowOption

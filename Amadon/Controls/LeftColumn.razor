@@ -1,7 +1,11 @@
-﻿<div id="leftColumn" class="black splitLeft left p-4 bg_left text-white overflow-auto">
+﻿@*<div id="leftColumn" class="black splitLeft left p-4 bg_left text-white overflow-auto">
+                             "col-md-3 bg_left splitLeft left bg_left text-white overflow-auto"
+*@
+
+<div id="leftColumn">
     @if (ControlName == "settings")
     {
-        <Amadon.Controls.Settings></Amadon.Controls.Settings>
+        <Amadon.Controls.SettingsFields></Amadon.Controls.SettingsFields>
      }
     else if (ControlName == "search")
     {
@@ -17,7 +21,7 @@
     }
     else if (ControlName == "index")
     {
-        <Amadon.Controls.TubIndex></Amadon.Controls.TubIndex>
+        <TubIndex></TubIndex>
     }
     else if (ControlName == "toc")
     {
@@ -33,7 +37,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AmadonEvents.OnLeftColumnControl += AmadonEvents_OnLeftColumnControl;
+        AmadonEvents.OnTopNavCommand += AmadonEvents_OnLeftColumnControl;
         await base.OnInitializedAsync();
         return;
     }

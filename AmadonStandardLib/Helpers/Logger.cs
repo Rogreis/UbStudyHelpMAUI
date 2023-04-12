@@ -16,7 +16,7 @@ namespace AmadonStandardLib.Helpers
 
         public const string FileName= "Amadon.log";
 
-        public static string PathLog { get; set; }
+        public static string? PathLog { get; set; }
 
         private readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -113,7 +113,7 @@ namespace AmadonStandardLib.Helpers
         {
             // https://learn.microsoft.com/en-us/dotnet/maui/user-interface/pop-ups?view=net-maui-7.0
             _logger.Error(message);
-            EventsControl.FireFatalError(message);
+            LibraryEventsControl.FireFatalError(message);
         }
 
 
@@ -137,7 +137,7 @@ namespace AmadonStandardLib.Helpers
         public void NonFatalError(string message)
         {
             _logger.Error(message);
-            EventsControl.FireError(message);
+            LibraryEventsControl.FireError(message);
         }
 
 

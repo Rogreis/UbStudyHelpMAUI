@@ -40,11 +40,11 @@ namespace AmadonStandardLib.InterchangeData
 
         public static void DumpProperties(InterchangeDataBase obj)
         {
-            EventsControl.FireSendMessage("");
-            EventsControl.FireSendMessage("»»»» Properties dump: »»»»");
+            LibraryEventsControl.FireSendMessage("");
+            LibraryEventsControl.FireSendMessage("»»»» Properties dump: »»»»");
             if (obj == null)
             {
-                EventsControl.FireSendMessage("null object");
+                LibraryEventsControl.FireSendMessage("null object");
                 return;
             }
 
@@ -57,22 +57,22 @@ namespace AmadonStandardLib.InterchangeData
 
                 if (value.GetType().ToString().StartsWith("System.Collections.Generic.List`1[AmadonStandardLib.InterchangeData.SearchResult"))
                 {
-                    EventsControl.FireSendMessage("Search results:");
+                    LibraryEventsControl.FireSendMessage("Search results:");
                     foreach (SearchResult o in (List<SearchResult>)value)
                     {
-                        EventsControl.FireSendMessage($"   {o}");
+                        LibraryEventsControl.FireSendMessage($"   {o}");
                     }
                 } else if (property.PropertyType.GetInterfaces().ToList().Contains(typeof(IList)))
                 {
-                    EventsControl.FireSendMessage("List results:");
+                    LibraryEventsControl.FireSendMessage("List results:");
                     foreach (object o in (IList)value)
                     {
-                        EventsControl.FireSendMessage($"   {o}");
+                        LibraryEventsControl.FireSendMessage($"   {o}");
                     }
                 }
                 else
                 {
-                    EventsControl.FireSendMessage(property.Name + ": " + value);
+                    LibraryEventsControl.FireSendMessage(property.Name + ": " + value);
                 }
             }
         }

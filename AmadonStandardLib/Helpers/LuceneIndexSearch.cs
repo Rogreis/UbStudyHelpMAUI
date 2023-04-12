@@ -38,10 +38,10 @@ namespace AmadonStandardLib.Classes
                 System.IO.Directory.CreateDirectory(IndexPath);
                 if (System.IO.Directory.GetFiles(IndexPath, "*.*").Length > 4)
                 {
-                    EventsControl.FireSendMessage("UbIndex found.");
+                    LibraryEventsControl.FireSendMessage("UbIndex found.");
                     return true;
                 }
-                EventsControl.FireSendMessage($"Recreating index");
+                LibraryEventsControl.FireSendMessage($"Recreating index");
 
                 luceneIndexDirectory = FSDirectory.Open(IndexPath);
 
@@ -67,13 +67,13 @@ namespace AmadonStandardLib.Classes
                 //writer.PrepareCommit();
                 //writer.Commit();
                 writer.Dispose();
-                EventsControl.FireSendMessage("UbIndex created.");
+                LibraryEventsControl.FireSendMessage("UbIndex created.");
                 return true;
             }
             catch (Exception ex)
             {
                 StaticObjects.Logger.Error("Error creating Search Index for UB Index.", ex);
-                EventsControl.FireSendMessage("Creating Search Index for UB Index", ex);
+                LibraryEventsControl.FireSendMessage("Creating Search Index for UB Index", ex);
                 return false;
             }
         }
@@ -87,7 +87,7 @@ namespace AmadonStandardLib.Classes
                 {
                     string message = "Failure generating index for " + IndexPath;
                     StaticObjects.Logger.NonFatalError(message);
-                    EventsControl.FireSendMessage(message);
+                    LibraryEventsControl.FireSendMessage(message);
                     return false;
                 }
 
@@ -127,7 +127,7 @@ namespace AmadonStandardLib.Classes
             catch (Exception ex)
             {
                 StaticObjects.Logger.Error("Error executing Index Search.", ex);
-                EventsControl.FireSendMessage("Executing Index Search", ex);
+                LibraryEventsControl.FireSendMessage("Executing Index Search", ex);
                 searchIndexData.ErrorMessage = ex.Message;
                 return false;
             }

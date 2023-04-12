@@ -46,7 +46,7 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                EventsControl.FireSendUserAndLogMessage($"Fetch Error, repository= {repo.Head.FriendlyName}: ", ex);
+                LibraryEventsControl.FireSendUserAndLogMessage($"Fetch Error, repository= {repo.Head.FriendlyName}: ", ex);
                 return false;
             }
         }
@@ -110,15 +110,15 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                EventsControl.FireSendUserAndLogMessage($"Pull Error, repository= {repositoryPath}: ", ex);
-                EventsControl.FireSendUserAndLogMessage($"Check your internet connection");
+                LibraryEventsControl.FireSendUserAndLogMessage($"Pull Error, repository= {repositoryPath}: ", ex);
+                LibraryEventsControl.FireSendUserAndLogMessage($"Check your internet connection");
                 return true; // Pocess continues, pull errors  are ignored
             }
         }
 
         private static void CheckoutProgress(string path, int completedSteps, int totalSteps)
         {
-            EventsControl.FireSendMessage($"Checkout progress: {completedSteps} of {totalSteps}");
+            LibraryEventsControl.FireSendMessage($"Checkout progress: {completedSteps} of {totalSteps}");
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                EventsControl.FireSendUserAndLogMessage($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
+                LibraryEventsControl.FireSendUserAndLogMessage($"Checkout Error, repository= {repositoryPath}, branch= {branchName}: ", ex);
                 return false;
             }
         }
@@ -173,7 +173,7 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                EventsControl.FireSendUserAndLogMessage($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
+                LibraryEventsControl.FireSendUserAndLogMessage($"Clone Error, repository= {repositoryPath}, sourceUrl= {sourceUrl}: ", ex);
                 return false;
             }
         }

@@ -223,7 +223,7 @@ namespace AmadonStandardLib.UbClasses
             }
             catch (Exception ex)
             {
-                EventsControl.FireFatalError($"Fatal error in translation data {ex.Message}");
+                LibraryEventsControl.FireFatalError($"Fatal error in translation data {ex.Message}");
                 return false;
             }
 

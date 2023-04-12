@@ -1,4 +1,4 @@
-﻿@page "/xx"
+﻿@page "/mainpage"
 @using Amadon.Controls;
 @using AmadonBlazorLibrary.Data;
 @using AmadonStandardLib.Classes;
@@ -170,7 +170,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        EventsControl.SendMessage += HandleSendMessage;
+        LibraryEventsControl.SendMessage += HandleSendMessage;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

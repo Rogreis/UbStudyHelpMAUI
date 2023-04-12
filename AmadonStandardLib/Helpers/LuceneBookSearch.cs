@@ -75,14 +75,14 @@ namespace AmadonStandardLib.Classes
             {
                 return true;
             }
-            EventsControl.FireSendMessage($"Recreating search index from {data.Translation.Description}");
+            LibraryEventsControl.FireSendMessage($"Recreating search index from {data.Translation.Description}");
 
             try
             {
                 if (data == null || data.Translation == null)
                 {
                     StaticObjects.Logger.Error("Search error: Data or Translation null");
-                    EventsControl.FireSendMessage("Search error: Data or Translation null");
+                    LibraryEventsControl.FireSendMessage("Search error: Data or Translation null");
                     return false;
                 }
                 if (!System.IO.Directory.Exists(IndexPath))
@@ -99,7 +99,7 @@ namespace AmadonStandardLib.Classes
                 for (short paperNo = 0; paperNo <= 196; paperNo++)
                 {
                     Paper paper = data.Translation.Paper(paperNo);
-                    EventsControl.FireSendMessage($"Indexing paper {paperNo}");
+                    LibraryEventsControl.FireSendMessage($"Indexing paper {paperNo}");
                     foreach (Paragraph paragraph in paper.Paragraphs)
                     {
                         if (!paragraph.IsDivider)
@@ -123,7 +123,7 @@ namespace AmadonStandardLib.Classes
                 System.IO.DirectoryInfo directoryInfo = new System.IO.DirectoryInfo(IndexPath);
                 directoryInfo.Delete(true);
                 StaticObjects.Logger.Error("Creating Book Search Data for " + IndexPath, ex);
-                EventsControl.FireSendMessage("Creating Book Search Data for ", ex);
+                LibraryEventsControl.FireSendMessage("Creating Book Search Data for ", ex);
                 return false;
             }
         }
@@ -173,7 +173,7 @@ namespace AmadonStandardLib.Classes
                 {
                     string message = "Book Index not created for " + IndexPath;
                     StaticObjects.Logger.NonFatalError(message);
-                    EventsControl.FireSendMessage(message);
+                    LibraryEventsControl.FireSendMessage(message);
                 }
 
                 Analyzer analyzer = new StandardAnalyzer(LuceneVersion.LUCENE_48);
@@ -226,7 +226,7 @@ namespace AmadonStandardLib.Classes
             {
                 searchData.ErrorMessage = ex.Message;
                 StaticObjects.Logger.Error("Error executing Search.", ex);
-                EventsControl.FireSendMessage("Executing Search", ex);
+                LibraryEventsControl.FireSendMessage("Executing Search", ex);
                 return false;
             }
         }
