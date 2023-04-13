@@ -1,7 +1,10 @@
 ﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.UbClasses;
+using LibGit2Sharp;
 using System;
 using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using static Lucene.Net.Queries.Function.ValueSources.MultiFunction;
 using static System.Environment;
 
@@ -40,7 +43,16 @@ namespace AmadonStandardLib.Helpers
             {
                 if (StaticObjects.Book.FormatTableObject == null)
                 {
-                    StaticObjects.Book.FormatTableObject = new FormatTable(dataFiles.GetFormatTable());
+                    string? json = dataFiles.GetFormatTable();
+                    if (json != null) 
+                    {
+                        StaticObjects.Book.FormatTableObject = new FormatTable(json);
+                    }
+                    else
+                    {
+                        StaticObjects.Logger.Error($"Missing format table. May be you do not have the correct data to use this tool.");
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -65,78 +77,51 @@ namespace AmadonStandardLib.Helpers
                 StaticObjects.Logger.Error($"Non existing translation: {translationId}");
                 return false;
             }
-            LibraryEventsControl.FireSendUserAndLogMessage($"Translation file read: {trans.Description}");
-            if (trans.IsEditingTranslation)
-            {
-                LibraryEventsControl.FireSendUserAndLogMessage($"Getting editing translation {trans.Description}");
-                LibraryEventsControl.FireSendUserAndLogMessage("Checking folders for editing translation");
-                if (!Directory.Exists(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
-                {
-                    StaticObjects.Logger.Error("There is no repository set for editing translation");
-                    return false;
-                }
-                if (!GitHelper.Instance.IsValid(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
-                {
-                    StaticObjects.Logger.Error($"Folder is not a valid respository: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
-                    return false;
-                }
-                LibraryEventsControl.FireSendUserAndLogMessage("Found a valid repository");
-                // Format table must exist for editing translation
-                if (!GetFormatTable(dataFiles))
-                {
-                    return false;
-                }
-            }
+            //LibraryEventsControl.FireSendUserAndLogMessage($"Translation file read: {trans.Description}");
+            //if (trans.IsEditingTranslation)
+            //{
+            //    LibraryEventsControl.FireSendUserAndLogMessage($"Getting editing translation {trans.Description}");
+            //    LibraryEventsControl.FireSendUserAndLogMessage("Checking folders for editing translation");
+            //    if (!Directory.Exists(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
+            //    {
+            //        StaticObjects.Logger.Error("There is no repository set for editing translation");
+            //        return false;
+            //    }
+            //    if (!GitHelper.Instance.IsValid(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
+            //    {
+            //        StaticObjects.Logger.Error($"Folder is not a valid respository: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
+            //        return false;
+            //    }
+            //    LibraryEventsControl.FireSendUserAndLogMessage("Found a valid repository");
+            //    // Format table must exist for editing translation
+            //    if (!GetFormatTable(dataFiles))
+            //    {
+            //        return false;
+            //    }
+            //}
             return trans.CheckData();
         }
 
-        private static bool VerifyRepository(string repository, string url, string? branch = null)
+        /// <summary>
+        /// Downlaod a file from github
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private async Task DownloadFileFromGitHubAsync(string url, string filePath)
         {
-            try
+            using (HttpClient client = new HttpClient())
             {
-                LibraryEventsControl.FireSendUserAndLogMessage($"Verifying repository: {repository}");
-                if (!GitHelper.Instance.IsValid(repository))
-                {
-                    LibraryEventsControl.FireSendUserAndLogMessage("Getting translations from server... (it can take longer)");
-                    if (!GitHelper.Instance.Clone(url, repository))
-                    {
-                        LibraryEventsControl.FireSendUserAndLogMessage("Getting translations failed");
-                        return false;
-                    }
-                }
-                else
-                {
-                    if (branch != null)
-                    {
-                        LibraryEventsControl.FireSendUserAndLogMessage("Updating translations text... (it can take longer)");
-                        if (!GitHelper.Instance.Checkout(repository, branch))
-                        {
-                            LibraryEventsControl.FireSendUserAndLogMessage("Updating translations text failed");
-                            return false;
-                        }
-                    }
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                byte[] fileContents = await response.Content.ReadAsByteArrayAsync();
 
-                    LibraryEventsControl.FireSendUserAndLogMessage("Updating translations text... (it can take longer)");
-                    if (!GitHelper.Instance.Pull(repository))
-                    {
-                        LibraryEventsControl.FireSendUserAndLogMessage("Updating translations text failed");
-                        return false;
-                    }
-                }
-
-                return true;
+                await File.WriteAllBytesAsync(filePath, fileContents);
             }
-            catch (Exception ex)
-            {
-                string message = $"Could not verify repository {repository}";
-                StaticObjects.Logger.Error(message, ex);
-                LibraryEventsControl.FireSendUserAndLogMessage(message);
-                return false;
-            }
-            // Verify respository existence
         }
 
-        /// <summary>
+
+        ///// <summary>
         /// Initialize the log object
         /// </summary>
         /// <returns></returns>
@@ -190,7 +175,6 @@ namespace AmadonStandardLib.Helpers
 
                 // This application has a differente location for TUB Files
                 StaticObjects.Parameters.TUB_Files_RepositoryFolder = MakeProgramDataFolder("TUB_Files");
-                StaticObjects.Parameters.EditParagraphsRepositoryFolder = MakeProgramDataFolder("PtAlternative");
                 LibraryEventsControl.FireSendUserAndLogMessage($"Parameters started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
                 Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
 
@@ -199,7 +183,7 @@ namespace AmadonStandardLib.Helpers
             catch (Exception ex)
             {
                 string message = "Could not initialize parameters";
-                LibraryEventsControl.FireSendUserAndLogMessage(message);
+                LibraryEventsControl.FireSendUserAndLogMessage(message, ex);
                 return false;
             }
         }
@@ -209,9 +193,8 @@ namespace AmadonStandardLib.Helpers
         /// </summary>
         /// <param name="initEditRepository"></param>
         /// <returns></returns>
-        public static bool Repositories(bool recreate = false)
+        public static bool VerifyDataFolder(bool recreate = false)
         {
-            GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
             StaticObjects.Book = new Book();
 
             if (recreate)
@@ -222,42 +205,29 @@ namespace AmadonStandardLib.Helpers
                 }
                 catch (Exception ex)
                 {
-                    LibraryEventsControl.FireSendUserAndLogMessage($"Failure removing repository not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}", ex);
-                    return false;
-                }
-                try
-                {
-                    if (StaticObjects.Parameters.IsEditingEnabled)
-                    {
-                        Directory.Delete(StaticObjects.Parameters.EditParagraphsRepositoryFolder, true);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LibraryEventsControl.FireSendUserAndLogMessage($"Failure removing repository not verified: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}", ex);
+                    LibraryEventsControl.FireSendUserAndLogMessage($"Failure removing data folder not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}", ex);
                     return false;
                 }
             }
 
-            // Verify respository existence
-            if (!VerifyRepository(StaticObjects.Parameters.TUB_Files_RepositoryFolder, StaticObjects.Parameters.TUB_Files_Url))
+            try
             {
-                LibraryEventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}");
+                LibraryEventsControl.FireSendUserAndLogMessage($"Verifying data folder: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}");
+                if (!Directory.Exists(StaticObjects.Parameters.TUB_Files_RepositoryFolder))
+                {
+                    StaticObjects.Logger.Error("There is no repository set for editing translation");
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                string message = $"Could not verify data folder {StaticObjects.Parameters.TUB_Files_RepositoryFolder}";
+                StaticObjects.Logger.Error(message, ex);
+                LibraryEventsControl.FireSendUserAndLogMessage(message);
                 return false;
             }
-
-
-            // Edit repositpry is only checked when editing translation is used
-            LibraryEventsControl.FireSendUserAndLogMessage($"Is editing enabled: {StaticObjects.Parameters.IsEditingEnabled}");
-            if (StaticObjects.Parameters.IsEditingEnabled)
-            {
-                if (!VerifyRepository(StaticObjects.Parameters.EditParagraphsRepositoryFolder, StaticObjects.Parameters.EditParagraphsUrl))
-                {
-                    LibraryEventsControl.FireSendUserAndLogMessage($"Repository not verified: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
-                    return false;
-                }
-            }
-            return true;
         }
 
 

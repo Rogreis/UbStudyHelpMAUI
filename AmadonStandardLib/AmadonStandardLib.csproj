@@ -18,6 +18,7 @@
     <Compile Remove="Classes\GetDataFilesMAUI.cs" />
     <Compile Remove="Classes\Initializer.cs" />
     <Compile Remove="Classes\LogMAUI.cs" />
+    <Compile Remove="Helpers\GitHelper.cs" />
     <Compile Remove="UbClasses\GetDataFiles.cs" />
   </ItemGroup>
 

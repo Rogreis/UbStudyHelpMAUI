@@ -142,20 +142,6 @@ namespace AmadonStandardLib.Helpers
             File.WriteAllText(path, jsonAnnotations);
         }
 
-        /// <summary>
-        /// Loads a list of all TOC/Annotation done for a paper
-        /// </summary>
-        /// <param name="translationId"></param>
-        /// <returns></returns>
-        protected string? LoadJsonAnnotations(short translationId)
-        {
-            string pathAnnotationsFile = TranslationAnnotationsJsonFilePath(translationId);
-            if (File.Exists(pathAnnotationsFile))
-            {
-                return File.ReadAllText(pathAnnotationsFile);
-            }
-            return null;
-        }
 
         #endregion
 
@@ -241,7 +227,7 @@ namespace AmadonStandardLib.Helpers
             // FIX ME: IsEditingTranslation is hard codded here, but needs to come from repository
             if (!translation.IsEditingTranslation)
             {
-                string json = GetFile(translationId, true);
+                string? json = GetFile(translationId, true);
                 translation.GetPapersData(json);
 
                 // Loading annotations

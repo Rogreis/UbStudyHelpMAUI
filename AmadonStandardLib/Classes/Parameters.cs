@@ -177,21 +177,6 @@ namespace AmadonStandardLib.Classes
         public string TUB_Files_Url { get; set; } = "https://github.com/Rogreis/TUB_Files.git";
 
         /// <summary>
-        /// Is there any editing translation enabled for this user?
-        /// </summary>
-        public bool IsEditingEnabled { get; set; } = false;
-
-        /// <summary>
-        /// Work local repository for paragraphs
-        /// </summary>
-        public string? EditParagraphsRepositoryFolder { get; set; } = null;
-
-        /// <summary>
-        /// Github source for editing translation
-        /// </summary>
-        public string EditParagraphsUrl { get; set; } = "https://github.com/Rogreis/PtAlternative.git";
-
-        /// <summary>
         /// Full book pages local repository
         /// </summary>
         public string? EditBookRepositoryFolder { get; set; } = null;

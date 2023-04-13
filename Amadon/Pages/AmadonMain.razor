@@ -17,21 +17,10 @@
 
     <Row>
         <Column ColumnSize="ColumnSize.Is12">
-            @switch (InitializationStatus)
-            {
-                case Status.NotInitialized:
-                case Status.LogInitialized:
-                case Status.ParametersInitialized:
-                    <LogControl @ref="logViewer"></LogControl>
-                    break;
-                case Status.RepositoryInitialized:
-                    <TranslationsChoice></TranslationsChoice>
-                    break;
-                case Status.ReadyToGo:
-                    <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
-                    <BookText></BookText>
-                    break;
-            }
+            <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
+
+            <BookText></BookText>
+
             <Alert Color="@AlertColor" @bind-Visible="@alertVisible">
                 <AlertDescription>
                     @AlertDescription
@@ -47,37 +36,6 @@
 
 </Container>
 
-@*<Container Class="div2" Border="Border.Danger.OnAll.Is4">
-</Container>
-*@
-
-
-    <Modal @ref="modalRef" Animated="animation" AnimationDuration="animationDuration" Border="Border.Is4.Rounded.Warning">
-        <ModalContent Size="@modalSize" Centered="@centered">
-            <ModalHeader Class="bg-primary">
-                <ModalTitle>
-                <Icon Name="IconName.InfoCircle" />
-                    Get data
-                </ModalTitle>
-                <CloseButton />
-            </ModalHeader>
-            <ModalBody MaxHeight="@maxHeight" Class="bg-dark text-white">
-
-                @switch (InitializationStatus)
-                {
-                    case Status.RepositoryInitialized:
-                        <TranslationsChoice></TranslationsChoice>
-                        break;
-                }
-
-            </ModalBody>
-
-            <ModalFooter Class="bg-dark">
-                    <Button Color="Color.Secondary" Clicked="@HideModalCancel">Cancel</Button>
-                    <Button Color="Color.Primary" Clicked="@HideModalOk">Save Changes</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
 
 @code {
 
@@ -242,7 +200,7 @@
                     }
                     break;
                 case Status.ParametersInitialized:
-                    ret = await InitializationService.InitRepositories(recreate);
+                    ret = await InitializationService.VerifyDataFolder(recreate);
                     if (!ret)
                     {
                         HandleSendMessage("Repositories initialization failed");

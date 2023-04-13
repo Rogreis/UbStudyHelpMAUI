@@ -39,7 +39,7 @@
         NotInitialized = 0,
         LogInitialized= 1,
         ParametersInitialized= 2,
-        RepositoryInitialized= 3,
+        DataFolderVerified= 3,
         WaitingTranslationChoice= 4,
         TranslationsChoiceDone= 5
     }
@@ -138,7 +138,7 @@
                     }
                     break;
                 case Status.ParametersInitialized:
-                    ret = await InitializationService.InitRepositories(recreate);
+                    ret = await InitializationService.VerifyDataFolder(recreate);
                     if (!ret)
                     {
                         HandleSendMessage("Repositories initialization failed");
@@ -149,11 +149,11 @@
                     else
                     {
                         HandleSendMessage("Local copy of translations checked.");
-                        InitializationStatus = Status.RepositoryInitialized;
+                        InitializationStatus = Status.DataFolderVerified;
                     }
                     break;
 
-                case Status.RepositoryInitialized:
+                case Status.DataFolderVerified:
                     HandleSendMessage("Local copy of translations checked.");
                     ret = await InitializationService.InitTranslations();
                     if (ret)

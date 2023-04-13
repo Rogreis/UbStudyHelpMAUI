@@ -83,29 +83,12 @@ namespace AmadonStandardLib.Helpers
                 return translation;
             }
 
-            // FIX ME: IsEditingTranslation is hard codded here, but needs to be 
-            if (translationId == 2)
-            {
-                Translation translatioEdit = translation as Translation;
-                if (translatioEdit == null)
-                {
-                    StaticObjects.Book.Translations.Remove(translation);
-                    translatioEdit = new Translation(translation, StaticObjects.Parameters.EditParagraphsRepositoryFolder);
-                    StaticObjects.Book.Translations.Add(translatioEdit);
-                }
-                translatioEdit.IsEditingTranslation = true;
-                //translatioEdit.Annotations = null;
-                return translation;
-            }
-            else
-            {
-                string json = GetFile(translationId, true);
-                translation.GetData(json);
+            string json = GetFile(translationId, true);
+            translation.GetData(json);
 
-                // Loading annotations
-                //translation.Annotations = null;
-                return translation;
-            }
+            // Loading annotations
+            //translation.Annotations = null;
+            return translation;
 
 
         }
@@ -129,26 +112,6 @@ namespace AmadonStandardLib.Helpers
                 StaticObjects.Logger.Info("File exists: " + formatTableZippedPath);
                 byte[] bytes = File.ReadAllBytes(formatTableZippedPath);
                 return BytesToString(bytes);
-            }
-            catch (Exception ex)
-            {
-                StaticObjects.Logger.Error("GetFormatTable", ex);
-                return null;
-            }
-        }
-
-
-        /// <summary>
-        /// Get the json string for a paper notes
-        /// </summary>
-        /// <returns></returns>
-        public string? GetNotes(short paperNo)
-        {
-            try
-            {
-                string filePath = Path.Combine(StaticObjects.Parameters.EditParagraphsRepositoryFolder, $@"{Paragraph.FolderPath(paperNo)}\Notes.json");
-                string jsonString = File.ReadAllText(filePath);
-                return "";
             }
             catch (Exception ex)
             {
