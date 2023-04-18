@@ -14,10 +14,9 @@
 }
 else
 {
-    <Amadon.Controls.TopNavbar></Amadon.Controls.TopNavbar>
     <div class="row ">
         <div class="col-md-3 bg_left splitLeft left bg_left text-white overflow-auto">
-            <Amadon.Controls.LeftColumn></Amadon.Controls.LeftColumn>
+            <LeftColumn></LeftColumn>
         </div>
         <div class="col-md-9 splitRight right mt-0 bg-dark text-white overflow-auto">
             <BookText></BookText>
@@ -53,6 +52,7 @@ else
     protected void OnInitializationSuccesfully()
     {
         AppInitialized = true;
+        AmadonEvents.TopNavCommand(StaticObjects.Parameters.LastLeftControl);
         StateHasChanged();
     }
 

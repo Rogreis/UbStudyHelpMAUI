@@ -1,23 +1,25 @@
-﻿@*<div id="leftColumn" class="black splitLeft left p-4 bg_left text-white overflow-auto">
+﻿@using Amadon.Controls.Settings
+@using AmadonStandardLib.Helpers;
+@*<div id="leftColumn" class="black splitLeft left p-4 bg_left text-white overflow-auto">
                              "col-md-3 bg_left splitLeft left bg_left text-white overflow-auto"
 *@
 
 <div id="leftColumn">
     @if (ControlName == "settings")
     {
-        <Amadon.Controls.SettingsFields></Amadon.Controls.SettingsFields>
+        <SettingsFields></SettingsFields>
      }
     else if (ControlName == "search")
     {
-        <Amadon.Controls.Search></Amadon.Controls.Search>
+        <Search></Search>
     }
     else if (ControlName == "help")
     {
-        <Amadon.Controls.Help></Amadon.Controls.Help>
+        <HelpControls></HelpControls>
     }
     else if (ControlName == "track")
     {
-        <Amadon.Controls.Track></Amadon.Controls.Track>
+        <Track></Track>
     }
     else if (ControlName == "index")
     {
@@ -25,31 +27,32 @@
     }
     else if (ControlName == "toc")
     {
-        <Amadon.Controls.TableOfContents></Amadon.Controls.TableOfContents>
+        <TableOfContents></TableOfContents>
     }
 </div>
 
 
 @code {
 
-    [Parameter]
-    public string ControlName { get; set; } = "";
+    private string ControlName { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {
-        AmadonEvents.OnTopNavCommand += AmadonEvents_OnLeftColumnControl;
+        AmadonEvents.OnTopNavCommand += AmadonEvents_OnTopNavCommand;
         await base.OnInitializedAsync();
         return;
     }
 
-    private void AmadonEvents_OnLeftColumnControl(string controlName)
+    private void AmadonEvents_OnTopNavCommand(string controlName)
     {
-        ControlName = controlName;
-        StateHasChanged();
+        SetControl(controlName);
     }
 
     public void SetControl(string controlName)
     {
+        ControlName = controlName;
+        StaticObjects.Parameters.LastLeftControl = controlName;
+        StateHasChanged();
     }
 
 

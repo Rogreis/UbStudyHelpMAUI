@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace Amadon
 {
     internal delegate void TopNavCommandDelegate(string controlName);
-    internal delegate void SystemInitializedDelegate(bool success);
     internal delegate void TranslationsListInitializedDelegate();
     internal delegate void InitializationSuccesfullyDelegate();
 
@@ -19,10 +18,6 @@ namespace Amadon
         /// </summary>
         public static event TopNavCommandDelegate OnTopNavCommand;
 
-        /// <summary>
-        /// Informs the system that initiazilation has finished 
-        /// </summary>
-        public static event SystemInitializedDelegate OnSystemInitialized;
 
         /// <summary>
         /// Informs the system that the list of translations has been initialized
@@ -37,11 +32,6 @@ namespace Amadon
         public static void TopNavCommand(string controlName)
         {
             OnTopNavCommand?.Invoke(controlName);
-        }
-
-        public static void SystemInitialized(bool success)
-        {
-            OnSystemInitialized?.Invoke(success);
         }
 
         public static void TranslationsListInitialized()

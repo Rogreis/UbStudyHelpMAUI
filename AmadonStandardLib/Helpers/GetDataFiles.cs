@@ -18,12 +18,13 @@ namespace AmadonStandardLib.Helpers
 
 
         #region Helper functions
+
         /// <summary>
         /// Copy streams
         /// </summary>
         /// <param name="src"></param>
         /// <param name="dest"></param>
-        protected static void CopyTo(Stream src, Stream dest)
+        private static void CopyTo(Stream src, Stream dest)
         {
             byte[] bytes = new byte[4096];
 
@@ -40,7 +41,7 @@ namespace AmadonStandardLib.Helpers
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        protected static string BytesToString(byte[] bytes, bool isZip = true)
+        private static string BytesToString(byte[] bytes, bool isZip = true)
         {
             if (!isZip)
             {
@@ -65,6 +66,24 @@ namespace AmadonStandardLib.Helpers
         #endregion
 
         #region Get Files
+
+        /// <summary>
+        /// Calculate a hash for a file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string CalculateMD5(string filePath)
+        {
+            using (var md5Object = System.Security.Cryptography.MD5.Create())
+            {
+                using (var stream = File.OpenRead(filePath))
+                {
+                    var hash = md5Object.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
+        }
+
 
         /// <summary>
         /// Returns the app data folder compatible with all targets: Android, iOS, macOS, and Windows

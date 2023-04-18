@@ -49,6 +49,12 @@ namespace AmadonStandardLib.Classes
         /// </summary>
         public TOC_Entry Entry { get; set; } = new TOC_Entry(0, 0, 1, 0, 0, 0);
 
+        /// <summary>
+        /// Last controls used
+        /// </summary>
+        public string LastLeftControl { get; set; } = "toc";
+        public string LastRightControl { get; set; } = "";
+
         public short LanguageIDLeftTranslation { get; set; } = 0;
 
         public short LanguageIDRightTranslation { get; set; } = 34;
@@ -138,10 +144,6 @@ namespace AmadonStandardLib.Classes
         public List<string> CloseSearchWords { get; set; } = new List<string>();
 
         public short CurrentTranslation { get; set; } = 0;
-
-        public double AnnotationWindowWidth { get; set; } = 800;
-
-        public double AnnotationWindowHeight { get; set; } = 450;
 
 
 

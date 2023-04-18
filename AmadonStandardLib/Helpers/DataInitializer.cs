@@ -221,7 +221,16 @@ namespace AmadonStandardLib.Helpers
                         bool ret = await GetDataFiles.DownloadBinaryFile(url, localTranslationPath);
                         if (!ret) return ret;
                     }
-                    string json= await GetDataFiles.GetStringFromLocalFile(localTranslationPath);
+
+                    string hash = GetDataFiles.CalculateMD5(localTranslationPath);
+                    if (trans.Hash != hash) 
+                    {
+                        string url = MakeGitHubUrl(MakeTranslationFileName(translationId, "gz"));
+                        bool ret = await GetDataFiles.DownloadBinaryFile(url, localTranslationPath);
+                        if (!ret) return ret;
+                    }
+
+                    string json= await GetDataFiles.GetStringFromZippedFile(localTranslationPath);
                     switch (json)
                     {
                         case GetDataFiles.FileNotFound:
