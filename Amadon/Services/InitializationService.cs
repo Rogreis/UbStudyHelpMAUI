@@ -7,7 +7,7 @@ namespace Amadon.Services
 {
     public static class InitializationService
     {
-        public static bool InitLogger(MauiAppBuilder builder)
+        public static bool InitLogger()
         {
             if (StaticObjects.Logger != null)
             {
@@ -15,7 +15,7 @@ namespace Amadon.Services
             }
             string logFilePath = DataInitializer.GetFullLogPath();
             FileLoggerProvider fileLoggerProvider = new FileLoggerProvider(logFilePath, LogLevel.Information);
-            builder.Logging.AddProvider(fileLoggerProvider).SetMinimumLevel(LogLevel.Debug);
+            //builder.Logging.AddProvider(fileLoggerProvider).SetMinimumLevel(LogLevel.Debug);
             StaticObjects.Logger = new Logger(fileLoggerProvider.CreateLogger("Amadon"));
             return true;
         }

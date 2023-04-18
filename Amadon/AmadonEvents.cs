@@ -10,6 +10,7 @@ namespace Amadon
     internal delegate void TopNavCommandDelegate(string controlName);
     internal delegate void SystemInitializedDelegate(bool success);
     internal delegate void TranslationsListInitializedDelegate();
+    internal delegate void InitializationSuccesfullyDelegate();
 
     internal static class AmadonEvents
     {
@@ -28,6 +29,11 @@ namespace Amadon
         /// </summary>
         public static event TranslationsListInitializedDelegate OnTranslationsListInitialized;
 
+        /// <summary>
+        /// Fired when the initilization has finished succesfully
+        /// </summary>
+        public static event InitializationSuccesfullyDelegate OnInitializationSuccesfully;
+
         public static void TopNavCommand(string controlName)
         {
             OnTopNavCommand?.Invoke(controlName);
@@ -41,6 +47,11 @@ namespace Amadon
         public static void TranslationsListInitialized()
         {
             OnTranslationsListInitialized?.Invoke();
+        }
+
+        public static void InitializationSuccesfully()
+        {
+            OnInitializationSuccesfully?.Invoke();
         }
 
     }

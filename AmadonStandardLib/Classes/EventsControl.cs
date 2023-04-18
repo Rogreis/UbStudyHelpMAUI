@@ -119,6 +119,7 @@ namespace AmadonStandardLib.Classes
 
     public delegate void dlBilingualChanged(bool ShowBilingual);
 
+
     //public delegate void dlFontChanged(ControlsAppearance appearance);
 
     //public delegate void dlAppearanceChanged(ControlsAppearance appearance);

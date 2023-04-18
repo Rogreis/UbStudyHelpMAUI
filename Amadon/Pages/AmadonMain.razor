@@ -1,243 +1,61 @@
-﻿@page "/mainpage"
+﻿@page "/"
 @using Amadon.Controls;
+@using Amadon.Controls.Settings
 @using Amadon.Services;
 @using AmadonStandardLib.Classes;
 @using AmadonStandardLib.Helpers;
 
 @using Blazorise
 
-<Container>
-    <Row>
-        <Amadon.Controls.TopNavbar></Amadon.Controls.TopNavbar>
-
-@*        <Column ColumnSize="ColumnSize.Is12">
-            <Heading Size="HeadingSize.Is3">Div 1 (5% height)</Heading>
-        </Column>
-*@    </Row>
-
-    <Row>
-        <Column ColumnSize="ColumnSize.Is12">
-            <LeftColumn @ref=LeftControl ControlName="settings"></LeftColumn>
-
+<div class="container_fluid  h-100">
+@if (!AppInitialized)
+{
+    <InitializationControl></InitializationControl>
+}
+else
+{
+    <Amadon.Controls.TopNavbar></Amadon.Controls.TopNavbar>
+    <div class="row ">
+        <div class="col-md-3 bg_left splitLeft left bg_left text-white overflow-auto">
+            <Amadon.Controls.LeftColumn></Amadon.Controls.LeftColumn>
+        </div>
+        <div class="col-md-9 splitRight right mt-0 bg-dark text-white overflow-auto">
             <BookText></BookText>
-
-            <Alert Color="@AlertColor" @bind-Visible="@alertVisible">
-                <AlertDescription>
-                    @AlertDescription
-                </AlertDescription>
-                <AlertMessage>
-                    Inicialization ok.
-                </AlertMessage>
-                <CloseButton />
-            </Alert>
-        </Column>
-    </Row>
-
-
-</Container>
+        </div>
+    </div>
+}
+</div>
 
 
 @code {
 
-    enum Status
-    {
-        NotInitialized,
-        LogInitialized,
-        ParametersInitialized,
-        TranslationsListInitialized,
-        WaitingTranslationChoice,
-        TranslationsChoiceDone,
-        ReadyToGo,
-        Error
-    }
 
     // Local blazor components
     private LeftColumn LeftControl;
-    private LogControl logViewer;
 
-    // Page status control
-    private Status InitializationStatus = Status.NotInitialized;
-
-    // Modal parameters
-    private Modal modalRef;
-    private bool centered = false;
-    private ModalSize modalSize = ModalSize.Default;
-    private int? maxHeight = null;
-    private bool animation = true;
-    private int animationDuration = 150;
-
-    // Alert parameters
-    bool alertVisible = false;
-    string AlertDescription = "";
-    string AlertMessage = "";
-    Color AlertColor= Color.Success;
+    private bool AppInitialized = false;
 
 
-    #region Modal routines
-    private Task ShowAlert(Color color, string description, string message)
-    {
-        this.AlertColor = color;
-        this.AlertDescription = description;
-        this.AlertMessage = message;
-        this.alertVisible = true;
-        return modalRef.Show();
-    }
-
-
-    private Task ShowModal(ModalSize modalSize, int? maxHeight = null, bool centered = false)
-    {
-        this.centered = centered;
-        this.modalSize = modalSize;
-        this.maxHeight = maxHeight;
-        return modalRef.Show();
-    }
-
-    private Task HideModalCancel()
-    {
-        InitializationStatus = Status.Error;
-        return modalRef.Hide();
-    }
-
-    private async Task HideModalOk()
-    {
-        switch(InitializationStatus)
-        {
-            case Status.WaitingTranslationChoice:
-                InitializationStatus = Status.TranslationsChoiceDone;
-                Status status = await DoInitialization();
-                break;
-            default:
-                InitializationStatus = Status.Error;
-                await ShowAlert(Color.Danger, "Error", "Translations choice cancelled. Cannot continue!");
-                break;
-
-        }
-        await modalRef.Hide();
-        return;
-    }
-    #endregion
-
-    private void HandleSendMessage(string Message)
-    {
-        //if (Status == Status.InitializedFinished) return;
-        logViewer.AppendLogText(Message);
-        Task.Delay(1);
-        StateHasChanged();
-    }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        LibraryEventsControl.SendMessage += HandleSendMessage;
+        AmadonEvents.OnInitializationSuccesfully += OnInitializationSuccesfully;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //    }
+    //}
+
+    protected void OnInitializationSuccesfully()
     {
-        if (firstRender)
-        {
-            //await ShowModal(ModalSize.Large, 50, true);
-            Status status= await DoInitialization();
-            if (status == Status.Error)
-            {
-                await ShowModal(ModalSize.Large, 50, true);
-            }
-            else
-            {
-                InitializationStatus = Status.ReadyToGo;
-            }
-        }
+        AppInitialized = true;
+        StateHasChanged();
     }
 
-
-    #region Initialization
-
-
-
-    private async Task<Status> DoInitialization(bool recreate = false)
-    {
-        bool errorOcurred = false, ret = false;
-
-        while(!errorOcurred)
-        {
-            switch (InitializationStatus)
-            {
-                case Status.NotInitialized:
-                    ret = InitializationService.CheckLogger();
-                    if (!ret)
-                    {
-                        HandleSendMessage("Init logger failed");
-                        HandleSendMessage("App cannot be started.");
-                        InitializationStatus= Status.Error;
-                        errorOcurred = true;
-                    }
-                    else
-                    {
-                        InitializationStatus = Status.LogInitialized;
-                    }
-                    break;
-                case Status.LogInitialized:
-                    ret = await InitializationService.InitParameters();
-                    if (!ret)
-                    {
-                        HandleSendMessage("Parameters initialization failed");
-                        HandleSendMessage("App cannot be started.");
-                        InitializationStatus = Status.Error;
-                        errorOcurred = true;
-                    }
-                    else
-                    {
-                        InitializationStatus = Status.ParametersInitialized;
-                    }
-                    break;
-                case Status.ParametersInitialized:
-                    ret = await InitializationService.InitTranslationsList();
-                    if (!ret)
-                    {
-                        HandleSendMessage("Translation list initialization failed");
-                        HandleSendMessage("App cannot be started.");
-                        InitializationStatus = Status.Error;
-                        errorOcurred = true;
-                    }
-                    else
-                    {
-                        InitializationStatus = Status.TranslationsListInitialized;
-                    }
-                    break;
-
-                case Status.TranslationsListInitialized:
-                    if (!StaticObjects.Parameters.TranslationsChoiceDone)
-                    {
-                        await ShowModal(ModalSize.Large, 50, true);
-                        return Status.WaitingTranslationChoice;
-                    }
-                    else
-                    {
-                        InitializationStatus = Status.TranslationsChoiceDone;
-                    }
-                    break;
-                case Status.TranslationsChoiceDone:
-                    ret = await InitializationService.InitEachTranslation();
-                    if (!ret)
-                    {
-                        HandleSendMessage("Translation list initialization failed");
-                        HandleSendMessage("App cannot be started.");
-                        InitializationStatus = Status.Error;
-                        errorOcurred = true;
-                    }
-                    else
-                    {
-                        InitializationStatus = Status.TranslationsListInitialized;
-                    }
-                    break;
-            }
-        }
-
-        return InitializationStatus;
-
-    }
-
-
-    #endregion
 
 
 }

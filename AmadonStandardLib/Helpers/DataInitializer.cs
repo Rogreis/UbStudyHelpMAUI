@@ -45,7 +45,8 @@ namespace AmadonStandardLib.Helpers
 
         private static string MakeGitHubUrl(string relativeFilePath)
         {
-            return $"https://github.com/Rogreis/TUB_Files/blob/main/{relativeFilePath}";
+            //return $"https://github.com/Rogreis/TUB_Files/blob/main/{relativeFilePath}";
+            return $"https://raw.githubusercontent.com/Rogreis/TUB_Files/main/{relativeFilePath}";
         }
 
         private static string MakeTranslationFileName(short translationId, string extension = "json")
@@ -173,7 +174,7 @@ namespace AmadonStandardLib.Helpers
                 if (!GetDataFiles.LocalFileExists(localAvailableTranslationsPath))
                 {
                     string url = MakeGitHubUrl(AvailableTranslations);
-                    ret = await GetDataFiles.DownloadBinaryFile(url, localAvailableTranslationsPath);
+                    ret = await GetDataFiles.DownloadTextFileAsync(url, localAvailableTranslationsPath);
                     if (!ret) return ret;
                 }
                 string json= await GetDataFiles.GetStringFromLocalFile(localAvailableTranslationsPath);

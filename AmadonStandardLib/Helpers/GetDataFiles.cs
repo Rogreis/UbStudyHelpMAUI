@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using static System.Environment;
 
 namespace AmadonStandardLib.Helpers
 {
@@ -74,8 +75,35 @@ namespace AmadonStandardLib.Helpers
         /// <returns></returns>
         public static string GetDataFolder()
         {
-            return FileSystem.AppDataDirectory;
+            var commonpath = GetFolderPath(SpecialFolder.CommonApplicationData);
+            return commonpath;
+            //return FileSystem.AppDataDirectory;
         }
+
+        public static async Task<bool> DownloadTextFileAsync(string url, string localFilePath)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string fileContent = await response.Content.ReadAsStringAsync();
+                        File.WriteAllText(localFilePath, fileContent);
+                        return true;
+                    }
+                    LibraryEventsControl.FireSendUserAndLogMessage($"Could not download translation.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LibraryEventsControl.FireSendUserAndLogMessage($"Could not download translation, error: {ex.Message}", ex);
+                return false;
+            }
+        }
+
 
         public static async Task<bool> DownloadBinaryFile(string url, string pathDestination)
         {
@@ -136,7 +164,7 @@ namespace AmadonStandardLib.Helpers
         {
             try
             {
-                if (!File.Exists(pathLocalFile))
+                if (!LocalFileExists(pathLocalFile))
                 {
                     StaticObjects.Logger.Warn($"File not found on local repository: {pathLocalFile}");
                     return Task.FromResult<string>(FileNotFound);
@@ -166,14 +194,14 @@ namespace AmadonStandardLib.Helpers
         //        string json = "";
 
         //        string translationJsonFilePath = TranslationJsonFilePath(translationId);
-        //        if (File.Exists(translationJsonFilePath))
+        //        if (LocalFileExists(translationJsonFilePath))
         //        {
         //            json = File.ReadAllText(translationJsonFilePath);
         //            return json;
         //        }
 
         //        string translationStartupPath = TranslationFilePath(translationId);
-        //        if (File.Exists(translationStartupPath))
+        //        if (LocalFileExists(translationStartupPath))
         //        {
         //            StaticObjects.Logger.Info("File exists: " + translationStartupPath);
         //            byte[] bytes = File.ReadAllBytes(translationStartupPath);
