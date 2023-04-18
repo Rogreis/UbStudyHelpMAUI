@@ -101,7 +101,7 @@ namespace AmadonStandardLib.Helpers
         {
             try
             {
-                string formatTableZippedPath = Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, @"FormatTable.gz");
+                string formatTableZippedPath = Path.Combine(StaticObjects.Parameters.TubDataFolder, @"FormatTable.gz");
 
                 if (!File.Exists(formatTableZippedPath))
                 {

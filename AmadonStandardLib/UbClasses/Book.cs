@@ -19,16 +19,6 @@ namespace AmadonStandardLib.UbClasses
 
         public List<Translation>? Translations { get; set; } = null;
 
-        public List<Translation> ObservableTranslations
-        {
-            get
-            {
-                List<Translation> list = new List<Translation>();
-                list.AddRange(Translations);
-                return list;
-            }
-        }
-
         public FormatTable? FormatTableObject { get; set; } = null;
 
         /// <summary>
@@ -90,100 +80,6 @@ namespace AmadonStandardLib.UbClasses
                 StaticObjects.Logger.Error($"Missing format table. May be you do not have the correct data to use this tool.", ex);
                 return null;
             }
-        }
-
-        private Translation? InitializeTranslation(short id)
-        {
-            if (id < 0) return null;
-            Translation trans = DataFiles.GetTranslation(id);
-            if (trans == null || !trans.CheckData()) return null;
-            return trans;
-        }
-
-
-        /// <summary>
-        /// Inicialize book and 2 translations
-        /// </summary>
-        /// <returns></returns>
-        public bool Inicialize()
-        {
-            try
-            {
-                if (!InicializeTranslations())
-                {
-                    return false;
-                }
-                
-                LeftTranslation = InitializeTranslation(StaticObjects.Parameters.LanguageIDLeftTranslation);
-                MiddleTranslation = InitializeTranslation(StaticObjects.Parameters.LanguageIDMiddleTranslation);
-                RightTranslation = InitializeTranslation(StaticObjects.Parameters.LanguageIDRightTranslation);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                string message = $"Could not initialize translations. See log.";
-                StaticObjects.Logger.Error(message, ex);
-                LibraryEventsControl.FireFatalError(message);
-                return false;
-            }
-        }
-
-
-
-        //public virtual void StoreAnnotations(TOC_Entry entry, List<UbAnnotationsStoreData> annotations)
-        //{
-
-        //}
-
-        public virtual void DeleteAnnotations(TOC_Entry entry)
-        {
-
-        }
-
-        public void SetNewTranslation(Translation translation, bool isLeft = true)
-        {
-            try
-            {
-                if (isLeft)
-                {
-                    StaticObjects.Parameters.LanguageIDLeftTranslation = translation.LanguageID;
-                    LeftTranslation = DataFiles.GetTranslation(translation.LanguageID);
-                    StaticObjects.Logger.IsNull(LeftTranslation, $"Invalid of non existing translation: {translation.LanguageID}");
-                    if (!LeftTranslation.CheckData())
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    StaticObjects.Parameters.LanguageIDRightTranslation = translation.LanguageID;
-                    RightTranslation = DataFiles.GetTranslation(translation.LanguageID);
-                    StaticObjects.Logger.IsNull(RightTranslation, $"Invalid of non existing translation: {translation.LanguageID}");
-                    if (!RightTranslation.CheckData())
-                    {
-                        return;
-                    }
-                }
-                LibraryEventsControl.FireTranslationsChanged();
-            }
-            catch (Exception ex)
-            {
-                string message = $"General error changing translation: {ex.Message}. May be you do not have the correct data to use this tool.";
-                StaticObjects.Logger.Error(message, ex);
-                LibraryEventsControl.FireFatalError("Data not loaded!");
-
-            }
-        }
-
-        //public void StoreAnnotations(TOC_Entry entry, List<UbAnnotationsStoreData> annotations)
-        //{
-        //    //((GetDataFilesCore)DataFiles).StoreAnnotations(entry, annotations);
-        //}
-
-
-        private void EventsControl_AnnotationsChanges(TOC_Entry entry)
-        {
-            //StoreAnnotations(entry, entry.TranslationId == StaticObjects.Parameters.LanguageIDLeftTranslation ? LeftTranslation.Annotations : RightTranslation.Annotations);
         }
 
     }

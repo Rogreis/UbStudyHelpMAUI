@@ -4,7 +4,7 @@ using AmadonStandardLib.InterchangeData;
 using AmadonStandardLib.UbClasses;
 using System.Text.Json;
 
-namespace AmadonBlazorLibrary.Data
+namespace Amadon.Services
 {
     public class TOC_Service
     {

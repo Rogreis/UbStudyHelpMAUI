@@ -2,7 +2,7 @@
 using AmadonStandardLib.InterchangeData;
 using System.Text.Json;
 
-namespace AmadonBlazorLibrary.Data
+namespace Amadon.Services
 {
     public class SearchIndexService
     {

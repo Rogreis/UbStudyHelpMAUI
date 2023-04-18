@@ -1,4 +1,4 @@
-﻿@using AmadonBlazorLibrary.Data;
+﻿@using Amadon.Services;
 @using AmadonStandardLib.Classes;
 @using System.Diagnostics;
 @using AmadonStandardLib.Helpers;
@@ -126,7 +126,7 @@
             await Task.Delay(1);
 
             // Replace Windows directory separator character with macOS directory separator character
-            localReporitoryUrl = $"file:///{parameters.TUB_Files_RepositoryFolder.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}";
+            localReporitoryUrl = $"file:///{parameters.TubDataFolder.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}";
             SwitchParNumber.FieldChanged += ParameterValueChanged;
             SwitchMiddleTranslation.FieldChanged += ParameterValueChanged;
             SwitchRightTranslation.FieldChanged += ParameterValueChanged;
@@ -141,9 +141,20 @@
         StateHasChanged();
     }
 
-    private async void StoreParameters()
+    private async Task StoreParameters()
     {
         bool ret = await InitializationService.StoreParameters();
+    }
+
+    private void ParameterValueChanged()
+    {
+        parameters.ShowParagraphIdentification = SwitchParNumber.GetValue();
+        parameters.UseSerifFont = SwitchSerifFont.GetValue();
+        parameters.ShowMiddle = SwitchMiddleTranslation.GetValue();
+        parameters.ShowCompare = SwitchCompare.GetValue();
+        parameters.UseDarkThemme = SwitchDarkMode.GetValue();
+        bool result = Task.Run(async () => await InitializationService.StoreParameters()).GetAwaiter().GetResult();
+        LibraryEventsControl.FireRedrawText();
     }
 
     private void ShowWarning(string warning)
@@ -151,28 +162,9 @@
     }
 
 
-    private async void ParameterValueChanged()
-    {
-        Diagnostic diagnostic = await InitializationService.InitLeftTranslation(leftTranslationCombo.GetValue());
-        if (diagnostic.IsError) ShowWarning(diagnostic.Message);
-        diagnostic = await InitializationService.InitMiddleTranslation(middleTranslationCombo.GetValue());
-        if (diagnostic.IsError) ShowWarning(diagnostic.Message);
-        diagnostic = await InitializationService.InitRightTranslation(rightTranslationCombo.GetValue());
-        if (diagnostic.IsError) ShowWarning(diagnostic.Message);
-
-
-        parameters.ShowParagraphIdentification = SwitchParNumber.GetValue();
-        parameters.UseSerifFont = SwitchSerifFont.GetValue();
-        parameters.ShowMiddle = SwitchMiddleTranslation.GetValue();
-        parameters.ShowCompare = SwitchCompare.GetValue();
-        parameters.UseDarkThemme = SwitchDarkMode.GetValue();
-        StoreParameters();
-        LibraryEventsControl.FireRedrawText();
-    }
-
     private Task OpenLocalRepository()
     {
-        StaticObjects.OpenLocalFolder(parameters.TUB_Files_RepositoryFolder);
+        StaticObjects.OpenLocalFolder(parameters.TubDataFolder);
         return Task.CompletedTask;
     }
 

@@ -45,7 +45,7 @@ namespace AmadonStandardLib.Classes
 
                 luceneIndexDirectory = FSDirectory.Open(IndexPath);
 
-                string pathFile = Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, "tubIndex_000.json");
+                string pathFile = Path.Combine(StaticObjects.Parameters.TubDataFolder, "tubIndex_000.json");
                 string json = File.ReadAllText(pathFile);
                 List<TubIndex> Indexes = StaticObjects.DeserializeObject<List<TubIndex>>(json);
 

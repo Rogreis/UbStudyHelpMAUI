@@ -4,7 +4,7 @@ using AmadonStandardLib.UbClasses;
 using System.Text;
 using System.Text.Json;
 
-namespace AmadonBlazorLibrary.Data
+namespace Amadon.Services
 {
 
     public class TextService

@@ -1,6 +1,6 @@
 ﻿@page "/mainpage"
 @using Amadon.Controls;
-@using AmadonBlazorLibrary.Data;
+@using Amadon.Services;
 @using AmadonStandardLib.Classes;
 @using AmadonStandardLib.Helpers;
 
@@ -44,9 +44,9 @@
         NotInitialized,
         LogInitialized,
         ParametersInitialized,
-        RepositoryInitialized,
+        TranslationsListInitialized,
         WaitingTranslationChoice,
-        TranslationsInitialized,
+        TranslationsChoiceDone,
         ReadyToGo,
         Error
     }
@@ -103,7 +103,7 @@
         switch(InitializationStatus)
         {
             case Status.WaitingTranslationChoice:
-                InitializationStatus = Status.TranslationsInitialized;
+                InitializationStatus = Status.TranslationsChoiceDone;
                 Status status = await DoInitialization();
                 break;
             default:
@@ -151,16 +151,6 @@
 
     #region Initialization
 
-    private async Task<bool> DoInitializeTranslations()
-    {
-        Diagnostic diagnostic = await InitializationService.InitLeftTranslation(StaticObjects.Parameters.LanguageIDLeftTranslation);
-        if (diagnostic.IsError) HandleSendMessage(diagnostic.Message);
-        diagnostic = await InitializationService.InitMiddleTranslation(StaticObjects.Parameters.LanguageIDMiddleTranslation);
-        if (diagnostic.IsError) HandleSendMessage(diagnostic.Message);
-        diagnostic = await InitializationService.InitRightTranslation(StaticObjects.Parameters.LanguageIDRightTranslation);
-        if (diagnostic.IsError) HandleSendMessage(diagnostic.Message);
-        return true;
-    }
 
 
     private async Task<Status> DoInitialization(bool recreate = false)
@@ -172,7 +162,7 @@
             switch (InitializationStatus)
             {
                 case Status.NotInitialized:
-                    ret = await InitializationService.InitLooger();
+                    ret = InitializationService.CheckLogger();
                     if (!ret)
                     {
                         HandleSendMessage("Init logger failed");
@@ -200,21 +190,21 @@
                     }
                     break;
                 case Status.ParametersInitialized:
-                    ret = await InitializationService.VerifyDataFolder(recreate);
+                    ret = await InitializationService.InitTranslationsList();
                     if (!ret)
                     {
-                        HandleSendMessage("Repositories initialization failed");
+                        HandleSendMessage("Translation list initialization failed");
                         HandleSendMessage("App cannot be started.");
                         InitializationStatus = Status.Error;
                         errorOcurred = true;
                     }
                     else
                     {
-                        InitializationStatus = Status.RepositoryInitialized;
+                        InitializationStatus = Status.TranslationsListInitialized;
                     }
                     break;
 
-                case Status.RepositoryInitialized:
+                case Status.TranslationsListInitialized:
                     if (!StaticObjects.Parameters.TranslationsChoiceDone)
                     {
                         await ShowModal(ModalSize.Large, 50, true);
@@ -222,34 +212,27 @@
                     }
                     else
                     {
-                        InitializationStatus = Status.TranslationsInitialized;
+                        InitializationStatus = Status.TranslationsChoiceDone;
                     }
-                    await ShowModal(ModalSize.Large, 50, true);
-                    ret = await InitializationService.InitTranslations();
+                    break;
+                case Status.TranslationsChoiceDone:
+                    ret = await InitializationService.InitEachTranslation();
                     if (!ret)
                     {
-                        HandleSendMessage("Translations list initialization failed");
+                        HandleSendMessage("Translation list initialization failed");
                         HandleSendMessage("App cannot be started.");
                         InitializationStatus = Status.Error;
                         errorOcurred = true;
                     }
                     else
                     {
-                        InitializationStatus = Status.TranslationsInitialized;
-                        alertVisible = true;
-                        await Task.Delay(1);
-                        StateHasChanged();
-                        return InitializationStatus;
+                        InitializationStatus = Status.TranslationsListInitialized;
                     }
                     break;
             }
         }
 
         return InitializationStatus;
-
-        //ret = await DoInitializeTranslations();
-        //HandleSendMessage("Init ok");
-        //StaticObjects.InitializationDone = true;
 
     }
 

@@ -209,27 +209,7 @@ namespace AmadonStandardLib.UbClasses
         }
 
 
-        /// <summary>
-        /// Verify is all mandatory data is ok
-        /// </summary>
-        /// <returns></returns>
-        public bool CheckData()
-        {
-            try
-            {
-                StaticObjects.Logger.InInterval(LanguageID, 0, 196, $"Invalid translation number: {LanguageID}");
-                StaticObjects.Logger.IsNull(PaperTranslation, $"Paper name is missing for translation {LanguageID}");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                LibraryEventsControl.FireFatalError($"Fatal error in translation data {ex.Message}");
-                return false;
-            }
-
-        }
-
-
+ 
         public virtual Paper Paper(short paperNo)
         {
             if (this.IsEditingTranslation)
@@ -390,7 +370,7 @@ namespace AmadonStandardLib.UbClasses
         /// <returns></returns>
         public List<TUB_TOC_Entry> GetTranslationIndex(bool forceGeneration = false)
         {
-            string indexJsonFilePath = Path.Combine(StaticObjects.Parameters.EditBookRepositoryFolder, TocTableFileName);
+            string indexJsonFilePath = Path.Combine(StaticObjects.Parameters.TubDataFolder, TocTableFileName);
             var options = new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
@@ -398,7 +378,7 @@ namespace AmadonStandardLib.UbClasses
                 IncludeFields = true
             };
 
-            indexJsonFilePath = Path.Combine(StaticObjects.Parameters.EditBookRepositoryFolder, TocTableFileName);
+            indexJsonFilePath = Path.Combine(StaticObjects.Parameters.TubDataFolder, TocTableFileName);
 
             if (File.Exists(indexJsonFilePath) && !forceGeneration)
             {

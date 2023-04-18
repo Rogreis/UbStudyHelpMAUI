@@ -1,22 +1,31 @@
 ﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.UbClasses;
-using LibGit2Sharp;
+using Lucene.Net.Search;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static Lucene.Net.Queries.Function.ValueSources.MultiFunction;
 using static System.Environment;
 
 namespace AmadonStandardLib.Helpers
 {
     public class DataInitializer
     {
+
+        protected const string TubFilesFolder = "TUB_Files";
+
+        protected const string AvailableTranslations = "AvailableTranslations.json";
+
+        protected const string IndexFileName = "Index.zip";
+
+        protected const string FormatTableName = "FormatTable.gz";
+
+        #region Private helper functions
         private static string DataFolder()
         {
-
             string processName = System.IO.Path.GetFileNameWithoutExtension(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            var commonpath = GetFolderPath(SpecialFolder.CommonApplicationData);
+            var commonpath = GetDataFiles.GetDataFolder();
             return Path.Combine(commonpath, processName);
         }
 
@@ -30,28 +39,58 @@ namespace AmadonStandardLib.Helpers
                 folder = Path.Combine(folder, fileName);
                 Directory.CreateDirectory(folder);
             }
+
             return folder;
         }
 
+        private static string MakeGitHubUrl(string relativeFilePath)
+        {
+            return $"https://github.com/Rogreis/TUB_Files/blob/main/{relativeFilePath}";
+        }
+
+        private static string MakeTranslationFileName(short translationId, string extension = "json")
+        {
+            return $"TR{translationId:000}.{extension}";
+        }
+
+        /// <summary>
+        /// Generates the translation full path with the given extension
+        /// </summary>
+        /// <param name="translationId"></param>
+        /// <param name="extension"></param>
+        /// <returns></returns>
+        private static string MakeTranslationFilePath(short translationId, string extension= "json")
+        {
+            return Path.Combine(StaticObjects.Parameters.TubDataFolder, MakeTranslationFileName(translationId, extension));
+        }
 
         /// <summary>
         /// Initialize the format table used for editing translations
         /// </summary>
-        private static bool GetFormatTable(GetDataFiles dataFiles)
+        private static async Task<bool> GetFormatTable()
         {
             try
             {
                 if (StaticObjects.Book.FormatTableObject == null)
                 {
-                    string? json = dataFiles.GetFormatTable();
-                    if (json != null) 
+                    string formatTableZippedPath = Path.Combine(StaticObjects.Parameters.TubDataFolder, FormatTableName);
+                    if (!GetDataFiles.LocalFileExists(formatTableZippedPath))
                     {
-                        StaticObjects.Book.FormatTableObject = new FormatTable(json);
+                        string url = MakeGitHubUrl(FormatTableName);
+                        await GetDataFiles.DownloadBinaryFile(url, formatTableZippedPath);
                     }
-                    else
+                    string ret = await GetDataFiles.GetStringFromZippedFile(formatTableZippedPath);
+                    switch (ret)
                     {
-                        StaticObjects.Logger.Error($"Missing format table. May be you do not have the correct data to use this tool.");
-                        return false;
+                        case GetDataFiles.FileNotFound:
+                            StaticObjects.Logger.Error("Table formatting data was not found.");
+                            return false;
+                        case GetDataFiles.ErrorGettingFile:
+                            StaticObjects.Logger.Error("Error reading format data.");
+                            return false;
+                        default:
+                            StaticObjects.Book.FormatTableObject = new FormatTable(ret);
+                            return true;
                     }
                 }
                 return true;
@@ -63,87 +102,16 @@ namespace AmadonStandardLib.Helpers
             }
         }
 
+        #endregion
 
-        private static bool InitTranslation(GetDataFiles dataFiles, short translationId, ref Translation? trans)
+        #region Initialization funtions
+
+        public static string GetFullLogPath()
         {
-            LibraryEventsControl.FireSendUserAndLogMessage($"Initializing translation {translationId}");
-            trans = null;
-            if (translationId < 0) return true;
-
-            LibraryEventsControl.FireSendUserAndLogMessage($"Getting translation id {translationId}");
-            trans = dataFiles.GetTranslation(translationId);
-            if (trans == null)
-            {
-                StaticObjects.Logger.Error($"Non existing translation: {translationId}");
-                return false;
-            }
-            //LibraryEventsControl.FireSendUserAndLogMessage($"Translation file read: {trans.Description}");
-            //if (trans.IsEditingTranslation)
-            //{
-            //    LibraryEventsControl.FireSendUserAndLogMessage($"Getting editing translation {trans.Description}");
-            //    LibraryEventsControl.FireSendUserAndLogMessage("Checking folders for editing translation");
-            //    if (!Directory.Exists(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
-            //    {
-            //        StaticObjects.Logger.Error("There is no repository set for editing translation");
-            //        return false;
-            //    }
-            //    if (!GitHelper.Instance.IsValid(StaticObjects.Parameters.EditParagraphsRepositoryFolder))
-            //    {
-            //        StaticObjects.Logger.Error($"Folder is not a valid respository: {StaticObjects.Parameters.EditParagraphsRepositoryFolder}");
-            //        return false;
-            //    }
-            //    LibraryEventsControl.FireSendUserAndLogMessage("Found a valid repository");
-            //    // Format table must exist for editing translation
-            //    if (!GetFormatTable(dataFiles))
-            //    {
-            //        return false;
-            //    }
-            //}
-            return trans.CheckData();
+            Logger.PathLog = Path.Combine(MakeProgramDataFolder(), Logger.FileName);
+            return Logger.PathLog;
         }
 
-        /// <summary>
-        /// Downlaod a file from github
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        private async Task DownloadFileFromGitHubAsync(string url, string filePath)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                byte[] fileContents = await response.Content.ReadAsByteArrayAsync();
-
-                await File.WriteAllBytesAsync(filePath, fileContents);
-            }
-        }
-
-
-        ///// <summary>
-        /// Initialize the log object
-        /// </summary>
-        /// <returns></returns>
-        public static bool InitLogger()
-        {
-            try
-            {
-                // Log for errors
-                Logger.PathLog = Path.Combine(MakeProgramDataFolder(), Logger.FileName);
-                StaticObjects.Logger = new Logger();
-                StaticObjects.Logger.Initialize(Logger.PathLog, false);
-                LibraryEventsControl.FireSendUserAndLogMessage($"Log started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                string message = "Could not initialize logger";
-                StaticObjects.Logger.Error(message, ex);
-                LibraryEventsControl.FireSendUserAndLogMessage(message);
-                return false;
-            }
-        }
 
         /// <summary>
         /// Initialize the parameters object
@@ -169,12 +137,14 @@ namespace AmadonStandardLib.Helpers
                 // Set folders and URLs used
                 // This must be set in the parameters
                 StaticObjects.Parameters.ApplicationDataFolder = MakeProgramDataFolder();
+                Directory.CreateDirectory(StaticObjects.Parameters.ApplicationDataFolder);
                 StaticObjects.Parameters.IndexSearchFolders = MakeProgramDataFolder("IndexSearch");
+                Directory.CreateDirectory(StaticObjects.Parameters.IndexSearchFolders);
                 StaticObjects.Parameters.TubSearchFolders = MakeProgramDataFolder("TubSearch");
+                Directory.CreateDirectory(StaticObjects.Parameters.TubSearchFolders);
+                StaticObjects.Parameters.TubDataFolder = MakeProgramDataFolder("TUB_Files");
+                Directory.CreateDirectory(StaticObjects.Parameters.TubDataFolder);
 
-
-                // This application has a differente location for TUB Files
-                StaticObjects.Parameters.TUB_Files_RepositoryFolder = MakeProgramDataFolder("TUB_Files");
                 LibraryEventsControl.FireSendUserAndLogMessage($"Parameters started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
                 Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
 
@@ -189,108 +159,85 @@ namespace AmadonStandardLib.Helpers
         }
 
         /// <summary>
-        /// Initialize the repositories object
+        /// Initialize the local list of available translations.
+        /// Download from github if not found.
         /// </summary>
-        /// <param name="initEditRepository"></param>
         /// <returns></returns>
-        public static bool VerifyDataFolder(bool recreate = false)
+        public static async Task<bool> InitTranslationsList()
         {
-            StaticObjects.Book = new Book();
-
-            if (recreate)
-            {
-                try
-                {
-                    Directory.Delete(StaticObjects.Parameters.TUB_Files_RepositoryFolder, true);
-                }
-                catch (Exception ex)
-                {
-                    LibraryEventsControl.FireSendUserAndLogMessage($"Failure removing data folder not verified: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}", ex);
-                    return false;
-                }
-            }
-
             try
             {
-                LibraryEventsControl.FireSendUserAndLogMessage($"Verifying data folder: {StaticObjects.Parameters.TUB_Files_RepositoryFolder}");
-                if (!Directory.Exists(StaticObjects.Parameters.TUB_Files_RepositoryFolder))
+                StaticObjects.Book = new Book();
+                bool ret = false;
+                string localAvailableTranslationsPath = Path.Combine(StaticObjects.Parameters.ApplicationDataFolder, AvailableTranslations);
+                if (!GetDataFiles.LocalFileExists(localAvailableTranslationsPath))
                 {
-                    StaticObjects.Logger.Error("There is no repository set for editing translation");
-                    return false;
+                    string url = MakeGitHubUrl(AvailableTranslations);
+                    ret = await GetDataFiles.DownloadBinaryFile(url, localAvailableTranslationsPath);
+                    if (!ret) return ret;
                 }
-
-                return true;
-            }
+                string json= await GetDataFiles.GetStringFromLocalFile(localAvailableTranslationsPath);
+                switch (json)
+                {
+                    case GetDataFiles.FileNotFound:
+                        StaticObjects.Logger.Error("Translations list data was not found.");
+                        return false;
+                    case GetDataFiles.ErrorGettingFile:
+                        StaticObjects.Logger.Error("Translations list data was not found.");
+                        return false;
+                    default:
+                        StaticObjects.Book.Translations= Translations.DeserializeJson(json);
+                        break;
+                }
+                
+                ret= await GetFormatTable();
+                return ret;
+          }
             catch (Exception ex)
             {
-                string message = $"Could not verify data folder {StaticObjects.Parameters.TUB_Files_RepositoryFolder}";
-                StaticObjects.Logger.Error(message, ex);
-                LibraryEventsControl.FireSendUserAndLogMessage(message);
+                LibraryEventsControl.FireSendUserAndLogMessage("Could not initialize translations.", ex);
                 return false;
             }
         }
-
 
         /// <summary>
-        /// Inicialize the list of available translations
+        /// Initialize all translations maked as to be shown by the user
         /// </summary>
-        /// <param name="dataFiles"></param>
         /// <returns></returns>
-        public static bool InitTranslationsList()
+        public static async Task<bool> InitTranslation()
         {
-            try
+            foreach(short translationId in StaticObjects.Parameters.TranslationsToShow.Where(t => t.Show == true).Select(t => t.LanguageID))
             {
-                GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
-                LibraryEventsControl.FireSendUserAndLogMessage("Initializing translations");
-                if (StaticObjects.Book.Translations == null)
+                LibraryEventsControl.FireSendUserAndLogMessage($"Initializing translation {translationId}");
+                Translation trans= StaticObjects.Book.Translations.Find(t => t.LanguageID == translationId);
+                if (trans  != null)
                 {
-                    StaticObjects.Book.Translations = dataFiles.GetTranslations();
+                    string localTranslationPath = MakeTranslationFilePath(translationId, "gz");
+
+                    if (!GetDataFiles.LocalFileExists(localTranslationPath))
+                    {
+                        string url = MakeGitHubUrl(MakeTranslationFileName(translationId, "gz"));
+                        bool ret = await GetDataFiles.DownloadBinaryFile(url, localTranslationPath);
+                        if (!ret) return ret;
+                    }
+                    string json= await GetDataFiles.GetStringFromLocalFile(localTranslationPath);
+                    switch (json)
+                    {
+                        case GetDataFiles.FileNotFound:
+                            StaticObjects.Logger.Error($"Non existing translation: {translationId}");
+                            return false;
+                        case GetDataFiles.ErrorGettingFile:
+                            StaticObjects.Logger.Error("Error reading translation data.");
+                            return false;
+                        default:
+                            trans.GetData(json);
+                            break;
+                    }
                 }
-                LibraryEventsControl.FireSendUserAndLogMessage($"{StaticObjects.Book.Translations.Count} translation found in available translations file");
-                return true;
             }
-            catch (Exception ex)
-            {
-                string message = "Could not initialize translations.";
-                LibraryEventsControl.FireSendUserAndLogMessage(message);
-                return false;
-            }
+            return true;
         }
+        #endregion
 
-
-        public static Translation? InitTranslation(Translation? previousTranslation, short newId, Diagnostic diagnostic)
-        {
-            try
-            {
-                if (newId < 0)
-                {
-                    diagnostic.IsError = true;
-                    diagnostic.Message = "Translation id must be greater than 0";
-                    return previousTranslation;
-                }
-
-                GetDataFiles dataFiles = new GetDataFiles(StaticObjects.Parameters);
-                LibraryEventsControl.FireSendUserAndLogMessage($"Initializing translation: {newId}");
-
-                Translation? trans = null;
-                if (!InitTranslation(dataFiles, newId, ref trans))
-                {
-                    diagnostic.IsError = true;
-                    diagnostic.Message = "Translation was not initialized";
-                    return previousTranslation;
-                }
-                diagnostic.IsError= false; 
-                diagnostic.Message = "";
-                LibraryEventsControl.FireSendUserAndLogMessage("Translation initialized succesfully.");
-                return trans;
-            }
-            catch (Exception ex)
-            {
-                diagnostic.IsError = true;
-                diagnostic.Message = $"Could not initialize translation: {newId}";
-                LibraryEventsControl.FireSendUserAndLogMessage(diagnostic.Message);
-                return previousTranslation;
-            }
-        }
     }
 }

@@ -31,7 +31,7 @@ namespace AmadonStandardLib.Helpers
         /// <returns></returns>
         protected string ControlFilePath()
         {
-            return Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, ControlFileName);
+            return Path.Combine(StaticObjects.Parameters.TubDataFolder, ControlFileName);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace AmadonStandardLib.Helpers
         /// <returns></returns>
         protected string TranslationFilePath(short translationId)
         {
-            return Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, $"TR{translationId:000}.gz");
+            return Path.Combine(StaticObjects.Parameters.TubDataFolder, $"TR{translationId:000}.gz");
         }
 
 
@@ -52,7 +52,7 @@ namespace AmadonStandardLib.Helpers
         /// <returns></returns>
         protected string TranslationJsonFilePath(short translationId)
         {
-            return Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, $"TR{translationId:000}.json");
+            return Path.Combine(StaticObjects.Parameters.TubDataFolder, $"TR{translationId:000}.json");
         }
 
         /// <summary>
@@ -62,12 +62,12 @@ namespace AmadonStandardLib.Helpers
         /// <returns></returns>
         protected string TranslationAnnotationsJsonFilePath(short translationId)
         {
-            return Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, $"{translationAnnotationsFileName}_{translationId:000}.json");
+            return Path.Combine(StaticObjects.Parameters.TubDataFolder, $"{translationAnnotationsFileName}_{translationId:000}.json");
         }
 
         protected string ParagraphAnnotationsJsonFilePath(short translationId)
         {
-            return Path.Combine(StaticObjects.Parameters.TUB_Files_RepositoryFolder, $"{paragraphAnnotationsFileName}_{translationId:000}.json");
+            return Path.Combine(StaticObjects.Parameters.TubDataFolder, $"{paragraphAnnotationsFileName}_{translationId:000}.json");
         }
 
         #endregion

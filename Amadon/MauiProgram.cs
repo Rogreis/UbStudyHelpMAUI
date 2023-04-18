@@ -1,4 +1,5 @@
-﻿using Blazorise;
+﻿using Amadon.Services;
+using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 
@@ -50,7 +51,11 @@ namespace Amadon
     {
         public static MauiApp CreateMauiApp()
         {
-            var builder = MauiApp.CreateBuilder();
+            MauiAppBuilder builder = MauiApp.CreateBuilder();
+
+            //InitializationService.InitLogger(builder);
+
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -62,7 +67,7 @@ namespace Amadon
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+		//builder.Logging.AddDebug();
 #endif
 
             builder.Services

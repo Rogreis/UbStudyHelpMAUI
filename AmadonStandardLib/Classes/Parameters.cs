@@ -23,6 +23,10 @@ namespace AmadonStandardLib.Classes
         public short LanguageID { get; set; }
         public string LanguageName { get; set; } = "";
         public bool Show { get; set; } = false;
+        public override string ToString()
+        {
+            return LanguageName;
+        }
     }
 
 
@@ -162,29 +166,10 @@ namespace AmadonStandardLib.Classes
         public string TubSearchFolders { get; set; } = "";
 
         /// <summary>
-		/// Source of TUB Files used only by UbStudyHelp
-		/// </summary>
-		public string UbStudyHelpTubFilesSourcePath = "";
-
-        /// <summary>
         /// Git associated repository folder
         /// </summary>
-        public string TUB_Files_RepositoryFolder { get; set; } = "";
+        public string TubDataFolder { get; set; } = "";
 
-        /// <summary>
-        /// Github source for translations
-        /// </summary>
-        public string TUB_Files_Url { get; set; } = "https://github.com/Rogreis/TUB_Files.git";
-
-        /// <summary>
-        /// Full book pages local repository
-        /// </summary>
-        public string? EditBookRepositoryFolder { get; set; } = null;
-
-        /// <summary>
-        /// Github paragraphs repository
-        /// </summary>
-        public string? UrlRepository { get; set; } = null;
 
         public int FontSize { get; set; } = 18;
 
