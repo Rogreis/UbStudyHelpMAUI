@@ -55,17 +55,17 @@
 
 @code
 {
-    private void LinkToTOC() => AmadonEvents.TopNavCommand("toc");
+    private void LinkToTOC() => AmadonEvents.TopNavCommand(AmadonEvents.ControlToc);
 
-    private void LinkToIndex() => AmadonEvents.TopNavCommand("index");
+    private void LinkToIndex() => AmadonEvents.TopNavCommand(AmadonEvents.ControlIndex);
 
-    private void LinkToSearch() => AmadonEvents.TopNavCommand("search");
+    private void LinkToSearch() => AmadonEvents.TopNavCommand(AmadonEvents.ControlSearch);
 
-    private void LinkToTrack() => AmadonEvents.TopNavCommand("track");
+    private void LinkToTrack() => AmadonEvents.TopNavCommand(AmadonEvents.ControlTrack);
 
-    private void LinkToSettings() => AmadonEvents.TopNavCommand("settings");
+    private void LinkToSettings() => AmadonEvents.TopNavCommand(AmadonEvents.ControlSettings);
 
-    private void LinkToHelp() => AmadonEvents.TopNavCommand("help");
+    private void LinkToHelp() => AmadonEvents.TopNavCommand(AmadonEvents.ControlHelp);
 
     private void QuickSearch()
     {

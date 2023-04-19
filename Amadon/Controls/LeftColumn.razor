@@ -5,27 +5,27 @@
 *@
 
 <div id="leftColumn">
-    @if (ControlName == "settings")
+    @if (ControlName == AmadonEvents.ControlSettings)
     {
         <SettingsFields></SettingsFields>
      }
-    else if (ControlName == "search")
+    else if (ControlName == AmadonEvents.ControlSearch)
     {
         <Search></Search>
     }
-    else if (ControlName == "help")
+    else if (ControlName == AmadonEvents.ControlHelp)
     {
         <HelpControls></HelpControls>
     }
-    else if (ControlName == "track")
+    else if (ControlName == AmadonEvents.ControlTrack)
     {
         <Track></Track>
     }
-    else if (ControlName == "index")
+    else if (ControlName == AmadonEvents.ControlIndex)
     {
         <TubIndex></TubIndex>
     }
-    else if (ControlName == "toc")
+    else if (ControlName == AmadonEvents.ControlToc)
     {
         <TableOfContents></TableOfContents>
     }
@@ -53,7 +53,14 @@
         ControlName = controlName;
         StaticObjects.Parameters.LastLeftControl = controlName;
         StateHasChanged();
+        AmadonEvents.RazorComponentShown(ControlName);
     }
 
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //    }
+    //}
 
 }

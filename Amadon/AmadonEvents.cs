@@ -10,14 +10,21 @@ namespace Amadon
     internal delegate void TopNavCommandDelegate(string controlName);
     internal delegate void TranslationsListInitializedDelegate();
     internal delegate void InitializationSuccesfullyDelegate();
+    internal delegate void RazorComponentShownDelegate(string componentId);
 
     internal static class AmadonEvents
     {
+        public const string ControlSettings = "settings";
+        public const string ControlSearch = "search";
+        public const string ControlHelp = "help";
+        public const string ControlTrack = "track";
+        public const string ControlIndex = "index";
+        public const string ControlToc = "toc";
+
         /// <summary>
         /// Informs the system that a top navigation command has been issued.
         /// </summary>
         public static event TopNavCommandDelegate OnTopNavCommand;
-
 
         /// <summary>
         /// Informs the system that the list of translations has been initialized
@@ -28,6 +35,8 @@ namespace Amadon
         /// Fired when the initilization has finished succesfully
         /// </summary>
         public static event InitializationSuccesfullyDelegate OnInitializationSuccesfully;
+
+        public static event RazorComponentShownDelegate OnRazorComponentShown;
 
         public static void TopNavCommand(string controlName)
         {
@@ -44,5 +53,9 @@ namespace Amadon
             OnInitializationSuccesfully?.Invoke();
         }
 
+        public static void RazorComponentShown(string componentId)
+        {
+            OnRazorComponentShown?.Invoke(componentId);
+        }
     }
 }

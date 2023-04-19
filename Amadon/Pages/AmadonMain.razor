@@ -52,8 +52,9 @@ else
     protected void OnInitializationSuccesfully()
     {
         AppInitialized = true;
-        AmadonEvents.TopNavCommand(StaticObjects.Parameters.LastLeftControl);
         StateHasChanged();
+        Task.Delay(1);
+        AmadonEvents.TopNavCommand(StaticObjects.Parameters.LastLeftControl);
     }
 
 

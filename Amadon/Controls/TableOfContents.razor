@@ -13,44 +13,91 @@
 
 @if (TocGotFromData)
 {
-    <TreeView @ref="@treeViewTrans" Nodes="Items"
-          GetChildNodes="@(item => item.Children)"
-          HasChildNodes="@(item => item.Children?.Any() == true)"
-          @bind-SelectedNode="selectedNode"
-          @bind-ExpandedNodes="expandedNodes">
-        <NodeContent>
-            @context.Text
-        </NodeContent>
-    </TreeView>
+    <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+        <Items>
+            <Tab Name="Primary">@titlePrimary</Tab>
+            <Tab Name="Secondary">@titleSecondary</Tab>
+        </Items>
+        <Content>
+            <TabPanel Name="Primary">
+                <TreeView @ref="@treeViewPrimary" Nodes="ItemsPrimary"
+                      GetChildNodes="@(item => item.Children)"
+                      HasChildNodes="@(item => item.Children?.Any() == true)"
+                      @bind-SelectedNode="selectedNode"
+                      @bind-ExpandedNodes="expandedNodes">
+                    <NodeContent>
+                        @context.Text
+                    </NodeContent>
+                </TreeView>
+            </TabPanel>
+            <TabPanel Name="Secondary">
+                <TreeView @ref="@treeViewSecondary" Nodes="ItemsSecondary"
+                      GetChildNodes="@(item => item.Children)"
+                      HasChildNodes="@(item => item.Children?.Any() == true)"
+                      @bind-SelectedNode="selectedNode"
+                      @bind-ExpandedNodes="expandedNodes">
+                    <NodeContent>
+                        @context.Text
+                    </NodeContent>
+                </TreeView>
+            </TabPanel>
+        </Content>
+    </Tabs>
+
 }
 
 
 
 @code {
 
+    private string selectedTab = "profile";
 
-    TreeView<ItemForToc> treeViewTrans;
+    TreeView<ItemForToc> treeViewPrimary;
+    TreeView<ItemForToc> treeViewSecondary;
+
+    string titlePrimary = "Primary";
+    string titleSecondary = "Secondary";
+
     TOCdata data = new TOCdata();
     bool TocGotFromData = false;
-    IEnumerable<ItemForToc> Items = new ItemForToc[0];
+    IEnumerable<ItemForToc> ItemsPrimary = new ItemForToc[0];
+    IEnumerable<ItemForToc> ItemsSecondary = new ItemForToc[0];
 
     IList<ItemForToc> expandedNodes = new List<ItemForToc>();
     ItemForToc selectedNode;
 
-    public async void UpdateAll()
+    public async Task UpdateAll()
     {
         data.TranslationId1 = StaticObjects.Parameters.LanguageIDLeftTranslation;
-        data.TranslationId2 = StaticObjects.Parameters.LanguageIDMiddleTranslation;
-        data.TranslationId3 = StaticObjects.Parameters.LanguageIDRightTranslation;
+        data.TranslationId2 = StaticObjects.Parameters.LanguageIDRightTranslation;
         data = await TOC_Service.GetTocTable(data);
-        Items = data.Toc;
+        ItemsPrimary = data.TocId1;
+        ItemsSecondary = data.TocId2;
+        titlePrimary = data.TitleTranslation1;
+        titleSecondary = data.TitleTranslation2;
         TocGotFromData = true;
         StateHasChanged();
     }
 
+    private Task OnSelectedTabChanged(string name)
+    {
+        selectedTab = name;
+        return Task.CompletedTask;
+    }
+
+    public void RazorComponentShown(string componentId)
+    {
+        if (componentId == AmadonEvents.ControlToc)
+        {
+            Task task = UpdateAll();
+            task.Wait();
+        }
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
-        UpdateAll();
+        AmadonEvents.OnRazorComponentShown += RazorComponentShown;
         await base.OnInitializedAsync();
     }
 

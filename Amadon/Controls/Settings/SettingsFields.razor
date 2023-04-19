@@ -31,13 +31,10 @@
 
 
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         <TranslationListControl @ref="leftTranslationCombo" Title="Left Translation" SelectedValue=@parameters.LanguageIDLeftTranslation.ToString()></TranslationListControl>
     </div>
-    <div class="col-sm-4">
-        <TranslationListControl @ref="middleTranslationCombo" Title="Middle Translation" SelectedValue=@parameters.LanguageIDMiddleTranslation.ToString()></TranslationListControl>
-    </div>
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         <TranslationListControl @ref="rightTranslationCombo" Title="Right Translation" SelectedValue=@parameters.LanguageIDRightTranslation.ToString()></TranslationListControl>
     </div>
 </div>
@@ -117,7 +114,6 @@
             SwitchDarkMode.SetValue(parameters.UseDarkThemme);
             SwitchSerifFont.SetValue(parameters.UseSerifFont);
             leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
-            middleTranslationCombo.SetValue(parameters.LanguageIDMiddleTranslation);
             rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
         }
 
@@ -179,7 +175,6 @@
     {
         parameters = StaticObjects.Parameters;
         leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
-        middleTranslationCombo.SetValue(parameters.LanguageIDMiddleTranslation);
         rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
 
         SwitchParNumber.SetValue(parameters.ShowParagraphIdentification);

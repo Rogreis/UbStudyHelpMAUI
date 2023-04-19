@@ -59,8 +59,6 @@ namespace AmadonStandardLib.Classes
 
         public short LanguageIDRightTranslation { get; set; } = 34;
 
-        public short LanguageIDMiddleTranslation { get; set; } = -1;  // -1 indicate not to be shown
-
         // Show pages options
         public bool ShowMiddle { get; set; } = true;
         public bool ShowRight { get; set; } = true;

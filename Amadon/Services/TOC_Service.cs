@@ -2,16 +2,29 @@
 using AmadonStandardLib.Helpers;
 using AmadonStandardLib.InterchangeData;
 using AmadonStandardLib.UbClasses;
-using System.Text.Json;
 
 namespace Amadon.Services
 {
     public class TOC_Service
     {
+        private static Translation GetTranslation(short id) 
+        {
+            Translation trans = StaticObjects.Book.GetTranslation(id);
+            if (trans == null) 
+            {
+                throw new Exception($"Translation not found while generating table of contents {id}");
+            }
+            return trans;
+        }
+
         public static TOCdata GetToc(TOCdata data)
         {
-            Translation translation = StaticObjects.Book.GetTranslation(data.TranslationId1);
-            data.Toc = translation.TableOfContents;
+            Translation trans = GetTranslation(data.TranslationId1);
+            data.TocId1 = trans.TableOfContents;
+            data.TitleTranslation1 = trans.Description;
+            trans = GetTranslation(data.TranslationId2);
+            data.TocId2 = trans.TableOfContents;
+            data.TitleTranslation2 = trans.Description;
             return data;
         }
 
