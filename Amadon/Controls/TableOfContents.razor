@@ -50,7 +50,7 @@
 
 @code {
 
-    private string selectedTab = "profile";
+    private string selectedTab = "Primary";
 
     TreeView<ItemForToc> treeViewPrimary;
     TreeView<ItemForToc> treeViewSecondary;
@@ -66,8 +66,17 @@
     IList<ItemForToc> expandedNodes = new List<ItemForToc>();
     ItemForToc selectedNode;
 
+
+
     public async Task UpdateAll()
     {
+        data.UpdateTocId1 = data.TranslationId1 != StaticObjects.Parameters.LanguageIDLeftTranslation;
+        data.UpdateTocId2 = data.TranslationId1 != StaticObjects.Parameters.LanguageIDRightTranslation;
+        if (!data.UpdateTocId1 && data.UpdateTocId2)
+        {
+            // Both toc already created
+            return;
+        }
         data.TranslationId1 = StaticObjects.Parameters.LanguageIDLeftTranslation;
         data.TranslationId2 = StaticObjects.Parameters.LanguageIDRightTranslation;
         data = await TOC_Service.GetTocTable(data);
@@ -97,8 +106,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AmadonEvents.OnRazorComponentShown += RazorComponentShown;
         await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await UpdateAll();
+            AmadonEvents.OnRazorComponentShown += RazorComponentShown;
+        }
     }
 
 

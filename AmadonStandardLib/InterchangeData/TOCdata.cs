@@ -16,6 +16,10 @@ namespace AmadonStandardLib.InterchangeData
 
         public short TranslationId2 { get; set; } = -1;
 
+        public bool UpdateTocId1 { get; set; } = true;
+
+        public bool UpdateTocId2 { get; set; } = true;
+
         // Output data
         public List<ItemForToc>? TocId1 { get; set; } = null;
 

@@ -19,12 +19,18 @@ namespace Amadon.Services
 
         public static TOCdata GetToc(TOCdata data)
         {
-            Translation trans = GetTranslation(data.TranslationId1);
-            data.TocId1 = trans.TableOfContents;
-            data.TitleTranslation1 = trans.Description;
-            trans = GetTranslation(data.TranslationId2);
-            data.TocId2 = trans.TableOfContents;
-            data.TitleTranslation2 = trans.Description;
+            if (data.UpdateTocId1)
+            {
+                Translation trans = GetTranslation(data.TranslationId1);
+                data.TocId1 = trans.TableOfContents;
+                data.TitleTranslation1 = trans.Description;
+            }
+            if (data.UpdateTocId2)
+            {
+                Translation trans = GetTranslation(data.TranslationId2);
+                data.TocId2 = trans.TableOfContents;
+                data.TitleTranslation2 = trans.Description;
+            }
             return data;
         }
 
