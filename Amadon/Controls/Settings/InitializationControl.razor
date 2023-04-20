@@ -2,6 +2,7 @@
 @using Amadon.Services;
 @using AmadonStandardLib.Classes;
 @using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.UbClasses;
 
 
 <h4>The Urantia Book Study help is initializing. Please, wait...</h4>
@@ -10,14 +11,14 @@
 
 
 
-<Modal @ref="modalRef">
+<Modal @ref="ModalTranslationsToShow">
     <ModalContent Centered Size="ModalSize.Large" Class="text-white bg-dark">
         <ModalHeader>
             <ModalTitle>Make your choice for translations to download and show</ModalTitle>
             <CloseButton />
         </ModalHeader>
         <ModalBody>
-            <TranslationsToShow></TranslationsToShow>
+            <TranslationsToShow Items="Items"></TranslationsToShow>
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModalCancel">Close</Button>
@@ -26,17 +27,12 @@
     </ModalContent>
 </Modal>
 
-    <Alert Color="@AlertColor" @bind-Visible="@alertVisible">
-    <AlertDescription>
-        @AlertDescription
-    </AlertDescription>
+<Alert Color="@AlertColor" @bind-Visible="@alertVisible">
     <AlertMessage>
-        Inicialization ok.
+        @AlertMessage
     </AlertMessage>
     <CloseButton />
-    </Alert>
-
-
+</Alert>
 
     @code {
     enum Status
@@ -56,9 +52,11 @@
 
     private LogControl logViewer;
 
+    public List<TranslationToShowItem> Items { get; set; }
+
 
     // Modal parameters
-    private Modal modalRef;
+    private Modal ModalTranslationsToShow;
 
     private bool centered = false;
     private ModalSize modalSize = ModalSize.Default;
@@ -68,7 +66,6 @@
 
     // Alert parameters
     bool alertVisible = false;
-    string AlertDescription = "";
     string AlertMessage = "";
     Color AlertColor = Color.Success;
 
@@ -82,13 +79,12 @@
 
 
     #region Modal routines
-    private Task ShowAlert(Color color, string description, string message)
+    private Task ShowAlert(Color color, string message)
     {
         this.AlertColor = color;
-        this.AlertDescription = description;
         this.AlertMessage = message;
         this.alertVisible = true;
-        return modalRef.Show();
+        return Task.CompletedTask;
     }
 
 
@@ -97,31 +93,46 @@
         this.centered = centered;
         this.modalSize = modalSize;
         this.maxHeight = maxHeight;
-        return modalRef.Show();
+        // initialize the list of items
+        Items = new List<TranslationToShowItem>();
+        foreach (Translation trans in StaticObjects.Book.Translations)
+        {
+            if (trans.LanguageID > 0)
+            {
+                bool selected = StaticObjects.Parameters.TranslationsToShowId.Exists(id => id == trans.LanguageID); ;
+                Items.Add(new TranslationToShowItem { Id = trans.LanguageID, Value = selected, DisplayText = trans.Description });
+            }
+        }
+
+        return ModalTranslationsToShow.Show();
     }
 
     private async Task HideModalCancel()
     {
         InitializationStatus = Status.Error;
-        await modalRef.Hide();
+        await ModalTranslationsToShow.Hide();
         HandleSendMessage("Translations choice cancelled.");
         Status status = await DoInitialization();
     }
 
     private async Task HideModalOk()
     {
-        switch (InitializationStatus)
+        StaticObjects.Parameters.TranslationsToShowId = new List<short>();
+        foreach (TranslationToShowItem translationToShow in Items)
         {
-            case Status.WaitingTranslationChoice:
-                InitializationStatus = Status.TranslationsChoiceDone;
-                Status status = await DoInitialization();
-                break;
-            default:
-                InitializationStatus = Status.Error;
-                break;
-
+            if (translationToShow.Value)
+            {
+                StaticObjects.Parameters.TranslationsToShowId.Add(translationToShow.Id);
+            }
         }
-        await modalRef.Hide();
+        if (StaticObjects.Parameters.TranslationsToShowId.Count == 0)
+        {
+            await ShowAlert(Color.Info, "At least one translation must be checked.");
+            return;
+        }
+        await ModalTranslationsToShow.Hide();
+        InitializationStatus = Status.TranslationsChoiceDone;
+        Status status = await DoInitialization();
         return;
     }
     #endregion
@@ -216,6 +227,10 @@
                 case Status.Error:
                     continues = false;
                     HandleSendMessage("The app cannot be started.");
+                    break;
+                default:
+                    await ShowAlert(Color.Danger, $"Invalid status inside initialization {InitializationStatus}");
+                    continues = false;
                     break;
             }
         }

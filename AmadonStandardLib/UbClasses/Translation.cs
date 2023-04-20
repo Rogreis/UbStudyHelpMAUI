@@ -48,10 +48,10 @@ namespace AmadonStandardLib.UbClasses
         public List<string> PartTitles = new List<string>()
         {
             "Introdução",
-            "Parte I",
-            "Parte II",
-            "Parte III",
-            "Parte IV",
+            "Part I",
+            "Part II",
+            "Part III",
+            "Part IV",
         };
 
         // First papers list for each part

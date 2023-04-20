@@ -18,25 +18,8 @@ namespace AmadonStandardLib.Classes
         LeftMiddleRightCompare = 4
     }
 
-    public class TranslationToShow
-    {
-        public short LanguageID { get; set; }
-        public string LanguageName { get; set; } = "";
-        public bool Show { get; set; } = false;
-        public override string ToString()
-        {
-            return LanguageName;
-        }
-    }
-
-
-
     public class Parameters
     {
-
-
-        //public ControlsAppearance Appearance = new ControlsAppearance();
-
         public const string FileName = "AmadonParameters.json";
 
         public static string? PathParameters { get; set; }
@@ -64,7 +47,7 @@ namespace AmadonStandardLib.Classes
         public bool ShowRight { get; set; } = true;
         public bool ShowCompare { get; set; } = false;
 
-        public List<TranslationToShow> TranslationsToShow { get; set; } = new List<TranslationToShow>();
+        public List<short> TranslationsToShowId { get; set; } = new List<short>();
 
         [JsonIgnore]
         public TextShowOption TextShowOption

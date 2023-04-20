@@ -2,10 +2,12 @@
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.UbClasses;
 @using Blazorise
+@using Controls.Settings
 
 <h5>Translations to Show</h5>
 
-@if (translationListCreated)
+
+@if (translationListCreated && Items != null)
 {
     <Table Borderless="true" Striped="true">
         <TableBody>
@@ -13,39 +15,36 @@
                 <TableRowCell Class="text-white bg-dark">
                     @for (int i = 0; i <= firstTransColumnNo; i++)
                     {
-                        TranslationToShow trans = StaticObjects.Parameters.TranslationsToShow[i];
-                        <Check TValue="bool" @bind-Checked="@trans.Show">@trans.LanguageName</Check>
+                        TranslationToShowItem item = Items[i];
+                        <Check TValue="bool" @bind-Checked="@item.Value">@item.DisplayText</Check>
                     }
                 </TableRowCell>
                 <TableRowCell Class="text-white bg-dark">
-                    @for (int i = firstTransColumnNo + 1; i < StaticObjects.Parameters.TranslationsToShow.Count; i++)
+                    @for (int i = firstTransColumnNo + 1; i < Items.Count; i++)
                     {
-                        TranslationToShow trans = StaticObjects.Parameters.TranslationsToShow[i];
-                        <Check TValue="bool" @bind-Checked="@trans.Show">@trans.LanguageName</Check>
+                        TranslationToShowItem item = Items[i];
+                        <Check TValue="bool" @bind-Checked="@item.Value">@item.DisplayText</Check>
                     }
                 </TableRowCell>
             </TableRow>
         </TableBody>
     </Table>
-
 }
 
 @code {
-    private bool translationListCreated = false;
-    private int firstTransColumnNo = 0;
+
+    [Parameter]
+    public List<TranslationToShowItem> Items { get; set; }
+
+    private int firstTransColumnNo { get => Items == null? 0 : Convert.ToInt32(Math.Ceiling(((double)Items.Count) / 2.0)); }
+
+    private bool translationListCreated { get; set; } = false;
+
+    private event FieldChangedDelegate FieldChanged = null;
+
 
     private void HandleTranslationsListInitialized()
     {
-        foreach (Translation trans in StaticObjects.Book.Translations)
-        {
-            TranslationToShow transToShow = StaticObjects.Parameters.TranslationsToShow.Find(t => t.LanguageID == trans.LanguageID);
-            if (transToShow == null)
-            {
-                StaticObjects.Parameters.TranslationsToShow.Add(new TranslationToShow() { LanguageID = trans.LanguageID, LanguageName = trans.Description });
-            }
-            StaticObjects.Parameters.TranslationsToShow.Sort((t1, t2) => t1.LanguageName.CompareTo(t2.LanguageName));
-        }
-        firstTransColumnNo = Convert.ToInt32(Math.Ceiling(((double)StaticObjects.Parameters.TranslationsToShow.Count) / 2.0));
         translationListCreated = true;
         StateHasChanged();
     }
@@ -54,6 +53,7 @@
     {
         await base.OnInitializedAsync();
         AmadonEvents.OnTranslationsListInitialized += HandleTranslationsListInitialized;
+        StateHasChanged();
     }
 
 

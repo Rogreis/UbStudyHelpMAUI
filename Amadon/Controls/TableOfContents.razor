@@ -70,8 +70,25 @@
 
     public async Task UpdateAll()
     {
+        // Both translation must be in the translations to show
+        // IF not, a default value is set
+        if (StaticObjects.Parameters.LanguageIDLeftTranslation > 0 && 
+            !StaticObjects.Parameters.TranslationsToShowId.Contains(StaticObjects.Parameters.LanguageIDLeftTranslation))
+        {
+            StaticObjects.Parameters.LanguageIDLeftTranslation = 0;
+        }
+        if (StaticObjects.Parameters.LanguageIDRightTranslation > 0 &&
+            !StaticObjects.Parameters.TranslationsToShowId.Contains(StaticObjects.Parameters.LanguageIDRightTranslation))
+        {
+            // It is mandatory to have at least one translation in the translations to show list
+            StaticObjects.Parameters.LanguageIDRightTranslation = StaticObjects.Parameters.TranslationsToShowId[0];
+        }
+
+        // Needs update?
         data.UpdateTocId1 = data.TranslationId1 != StaticObjects.Parameters.LanguageIDLeftTranslation;
         data.UpdateTocId2 = data.TranslationId1 != StaticObjects.Parameters.LanguageIDRightTranslation;
+
+
         if (!data.UpdateTocId1 && data.UpdateTocId2)
         {
             // Both toc already created
@@ -104,10 +121,6 @@
     }
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

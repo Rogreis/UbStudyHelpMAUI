@@ -207,43 +207,51 @@ namespace AmadonStandardLib.Helpers
         /// <returns></returns>
         public static async Task<bool> InitTranslation()
         {
-            foreach(short translationId in StaticObjects.Parameters.TranslationsToShow.Where(t => t.Show == true).Select(t => t.LanguageID))
+            try
             {
-                LibraryEventsControl.FireSendUserAndLogMessage($"Initializing translation {translationId}");
-                Translation trans= StaticObjects.Book.Translations.Find(t => t.LanguageID == translationId);
-                if (trans  != null)
+                foreach (short translationId in StaticObjects.Parameters.TranslationsToShowId)
                 {
-                    string localTranslationPath = MakeTranslationFilePath(translationId, "gz");
-
-                    if (!GetDataFiles.LocalFileExists(localTranslationPath))
+                    LibraryEventsControl.FireSendUserAndLogMessage($"Initializing translation {translationId}");
+                    Translation trans = StaticObjects.Book.Translations.Find(t => t.LanguageID == translationId);
+                    if (trans != null)
                     {
-                        string url = MakeGitHubUrl(MakeTranslationFileName(translationId, "gz"));
-                        bool ret = await GetDataFiles.DownloadBinaryFile(url, localTranslationPath);
-                        if (!ret) return ret;
-                    }
+                        string localTranslationPath = MakeTranslationFilePath(translationId, "gz");
 
-                    string hash = GetDataFiles.CalculateMD5(localTranslationPath);
-                    if (trans.Hash != hash) 
-                    {
-                        string url = MakeGitHubUrl(MakeTranslationFileName(translationId, "gz"));
-                        bool ret = await GetDataFiles.DownloadBinaryFile(url, localTranslationPath);
-                        if (!ret) return ret;
-                    }
+                        if (!GetDataFiles.LocalFileExists(localTranslationPath))
+                        {
+                            string url = MakeGitHubUrl(MakeTranslationFileName(translationId, "gz"));
+                            bool ret = await GetDataFiles.DownloadBinaryFile(url, localTranslationPath);
+                            if (!ret) return ret;
+                        }
 
-                    string json= await GetDataFiles.GetStringFromZippedFile(localTranslationPath);
-                    switch (json)
-                    {
-                        case GetDataFiles.FileNotFound:
-                            StaticObjects.Logger.Error($"Non existing translation: {translationId}");
-                            return false;
-                        case GetDataFiles.ErrorGettingFile:
-                            StaticObjects.Logger.Error("Error reading translation data.");
-                            return false;
-                        default:
-                            trans.GetData(json);
-                            break;
+                        string hash = GetDataFiles.CalculateMD5(localTranslationPath);
+                        if (trans.Hash != hash)
+                        {
+                            string url = MakeGitHubUrl(MakeTranslationFileName(translationId, "gz"));
+                            bool ret = await GetDataFiles.DownloadBinaryFile(url, localTranslationPath);
+                            if (!ret) return ret;
+                        }
+
+                        string json = await GetDataFiles.GetStringFromZippedFile(localTranslationPath);
+                        switch (json)
+                        {
+                            case GetDataFiles.FileNotFound:
+                                StaticObjects.Logger.Error($"Non existing translation: {translationId}");
+                                return false;
+                            case GetDataFiles.ErrorGettingFile:
+                                StaticObjects.Logger.Error("Error reading translation data.");
+                                return false;
+                            default:
+                                trans.GetData(json);
+                                break;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LibraryEventsControl.FireSendUserAndLogMessage("Could not initialize translations.", ex);
+                return false;
             }
             return true;
         }

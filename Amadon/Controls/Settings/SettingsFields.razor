@@ -31,15 +31,6 @@
 
 
 <div class="row">
-    <div class="col-sm-6">
-        <TranslationListControl @ref="leftTranslationCombo" Title="Left Translation" SelectedValue=@parameters.LanguageIDLeftTranslation.ToString()></TranslationListControl>
-    </div>
-    <div class="col-sm-6">
-        <TranslationListControl @ref="rightTranslationCombo" Title="Right Translation" SelectedValue=@parameters.LanguageIDRightTranslation.ToString()></TranslationListControl>
-    </div>
-</div>
-
-<div class="row">
     <div class="col-sm-4">
         <NumberControl LabelText="Search Page Size" MinValue="10" MaxValue="100" Value=@parameters.SearchPageSize></NumberControl>
     </div>
@@ -84,10 +75,7 @@
 
     private Parameters parameters = new Parameters();
 
-    private TranslationListControl leftTranslationCombo;
-    private TranslationListControl middleTranslationCombo;
-    private TranslationListControl rightTranslationCombo;
-
+ 
     private SwitchControl SwitchParNumber;
     private SwitchControl SwitchMiddleTranslation;
     private SwitchControl SwitchRightTranslation;
@@ -113,8 +101,8 @@
             SwitchCompare.SetValue(parameters.ShowCompare);
             SwitchDarkMode.SetValue(parameters.UseDarkThemme);
             SwitchSerifFont.SetValue(parameters.UseSerifFont);
-            leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
-            rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
+            //leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
+            //rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
         }
 
         if (!Initialized)
@@ -129,9 +117,9 @@
             SwitchCompare.FieldChanged += ParameterValueChanged;
             SwitchDarkMode.FieldChanged += ParameterValueChanged;
             SwitchSerifFont.FieldChanged += ParameterValueChanged;
-            leftTranslationCombo.FieldChanged += ParameterValueChanged;
-            middleTranslationCombo.FieldChanged += ParameterValueChanged;
-            rightTranslationCombo.FieldChanged += ParameterValueChanged;
+            //leftTranslationCombo.FieldChanged += ParameterValueChanged;
+            //middleTranslationCombo.FieldChanged += ParameterValueChanged;
+            //rightTranslationCombo.FieldChanged += ParameterValueChanged;
             Initialized = true;
         }
         StateHasChanged();
@@ -174,8 +162,8 @@
     public void Initialize()
     {
         parameters = StaticObjects.Parameters;
-        leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
-        rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
+        //leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
+        //rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
 
         SwitchParNumber.SetValue(parameters.ShowParagraphIdentification);
         SwitchMiddleTranslation.SetValue(parameters.ShowMiddle);
