@@ -113,16 +113,21 @@ namespace AmadonStandardLib.UbClasses
             }
         }
 
-
-        [JsonIgnore]
-        public List<ItemForToc> TableOfContents
+        public bool CreateTableOfContents()
         {
-            get
+            if (_tableOfContents != null)
             {
-                if (_tableOfContents != null)
-                {
-                    return _tableOfContents;
-                }
+                return true;
+            }
+
+            if (Papers == null || Papers.Count == 0)
+            {
+                LibraryEventsControl.FireFatalError($"Error creating table of contents for translation {ToString()}: Papers not got from file.");
+                return false;
+            }
+
+            try
+            {
                 List<ItemForToc> items = new List<ItemForToc>();
                 for (int index = 0; index < 5; index++)
                 {
@@ -139,6 +144,22 @@ namespace AmadonStandardLib.UbClasses
                     }
                 }
                 _tableOfContents = items;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LibraryEventsControl.FireFatalError($"Error creating table of contents for translation {ToString()}: ", ex);
+                return false;
+            }
+        }
+
+
+        [JsonIgnore]
+        public List<ItemForToc>? TableOfContents
+        {
+            get
+            {
+                if (!CreateTableOfContents()) return null;
                 return _tableOfContents;
             }
         }

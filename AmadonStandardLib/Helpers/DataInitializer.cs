@@ -1,5 +1,6 @@
 ﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.UbClasses;
+using J2N.Collections.Generic;
 using Lucene.Net.Search;
 using System;
 using System.IO;
@@ -209,7 +210,9 @@ namespace AmadonStandardLib.Helpers
         {
             try
             {
-                foreach (short translationId in StaticObjects.Parameters.TranslationsToShowId)
+                List<short> initTranslations = new List<short>(StaticObjects.Parameters.TranslationsToShowId);
+                initTranslations.Add(0); // add the English that is not optional
+                foreach (short translationId in initTranslations)
                 {
                     LibraryEventsControl.FireSendUserAndLogMessage($"Initializing translation {translationId}");
                     Translation trans = StaticObjects.Book.Translations.Find(t => t.LanguageID == translationId);
