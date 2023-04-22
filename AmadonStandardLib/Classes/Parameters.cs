@@ -40,10 +40,12 @@ namespace AmadonStandardLib.Classes
 
         public short LanguageIDLeftTranslation { get; set; } = 0;
 
+        public short LanguageIDMiddleTranslation { get; set; } = -1;
+
         public short LanguageIDRightTranslation { get; set; } = 34;
 
         // Show pages options
-        public bool ShowMiddle { get; set; } = true;
+        public bool ShowMiddle { get; set; } = false;
         public bool ShowRight { get; set; } = true;
         public bool ShowCompare { get; set; } = false;
 

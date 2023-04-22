@@ -154,7 +154,7 @@ a, .btn-link {
     z-index: 1;
     top: 2;
     overflow-x: hidden;
-    padding: 30px 15px 15px 15px; /* top right bottom left  */
+    padding: 10px 10px 10px 10px; /* top right bottom left  */
 }
 
 .splitRight {
@@ -164,7 +164,7 @@ a, .btn-link {
     z-index: 1;
     top: 2;
     overflow-x: hidden;
-    padding: 30px 15px 15px 15px; /* top right bottom left  */
+    padding: 5px 10px 10px 10px; /* top right bottom left  */
 }
 
 .left {

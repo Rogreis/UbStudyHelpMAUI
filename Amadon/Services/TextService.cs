@@ -84,7 +84,12 @@ namespace Amadon.Services
             sb.AppendLine($"  <h2>{trans.PaperTranslation} {entry.Paper}</h2>  ");
             sb.AppendLine($"  <p>{trans.Description}</p>  ");
             sb.AppendLine("</div> ");
-            return $"<th><div class=\"p-3 mb-2 parClosed\">{sb}</div></th>";
+            /*
+                pt-0 padding-top
+                ps-2 padding-left (2 = approximately equal to 10 pixels, assuming the default font-size of 16px).
+                pe-0 padding-right
+                pb-5 for padding-bottom: 20 (.25rem * 5 in Bootstrap 5 is approximately equal to              * */
+            return $"<th><div class=\"m-3 parClosed\">{sb}</div></th>";
         }
 
         /// <summary>
@@ -105,6 +110,7 @@ namespace Amadon.Services
 
             // Left is always shown
             leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+            StaticObjects.Parameters.ShowMiddle = false;
 
             switch (StaticObjects.Parameters.TextShowOption)
             {
@@ -146,7 +152,7 @@ namespace Amadon.Services
             foreach(Paragraph p in leftParagraphs)
             {
                 StringBuilder sb = new StringBuilder();
-                GetParagraphsLine(sb, p, leftParagraphs, middleParagraphs, compareParagraphs);
+                GetParagraphsLine(sb, p, rightParagraphs, middleParagraphs, compareParagraphs);
                 paperTextFormatted.Lines.Add(sb.ToString());
             }
 

@@ -10,16 +10,36 @@ namespace AmadonStandardLib.UbClasses
     {
         protected DatabaseReader DataFiles = new DatabaseReader();
 
-
-        public Translation? LeftTranslation { get; set; }
-
-        public Translation? MiddleTranslation { get; set; }
-
-        public Translation? RightTranslation { get; set; }
-
         public List<Translation>? Translations { get; set; } = null;
 
         public FormatTable? FormatTableObject { get; set; } = null;
+
+
+        public Translation? LeftTranslation 
+        { 
+            get
+            {
+                return GetTranslation(StaticObjects.Parameters.LanguageIDLeftTranslation);
+            }
+        }
+
+        public Translation? MiddleTranslation
+        {
+            get
+            {
+                return GetTranslation(StaticObjects.Parameters.LanguageIDMiddleTranslation);
+            }
+        }
+
+        public Translation? RightTranslation
+        {
+            get
+            {
+                return GetTranslation(StaticObjects.Parameters.LanguageIDRightTranslation);
+            }
+        }
+
+
 
         /// <summary>
         /// Inicialize the list of available translations

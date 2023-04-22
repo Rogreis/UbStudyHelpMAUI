@@ -2,8 +2,9 @@
 @using AmadonStandardLib.Classes;
 @using Amadon.Controls;
 @using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.UbClasses;
 
-<div id="rightColumn" class="black splitRight right mt-0 bg-dark text-white overflow-auto">
+<div id="rightColumn" class="black splitRight right mt-0 p-0 bg-dark text-white overflow-auto">
     <div class="row overflow-auto">
         @if (@PaperLines != null)
         {
@@ -36,59 +37,47 @@
 @code {
     private PaperTextFormatted PaperLines { get; set; }
 
-    private bool RedrawAsked { get; set; } = true;
-
     private LeftColumn LeftControl;
 
-    public string ControlName { get; set; } = "";
 
+    //[Parameter]
+    //public string control { get; set; } = "";
 
-    [Parameter]
-    public string control { get; set; } = "";
-
-    [Parameter]
-    public string EntryHref { get; set; }
+    //[Parameter]
+    //public string EntryHref { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         LibraryEventsControl.RedrawText += EventsControl_RedrawText;
-        AmadonEvents.OnTopNavCommand += AmadonEvents_OnTopNavCommand;
+        AmadonEvents.OnNewTocEntry += OnNewTocEntry;
     }
 
     protected void EventsControl_RedrawText()
     {
-        RedrawAsked = true;
+        GetTexts();
+        StateHasChanged();
     }
 
-    private async void GetTexts()
+    public void OnNewTocEntry(TOC_Entry entry)
     {
-        if (RedrawAsked && StaticObjects.InitializationDone)
-        {
-            await Task.Delay(1);
-            RedrawAsked = false;
-            PaperLines = await TextService.GetHtml();
-            RedrawAsked = false;
-            StateHasChanged();
-        }
-    }
-
-    private void AmadonEvents_OnTopNavCommand(string controlName)
-    {
-        ControlName = controlName;
+        StaticObjects.Parameters.Entry = entry;
+        GetTexts();
         StateHasChanged();
     }
 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async void GetTexts()
     {
-        if (firstRender)
-        {
-            //GetTexts();
-            if (ControlName == "settings")
-            {
-                LeftControl.SetControl("settings");
-            }
-        }
+        PaperLines = await TextService.GetHtml();
+        await Task.Delay(1);
+        StateHasChanged();
     }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //    }
+    //}
 }

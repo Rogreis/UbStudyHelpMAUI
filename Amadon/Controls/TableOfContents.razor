@@ -23,8 +23,9 @@
                 <TreeView @ref="@treeViewPrimary" Nodes="ItemsPrimary"
                       GetChildNodes="@(item => item.Children)"
                       HasChildNodes="@(item => item.Children?.Any() == true)"
-                      @bind-SelectedNode="selectedNode"
-                      @bind-ExpandedNodes="expandedNodes">
+                      @bind-SelectedNode="SelectedNode"
+                      @bind-ExpandedNodes="expandedNodesPrimary"
+                >
                     <NodeContent>
                         @context.Text
                     </NodeContent>
@@ -35,7 +36,7 @@
                       GetChildNodes="@(item => item.Children)"
                       HasChildNodes="@(item => item.Children?.Any() == true)"
                       @bind-SelectedNode="selectedNode"
-                      @bind-ExpandedNodes="expandedNodes">
+                      @bind-ExpandedNodes="expandedNodesSecondary">
                     <NodeContent>
                         @context.Text
                     </NodeContent>
@@ -50,6 +51,19 @@
 
 @code {
 
+
+    private Task OnSelectedNodeChanged(ItemForToc item)
+    {
+        //if (item is null)
+        //{
+        //    throw new ArgumentNullException(nameof(item));
+        //}
+        // Perform actions when a TreeView node is selected
+        //Console.WriteLine($"Selected node: {item.Text}");
+        return Task.CompletedTask;
+    }
+
+
     private string selectedTab = "Primary";
 
     TreeView<ItemForToc> treeViewPrimary;
@@ -63,16 +77,28 @@
     IEnumerable<ItemForToc> ItemsPrimary = new ItemForToc[0];
     IEnumerable<ItemForToc> ItemsSecondary = new ItemForToc[0];
 
-    IList<ItemForToc> expandedNodes = new List<ItemForToc>();
-    ItemForToc selectedNode;
-
-
+    IList<ItemForToc> expandedNodesPrimary = new List<ItemForToc>();
+    IList<ItemForToc> expandedNodesSecondary = new List<ItemForToc>();
+    private ItemForToc selectedNode;
+    private ItemForToc SelectedNode 
+    { 
+        get
+        {
+            return selectedNode;
+        }
+        set
+        {
+            ItemForToc item = value;
+            AmadonEvents.NewTocEntry(item.Entry);
+            selectedNode = value;
+        }
+    }
 
     public async Task UpdateAll()
     {
         // Both translation must be in the translations to show
         // IF not, a default value is set
-        if (StaticObjects.Parameters.LanguageIDLeftTranslation > 0 && 
+        if (StaticObjects.Parameters.LanguageIDLeftTranslation > 0 &&
             !StaticObjects.Parameters.TranslationsToShowId.Contains(StaticObjects.Parameters.LanguageIDLeftTranslation))
         {
             StaticObjects.Parameters.LanguageIDLeftTranslation = 0;
@@ -110,6 +136,9 @@
         selectedTab = name;
         return Task.CompletedTask;
     }
+
+
+
 
     public void RazorComponentShown(string componentId)
     {

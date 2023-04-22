@@ -1,4 +1,5 @@
 ﻿using Amadon.Controls;
+using AmadonStandardLib.UbClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Amadon
     internal delegate void TranslationsListInitializedDelegate();
     internal delegate void InitializationSuccesfullyDelegate();
     internal delegate void RazorComponentShownDelegate(string componentId);
+    internal delegate void NewTocEntryDelegate(TOC_Entry entry);
 
     internal static class AmadonEvents
     {
@@ -38,6 +40,11 @@ namespace Amadon
 
         public static event RazorComponentShownDelegate OnRazorComponentShown;
 
+        /// <summary>
+        /// Fired when a new table of contents item is selected
+        /// </summary>
+        public static event NewTocEntryDelegate OnNewTocEntry;
+
         public static void TopNavCommand(string controlName)
         {
             OnTopNavCommand?.Invoke(controlName);
@@ -57,5 +64,12 @@ namespace Amadon
         {
             OnRazorComponentShown?.Invoke(componentId);
         }
+
+        public static void NewTocEntry(TOC_Entry entry)
+        {
+            if (entry != null)
+                OnNewTocEntry?.Invoke(entry);
+        }
+
     }
 }

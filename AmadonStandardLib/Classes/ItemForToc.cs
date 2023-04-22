@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadonStandardLib.UbClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace AmadonStandardLib.Classes
     /// </summary>
     public class ItemForToc
     {
+        public TOC_Entry? Entry { get; set; }
         public string Text { get; set; } = "";
 
         public ItemForToc[] Children

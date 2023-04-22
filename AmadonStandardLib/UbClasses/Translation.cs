@@ -81,6 +81,7 @@ namespace AmadonStandardLib.UbClasses
                 ItemForToc itemSection = new ItemForToc();
                 children.Add(itemSection);
                 itemSection.Text = entrySection.Text;
+                itemSection.Entry = entrySection;
             }
         }
 
@@ -110,6 +111,7 @@ namespace AmadonStandardLib.UbClasses
                 ItemForToc itemSection = new ItemForToc();
                 children.Add(itemSection);
                 itemSection.Text = entrySection.Text;
+                itemSection.Entry = entrySection;
             }
         }
 
