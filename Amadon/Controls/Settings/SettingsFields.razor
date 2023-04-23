@@ -4,62 +4,87 @@
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.UbClasses;
 
+<Heading Size="HeadingSize.Is3">Settings</Heading>
 
-<div class="row">
-    <div class="col-sm-4 text-black">
-        <SwitchControl @ref=SwitchMiddleTranslation LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle SwitchType=(int)SwitchType.ShowMiddleTranslation />
-    </div>
-    <div class="col-sm-4">
-        <SwitchControl @ref=SwitchRightTranslation LabelText="Show Right Translation" IsToggled=@parameters.ShowRight SwitchType=(int)SwitchType.ShowRightTranslation />
-    </div>
-    <div class="col-sm-4">
-        <SwitchControl @ref=SwitchCompare LabelText="Show Compare" IsToggled=@parameters.ShowCompare SwitchType=(int)SwitchType.ShowCompare />
-    </div>
-</div>
+@if (SettingsPageInitialized)
+{
+    <Tooltip Text="Show a translation in the middle column" Placement="TooltipPlacement.Bottom">
+        <SwitchControl @ref=SwitchMiddleTranslation LabelText="Show Middle Translation" IsToggled=@parameters.ShowMiddle  />
+    </Tooltip>
 
-<div class="row">
-    <div class="col-sm-4">
+    <Tooltip Text="Show a translation in the right column" Placement="TooltipPlacement.Bottom">
+        <SwitchControl @ref=SwitchRightTranslation LabelText="Show Right Translation" IsToggled=@parameters.ShowRight  />
+    </Tooltip>
+
+    <Tooltip Text="Show a comparison column when middle and right translations can be compared" Placement="TooltipPlacement.Bottom">
+        <SwitchControl @ref=SwitchCompare LabelText="Show Compare" IsToggled=@parameters.ShowCompare  />
+    </Tooltip>
+
+    <Divider />
+
+
+    <Tooltip Text="Use dark mode" Placement="TooltipPlacement.Bottom">
         <SwitchControl @ref=SwitchDarkMode LabelText="Dark Mode" IsToggled=@parameters.UseDarkThemme SwitchType=(int)SwitchType.UseDarkTheme />
-    </div>
-    <div class="col-sm-4">
+    </Tooltip>
+
+    <Tooltip Text="Show the paragraph identificantion (number and page)" Placement="TooltipPlacement.Bottom">
         <SwitchControl @ref=SwitchParNumber LabelText="Show Paragraph Numnber" IsToggled=@parameters.ShowParagraphIdentification SwitchType=(int)SwitchType.ShowParagraphIdentification />
-    </div>
-    <div class="col-sm-4">
+    </Tooltip>
+
+    <Tooltip Text="Use serif font" Placement="TooltipPlacement.Bottom">
         <SwitchControl @ref=SwitchSerifFont LabelText="Use Serif Font" IsToggled=@parameters.ShowCompare SwitchType=(int)SwitchType.UseSerifFont />
-    </div>
-</div>
+    </Tooltip>
 
 
-<div class="row">
-    <div class="col-sm-4">
+    <Divider />
+
+    <Tooltip Text="Number of items shown in the search tool" Placement="TooltipPlacement.Bottom">
         <NumberControl LabelText="Search Page Size" MinValue="10" MaxValue="100" Value=@parameters.SearchPageSize></NumberControl>
-    </div>
-    <div class="col-sm-4">
+    </Tooltip>
+
+    <Tooltip Text="Max search expression stored to be resused" Placement="TooltipPlacement.Bottom">
         <NumberControl LabelText="Max Search Expression Stored" MinValue="10" MaxValue="100" Value=@parameters.MaxExpressionsStored></NumberControl>
-    </div>
-    <div class="col-sm-4">
-        <NumberControl LabelText="Font Size" MinValue="10" MaxValue="30" Value=@parameters.FontSize></NumberControl>
-    </div>
-</div>
+    </Tooltip>
 
 
-<div class="row">
-    <div class="col-sm-6">
-        <button class="btn btn-primary" @onclick="OpenLocalRepository">Local Translation Repository</button>
-    </div>
-</div>
+    <Tooltip Text="Choose the translation to be shown in the middle" Placement="TooltipPlacement.Bottom">
+        <Select @ref="SelectMiddleTranslation" TValue="SelectTranslation" SelectedValue="@selectedMiddleValue" SelectedValueChanged="@OnSelectedValueChanged">
+            @foreach (SelectTranslation item in items)
+            {
+                <SelectItem Text="@item.Descrition" Value="@item.Id" />
+            }
+        </Select>
+    </Tooltip>
+}
 
-<div class="row">
-     <div class="col-sm-12">
-        <span class="text-wrap">
-            Here you can get some help information and also the source code of this tool:
-            <a target="_blank" class="font-weight-bold link-dark" href="https://github.com/Rogreis/UbStudyHelpMAUI">Help && Source Code</a>
-        </span>
-    </div>
-</div>
+
 
 
 @code {
+
+    private class SelectTranslation
+    {
+        public short Id { get; set; }
+        public string Descrition { get; set; }
+    }
+
+    Select<SelectTranslation> SelectMiddleTranslation;
+
+    SelectTranslation selectedLefteValue;
+    SelectTranslation selectedMiddleValue;
+    SelectTranslation selectedRightValue;
+    bool SettingsPageInitialized = false;
+
+    private List<SelectTranslation> items;
+
+    Task OnSelectedValueChanged(SelectTranslation value)
+    {
+        selectedMiddleValue = value;
+
+        return Task.CompletedTask;
+    }
+
+
 
     enum SwitchType
     {
@@ -75,7 +100,7 @@
 
     private Parameters parameters = new Parameters();
 
- 
+
     private SwitchControl SwitchParNumber;
     private SwitchControl SwitchMiddleTranslation;
     private SwitchControl SwitchRightTranslation;
@@ -83,46 +108,19 @@
     private SwitchControl SwitchDarkMode;
     private SwitchControl SwitchSerifFont;
 
-    private bool Initialized = false;
-
-    private string localReporitoryUrl = "";
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        parameters = StaticObjects.Parameters;
-        if (firstRender)
+        if (firstRender && StaticObjects.Parameters.AppInitialized)
         {
-            // Wait for the button to be rendered
+            if (!SettingsPageInitialized)
+            {
+                await Task.Delay(1);
+                Initialize();
+            }
             StateHasChanged();
-            SwitchParNumber.SetValue(parameters.ShowParagraphIdentification);
-            SwitchMiddleTranslation.SetValue(parameters.ShowMiddle);
-            SwitchRightTranslation.SetValue(parameters.ShowRight);
-            SwitchCompare.SetValue(parameters.ShowCompare);
-            SwitchDarkMode.SetValue(parameters.UseDarkThemme);
-            SwitchSerifFont.SetValue(parameters.UseSerifFont);
-            //leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
-            //rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
         }
-
-        if (!Initialized)
-        {
-            await Task.Delay(1);
-
-            // Replace Windows directory separator character with macOS directory separator character
-            localReporitoryUrl = $"file:///{parameters.TubDataFolder.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}";
-            SwitchParNumber.FieldChanged += ParameterValueChanged;
-            SwitchMiddleTranslation.FieldChanged += ParameterValueChanged;
-            SwitchRightTranslation.FieldChanged += ParameterValueChanged;
-            SwitchCompare.FieldChanged += ParameterValueChanged;
-            SwitchDarkMode.FieldChanged += ParameterValueChanged;
-            SwitchSerifFont.FieldChanged += ParameterValueChanged;
-            //leftTranslationCombo.FieldChanged += ParameterValueChanged;
-            //middleTranslationCombo.FieldChanged += ParameterValueChanged;
-            //rightTranslationCombo.FieldChanged += ParameterValueChanged;
-            Initialized = true;
-        }
-        StateHasChanged();
     }
 
     private async Task StoreParameters()
@@ -141,29 +139,18 @@
         LibraryEventsControl.FireRedrawText();
     }
 
-    private void ShowWarning(string warning)
-    {
-    }
-
-
-    private Task OpenLocalRepository()
-    {
-        StaticObjects.OpenLocalFolder(parameters.TubDataFolder);
-        return Task.CompletedTask;
-    }
-
-
-
-    private void ThemeChanged(bool isToggled)
-    {
-        parameters.UseDarkThemme = isToggled;
-    }
-
     public void Initialize()
     {
         parameters = StaticObjects.Parameters;
-        //leftTranslationCombo.SetValue(parameters.LanguageIDLeftTranslation);
-        //rightTranslationCombo.SetValue(parameters.LanguageIDRightTranslation);
+        items = new List<SelectTranslation>();
+        foreach (short id in StaticObjects.Parameters.TranslationsToShowId)
+        {
+            Translation trans = StaticObjects.Book.GetTranslation(id);
+            items.Add(new SelectTranslation() { Id = id, Descrition = trans.Description });
+        }
+
+        SettingsPageInitialized = true;
+        StateHasChanged();
 
         SwitchParNumber.SetValue(parameters.ShowParagraphIdentification);
         SwitchMiddleTranslation.SetValue(parameters.ShowMiddle);
@@ -172,7 +159,21 @@
         SwitchDarkMode.SetValue(parameters.UseDarkThemme);
         SwitchSerifFont.SetValue(parameters.UseSerifFont);
 
+        SwitchParNumber.FieldChanged += ParameterValueChanged;
+        SwitchMiddleTranslation.FieldChanged += ParameterValueChanged;
+        SwitchRightTranslation.FieldChanged += ParameterValueChanged;
+        SwitchCompare.FieldChanged += ParameterValueChanged;
+        SwitchDarkMode.FieldChanged += ParameterValueChanged;
+        SwitchSerifFont.FieldChanged += ParameterValueChanged;
 
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        AmadonEvents.OnInitializationSuccesfully += Initialize;
+    }
+
+
 
 }

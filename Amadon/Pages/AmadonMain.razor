@@ -8,7 +8,7 @@
 @using Blazorise
 
 <div class="container_fluid  h-100">
-@if (!AppInitialized)
+@if (!AmadonMainPageInitialized)
 {
     <InitializationControl></InitializationControl>
 }
@@ -32,7 +32,7 @@ else
     // Local blazor components
     private LeftColumn LeftControl;
 
-    private bool AppInitialized = false;
+    private bool AmadonMainPageInitialized = false;
 
 
 
@@ -51,7 +51,7 @@ else
 
     protected void OnInitializationSuccesfully()
     {
-        AppInitialized = true;
+        AmadonMainPageInitialized = true;
         StateHasChanged();
         Task.Delay(1);
         AmadonEvents.TopNavCommand(StaticObjects.Parameters.LastLeftControl);

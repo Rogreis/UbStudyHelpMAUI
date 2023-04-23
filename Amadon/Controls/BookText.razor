@@ -74,10 +74,18 @@
         StateHasChanged();
     }
 
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    if (firstRender)
-    //    {
-    //    }
-    //}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            GetTexts();
+            //await Task.Run(() =>
+            //{
+            //    GetTexts();
+
+            //});
+        }
+        StateHasChanged();
+    }
+}
 }

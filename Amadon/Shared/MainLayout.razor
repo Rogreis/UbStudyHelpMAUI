@@ -1,4 +1,5 @@
 ﻿@using Amadon.Controls
+@using AmadonStandardLib.Helpers;
 @using Blazorise
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
@@ -9,10 +10,6 @@
     {
         <TopNavbar />
         <div class="jumptop" />
-    }
-    else
-    {
-        NavigationManager.NavigateTo("/");
     }
     @Body
 </div>
@@ -73,6 +70,8 @@
     private void AmadonEvents_OnInitializationSuccesfully()
     {
         ShowNavBar = true;
+        StaticObjects.Parameters.AppInitialized = true;
         StateHasChanged();
+        NavigationManager.NavigateTo("/");
     }
 }

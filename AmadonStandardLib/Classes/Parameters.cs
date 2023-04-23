@@ -69,6 +69,10 @@ namespace AmadonStandardLib.Classes
             }
         }
 
+
+        [JsonIgnore]
+        public bool AppInitialized = false;
+
         public bool UseDarkThemme { get; set; } = true;
 
         public bool UseSerifFont { get; set; } = true;
