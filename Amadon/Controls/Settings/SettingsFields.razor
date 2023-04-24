@@ -24,10 +24,10 @@
     <Divider />
 
 
-    <Tooltip Text="Use dark mode" Placement="TooltipPlacement.Bottom">
+ @*   <Tooltip Text="Use dark mode" Placement="TooltipPlacement.Bottom">
         <SwitchControl @ref=SwitchDarkMode LabelText="Dark Mode" IsToggled=@parameters.UseDarkThemme SwitchType=(int)SwitchType.UseDarkTheme />
     </Tooltip>
-
+*@
     <Tooltip Text="Show the paragraph identificantion (number and page)" Placement="TooltipPlacement.Bottom">
         <SwitchControl @ref=SwitchParNumber LabelText="Show Paragraph Numnber" IsToggled=@parameters.ShowParagraphIdentification SwitchType=(int)SwitchType.ShowParagraphIdentification />
     </Tooltip>
@@ -60,8 +60,12 @@
         </TableRow>
     </Table>
 
+    <Divider />
+
     <TranslationSelect @ref="TranslationSelectLeft" Label="Left Translation" Id="LeftTrans" SelectedValue="StaticObjects.Parameters.LanguageIDLeftTranslation"></TranslationSelect>
+    <br />
     <TranslationSelect @ref="TranslationSelectMiddle" Label="Middle Translation" Id="MiddleTrans" SelectedValue="StaticObjects.Parameters.LanguageIDMiddleTranslation"></TranslationSelect>
+    <br />
     <TranslationSelect @ref="TranslationSelectRight" Label="Right Translation" Id="RightTrans" SelectedValue="StaticObjects.Parameters.LanguageIDRightTranslation"></TranslationSelect>
 
 }
