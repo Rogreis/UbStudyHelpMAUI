@@ -99,11 +99,11 @@
         {
             if (trans.LanguageID > 0)
             {
-                bool selected = StaticObjects.Parameters.TranslationsToShowId.Exists(id => id == trans.LanguageID); ;
+                bool selected = StaticObjects.Parameters.TranslationsToShowId.Exists(id => id == trans.LanguageID);
                 Items.Add(new TranslationToShowItem { Id = trans.LanguageID, Value = selected, DisplayText = trans.Description });
             }
         }
-
+        StateHasChanged();
         return ModalTranslationsToShow.Show();
     }
 
@@ -132,6 +132,8 @@
         }
         await ModalTranslationsToShow.Hide();
         InitializationStatus = Status.TranslationsChoiceDone;
+        StaticObjects.Parameters.TranslationsChoiceDone = true;
+        Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
         Status status = await DoInitialization();
         return;
     }
@@ -196,7 +198,8 @@
                 case Status.TranslationsListInitialized:
                     if (!StaticObjects.Parameters.TranslationsChoiceDone)
                     {
-                        // This need to be set to be used for modal ok
+                        // To show the modal, initialization loop is stopped
+                        // It will be re-started in the modal ok function
                         continues = false;
                         InitializationStatus = Status.WaitingTranslationChoice;
                         await ShowModal(ModalSize.Large, 50, true);

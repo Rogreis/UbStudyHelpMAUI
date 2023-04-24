@@ -1,0 +1,69 @@
+﻿@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.UbClasses;
+
+@if (TranslationSelectComponentInitialized)
+{
+    <div class="form-group">
+        <label for="@Id">@Label</label>
+        <select class="form-control" id="@Id" @bind="@SelectedValue">
+            @foreach (var item in Items)
+            {
+                <option value="@item.Id">@item.Description</option>
+            }
+        </select>
+    </div>
+}
+
+
+
+@code {
+    private class TranslationDropdownItem
+    {
+        public short Id { get; set; }
+        public string Description { get; set; }
+    }
+
+    // Local variables
+
+    private List<TranslationDropdownItem> Items { get; set; }
+    private bool TranslationSelectComponentInitialized = false;
+
+
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+
+
+    [Parameter]
+    public short SelectedValue { get; set; }
+
+    [Parameter]
+    public EventCallback<short> SelectedValueChanged { get; set; }
+
+    private async Task OnSelectedValueChanged(ChangeEventArgs e)
+    {
+        if (short.TryParse(e.Value.ToString(), out short value))
+        {
+            SelectedValue = value;
+            await SelectedValueChanged.InvokeAsync(value);
+        }
+    }
+
+    public void SetData(short idSelected)
+    {
+        Items = new List<TranslationDropdownItem>();
+        Translation transEnglish = StaticObjects.Book.GetTranslation(0);
+        Items.Add(new TranslationDropdownItem() { Id = 0, Description = transEnglish.Description });
+        foreach (short idTransToShow in StaticObjects.Parameters.TranslationsToShowId)
+        {
+            Translation trans = StaticObjects.Book.GetTranslation(idTransToShow);
+            Items.Add(new TranslationDropdownItem() { Id = idTransToShow, Description = trans.Description });
+        }
+        TranslationSelectComponentInitialized = true;
+        StateHasChanged();
+    }
+
+
+}

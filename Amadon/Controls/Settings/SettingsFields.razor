@@ -1,4 +1,5 @@
-﻿@using Amadon.Services;
+﻿@using Amadon.Controls.Fields;
+@using Amadon.Services;
 @using AmadonStandardLib.Classes;
 @using System.Diagnostics;
 @using AmadonStandardLib.Helpers;
@@ -38,23 +39,31 @@
 
     <Divider />
 
-    <Tooltip Text="Number of items shown in the search tool" Placement="TooltipPlacement.Bottom">
-        <NumberControl LabelText="Search Page Size" MinValue="10" MaxValue="100" Value=@parameters.SearchPageSize></NumberControl>
-    </Tooltip>
+    <Table>
+        <TableRow>
+            <TableRowCell>
+                <Tooltip Text="Number of items shown in the search tool" Placement="TooltipPlacement.Bottom">
+                    <Field>
+                        <FieldLabel Class="bg-dark text-white">Search Page Size</FieldLabel>
+                        <NumericEdit MinValue="10" MaxValue="100" Value=@parameters.SearchPageSize></NumericEdit>
+                    </Field>
+                </Tooltip>
+            </TableRowCell>
+            <TableRowCell>
+                <Tooltip Text="Max search and track data stored to be resused" Placement="TooltipPlacement.Bottom">
+                    <Field>
+                        <FieldLabel Class="bg-dark text-white">Max Expression</FieldLabel>
+                        <NumericEdit MinValue="10" MaxValue="100" Value=@parameters.MaxExpressionsStored></NumericEdit>
+                    </Field>
+                </Tooltip>
+            </TableRowCell>
+        </TableRow>
+    </Table>
 
-    <Tooltip Text="Max search expression stored to be resused" Placement="TooltipPlacement.Bottom">
-        <NumberControl LabelText="Max Search Expression Stored" MinValue="10" MaxValue="100" Value=@parameters.MaxExpressionsStored></NumberControl>
-    </Tooltip>
+    <TranslationSelect @ref="TranslationSelectLeft" Label="Left Translation" Id="LeftTrans" SelectedValue="StaticObjects.Parameters.LanguageIDLeftTranslation"></TranslationSelect>
+    <TranslationSelect @ref="TranslationSelectMiddle" Label="Middle Translation" Id="MiddleTrans" SelectedValue="StaticObjects.Parameters.LanguageIDMiddleTranslation"></TranslationSelect>
+    <TranslationSelect @ref="TranslationSelectRight" Label="Right Translation" Id="RightTrans" SelectedValue="StaticObjects.Parameters.LanguageIDRightTranslation"></TranslationSelect>
 
-
-    <Tooltip Text="Choose the translation to be shown in the middle" Placement="TooltipPlacement.Bottom">
-        <Select @ref="SelectMiddleTranslation" TValue="SelectTranslation" SelectedValue="@selectedMiddleValue" SelectedValueChanged="@OnSelectedValueChanged">
-            @foreach (SelectTranslation item in items)
-            {
-                <SelectItem Text="@item.Descrition" Value="@item.Id" />
-            }
-        </Select>
-    </Tooltip>
 }
 
 
@@ -67,6 +76,11 @@
         public short Id { get; set; }
         public string Descrition { get; set; }
     }
+
+    TranslationSelect TranslationSelectLeft;
+    TranslationSelect TranslationSelectMiddle;
+    TranslationSelect TranslationSelectRight;
+
 
     Select<SelectTranslation> SelectMiddleTranslation;
 
@@ -150,7 +164,14 @@
         }
 
         SettingsPageInitialized = true;
+
+
+
         StateHasChanged();
+
+        TranslationSelectLeft.SetData(StaticObjects.Parameters.LanguageIDMiddleTranslation);
+        TranslationSelectMiddle.SetData(StaticObjects.Parameters.LanguageIDMiddleTranslation);
+        TranslationSelectRight.SetData(StaticObjects.Parameters.LanguageIDMiddleTranslation);
 
         SwitchParNumber.SetValue(parameters.ShowParagraphIdentification);
         SwitchMiddleTranslation.SetValue(parameters.ShowMiddle);
