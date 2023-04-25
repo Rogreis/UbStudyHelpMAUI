@@ -36,13 +36,14 @@ namespace AmadonStandardLib.Classes
         /// Last controls used
         /// </summary>
         public string LastLeftControl { get; set; } = "toc";
-        public string LastRightControl { get; set; } = "";
 
         public short LanguageIDLeftTranslation { get; set; } = 0;
 
         public short LanguageIDMiddleTranslation { get; set; } = -1;
 
         public short LanguageIDRightTranslation { get; set; } = 34;
+
+        public short TranslationForTableOfContents { get; set; } = 34;
 
         // Show pages options
         public bool ShowMiddle { get; set; } = false;

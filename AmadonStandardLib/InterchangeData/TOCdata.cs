@@ -14,19 +14,12 @@ namespace AmadonStandardLib.InterchangeData
         // Input data
         public short TranslationId1 { get; set; } = -1;
 
-        public short TranslationId2 { get; set; } = -1;
-
         public bool UpdateTocId1 { get; set; } = true;
-
-        public bool UpdateTocId2 { get; set; } = true;
 
         // Output data
         public List<ItemForToc>? TocId1 { get; set; } = null;
 
-        public List<ItemForToc>? TocId2 { get; set; } = null;
-
         public string TitleTranslation1 { get; set; } = "Primary";
-        public string TitleTranslation2 { get; set; } = "Secondary";
 
 
     }

@@ -25,12 +25,6 @@ namespace Amadon.Services
                 data.TocId1 = trans.TableOfContents;
                 data.TitleTranslation1 = trans.Description;
             }
-            if (data.UpdateTocId2)
-            {
-                Translation trans = GetTranslation(data.TranslationId2);
-                data.TocId2 = trans.TableOfContents;
-                data.TitleTranslation2 = trans.Description;
-            }
             return data;
         }
 

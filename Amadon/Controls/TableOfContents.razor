@@ -13,72 +13,36 @@
 
 @if (TocGotFromData)
 {
-    <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
-        <Items>
-            <Tab Name="Primary">@titlePrimary</Tab>
-            <Tab Name="Secondary">@titleSecondary</Tab>
-        </Items>
-        <Content>
-            <TabPanel Name="Primary">
-                <TreeView @ref="@treeViewPrimary" Nodes="ItemsPrimary"
-                      GetChildNodes="@(item => item.Children)"
-                      HasChildNodes="@(item => item.Children?.Any() == true)"
-                      @bind-SelectedNode="SelectedNode"
-                      @bind-ExpandedNodes="expandedNodesPrimary"
-                >
-                    <NodeContent>
-                        @context.Text
-                    </NodeContent>
-                </TreeView>
-            </TabPanel>
-            <TabPanel Name="Secondary">
-                <TreeView @ref="@treeViewSecondary" Nodes="ItemsSecondary"
-                      GetChildNodes="@(item => item.Children)"
-                      HasChildNodes="@(item => item.Children?.Any() == true)"
-                      @bind-SelectedNode="selectedNode"
-                      @bind-ExpandedNodes="expandedNodesSecondary">
-                    <NodeContent>
-                        @context.Text
-                    </NodeContent>
-                </TreeView>
-            </TabPanel>
-        </Content>
-    </Tabs>
-
+    <TreeView @ref="@treeViewPrimary" Nodes="ItemsPrimary"
+          GetChildNodes="@(item => item.Children)"
+          HasChildNodes="@(item => item.Children?.Any() == true)"
+          @bind-SelectedNode="SelectedNode"
+          @bind-ExpandedNodes="expandedNodesPrimary">
+        <NodeContent>
+            @context.Text
+        </NodeContent>
+    </TreeView>
 }
 
 
 
 @code {
 
-
-    private Task OnSelectedNodeChanged(ItemForToc item)
-    {
-        //if (item is null)
-        //{
-        //    throw new ArgumentNullException(nameof(item));
-        //}
-        // Perform actions when a TreeView node is selected
-        //Console.WriteLine($"Selected node: {item.Text}");
-        return Task.CompletedTask;
-    }
-
-
-    private string selectedTab = "Primary";
-
     TreeView<ItemForToc> treeViewPrimary;
-    TreeView<ItemForToc> treeViewSecondary;
 
-    string titlePrimary = "Primary";
-    string titleSecondary = "Secondary";
+    // Output data
+    public List<ItemForToc>? TocId1 { get; set; } = null;
+
+    public string TitleTranslation1 { get; set; } = "Primary";
+
 
     TOCdata data = new TOCdata();
     bool TocGotFromData = false;
+
     IEnumerable<ItemForToc> ItemsPrimary = new ItemForToc[0];
-    IEnumerable<ItemForToc> ItemsSecondary = new ItemForToc[0];
 
     IList<ItemForToc> expandedNodesPrimary = new List<ItemForToc>();
-    IList<ItemForToc> expandedNodesSecondary = new List<ItemForToc>();
+
     private ItemForToc selectedNode;
     private ItemForToc SelectedNode 
     { 
@@ -98,46 +62,26 @@
     {
         // Both translation must be in the translations to show
         // IF not, a default value is set
-        if (StaticObjects.Parameters.LanguageIDLeftTranslation > 0 &&
-            !StaticObjects.Parameters.TranslationsToShowId.Contains(StaticObjects.Parameters.LanguageIDLeftTranslation))
+        if (StaticObjects.Parameters.TranslationForTableOfContents < 0 ||
+            !StaticObjects.Parameters.TranslationsToShowId.Contains(StaticObjects.Parameters.TranslationForTableOfContents))
         {
-            StaticObjects.Parameters.LanguageIDLeftTranslation = 0;
-        }
-        if (StaticObjects.Parameters.LanguageIDRightTranslation > 0 &&
-            !StaticObjects.Parameters.TranslationsToShowId.Contains(StaticObjects.Parameters.LanguageIDRightTranslation))
-        {
-            // It is mandatory to have at least one translation in the translations to show list
-            StaticObjects.Parameters.LanguageIDRightTranslation = StaticObjects.Parameters.TranslationsToShowId[0];
+            StaticObjects.Parameters.TranslationForTableOfContents = 0;
         }
 
         // Needs update?
-        data.UpdateTocId1 = data.TranslationId1 != StaticObjects.Parameters.LanguageIDLeftTranslation;
-        data.UpdateTocId2 = data.TranslationId1 != StaticObjects.Parameters.LanguageIDRightTranslation;
+        data.UpdateTocId1 = data.TranslationId1 != StaticObjects.Parameters.TranslationForTableOfContents;
 
-
-        if (!data.UpdateTocId1 && data.UpdateTocId2)
+        if (!data.UpdateTocId1)
         {
-            // Both toc already created
+            // TOC already created
             return;
         }
-        data.TranslationId1 = StaticObjects.Parameters.LanguageIDLeftTranslation;
-        data.TranslationId2 = StaticObjects.Parameters.LanguageIDRightTranslation;
+        data.TranslationId1 = StaticObjects.Parameters.TranslationForTableOfContents;
         data = await TOC_Service.GetTocTable(data);
         ItemsPrimary = data.TocId1;
-        ItemsSecondary = data.TocId2;
-        titlePrimary = data.TitleTranslation1;
-        titleSecondary = data.TitleTranslation2;
         TocGotFromData = true;
         StateHasChanged();
     }
-
-    private Task OnSelectedTabChanged(string name)
-    {
-        selectedTab = name;
-        return Task.CompletedTask;
-    }
-
-
 
 
     public void RazorComponentShown(string componentId)
@@ -149,8 +93,6 @@
         }
     }
 
-
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -160,5 +102,6 @@
         }
     }
 
+ 
 
 }

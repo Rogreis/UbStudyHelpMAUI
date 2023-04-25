@@ -62,11 +62,28 @@
 
     <Divider />
 
-    <TranslationSelect @ref="TranslationSelectLeft" Label="Left Translation" Id="LeftTrans" SelectedValue="StaticObjects.Parameters.LanguageIDLeftTranslation"></TranslationSelect>
     <br />
-    <TranslationSelect @ref="TranslationSelectMiddle" Label="Middle Translation" Id="MiddleTrans" SelectedValue="StaticObjects.Parameters.LanguageIDMiddleTranslation"></TranslationSelect>
+    <Tooltip Text="Choose translation for left column" Placement="TooltipPlacement.Bottom">
+        <TranslationSelect @ref="TranslationSelectLeft" Label="Left Translation" Id="LeftTrans" SelectedValue="StaticObjects.Parameters.LanguageIDLeftTranslation"></TranslationSelect>
+    </Tooltip>
     <br />
-    <TranslationSelect @ref="TranslationSelectRight" Label="Right Translation" Id="RightTrans" SelectedValue="StaticObjects.Parameters.LanguageIDRightTranslation"></TranslationSelect>
+    <Tooltip Text="Choose translation for middle column" Placement="TooltipPlacement.Bottom">
+        <TranslationSelect @ref="TranslationSelectMiddle" Label="Middle Translation" Id="MiddleTrans" SelectedValue="StaticObjects.Parameters.LanguageIDMiddleTranslation"></TranslationSelect>
+    </Tooltip>
+    <br />
+    <Tooltip Text="Choose translation for right column" Placement="TooltipPlacement.Bottom">
+        <TranslationSelect @ref="TranslationSelectRight" Label="Right Translation" Id="RightTrans" SelectedValue="StaticObjects.Parameters.LanguageIDRightTranslation"></TranslationSelect>
+    </Tooltip>
+    <br />
+
+    <Tooltip Text="Choose translation to be used for table of contents" Placement="TooltipPlacement.Bottom">
+        <Label>Translation for Table of Contents</Label>
+        <RadioGroup TValue="string" Name="TocTranslations" Buttons  CheckedValueChanged="@OnCheckedValueChanged">
+            <Radio Value="@("left")">Use Left</Radio>
+            <Radio Value="@("middle")">Use Middle</Radio>
+            <Radio Value="@("right")">User Right</Radio>
+        </RadioGroup>
+    </Tooltip>
 
 }
 
@@ -81,6 +98,26 @@
         public string Descrition { get; set; }
     }
 
+    Task OnCheckedValueChanged(string value)
+    {
+        checkedValue = value;
+        switch(checkedValue)
+        {
+            case "left":
+                StaticObjects.Parameters.TranslationForTableOfContents = StaticObjects.Parameters.LanguageIDLeftTranslation;
+                break;
+            case "middle":
+                StaticObjects.Parameters.TranslationForTableOfContents = StaticObjects.Parameters.LanguageIDMiddleTranslation;
+                break;
+            case "right":
+                StaticObjects.Parameters.TranslationForTableOfContents = StaticObjects.Parameters.LanguageIDRightTranslation;
+                break;
+        }
+
+        return Task.CompletedTask;
+    }
+
+
     TranslationSelect TranslationSelectLeft;
     TranslationSelect TranslationSelectMiddle;
     TranslationSelect TranslationSelectRight;
@@ -92,6 +129,7 @@
     SelectTranslation selectedMiddleValue;
     SelectTranslation selectedRightValue;
     bool SettingsPageInitialized = false;
+    string checkedValue = "green";
 
     private List<SelectTranslation> items;
 
@@ -181,14 +219,14 @@
         SwitchMiddleTranslation.SetValue(parameters.ShowMiddle);
         SwitchRightTranslation.SetValue(parameters.ShowRight);
         SwitchCompare.SetValue(parameters.ShowCompare);
-        SwitchDarkMode.SetValue(parameters.UseDarkThemme);
+        //SwitchDarkMode.SetValue(parameters.UseDarkThemme);
         SwitchSerifFont.SetValue(parameters.UseSerifFont);
 
         SwitchParNumber.FieldChanged += ParameterValueChanged;
         SwitchMiddleTranslation.FieldChanged += ParameterValueChanged;
         SwitchRightTranslation.FieldChanged += ParameterValueChanged;
         SwitchCompare.FieldChanged += ParameterValueChanged;
-        SwitchDarkMode.FieldChanged += ParameterValueChanged;
+        //SwitchDarkMode.FieldChanged += ParameterValueChanged;
         SwitchSerifFont.FieldChanged += ParameterValueChanged;
 
     }

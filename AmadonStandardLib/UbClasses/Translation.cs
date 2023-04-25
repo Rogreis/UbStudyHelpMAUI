@@ -97,6 +97,7 @@ namespace AmadonStandardLib.UbClasses
                 ItemForToc itemPaper = new ItemForToc();
                 children.Add(itemPaper);
                 itemPaper.Text = $"{entryPaper.Paper}  {entryPaper.Text}";
+                itemPaper.Entry = entryPaper;
                 Paper paper = Papers[entryPaper.Paper];
                 GetSections(paper, itemPaper.WorkChildren);
             }
@@ -136,6 +137,7 @@ namespace AmadonStandardLib.UbClasses
                     ItemForToc itemPart = new ItemForToc();
                     items.Add(itemPart);
                     itemPart.Text = PartTitles[index];
+                    itemPart.Entry = new TOC_Entry((short)(index + 1000), 0, 0, 0, 0, 0);
                     if (FistPapers[index] == 0)
                     {
                         GetIntroToc(itemPart.WorkChildren);
