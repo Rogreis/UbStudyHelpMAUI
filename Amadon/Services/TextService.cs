@@ -9,6 +9,9 @@ namespace Amadon.Services
 
     public class TextService
     {
+
+        private static string ColumnSize = "50%";
+
         /// <summary>
         /// Get the paragraphs list from a translations
         /// </summary>
@@ -31,7 +34,7 @@ namespace Amadon.Services
         {
             if (par != null)
             {
-                sb.AppendLine("<td>");
+                sb.AppendLine($"<td width=\"{ColumnSize}\">");
                 sb.AppendLine(par.GetHtml(isEdit, insertAnchor));
                 sb.AppendLine("</td>");
             }
@@ -89,7 +92,7 @@ namespace Amadon.Services
                 ps-2 padding-left (2 = approximately equal to 10 pixels, assuming the default font-size of 16px).
                 pe-0 padding-right
                 pb-5 for padding-bottom: 20 (.25rem * 5 in Bootstrap 5 is approximately equal to              * */
-            return $"<th><div class=\"m-3 parClosed\">{sb}</div></th>";
+            return $"<th width=\"{ColumnSize}\"><div class=\"m-3 parClosed\">{sb}</div></th>";
         }
 
         /// <summary>
@@ -116,11 +119,13 @@ namespace Amadon.Services
             {
                 case TextShowOption.LeftOnly:
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    ColumnSize = "100%";
                     break;
                 case TextShowOption.LeftRight:
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
                     rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
+                    ColumnSize = "50%";
                     break;
                 case TextShowOption.LeftRightCompare:
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
@@ -129,6 +134,7 @@ namespace Amadon.Services
                     rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
                     leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
                     compareParagraphs = null; // TO DO implement compare
+                    ColumnSize = "33%";
                     break;
                 case TextShowOption.LeftMiddleRight:
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
@@ -136,6 +142,7 @@ namespace Amadon.Services
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
                     rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
                     middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
+                    ColumnSize = "33%";
                     break;
                 case TextShowOption.LeftMiddleRightCompare:
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
@@ -145,6 +152,7 @@ namespace Amadon.Services
                     rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
                     middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
                     compareParagraphs = null; // TO DO implement compare
+                    ColumnSize = "25%";
                     break;
             }
 

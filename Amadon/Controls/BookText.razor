@@ -51,9 +51,16 @@
         await base.OnInitializedAsync();
         LibraryEventsControl.RedrawText += EventsControl_RedrawText;
         AmadonEvents.OnNewTocEntry += OnNewTocEntry;
+        AmadonEvents.OnTranslationsToShowChanged += TranslationsToShowChanged;
     }
 
     protected void EventsControl_RedrawText()
+    {
+        GetTexts();
+        StateHasChanged();
+    }
+
+    private void TranslationsToShowChanged()
     {
         GetTexts();
         StateHasChanged();

@@ -3,8 +3,7 @@
 
 @if (TranslationSelectComponentInitialized)
 {
-    <div class="form-group">
-        <label for="@Id">@Label</label>
+ @*   <div class="form-group">
         <select class="form-control" id="@Id" @bind="@SelectedValue">
             @foreach (var item in Items)
             {
@@ -12,6 +11,17 @@
             }
         </select>
     </div>
+*@
+
+    <label for="@Id" >@Label</label>
+    <Select ElementId="@Id" TValue="int" SelectedValue="@SelectedValue" SelectedValueChanged="@OnSelectedValueChanged">
+        @foreach (var item in Items)
+        {
+            <SelectItem Value="@item.Id">@item.Description</SelectItem>
+        }
+    </Select>
+
+
 }
 
 
@@ -23,12 +33,6 @@
         public string Description { get; set; }
     }
 
-    // Local variables
-
-    private List<TranslationDropdownItem> Items { get; set; }
-    private bool TranslationSelectComponentInitialized = false;
-
-
     [Parameter]
     public string Label { get; set; }
 
@@ -37,10 +41,22 @@
 
 
     [Parameter]
-    public short SelectedValue { get; set; }
+    public int SelectedValue { get; set; }
 
     [Parameter]
     public EventCallback<short> SelectedValueChanged { get; set; }
+
+    // Local variables
+
+    private List<TranslationDropdownItem> Items { get; set; }
+    private bool TranslationSelectComponentInitialized = false;
+
+    async Task OnSelectedValueChanged(int value)
+    {
+        SelectedValue = value;
+        await SelectedValueChanged.InvokeAsync((short)value);
+        return; // Task.CompletedTask;
+    }
 
     private async Task OnSelectedValueChanged(ChangeEventArgs e)
     {

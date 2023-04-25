@@ -11,8 +11,9 @@ namespace Amadon
     internal delegate void TopNavCommandDelegate(string controlName);
     internal delegate void TranslationsListInitializedDelegate();
     internal delegate void InitializationSuccesfullyDelegate();
-    internal delegate void RazorComponentShownDelegate(string componentId);
+    internal delegate void TranslationTocChangedDelegate();
     internal delegate void NewTocEntryDelegate(TOC_Entry entry);
+    internal delegate void TranslationsToShowChangedDelegate();
 
     internal static class AmadonEvents
     {
@@ -38,12 +39,25 @@ namespace Amadon
         /// </summary>
         public static event InitializationSuccesfullyDelegate OnInitializationSuccesfully;
 
-        public static event RazorComponentShownDelegate OnRazorComponentShown;
+        /// <summary>
+        /// Fired when the translation to be used for TOC has changed
+        /// </summary>
+        public static event TranslationTocChangedDelegate OnTranslationTocChanged;
+
+        /// <summary>
+        /// Fired when the set of translation to have their text shown has changed
+        /// </summary>
+        public static event TranslationsToShowChangedDelegate OnTranslationsToShowChanged;
 
         /// <summary>
         /// Fired when a new table of contents item is selected
         /// </summary>
         public static event NewTocEntryDelegate OnNewTocEntry;
+
+
+
+        // ============================================================================================================= 
+        // Functions to fire the above events
 
         public static void TopNavCommand(string controlName)
         {
@@ -60,15 +74,20 @@ namespace Amadon
             OnInitializationSuccesfully?.Invoke();
         }
 
-        public static void RazorComponentShown(string componentId)
+        public static void TranslationTocChanged()
         {
-            OnRazorComponentShown?.Invoke(componentId);
+            OnTranslationTocChanged?.Invoke();
         }
 
         public static void NewTocEntry(TOC_Entry entry)
         {
             if (entry != null)
                 OnNewTocEntry?.Invoke(entry);
+        }
+
+        public static void TranslationsToShowChanged()
+        {
+            OnTranslationsToShowChanged?.Invoke();
         }
 
     }
