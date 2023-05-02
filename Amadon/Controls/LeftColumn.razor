@@ -36,10 +36,26 @@
 
     private string ControlName { get; set; } = "";
 
+    private bool ControlNameValid()
+    {
+        string name = StaticObjects.Parameters.LastLeftControl;
+        return name == AmadonEvents.ControlSettings ||
+               name == AmadonEvents.ControlSearch ||
+               name == AmadonEvents.ControlHelp ||
+               name == AmadonEvents.ControlTrack ||
+               name == AmadonEvents.ControlIndex ||
+               name == AmadonEvents.ControlToc;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         AmadonEvents.OnTopNavCommand += AmadonEvents_OnTopNavCommand;
         await base.OnInitializedAsync();
+        if (string.IsNullOrEmpty(StaticObjects.Parameters.LastLeftControl) || !ControlNameValid())
+        {
+            StaticObjects.Parameters.LastLeftControl = AmadonEvents.ControlToc;
+        }
+        SetControl(StaticObjects.Parameters.LastLeftControl);
         return;
     }
 
