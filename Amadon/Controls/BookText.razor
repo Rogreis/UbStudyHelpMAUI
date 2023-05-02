@@ -3,35 +3,35 @@
 @using Amadon.Controls;
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.UbClasses;
+@inject IJSRuntime JSRuntime;
+
 
 <div id="rightColumn" class="black splitRight right mt-0 p-0 bg-dark text-white overflow-auto">
+
+    <h3>Parameter Value: @ExpressionToHighlight</h3>
+
     <div class="row overflow-auto">
         @if (@PaperLines != null)
         {
-            <table class="table-borderless">
-                <thead>
-                    <tr>
-                        @foreach (string line in @PaperLines.Titles)
-                        {
-                            @((MarkupString)@line)
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-
+            <Table ElementId="@tableId" Borderless FullWidth Class="bg-dark text-white">
+            <TableHeader>
+                @foreach (string line in @PaperLines.Titles)
+                    {
+                        @((MarkupString)@line)
+                    }
+                </TableHeader>
+                <TableBody>
                     @foreach (string line in @PaperLines.Lines)
                     {
-                        <tr>
+                        <TableRow>
                             @((MarkupString)@line)
-                        </tr>
+                        </TableRow>
                     }
-
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         }
     </div>
 </div>
-
 
 
 @code {
@@ -39,12 +39,25 @@
 
     private LeftColumn LeftControl;
 
+    private string ExpressionToHighlight { get; set; }
 
-    //[Parameter]
-    //public string control { get; set; } = "";
 
-    //[Parameter]
-    //public string EntryHref { get; set; }
+    Table MainTextTable;
+    const string tableId = "tableText";
+
+
+    #region Current page search and hightlight functions
+
+    protected async void OnHighlightExpression(string expression)
+    {
+        ExpressionToHighlight = expression;
+        await JSRuntime.InvokeVoidAsync("highlightAllExpression", expression);
+        StateHasChanged();
+    }
+
+    #endregion
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,6 +65,7 @@
         LibraryEventsControl.RedrawText += EventsControl_RedrawText;
         AmadonEvents.OnNewTocEntry += OnNewTocEntry;
         AmadonEvents.OnTranslationsToShowChanged += TranslationsToShowChanged;
+        AmadonEvents.OnHighlightExpression += OnHighlightExpression;
     }
 
     protected void EventsControl_RedrawText()
@@ -94,5 +108,4 @@
         }
         StateHasChanged();
     }
-}
 }

@@ -178,3 +178,15 @@ a, .btn-link {
 .nav-link:hover {
     cursor: pointer;
 }
+
+.highlight {
+    background-color: yellow;
+    color:black;
+}
+
+.highlightField {
+    color: black;
+    width: 250px;
+    padding-right: 40px;
+}
+

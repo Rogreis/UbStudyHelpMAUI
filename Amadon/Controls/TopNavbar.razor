@@ -45,8 +45,10 @@
             </ul>
 
             <form class="d-flex">
-                <input class="form-control me-2" type="text" placeholder="Quick Search">
-                <button class="btn btn-primary" @onclick="QuickSearch" type="button">Search</button>
+                <Field Horizontal>
+                    <TextEdit Class="form-control me-2 highlightField" @bind-Text="@ExpressionToSearch" Placeholder="Expression to highlight" />
+                </Field>
+                <Button Color="Color.Warning" Clicked="@QuickSearch">Highlight</Button>
             </form>
 
         </div>
@@ -67,9 +69,12 @@
 
     private void LinkToHelp() => AmadonEvents.TopNavCommand(AmadonEvents.ControlHelp);
 
+    private string ExpressionToSearch = "";
+
     private void QuickSearch()
     {
-        NavigationManager.NavigateTo("/search");
+        if (!string.IsNullOrWhiteSpace(ExpressionToSearch))
+            AmadonEvents.HighlightExpression(ExpressionToSearch);
     }
 
 }
