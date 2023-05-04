@@ -170,25 +170,25 @@
     }
 
 
-    Task OnSelectedLeftTranslationChanged(short value)
+    Task OnSelectedLeftTranslationChanged(int value)
     {
-        StaticObjects.Parameters.LanguageIDLeftTranslation = value;
+        StaticObjects.Parameters.LanguageIDLeftTranslation = (short)value;
         AmadonEvents.TranslationsToShowChanged();
         Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
         return Task.CompletedTask;
     }
 
-    Task OnSelectedMiddleTranslationChanged(short value)
+    Task OnSelectedMiddleTranslationChanged(int value)
     {
-        StaticObjects.Parameters.LanguageIDMiddleTranslation = value;
+        StaticObjects.Parameters.LanguageIDMiddleTranslation = (short)value;
         AmadonEvents.TranslationsToShowChanged();
         Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
         return Task.CompletedTask;
     }
 
-    Task OnSelectedRightTranslationChanged(short value)
+    Task OnSelectedRightTranslationChanged(int value)
     {
-        StaticObjects.Parameters.LanguageIDRightTranslation = value;
+        StaticObjects.Parameters.LanguageIDRightTranslation = (short)value;
         AmadonEvents.TranslationsToShowChanged();
         Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
         return Task.CompletedTask;

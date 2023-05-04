@@ -171,13 +171,22 @@ namespace AmadonStandardLib.Helpers
             {
                 StaticObjects.Book = new Book();
                 bool ret = false;
+
+                // First try to get from github
                 string localAvailableTranslationsPath = Path.Combine(StaticObjects.Parameters.ApplicationDataFolder, AvailableTranslations);
-                if (!GetDataFiles.LocalFileExists(localAvailableTranslationsPath))
+                string url = MakeGitHubUrl(AvailableTranslations);
+                ret = await GetDataFiles.DownloadTextFileAsync(url, localAvailableTranslationsPath);
+                if (!ret)
                 {
-                    string url = MakeGitHubUrl(AvailableTranslations);
-                    ret = await GetDataFiles.DownloadTextFileAsync(url, localAvailableTranslationsPath);
-                    if (!ret) return ret;
+                    StaticObjects.Logger.Error("Could not get Translations list from github.");
+                    // if could not get from online, try to use local one
+                    if (!GetDataFiles.LocalFileExists(localAvailableTranslationsPath))
+                    {
+                        StaticObjects.Logger.Error("Could not get Translations list from local too.");
+                        return false;
+                    }
                 }
+
                 string json= await GetDataFiles.GetStringFromLocalFile(localAvailableTranslationsPath);
                 switch (json)
                 {
@@ -197,7 +206,7 @@ namespace AmadonStandardLib.Helpers
           }
             catch (Exception ex)
             {
-                LibraryEventsControl.FireSendUserAndLogMessage("Could not initialize translations.", ex);
+                LibraryEventsControl.FireSendUserAndLogMessage("Could not initialize translations list", ex);
                 return false;
             }
         }
@@ -208,12 +217,14 @@ namespace AmadonStandardLib.Helpers
         /// <returns></returns>
         public static async Task<bool> InitTranslation()
         {
+            short currentTranslationId = -1;
             try
             {
                 List<short> initTranslations = new List<short>(StaticObjects.Parameters.TranslationsToShowId);
                 initTranslations.Add(0); // add the English that is not optional
                 foreach (short translationId in initTranslations)
                 {
+                    currentTranslationId= translationId;
                     LibraryEventsControl.FireSendUserAndLogMessage($"Initializing translation {translationId}");
                     Translation trans = StaticObjects.Book.Translations.Find(t => t.LanguageID == translationId);
                     if (trans != null)
@@ -253,7 +264,7 @@ namespace AmadonStandardLib.Helpers
             }
             catch (Exception ex)
             {
-                LibraryEventsControl.FireSendUserAndLogMessage("Could not initialize translations.", ex);
+                LibraryEventsControl.FireSendUserAndLogMessage($"Could not initialize translation {currentTranslationId}", ex);
                 return false;
             }
             return true;

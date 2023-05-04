@@ -198,7 +198,9 @@ namespace AmadonStandardLib.UbClasses
             {
                 AllowTrailingCommas = true,
                 WriteIndented = true,
+                PropertyNameCaseInsensitive = true
             };
+
             var root = JsonSerializer.Deserialize<JsonRootobject>(jsonString, options);
 
             //this.LanguageID = root.LanguageID;

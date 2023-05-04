@@ -1,8 +1,8 @@
-﻿using AmadonStandardLib.Classes;
+﻿using Amadon.Controls.Settings;
+using AmadonStandardLib.Classes;
 using AmadonStandardLib.Helpers;
 using AmadonStandardLib.UbClasses;
 using System.Text;
-using System.Text.Json;
 
 namespace Amadon.Services
 {
@@ -95,6 +95,35 @@ namespace Amadon.Services
             return $"<th width=\"{ColumnSize}\"><div class=\"m-3 parClosed\">{sb}</div></th>";
         }
 
+        private static TextShowOption CalculateShowOption()
+        {
+            TextShowOption showOption = TextShowOption.LeftOnly;
+            StaticObjects.Parameters.ShowRight = StaticObjects.Parameters.TranslationsToShowId.Count > 0 && StaticObjects.Parameters.LanguageIDRightTranslation >= 0;
+            StaticObjects.Parameters.ShowMiddle = StaticObjects.Parameters.TranslationsToShowId.Count > 1 && StaticObjects.Parameters.LanguageIDMiddleTranslation >= 0;
+            if (StaticObjects.Parameters.TranslationsToShowId.Count == 1)
+            {
+                if (StaticObjects.Parameters.ShowRight)
+                {
+                    showOption = TextShowOption.LeftRight;
+                    return showOption;
+                }
+            } else if (StaticObjects.Parameters.TranslationsToShowId.Count > 1)
+            {
+                if (StaticObjects.Parameters.ShowRight && StaticObjects.Parameters.ShowMiddle)
+                {
+                    showOption = TextShowOption.LeftMiddleRight;
+                    return showOption;
+                }
+                if (StaticObjects.Parameters.ShowRight)
+                {
+                    showOption = TextShowOption.LeftRight;
+                    return showOption;
+                }
+            }
+            if (showOption == TextShowOption.LeftOnly && StaticObjects.Parameters.LanguageIDLeftTranslation < 0) StaticObjects.Parameters.LanguageIDLeftTranslation = 0;
+            return showOption;
+        }
+
         /// <summary>
         /// Service api
         /// </summary>
@@ -113,9 +142,9 @@ namespace Amadon.Services
 
             // Left is always shown
             leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
-            StaticObjects.Parameters.ShowMiddle = false;
 
-            switch (StaticObjects.Parameters.TextShowOption)
+            // Calculate the text to show option
+            switch (CalculateShowOption())
             {
                 case TextShowOption.LeftOnly:
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));

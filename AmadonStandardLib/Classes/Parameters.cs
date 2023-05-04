@@ -53,25 +53,6 @@ namespace AmadonStandardLib.Classes
         public List<short> TranslationsToShowId { get; set; } = new List<short>();
 
         [JsonIgnore]
-        public TextShowOption TextShowOption
-        {
-            get
-            {
-                if (ShowMiddle && ShowRight && ShowCompare)
-                    return TextShowOption.LeftMiddleRightCompare;
-                else if (ShowMiddle && ShowRight)
-                    return TextShowOption.LeftMiddleRight;
-                else if (ShowRight && ShowCompare)
-                    return TextShowOption.LeftRightCompare;
-                else if (ShowRight)
-                    return TextShowOption.LeftRight;
-                else
-                    return TextShowOption.LeftOnly;
-            }
-        }
-
-
-        [JsonIgnore]
         public bool AppInitialized = false;
 
         public bool UseDarkThemme { get; set; } = true;
