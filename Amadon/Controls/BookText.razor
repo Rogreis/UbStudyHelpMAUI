@@ -13,7 +13,7 @@
     <div class="row overflow-auto">
         @if (@PaperLines != null)
         {
-            <Table ElementId="@tableId" Borderless FullWidth Class="bg-dark text-white">
+            <Table ElementId="@tableId" Borderless Resizable ResizeMode="TableResizeMode.Columns" FullWidth Class="bg-dark text-white">
             <TableHeader>
                 @foreach (string line in @PaperLines.Titles)
                     {
@@ -92,20 +92,17 @@
     {
         PaperLines = await TextService.GetHtml();
         await Task.Delay(1);
-        StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            GetTexts();
-            //await Task.Run(() =>
-            //{
-            //    GetTexts();
-
-            //});
+            await Task.Run(() =>
+            {
+                GetTexts();
+            });
+            StateHasChanged();
         }
-        StateHasChanged();
     }
 }
