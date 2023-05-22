@@ -3,6 +3,7 @@
 @using Amadon.Controls;
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.UbClasses;
+@using System.Text.RegularExpressions;
 @inject IJSRuntime JSRuntime;
 
 
@@ -48,10 +49,36 @@
 
     #region Current page search and hightlight functions
 
-    protected async void OnHighlightExpression(string expression)
+    public string HighlightString(string html, string expression)
     {
-        ExpressionToHighlight = expression;
-        await JSRuntime.InvokeVoidAsync("highlightAllExpression", expression);
+        if (string.IsNullOrEmpty(expression))
+        {
+            return html;
+        }
+
+        Regex regex = new Regex($"({expression})", RegexOptions.IgnoreCase);
+        return regex.Replace(html, $"<span class=\"highlight\">{expression}</span>");
+    }
+
+    public string UnhighlightString(string html)
+    {
+        Regex regex = new Regex("<span class=\"highlight\">(.*?)</span>", RegexOptions.IgnoreCase);
+        return regex.Replace(html, "$1");
+    }
+
+
+    protected void OnHighlightExpression(string expression)
+    {
+        for (int i = 0; i < PaperLines.Titles.Count; i++)
+        {
+            PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
+            PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
+        }
+        for (int i = 0; i < PaperLines.Lines.Count; i++)
+        {
+            PaperLines.Lines[i]= UnhighlightString(PaperLines.Lines[i]);
+            PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
+        }
         StateHasChanged();
     }
 
