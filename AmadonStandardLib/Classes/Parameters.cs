@@ -107,11 +107,11 @@ namespace AmadonStandardLib.Classes
 
         public string CloseSearchFirstWord { get; set; } = "";
 
-        public string CloseSearchSecondWord { get; set; } = "";
+        //public string CloseSearchSecondWord { get; set; } = "";
 
         public List<string> CloseSearchWords { get; set; } = new List<string>();
 
-        public short CurrentTranslation { get; set; } = 0;
+        //public short CurrentTranslation { get; set; } = 0;
 
 
 
@@ -150,7 +150,7 @@ namespace AmadonStandardLib.Classes
         /// </summary>
         /// <param name="p"></param>
         /// <param name="pathParameters"></param>
-        public static void Serialize(Parameters p, string pathParameters)
+        public static void Serialize()
         {
             try
             {
@@ -159,8 +159,11 @@ namespace AmadonStandardLib.Classes
                     AllowTrailingCommas = true,
                     WriteIndented = true,
                 };
-                var jsonString = JsonSerializer.Serialize<Parameters>(p, options);
-                File.WriteAllText(pathParameters, jsonString);
+                if (StaticObjects.Parameters != null)
+                {
+                    var jsonString = JsonSerializer.Serialize<Parameters>(StaticObjects.Parameters, options);
+                    File.WriteAllText(Parameters.PathParameters, jsonString);
+                }
             }
             catch (Exception ex)
             {

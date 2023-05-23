@@ -1,4 +1,5 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using AmadonStandardLib.Helpers;
+@inject NavigationManager NavigationManager
 
 
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark navbarheight fixed-top">
@@ -57,17 +58,36 @@
 
 @code
 {
-    private void LinkToTOC() => AmadonEvents.TopNavCommand(AmadonEvents.ControlToc);
 
-    private void LinkToIndex() => AmadonEvents.TopNavCommand(AmadonEvents.ControlIndex);
+    private bool ControlNameValid(string name)
+    {
+        return name == AmandonComponentNames.ControlSettings ||
+               name == AmandonComponentNames.ControlSearch ||
+               name == AmandonComponentNames.ControlHelp ||
+               name == AmandonComponentNames.ControlTrack ||
+               name == AmandonComponentNames.ControlIndex ||
+               name == AmandonComponentNames.ControlToc;
+    }
 
-    private void LinkToSearch() => AmadonEvents.TopNavCommand(AmadonEvents.ControlSearch);
+    private void FireTopNavCommand(string eventName)
+    {
+        if (ControlNameValid(eventName))
+        {
+            StaticObjects.Parameters.LastLeftControl = eventName;
+            AmadonEvents.TopNavCommand(eventName);
+        }
+    }
+    private void LinkToTOC() => FireTopNavCommand(AmandonComponentNames.ControlToc);
 
-    private void LinkToTrack() => AmadonEvents.TopNavCommand(AmadonEvents.ControlTrack);
+    private void LinkToIndex() => FireTopNavCommand(AmandonComponentNames.ControlIndex);
 
-    private void LinkToSettings() => AmadonEvents.TopNavCommand(AmadonEvents.ControlSettings);
+    private void LinkToSearch() => FireTopNavCommand(AmandonComponentNames.ControlSearch);
 
-    private void LinkToHelp() => AmadonEvents.TopNavCommand(AmadonEvents.ControlHelp);
+    private void LinkToTrack() => FireTopNavCommand(AmandonComponentNames.ControlTrack);
+
+    private void LinkToSettings() => FireTopNavCommand(AmandonComponentNames.ControlSettings);
+
+    private void LinkToHelp() => FireTopNavCommand(AmandonComponentNames.ControlHelp);
 
     private string ExpressionToSearch = "";
 

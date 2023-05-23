@@ -1,12 +1,5 @@
 ﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.Helpers;
-using AmadonStandardLib.UbClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Amadon.Services
 {
@@ -14,7 +7,7 @@ namespace Amadon.Services
     {
         public static Task Store()
         {
-            Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
+            Parameters.Serialize();
             return Task.CompletedTask;
         }
 

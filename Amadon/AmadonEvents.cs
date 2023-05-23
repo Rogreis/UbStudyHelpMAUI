@@ -17,7 +17,7 @@ namespace Amadon
     internal delegate void HighlightExpressionDelegate(string expression);
     internal delegate void NewSubjectIndexEntryDelegate(TOC_Entry entry);
 
-    internal static class AmadonEvents
+    internal class AmandonComponentNames
     {
         public const string ControlSettings = "settings";
         public const string ControlSearch = "search";
@@ -25,6 +25,10 @@ namespace Amadon
         public const string ControlTrack = "track";
         public const string ControlIndex = "index";
         public const string ControlToc = "toc";
+    }
+
+    internal static class AmadonEvents
+    {
 
         /// <summary>
         /// Informs the system that a top navigation command has been issued.

@@ -5,27 +5,27 @@
 *@
 
 <div id="leftColumn">
-    @if (ControlName == AmadonEvents.ControlSettings)
+    @if (ControlName == AmandonComponentNames.ControlSettings)
     {
         <SettingsFields></SettingsFields>
      }
-    else if (ControlName == AmadonEvents.ControlSearch)
+    else if (ControlName == AmandonComponentNames.ControlSearch)
     {
         <Search></Search>
     }
-    else if (ControlName == AmadonEvents.ControlHelp)
+    else if (ControlName == AmandonComponentNames.ControlHelp)
     {
         <HelpControl></HelpControl>
     }
-    else if (ControlName == AmadonEvents.ControlTrack)
+    else if (ControlName == AmandonComponentNames.ControlTrack)
     {
         <Track></Track>
     }
-    else if (ControlName == AmadonEvents.ControlIndex)
+    else if (ControlName == AmandonComponentNames.ControlIndex)
     {
         <TubIndex></TubIndex>
     }
-    else if (ControlName == AmadonEvents.ControlToc)
+    else if (ControlName == AmandonComponentNames.ControlToc)
     {
         <TableOfContents></TableOfContents>
     }
@@ -36,25 +36,11 @@
 
     private string ControlName { get; set; } = "";
 
-    private bool ControlNameValid()
-    {
-        string name = StaticObjects.Parameters.LastLeftControl;
-        return name == AmadonEvents.ControlSettings ||
-               name == AmadonEvents.ControlSearch ||
-               name == AmadonEvents.ControlHelp ||
-               name == AmadonEvents.ControlTrack ||
-               name == AmadonEvents.ControlIndex ||
-               name == AmadonEvents.ControlToc;
-    }
 
     protected override async Task OnInitializedAsync()
     {
         AmadonEvents.OnTopNavCommand += AmadonEvents_OnTopNavCommand;
         await base.OnInitializedAsync();
-        if (string.IsNullOrEmpty(StaticObjects.Parameters.LastLeftControl) || !ControlNameValid())
-        {
-            StaticObjects.Parameters.LastLeftControl = AmadonEvents.ControlToc;
-        }
         SetControl(StaticObjects.Parameters.LastLeftControl);
         return;
     }

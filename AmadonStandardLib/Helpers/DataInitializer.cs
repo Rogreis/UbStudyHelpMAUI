@@ -148,7 +148,7 @@ namespace AmadonStandardLib.Helpers
                 Directory.CreateDirectory(StaticObjects.Parameters.TubDataFolder);
 
                 LibraryEventsControl.FireSendUserAndLogMessage($"Parameters started {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
-                Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
+                Parameters.Serialize();
 
                 return true;
             }

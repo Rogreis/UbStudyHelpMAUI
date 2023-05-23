@@ -133,7 +133,7 @@
         await ModalTranslationsToShow.Hide();
         InitializationStatus = Status.TranslationsChoiceDone;
         StaticObjects.Parameters.TranslationsChoiceDone = true;
-        Parameters.Serialize(StaticObjects.Parameters, Parameters.PathParameters);
+        await SettingsService.Store();
         Status status = await DoInitialization();
         return;
     }
