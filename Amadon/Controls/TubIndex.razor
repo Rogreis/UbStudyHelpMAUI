@@ -1,53 +1,151 @@
-﻿@using AmadonStandardLib.Classes;
+﻿@using Amadon.Services;
+@using AmadonStandardLib.Classes;
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.InterchangeData;
 @using AmadonStandardLib.UbClasses;
-@using Blazorise.TreeView
+@using Blazorise
 
-<TreeView Nodes="Items"
-          GetChildNodes="@(item => item.Children)"
-          HasChildNodes="@(item => item.Children?.Any() == true)"
-          @bind-SelectedNode="selectedNode"
-          @bind-ExpandedNodes="expandedNodes">
-    <NodeContent>
-        @context.Text
-    </NodeContent>
-</TreeView>
+<h3>Subject Index</h3>
+
+<p>Search the subject indes titles:</p>
+
+<TextEdit @ref="TextToSearchObject" Placeholder="Search the subject index titles..." Size="Size.Small" TextChanged="@OnNameChanged" />
+
+@if (showLoading)
+{
+    <Button Color="Color.Primary" Loading> Loading</Button>
+}
+
+@if (dropdownSubjectTitlesVisible)
+{
+    <br />
+    <label for="select_subject_index">Subject index entries found</label>
+    <Select TValue="string" ElementId="select_subject_index" TValue="int" SelectedValueChanged="@DropdownItemChecked">
+        @foreach (var item in items)
+        {
+            <SelectItem Value="@item">@item</SelectItem>
+        }
+    </Select>
+    <br />
+}
+
+@if (browserSubjectsFound)
+{
+    <div class="row overflow-auto">
+
+        <Card WhiteText class="bg-dark">
+            <CardBody>
+            <CardTitle Size="5">@tubIndex.Title</CardTitle>
+                    @foreach (IndexDetails detail in @tubIndex.Details)
+                    {
+                        <CardText>
+                            @detail.Text<br />
+                        </CardText>
+                    @foreach (string link in detail.Links)
+                    {
+                        <Button Color="Color.Primary" Outline Size="Size.Small" Margin="Margin.Is2" Clicked="@(()=> ButtonClicked(@link))">@link <Icon Name="IconName.ArrowRight" /></Button>
+                    }
+                }
+            </CardBody>
+        </Card>
+
+    </div>
+}
+
+<Alert Color="@AlertColor" @bind-Visible="@alertVisible">
+    <AlertMessage>
+        @AlertMessage
+    </AlertMessage>
+    <CloseButton />
+</Alert>
+
 
 @code{
-    public class Item
+
+    string TextToSearch = "";
+    bool alertVisible = false;
+    string AlertMessage = "";
+    Color AlertColor = Color.Success;
+    bool dropdownSubjectTitlesVisible = false;
+    bool browserSubjectsFound = false;
+    bool showLoading = false;
+    AmadonStandardLib.InterchangeData.TubIndex tubIndex;
+
+    TextEdit TextOutputObject;
+    TextEdit TextToSearchObject;
+
+    SearchIndexService searchIndex = new SearchIndexService();
+
+    string selectedValue;
+    List<string> items = new List<string>();
+
+    private Task ShowAlert(Color color, string message)
     {
-        public string Text { get; set; }
-        public IEnumerable<Item> Children { get; set; }
+        this.AlertColor = color;
+        this.AlertMessage = message;
+        this.alertVisible = true;
+        return Task.CompletedTask;
     }
 
-    IEnumerable<Item> Items = new[]
-    {
-        new Item { Text = "Item 1" },
-        new Item
-        {
-            Text = "Item 2",
-            Children = new []
-            {
-                new Item { Text = "Item 2.1" },
-                new Item
-                {
-                    Text = "Item 2.2",
-                    Children = new []
-                    {
-                        new Item { Text = "Item 2.2.1" },
-                        new Item { Text = "Item 2.2.2" },
-                        new Item { Text = "Item 2.2.3" },
-                        new Item { Text = "Item 2.2.4" }
-                    }
-                },
-                new Item { Text = "Item 2.3" },
-                new Item { Text = "Item 2.4" }
-            }
-        },
-        new Item { Text = "Item 3" },
-    };
 
-    IList<Item> expandedNodes = new List<Item>();
-    Item selectedNode;
+    async Task OnNameChanged(string value)
+    {
+        if (!string.IsNullOrEmpty(value) && value.Length >= 3)
+        {
+            StaticObjects.Parameters.TextSearForIndexTitles = value;
+            items.Clear();
+            LuceneIndexSearch luceneIndex = new LuceneIndexSearch();
+            SearchIndexData data = new SearchIndexData();
+            data.Query = value;
+            data = await SearchIndexService.DoSearch(data);
+            if (data == null)
+            {
+                await ShowAlert(Color.Danger, "Error executing subject index search");
+            }
+            else if (string.IsNullOrEmpty(data.ErrorMessage))
+            {
+                items.AddRange(data.ResultsList);
+                dropdownSubjectTitlesVisible = true;
+            }
+            else
+            {
+                await ShowAlert(Color.Danger, data.ErrorMessage);
+                dropdownSubjectTitlesVisible = false;
+            }
+            StateHasChanged();
+        }
+    }
+
+
+    protected async Task DropdownItemChecked(string option)
+    {
+        showLoading = true;
+        StateHasChanged();
+        tubIndex = await SearchIndexService.GetSubjectItemsToShow(option);
+        browserSubjectsFound = tubIndex != null;
+        showLoading = false;
+        StateHasChanged();
+    }
+
+    protected void ButtonClicked(string option)
+    {
+        AmadonEvents.NewSubjectIndexEntry(TOC_Entry.FromHref(option));
+    }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            TextToSearch = StaticObjects.Parameters.TextSearForIndexTitles;
+            StateHasChanged();
+        }
+    }
+
 }

@@ -11,6 +11,7 @@ using Lucene.Net.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace AmadonStandardLib.Classes
 {
@@ -29,7 +30,7 @@ namespace AmadonStandardLib.Classes
         }
 
 
-        private bool CreateLuceneIndexForUBIndex(SearchIndexData searchIndexData)
+        private async Task<bool> CreateLuceneIndexForUBIndex(SearchIndexData searchIndexData)
         {
             try
             {
@@ -45,8 +46,8 @@ namespace AmadonStandardLib.Classes
 
                 luceneIndexDirectory = FSDirectory.Open(IndexPath);
 
-                string pathFile = Path.Combine(StaticObjects.Parameters.TubDataFolder, "tubIndex_000.json");
-                string json = File.ReadAllText(pathFile);
+                string pathFile = Path.Combine(StaticObjects.Parameters.TubDataFolder, "tubIndex_000.gz");
+                string json = await GetDataFiles.GetStringFromZippedFile(pathFile);
                 List<TubIndex> Indexes = StaticObjects.DeserializeObject<List<TubIndex>>(json);
 
 
@@ -79,11 +80,11 @@ namespace AmadonStandardLib.Classes
         }
 
 
-        public bool Execute(SearchIndexData searchIndexData)
+        public async Task<bool> Execute(SearchIndexData searchIndexData)
         {
             try
             {
-                if (!CreateLuceneIndexForUBIndex(searchIndexData))
+                if (!await CreateLuceneIndexForUBIndex(searchIndexData))
                 {
                     string message = "Failure generating index for " + IndexPath;
                     StaticObjects.Logger.NonFatalError(message);
@@ -131,6 +132,15 @@ namespace AmadonStandardLib.Classes
                 searchIndexData.ErrorMessage = ex.Message;
                 return false;
             }
+        }
+
+        public async static Task<TubIndex> GetSubjectIndexEntry(string title)
+        {
+            string pathFile = Path.Combine(StaticObjects.Parameters.TubDataFolder, "tubIndex_000.gz");
+            string json = await GetDataFiles.GetStringFromZippedFile(pathFile);
+            List<TubIndex> list= StaticObjects.DeserializeObject<List<TubIndex>>(json);
+            TubIndex index= list.Find(e => string.Compare(e.Title.Trim(), title.Trim(), true) == 0);
+            return index;
         }
 
     }

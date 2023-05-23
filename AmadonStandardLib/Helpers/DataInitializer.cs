@@ -211,6 +211,38 @@ namespace AmadonStandardLib.Helpers
             }
         }
 
+        public static async Task<bool> InitSubjectIndex()
+        {
+            string fileName = "tubIndex_000.gz";
+            try
+            {
+                string localSubjectIndexFilePath = Path.Combine(StaticObjects.Parameters.TubDataFolder, fileName);
+                if (!File.Exists(localSubjectIndexFilePath))
+                {
+                    string url = MakeGitHubUrl(fileName);
+                    bool ret = await GetDataFiles.DownloadBinaryFile(url, localSubjectIndexFilePath);
+                    if (!ret) return ret;
+                }
+                string json = await GetDataFiles.GetStringFromZippedFile(localSubjectIndexFilePath);
+                switch (json)
+                {
+                    case GetDataFiles.FileNotFound:
+                        StaticObjects.Logger.Error($"Repository has no subject index zipped: {fileName}");
+                        return false;
+                    case GetDataFiles.ErrorGettingFile:
+                        StaticObjects.Logger.Error("Error getting subject index.");
+                        return false;
+                    default:
+                        return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LibraryEventsControl.FireSendUserAndLogMessage($"Could not initialize subject indez {fileName}", ex);
+                return false;
+            }
+        }
+
         /// <summary>
         /// Initialize all translations maked as to be shown by the user
         /// </summary>

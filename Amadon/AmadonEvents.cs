@@ -15,6 +15,7 @@ namespace Amadon
     internal delegate void NewTocEntryDelegate(TOC_Entry entry);
     internal delegate void TranslationsToShowChangedDelegate();
     internal delegate void HighlightExpressionDelegate(string expression);
+    internal delegate void NewSubjectIndexEntryDelegate(TOC_Entry entry);
 
     internal static class AmadonEvents
     {
@@ -56,6 +57,11 @@ namespace Amadon
         public static event NewTocEntryDelegate OnNewTocEntry;
 
         /// <summary>
+        /// Fired when a new table of contents item is selected
+        /// </summary>
+        public static event NewSubjectIndexEntryDelegate OnNewSubjectIndexEntry;
+
+        /// <summary>
         /// Used to ask for a hightlight action (same as a search) for an expression in the current text page
         /// </summary>
         public static event HighlightExpressionDelegate OnHighlightExpression;
@@ -89,6 +95,12 @@ namespace Amadon
         {
             if (entry != null)
                 OnNewTocEntry?.Invoke(entry);
+        }
+
+        public static void NewSubjectIndexEntry(TOC_Entry entry)
+        {
+            if (entry != null)
+                OnNewSubjectIndexEntry?.Invoke(entry);
         }
 
         public static void TranslationsToShowChanged()

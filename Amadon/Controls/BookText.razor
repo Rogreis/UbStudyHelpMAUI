@@ -8,9 +8,6 @@
 
 
 <div id="rightColumn" class="black splitRight right mt-0 p-0 bg-dark text-white overflow-auto">
-
-    <h3>Parameter Value: @ExpressionToHighlight</h3>
-
     <div class="row overflow-auto">
         @if (@PaperLines != null)
         {
@@ -49,7 +46,7 @@
 
     #region Current page search and hightlight functions
 
-    public string HighlightString(string html, string expression)
+    private string HighlightString(string html, string expression)
     {
         if (string.IsNullOrEmpty(expression))
         {
@@ -60,14 +57,14 @@
         return regex.Replace(html, $"<span class=\"highlight\">{expression}</span>");
     }
 
-    public string UnhighlightString(string html)
+    private string UnhighlightString(string html)
     {
         Regex regex = new Regex("<span class=\"highlight\">(.*?)</span>", RegexOptions.IgnoreCase);
         return regex.Replace(html, "$1");
     }
 
 
-    protected void OnHighlightExpression(string expression)
+    private void OnHighlightExpression(string expression)
     {
         for (int i = 0; i < PaperLines.Titles.Count; i++)
         {
@@ -91,6 +88,7 @@
         await base.OnInitializedAsync();
         LibraryEventsControl.RedrawText += EventsControl_RedrawText;
         AmadonEvents.OnNewTocEntry += OnNewTocEntry;
+        AmadonEvents.OnNewSubjectIndexEntry += OnNewTocEntry;
         AmadonEvents.OnTranslationsToShowChanged += TranslationsToShowChanged;
         AmadonEvents.OnHighlightExpression += OnHighlightExpression;
     }

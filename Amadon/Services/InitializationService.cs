@@ -51,5 +51,12 @@ namespace Amadon.Services
             return ret;
         }
 
+        public static async Task<bool> InitSubjectIndex()
+        {
+            bool ret = await DataInitializer.InitSubjectIndex();
+            return ret;
+        }
+
+
     }
 }

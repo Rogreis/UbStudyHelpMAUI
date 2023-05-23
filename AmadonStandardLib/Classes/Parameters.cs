@@ -68,8 +68,7 @@ namespace AmadonStandardLib.Classes
         /// </summary>
         public int MaxExpressionsStored { get; set; } = 50;
 
-
-        public List<string> IndexLetters { get; set; } = new List<string>();
+        public string TextSearForIndexTitles { get; set; } = "";
 
         public List<string> SearchIndexEntries { get; set; } = new List<string>();
 
