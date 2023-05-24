@@ -1,0 +1,120 @@
+﻿@page "/search"
+@using AmadonStandardLib.InterchangeData;
+@using Blazorise
+
+<Container>
+    <Row>
+        <Column>
+            <h5>Text Search:</h5>
+            <TextEdit @ref="TextToSearchObject" Placeholder="Search the subject index titles..." Size="Size.Small" />
+        </Column>
+    </Row>
+
+    <br />
+    <Row>
+        <Column>
+            <Tooltip Text="When on, includes the Part I of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartI" TValue="bool" Checked="@searchData.Part1Included" CheckedChanged="@OnIncludesPartI">Part I</Switch>
+            </Tooltip>
+            <Tooltip Text="When on, includes the Part III of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartIII" TValue="bool" Checked="@searchData.Part3Included" CheckedChanged="@OnIncludesPartIII">Part III</Switch>
+            </Tooltip>
+        </Column>
+
+        <Column>
+            <Tooltip Text="When on, includes the Part II of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartII" TValue="bool" Checked="@searchData.Part2Included" CheckedChanged="@OnIncludesPartII">Part II</Switch>
+            </Tooltip>
+            <Tooltip Text="When on, includes the Part IV of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartIV" TValue="bool" Checked="@searchData.Part4Included" CheckedChanged="@OnIncludesPartIV">Part IV</Switch>
+            </Tooltip>
+        </Column>
+    </Row>
+    <Row>
+        <Tooltip Text="When on, search only in teh current paper" Placement="TooltipPlacement.Bottom">
+            <Switch @ref="SwitchCurrentPaper" TValue="bool" Checked="@searchData.CurrentPaperOnly" CheckedChanged="@OnSwitchCurrentPaper">Current Paper Only</Switch>
+        </Tooltip>
+    </Row>
+     <Row>
+        <Column>
+            <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSortClick">Reorder</Button>
+            <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSearch">Search</Button>
+         </Column>
+    </Row>
+</Container>
+
+
+
+@code {
+
+    TextEdit TextToSearchObject;
+
+    Switch<bool> SwitchPartI;
+    Switch<bool> SwitchPartII;
+    Switch<bool> SwitchPartIII;
+    Switch<bool> SwitchPartIV;
+    Switch<bool> SwitchCurrentPaper;
+
+
+    SearchData searchData = new SearchData();
+
+    string selectedItem;
+    bool isPart2Checked;
+    bool isPart3Checked;
+    bool isPart4Checked;
+    bool isCurrentPaperChecked;
+
+    Task OnIncludesPartI(bool value)
+    {
+        searchData.Part1Included = value;
+        searchData.CurrentPaperOnly = false;
+        //ShowComparator = value;
+        //StaticObjects.Parameters.ShowCompare = value;
+        //AmadonEvents.TranslationsToShowChanged();
+        //Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
+        return Task.CompletedTask;
+    }
+
+    Task OnIncludesPartII(bool value)
+    {
+        searchData.Part2Included = value;
+        searchData.CurrentPaperOnly = false;
+        return Task.CompletedTask;
+    }
+
+    Task OnIncludesPartIII(bool value)
+    {
+        searchData.Part3Included = value;
+        searchData.CurrentPaperOnly = false;
+        return Task.CompletedTask;
+    }
+
+    Task OnIncludesPartIV(bool value)
+    {
+        searchData.Part4Included = value;
+        searchData.CurrentPaperOnly = false;
+        return Task.CompletedTask;
+    }
+
+    Task OnSwitchCurrentPaper(bool value)
+    {
+        searchData.Part1Included = !value;
+        searchData.Part2Included = !value;
+        searchData.Part3Included = !value;
+        searchData.Part4Included = !value;
+        searchData.CurrentPaperOnly = value;
+        return Task.CompletedTask;
+    }
+
+
+    void OnSortClick()
+    {
+        // Your event handler code here
+    }
+
+    void OnSearch()
+    {
+        // Your event handler code here
+    }
+
+ }

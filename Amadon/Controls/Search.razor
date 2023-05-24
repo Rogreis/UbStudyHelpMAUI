@@ -1,6 +1,21 @@
-﻿<h3>Search</h3>
+﻿@using Blazorise.LoadingIndicator;
+
+<SearchDataEntry></SearchDataEntry>
+<br />
+
+<LoadingIndicator @ref="loadingIndicator">
+    @if (showSearchResults)
+    {
+        <br />
+        <label for="select_subject_index">Subject index entries found</label>
+        <br />
+    }
+</LoadingIndicator>
+
 
 
 @code {
+    LoadingIndicator loadingIndicator;
+    bool showSearchResults = false;
 
 }

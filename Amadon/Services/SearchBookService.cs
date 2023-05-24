@@ -7,7 +7,7 @@ namespace Amadon.Services
     public class SearchBookService
     {
 
-        public static string DoSearch(SearchData searchData)
+        public static SearchData DoSearch(SearchData searchData)
         {
             var options = new JsonSerializerOptions
             {
@@ -17,11 +17,10 @@ namespace Amadon.Services
             LuceneBookSearch luceneBookSearch = new();
             // When an erro occurs, error message is set inside SearchData
             luceneBookSearch.Execute(searchData);
-            var jsonString = JsonSerializer.Serialize(searchData, options);
-            return jsonString;
-        }
+            return searchData;
+         }
 
-        public static Task<string> Search(SearchData searchData)
+        public static Task<SearchData> Search(SearchData searchData)
         {
             return Task.FromResult(DoSearch(searchData));
         }
