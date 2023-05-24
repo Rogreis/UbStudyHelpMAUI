@@ -4,6 +4,7 @@
 @using AmadonStandardLib.InterchangeData;
 @using AmadonStandardLib.UbClasses;
 @using Blazorise
+@using Blazorise.LoadingIndicator;
 
 <h3>Subject Index</h3>
 
@@ -16,18 +17,20 @@
     <Button Color="Color.Primary" Loading> Loading</Button>
 }
 
-@if (dropdownSubjectTitlesVisible)
-{
-    <br />
-    <label for="select_subject_index">Subject index entries found</label>
-    <Select TValue="string" ElementId="select_subject_index" TValue="int" SelectedValueChanged="@DropdownItemChecked">
-        @foreach (var item in items)
-        {
-            <SelectItem Value="@item">@item</SelectItem>
-        }
-    </Select>
-    <br />
-}
+ <LoadingIndicator @ref="loadingIndicator">
+     @if (dropdownSubjectTitlesVisible)
+    {
+        <br />
+        <label for="select_subject_index">Subject index entries found</label>
+        <Select TValue="string" ElementId="select_subject_index" TValue="int" SelectedValueChanged="@DropdownItemChecked">
+            @foreach (var item in items)
+            {
+                <SelectItem Value="@item">@item</SelectItem>
+            }
+        </Select>
+        <br />
+    }
+</LoadingIndicator>
 
 @if (browserSubjectsFound)
 {
@@ -61,7 +64,7 @@
 
 
 @code{
-
+    LoadingIndicator loadingIndicator;
     string TextToSearch = "";
     bool alertVisible = false;
     string AlertMessage = "";
@@ -92,6 +95,7 @@
     {
         if (!string.IsNullOrEmpty(value) && value.Length >= 3)
         {
+            await loadingIndicator.Show();
             StaticObjects.Parameters.TextSearForIndexTitles = value;
             items.Clear();
             LuceneIndexSearch luceneIndex = new LuceneIndexSearch();
@@ -112,6 +116,7 @@
                 await ShowAlert(Color.Danger, data.ErrorMessage);
                 dropdownSubjectTitlesVisible = false;
             }
+            await loadingIndicator.Hide();
             StateHasChanged();
         }
     }
