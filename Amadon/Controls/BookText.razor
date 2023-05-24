@@ -4,6 +4,7 @@
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.UbClasses;
 @using System.Text.RegularExpressions;
+@using System.Diagnostics;
 @inject IJSRuntime JSRuntime;
 
 
@@ -28,16 +29,19 @@
                 </TableBody>
             </Table>
         }
-    </div>
+
+
+*    </div>
+
+
 </div>
 
 
 @code {
     private PaperTextFormatted PaperLines { get; set; }
-
     private LeftColumn LeftControl;
-
     private string ExpressionToHighlight { get; set; }
+    string anchor = "";
 
 
     Table MainTextTable;
@@ -93,41 +97,54 @@
         AmadonEvents.OnHighlightExpression += OnHighlightExpression;
     }
 
-    protected void EventsControl_RedrawText()
+    private async void GetTexts()
+    {
+        PaperLines = await TextService.GetHtml();
+        await Task.Delay(1);
+        Debug.WriteLine("GetTexts");
+
+    }
+
+    private async void JumpToAnchor(TOC_Entry entry)
+    {
+        await Task.Delay(1);
+        await JSRuntime.InvokeVoidAsync("jumpToAnchor", $"{entry.Anchor}");
+    }
+
+
+    private void ShowPage()
     {
         GetTexts();
         StateHasChanged();
+        JumpToAnchor(StaticObjects.Parameters.Entry);
+    }
+
+
+    protected void EventsControl_RedrawText()
+    {
+        ShowPage();
     }
 
     private void TranslationsToShowChanged()
     {
-        GetTexts();
-        StateHasChanged();
+        ShowPage();
     }
 
     public void OnNewTocEntry(TOC_Entry entry)
     {
         StaticObjects.Parameters.Entry = entry;
-        GetTexts();
-        StateHasChanged();
-    }
-
-
-    private async void GetTexts()
-    {
-        PaperLines = await TextService.GetHtml();
-        await Task.Delay(1);
+        ShowPage();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await Task.Run(() =>
+             await Task.Run(() =>
             {
                 GetTexts();
             });
             StateHasChanged();
         }
-    }
+     }
 }

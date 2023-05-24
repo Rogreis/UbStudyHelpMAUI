@@ -34,7 +34,8 @@ namespace Amadon.Services
         {
             if (par != null)
             {
-                sb.AppendLine($"<td width=\"{ColumnSize}\">");
+                string id= insertAnchor? $" id =\"{par.AName}\"" : "";
+                sb.AppendLine($"<td{id}>");
                 sb.AppendLine(par.GetHtml(isEdit, insertAnchor));
                 sb.AppendLine("</td>");
             }
