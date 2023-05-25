@@ -1,14 +1,17 @@
 ﻿@using Blazorise.LoadingIndicator;
 
 <SearchDataEntry></SearchDataEntry>
-<br />
+<Row>
+    <Column>
+        <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSortClick">Reorder</Button>
+        <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSearch">Search</Button>
+    </Column>
+</Row>
 
 <LoadingIndicator @ref="loadingIndicator">
     @if (showSearchResults)
     {
-        <br />
-        <label for="select_subject_index">Subject index entries found</label>
-        <br />
+        <SearchPagination @ref="SearchPaginationElement"></SearchPagination>
     }
 </LoadingIndicator>
 
@@ -16,6 +19,18 @@
 
 @code {
     LoadingIndicator loadingIndicator;
+    SearchPagination SearchPaginationElement;
     bool showSearchResults = false;
+
+    void OnSortClick()
+    {
+        // Your event handler code here
+    }
+
+    void OnSearch()
+    {
+        showSearchResults = true;
+        StateHasChanged();
+    }
 
 }

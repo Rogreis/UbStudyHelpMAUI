@@ -35,12 +35,6 @@
             <Switch @ref="SwitchCurrentPaper" TValue="bool" Checked="@searchData.CurrentPaperOnly" CheckedChanged="@OnSwitchCurrentPaper">Current Paper Only</Switch>
         </Tooltip>
     </Row>
-     <Row>
-        <Column>
-            <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSortClick">Reorder</Button>
-            <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSearch">Search</Button>
-         </Column>
-    </Row>
 </Container>
 
 
@@ -105,16 +99,4 @@
         searchData.CurrentPaperOnly = value;
         return Task.CompletedTask;
     }
-
-
-    void OnSortClick()
-    {
-        // Your event handler code here
-    }
-
-    void OnSearch()
-    {
-        // Your event handler code here
-    }
-
  }
