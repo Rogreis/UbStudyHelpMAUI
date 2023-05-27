@@ -1,6 +1,7 @@
 ﻿@using Amadon.Services;
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.InterchangeData;
+@using AmadonStandardLib.UbClasses;
 
 @if (@paginationVisible)
 {
@@ -31,11 +32,22 @@
     *@
 
     <Container>
-        @foreach (SearchResult result in searchData.SearchResults)
+        @for (int nrPage = firstItemToShow; nrPage < lastItemToShwow; nrPage++)
         {
-            <p>@result.Text</p>
+            SearchResult result = searchData.SearchResults[nrPage];
+            <p>
+                <Button Color="Color.Primary" Outline Size="Size.Small" Margin="Margin.Is2" Clicked="@(()=> ButtonClicked(@result.LinkText))">@result.ID <Icon Name="IconName.ArrowRight" /></Button>
+@*                <a href="@result.LinkText" onclick="@(() => ButtonClicked(result.LinkText))">result.ID} <i class=\"fas fa-arrow-right\"></i> </a>
+                <a href="@result.LinkText" @onclick:preventDefault @onclick="YourAsyncMethod">@link</a>
+*@
+            @((MarkupString)@result.Text)
+            </p>
         }
     </Container>
+}
+else
+{
+    <p>@messageWhenNoSearch</p>
 }
 
 
@@ -45,13 +57,19 @@
     private const string NEXT = "next";
     private string currentPage = "2";
     private int currentPageNo = 2;
-    private int pageItems = 25;
-    private int pageItemsNo = 25;
-    private int itemsPerPage = 5;
-    private int paginationFirst = 1;
-    private int paginationLast = 5;
+
+    private int maxPaginationPages = 25; // Max number of pages
+    private int maxPaginationItems = 5;  // Max number of pages shown in the pagination
+    private int paginationFirst = 1;     // First page number in pagination
+    private int paginationLast = 5;      // Last page number in pagination
+
+    private int maxItemsPerPage = 20;    // Max number of items shown per page
+    private int firstItemToShow = 1;     // Number of the first search result to show
+    private int lastItemToShwow = 20;    // Number of the last search result to show
+
     SearchData searchData= new SearchData();
     private bool paginationVisible= false;
+    private string messageWhenNoSearch = "";
 
     private bool IsActive(string page)
         => currentPage == page;
@@ -64,7 +82,7 @@
         }
         else if (navigation.Equals(NEXT))
         {
-            return currentPage.Equals(pageItems.ToString());
+            return currentPage.Equals(maxPaginationPages.ToString());
         }
         return false;
     }
@@ -80,9 +98,31 @@
     {
         currentPageNo = Convert.ToInt32(currentPage);
         paginationFirst = Math.Max(1, currentPageNo - 2);
-        paginationLast = Math.Min(pageItemsNo, paginationFirst + itemsPerPage - 1);
+        paginationLast = Math.Min(maxPaginationPages, paginationFirst + maxPaginationItems - 1);
 
+        paginationVisible = false;
+        messageWhenNoSearch = "Indexing translation to use.";
+        maxItemsPerPage = StaticObjects.Parameters.SearchPageSize;
+        StateHasChanged();
+        searchData.ErrorMessage = "";
         searchData = Task.Run(() => CallSearch(searchData)).GetAwaiter().GetResult();
+
+        if (!string.IsNullOrEmpty(searchData.ErrorMessage))
+        {
+            paginationVisible = false;
+            messageWhenNoSearch = searchData.ErrorMessage;
+        }
+        else if (searchData.SearchResults.Count == 0)
+        {
+            paginationVisible = false;
+            messageWhenNoSearch = "No paragraph found.";
+        }
+        else
+        {
+            firstItemToShow = currentPageNo * maxItemsPerPage + 1;
+            lastItemToShwow = Math.Min(firstItemToShow + maxItemsPerPage, searchData.SearchResults.Count);
+            paginationVisible = true;
+        }
         StateHasChanged();
     }
 
@@ -99,7 +139,7 @@
     private void Next()
     {
         var currentPageAsInt = int.Parse(currentPage);
-        if (currentPageAsInt < pageItems)
+        if (currentPageAsInt < maxPaginationPages)
         {
             currentPage = (currentPageAsInt + 1).ToString();
         }
@@ -117,8 +157,13 @@
         this.searchData = searchData;
         searchData.IndexPathRoot = StaticObjects.Parameters.TubSearchFolders;
         searchData.Translation = StaticObjects.Book.GetTocSearchTranslation();
-        paginationVisible = true;
         SetActive("1");
+    }
+
+
+    protected void ButtonClicked(string option)
+    {
+        AmadonEvents.NewSearchEntry(TOC_Entry.FromHref(option));
     }
 
  

@@ -9,14 +9,9 @@ namespace Amadon.Services
 
         public static SearchData DoSearch(SearchData searchData)
         {
-            var options = new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                WriteIndented = true,
-            };
             LuceneBookSearch luceneBookSearch = new();
             // When an erro occurs, error message is set inside SearchData
-            luceneBookSearch.Execute(searchData);
+            bool ret= luceneBookSearch.Execute(searchData);
             return searchData;
          }
 

@@ -16,6 +16,7 @@ namespace Amadon
     internal delegate void TranslationsToShowChangedDelegate();
     internal delegate void HighlightExpressionDelegate(string expression);
     internal delegate void NewSubjectIndexEntryDelegate(TOC_Entry entry);
+    internal delegate void NewSearchEntryDelegate(TOC_Entry entry);
 
     internal class AmandonComponentNames
     {
@@ -59,6 +60,8 @@ namespace Amadon
         /// Fired when a new table of contents item is selected
         /// </summary>
         public static event NewTocEntryDelegate OnNewTocEntry;
+
+        public static event NewSearchEntryDelegate OnNewSearchEntry;
 
         /// <summary>
         /// Fired when a new table of contents item is selected
@@ -106,6 +109,13 @@ namespace Amadon
             if (entry != null)
                 OnNewSubjectIndexEntry?.Invoke(entry);
         }
+
+        public static void NewSearchEntry(TOC_Entry entry)
+        {
+            if (entry != null)
+                OnNewSearchEntry?.Invoke(entry);
+        }
+        // NewSearchEntryDelegate NewSearchEntry;
 
         public static void TranslationsToShowChanged()
         {

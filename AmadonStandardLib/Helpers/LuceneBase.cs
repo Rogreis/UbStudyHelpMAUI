@@ -1,5 +1,7 @@
-﻿using Lucene.Net.Store;
+﻿using AmadonStandardLib.Classes;
+using Lucene.Net.Store;
 using System;
+using System.Threading.Tasks;
 
 namespace AmadonStandardLib.Helpers
 {
@@ -27,15 +29,22 @@ namespace AmadonStandardLib.Helpers
 
         protected void FireSendMessage(string message)
         {
-            SendMessage?.Invoke(message);
+             Task.Run(() => LibraryEventsControl.FireSendMessage(message));
         }
-        protected void FireSendLogMessage(string message)
+
+        protected void FireSendMessage(string message, Exception ex)
         {
-            SendLogMessage?.Invoke(message);
+            Task.Run(() => LibraryEventsControl.FireSendMessage(message, ex));
         }
-        protected void FireSendLogErrorMessage(string message, Exception? ex = null)
-        {
-            SendLogErrorMessage?.Invoke(message, ex);
-        }
+
+
+        //protected void FireSendLogMessage(string message)
+        //{
+        //    SendLogMessage?.Invoke(message);
+        //}
+        //protected void FireSendLogErrorMessage(string message, Exception? ex = null)
+        //{
+        //    SendLogErrorMessage?.Invoke(message, ex);
+        //}
     }
 }

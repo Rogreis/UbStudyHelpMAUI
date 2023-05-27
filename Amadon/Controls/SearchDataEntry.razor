@@ -7,7 +7,7 @@
     <Row>
         <Column>
             <h5>Text Search:</h5>
-            <TextEdit @ref="TextToSearchObject" Placeholder="Search the subject index titles..." Size="Size.Small" />
+            <TextEdit @ref="TextToSearchObject" @bind-Text="@TextToSearch" Placeholder="Search the subject index titles..." Size="Size.Small" />
         </Column>
     </Row>
 
@@ -43,6 +43,7 @@
 @code {
 
     TextEdit TextToSearchObject;
+    string TextToSearch= "";
 
     Switch<bool> SwitchPartI;
     Switch<bool> SwitchPartII;
@@ -110,6 +111,7 @@
         StaticObjects.Parameters.SimpleSearchIncludePartIV = searchData.Part1Included;
         StaticObjects.Parameters.SimpleSearchCurrentPaperOnly = searchData.Part1Included;
         StaticObjects.Parameters.LastSearchString = searchData.QueryString;
+        StaticObjects.Parameters.TextSearForIndexTitles= TextToSearch;
         return searchData;
     }
 
@@ -124,6 +126,7 @@
             searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartIV;
             searchData.Part1Included= StaticObjects.Parameters.SimpleSearchCurrentPaperOnly;
             searchData.QueryString= StaticObjects.Parameters.LastSearchString;
+            TextToSearch = StaticObjects.Parameters.TextSearForIndexTitles;
             StateHasChanged();
         }
     }
