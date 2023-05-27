@@ -102,5 +102,30 @@ namespace AmadonStandardLib.UbClasses
             }
         }
 
+        public Translation? GetTocSearchTranslation()
+        {
+            switch (StaticObjects.Parameters.TranslationForTableOfContents)
+            {
+                case TranslatioForTocSearch.Left:
+                    return StaticObjects.Book.LeftTranslation; 
+                case TranslatioForTocSearch.Middle:
+                    if (StaticObjects.Parameters.LanguageIDMiddleTranslation < 0)
+                    {
+                        if (StaticObjects.Parameters.LanguageIDRightTranslation < 0)
+                            return StaticObjects.Book.LeftTranslation;
+                        else
+                            return StaticObjects.Book.RightTranslation;
+                    }
+                    return StaticObjects.Book.MiddleTranslation;
+                case TranslatioForTocSearch.Right:
+                    if (StaticObjects.Parameters.LanguageIDRightTranslation < 0)
+                        return StaticObjects.Book.LeftTranslation;
+                    else
+                        return StaticObjects.Book.RightTranslation;
+            }
+            return StaticObjects.Book.LeftTranslation;
+        }
+
+
     }
 }

@@ -18,14 +18,10 @@
         <Switch TValue="bool" Checked="@ShowRightTranslation" CheckedChanged="@OnShowRightTranslation">Show Right Translation</Switch>
     </Tooltip>
 
-    <Tooltip Text="Show a comparison column when middle and right translations can be compared" Placement="TooltipPlacement.Bottom">
-        <Switch TValue="bool" Checked="@ShowComparator" CheckedChanged="@OnShowComparator">Show Comparator</Switch>
-    </Tooltip>
-
     <Divider />
 
 
- @*   <Tooltip Text="Use dark mode" Placement="TooltipPlacement.Bottom">
+    @*   <Tooltip Text="Use dark mode" Placement="TooltipPlacement.Bottom">
         <SwitchControl @ref=SwitchDarkMode LabelText="Dark Mode" IsToggled=@parameters.UseDarkThemme SwitchType=(int)SwitchType.UseDarkTheme />
     </Tooltip>
 *@
@@ -77,17 +73,23 @@
     </Tooltip>
     <br />
 
-    <Tooltip Text="Choose translation to be used for table of contents" Placement="TooltipPlacement.Bottom">
-        <Label>Translation for Table of Contents</Label>
-        <RadioGroup TValue="string" Name="TocTranslations" Buttons  CheckedValueChanged="@OnCheckedValueChanged">
-            <Radio Value="@("left")">Use Left</Radio>
-            <Radio Value="@("middle")">Use Middle</Radio>
-            <Radio Value="@("right")">User Right</Radio>
-        </RadioGroup>
+    <Label>Translation for Table of Contents or Search Text:</Label>
+    <Tooltip Text="Enable the translations choice to be shown next time the app is started" Placement="TooltipPlacement.Top">
+        <Row>
+            <Column>
+                <Switch @ref="@SwitchUseTransLeft" TValue="bool" Checked="@SwitchUseTransLeftValue" CheckedChanged="@OnUseTransLeft">Left</Switch>
+            </Column>
+            <Column>
+                <Switch @ref="@SwitchUseTransMiddle" TValue="bool" Checked="@SwitchUseTransMiddleValue" CheckedChanged="@OnUseTransMiddle">Middle</Switch>
+            </Column>
+            <Column>
+                <Switch @ref="@SwitchUseTransRight" TValue="bool" Checked="@SwitchUseTransRightValue" CheckedChanged="@OnUseTransRight">Right</Switch>
+            </Column>
+        </Row>
     </Tooltip>
-
     <br />
-    <Tooltip Text="Enable the translations choice to be shown next time the app is started" Placement="TooltipPlacement.Bottom">
+
+    <Tooltip Text="" Placement="TooltipPlacement.Bottom">
         <Switch TValue="bool" Checked="@RedisplayTranslationsChoice" CheckedChanged="@OnRedisplayTranslationsChoiceChanged">Display translation options in the next run</Switch>
     </Tooltip>
 
@@ -107,7 +109,6 @@
     private bool RedisplayTranslationsChoice = false;
 
     private bool ShowMiddleTranslation = false;
-    private bool ShowComparator = false;
     private bool ShowRightTranslation = false;
     private bool ShowParagraphIdentification = true;
     private bool UseSerifFont = true;
@@ -119,16 +120,60 @@
     TranslationSelect TranslationSelectRight;
     Select<SelectTranslation> SelectMiddleTranslation;
 
-    SelectTranslation selectedLefteValue;
+    SelectTranslation selectedLeftValue;
     SelectTranslation selectedMiddleValue;
     SelectTranslation selectedRightValue;
     bool SettingsPageInitialized = false;
-    string checkedValue = "green";
 
     private List<SelectTranslation> items;
 
     private SwitchControl SwitchDarkMode;
     private SwitchControl SwitchSerifFont;
+
+
+    Switch<bool> SwitchUseTransLeft;
+    Switch<bool> SwitchUseTransMiddle;
+    Switch<bool> SwitchUseTransRight;
+    bool SwitchUseTransLeftValue = false;
+    bool SwitchUseTransMiddleValue = false;
+    bool SwitchUseTransRightValue = false;
+
+
+    Task OnUseTransLeft(bool value)
+    {
+        if (value)
+        {
+            SwitchUseTransLeftValue = true;
+            SwitchUseTransMiddleValue = false;
+            SwitchUseTransRightValue = false;
+            StaticObjects.Parameters.TranslationForTableOfContents = TranslatioForTocSearch.Left;
+        }
+        return Task.CompletedTask;
+    }
+
+    Task OnUseTransMiddle(bool value)
+    {
+        if (value)
+        {
+            SwitchUseTransLeftValue = false;
+            SwitchUseTransMiddleValue = true;
+            SwitchUseTransRightValue = false;
+            StaticObjects.Parameters.TranslationForTableOfContents = TranslatioForTocSearch.Middle;
+        }
+        return Task.CompletedTask;
+    }
+    Task OnUseTransRight(bool value)
+    {
+        if (value)
+        {
+            SwitchUseTransLeftValue = false;
+            SwitchUseTransMiddleValue = false;
+            SwitchUseTransRightValue = true;
+            StaticObjects.Parameters.TranslationForTableOfContents = TranslatioForTocSearch.Right;
+        }
+        return Task.CompletedTask;
+    }
+
 
     private async Task StoreParameters()
     {
@@ -144,31 +189,7 @@
         return Task.CompletedTask;
     }
 
-
-    /// <summary>
-    /// Called when user changes the translation to be used for TOC
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    Task OnCheckedValueChanged(string value)
-    {
-        checkedValue = value;
-        switch(checkedValue)
-        {
-            case "left":
-                StaticObjects.Parameters.TranslationForTableOfContents = StaticObjects.Parameters.LanguageIDLeftTranslation;
-                break;
-            case "middle":
-                StaticObjects.Parameters.TranslationForTableOfContents = StaticObjects.Parameters.LanguageIDMiddleTranslation;
-                break;
-            case "right":
-                StaticObjects.Parameters.TranslationForTableOfContents = StaticObjects.Parameters.LanguageIDRightTranslation;
-                break;
-        }
-        Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
-        return Task.CompletedTask;
-    }
-
+    bool settingCheckedValue = false;
 
     Task OnSelectedLeftTranslationChanged(int value)
     {
@@ -212,15 +233,6 @@
         return Task.CompletedTask;
     }
 
-    Task OnShowComparator(bool value)
-    {
-        ShowComparator = value;
-        StaticObjects.Parameters.ShowCompare = value;
-        AmadonEvents.TranslationsToShowChanged();
-        Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
-        return Task.CompletedTask;
-    }
-
     Task OnShowParagraphIdentification(bool value)
     {
         ShowParagraphIdentification = value;
@@ -241,12 +253,12 @@
 
     Task OnMaxExpressionsStored(int value)
     {
-        MaxExpressionsStored = StaticObjects.Parameters.MaxExpressionsStored= value;
+        MaxExpressionsStored = StaticObjects.Parameters.MaxExpressionsStored = value;
         AmadonEvents.TranslationsToShowChanged();
         Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
         return Task.CompletedTask;
     }
-    
+
     Task OnSearchPageSize(int value)
     {
         SearchPageSize = StaticObjects.Parameters.SearchPageSize = value;
@@ -254,7 +266,7 @@
         Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
         return Task.CompletedTask;
     }
-    
+
 
 
     public void Initialize()
@@ -267,8 +279,8 @@
         }
 
         SettingsPageInitialized = true;
-
         StateHasChanged();
+
 
         TranslationSelectLeft.SetData(StaticObjects.Parameters.LanguageIDMiddleTranslation);
         TranslationSelectMiddle.SetData(StaticObjects.Parameters.LanguageIDMiddleTranslation);
@@ -276,11 +288,29 @@
 
         ShowMiddleTranslation = StaticObjects.Parameters.ShowMiddle;
         ShowRightTranslation = StaticObjects.Parameters.ShowRight;
-        ShowComparator = StaticObjects.Parameters.ShowCompare;
         ShowParagraphIdentification = StaticObjects.Parameters.ShowParagraphIdentification;
         UseSerifFont = StaticObjects.Parameters.UseSerifFont;
         SearchPageSize = StaticObjects.Parameters.SearchPageSize;
         MaxExpressionsStored = StaticObjects.Parameters.MaxExpressionsStored;
+        switch (StaticObjects.Parameters.TranslationForTableOfContents)
+        {
+            case TranslatioForTocSearch.Left:
+                SwitchUseTransLeftValue = true;
+                SwitchUseTransMiddleValue = false;
+                SwitchUseTransRightValue = false;
+                break;
+            case TranslatioForTocSearch.Middle:
+                SwitchUseTransLeftValue = false;
+                SwitchUseTransMiddleValue = true;
+                SwitchUseTransRightValue = false;
+                break;
+            case TranslatioForTocSearch.Right:
+                SwitchUseTransLeftValue = false;
+                SwitchUseTransMiddleValue = false;
+                SwitchUseTransRightValue = true;
+                break;
+        }
+
     }
 
 
@@ -297,6 +327,7 @@
             if (!SettingsPageInitialized)
             {
                 await Task.Delay(1);
+                Debug.WriteLine("OnAfterRenderAsync");
                 Initialize();
             }
             StateHasChanged();

@@ -61,23 +61,15 @@
 
     public async Task UpdateAll()
     {
-        // Both translation must be in the translations to show
-        // IF not, a default value is set
-        if (StaticObjects.Parameters.TranslationForTableOfContents < 0 ||
-            !StaticObjects.Parameters.TranslationsToShowId.Contains(StaticObjects.Parameters.TranslationForTableOfContents))
-        {
-            StaticObjects.Parameters.TranslationForTableOfContents = 0;
-        }
-
         // Needs update?
-        data.UpdateTocId1 = data.TranslationId1 != StaticObjects.Parameters.TranslationForTableOfContents;
+        data.UpdateTocId1 = data.TranslationId1 != StaticObjects.Book.GetTocSearchTranslation().LanguageID;
 
         if (!data.UpdateTocId1)
         {
             // TOC already created
             return;
         }
-        data.TranslationId1 = StaticObjects.Parameters.TranslationForTableOfContents;
+        data.TranslationId1 = StaticObjects.Book.GetTocSearchTranslation().LanguageID;
         data = await TOC_Service.GetTocTable(data);
         ItemsPrimary = data.TocId1;
         TocGotFromData = true;

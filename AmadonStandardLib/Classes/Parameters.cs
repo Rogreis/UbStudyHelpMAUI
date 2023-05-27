@@ -18,6 +18,14 @@ namespace AmadonStandardLib.Classes
         LeftMiddleRightCompare = 4
     }
 
+    public enum TranslatioForTocSearch
+    {
+        Left = 0,
+        Middle = 1,
+        Right = 2
+    }
+
+
     public class Parameters
     {
         public const string FileName = "AmadonParameters.json";
@@ -43,12 +51,11 @@ namespace AmadonStandardLib.Classes
 
         public short LanguageIDRightTranslation { get; set; } = 34;
 
-        public short TranslationForTableOfContents { get; set; } = 34;
+        public TranslatioForTocSearch TranslationForTableOfContents { get; set; } = TranslatioForTocSearch.Right;
 
         // Show pages options
         public bool ShowMiddle { get; set; } = false;
         public bool ShowRight { get; set; } = true;
-        public bool ShowCompare { get; set; } = false;
 
         public List<short> TranslationsToShowId { get; set; } = new List<short>();
 
@@ -73,7 +80,7 @@ namespace AmadonStandardLib.Classes
         public List<string> SearchIndexEntries { get; set; } = new List<string>();
 
         #region Search Options
-        public List<string> SearchStrings { get; set; } = new List<string>();
+        public string LastSearchString { get; set; } = "";
 
         public bool SimpleSearchIncludePartI { get; set; } = true;
 
@@ -142,8 +149,6 @@ namespace AmadonStandardLib.Classes
 
 
         public int FontSize { get; set; } = 18;
-
-
 
         /// <summary>
         /// Serialize the parameters instance

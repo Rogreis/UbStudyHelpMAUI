@@ -1,6 +1,7 @@
-﻿@using Blazorise.LoadingIndicator;
+﻿@using AmadonStandardLib.InterchangeData;
+@using Blazorise.LoadingIndicator;
 
-<SearchDataEntry></SearchDataEntry>
+<SearchDataEntry @ref="dataEntry"></SearchDataEntry>
 <Row>
     <Column>
         <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSortClick">Reorder</Button>
@@ -9,10 +10,7 @@
 </Row>
 
 <LoadingIndicator @ref="loadingIndicator">
-    @if (showSearchResults)
-    {
-        <SearchPagination @ref="SearchPaginationElement"></SearchPagination>
-    }
+    <SearchPagination @ref="SearchPaginationElement"></SearchPagination>
 </LoadingIndicator>
 
 
@@ -20,6 +18,7 @@
 @code {
     LoadingIndicator loadingIndicator;
     SearchPagination SearchPaginationElement;
+    SearchDataEntry dataEntry;
     bool showSearchResults = false;
 
     void OnSortClick()
@@ -30,7 +29,12 @@
     void OnSearch()
     {
         showSearchResults = true;
-        StateHasChanged();
+        SearchData searchData = dataEntry.GetSearchData();
+        if (!string.IsNullOrEmpty(searchData.QueryString))
+        {
+            SearchPaginationElement.Start(searchData);
+            StateHasChanged();
+        }
     }
 
 }

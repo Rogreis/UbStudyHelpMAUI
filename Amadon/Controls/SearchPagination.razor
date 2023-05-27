@@ -1,36 +1,42 @@
-﻿<Pagination>
-    <PaginationItem Disabled="@IsPageNavigationDisabled(PREVIOUS)" @onclick="Previous">
-        <PaginationLink>
-            <span aria-hidden="true">«</span>
-        </PaginationLink>
-    </PaginationItem>
-    @{
-        for (var i = paginationFirst; i <= paginationLast; i++)
-        {
-            var pageNumberAsString = i.ToString();
-            <PaginationItem @key="pageNumberAsString" Active="@IsActive(pageNumberAsString)">
-                <PaginationLink Page="@pageNumberAsString" Clicked="SetActive">
-                    @pageNumberAsString
-                </PaginationLink>
-            </PaginationItem>
+﻿@using Amadon.Services;
+@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.InterchangeData;
+
+@if (@paginationVisible)
+{
+    <Pagination>
+        <PaginationItem Disabled="@IsPageNavigationDisabled(PREVIOUS)" @onclick="Previous">
+            <PaginationLink>
+                <span aria-hidden="true">«</span>
+            </PaginationLink>
+        </PaginationItem>
+        @{
+            for (var i = paginationFirst; i <= paginationLast; i++)
+            {
+                var pageNumberAsString = i.ToString();
+                <PaginationItem @key="pageNumberAsString" Active="@IsActive(pageNumberAsString)">
+                    <PaginationLink Page="@pageNumberAsString" Clicked="SetActive">
+                        @pageNumberAsString
+                    </PaginationLink>
+                </PaginationItem>
+            }
         }
-    }
-    <PaginationItem Disabled="@IsPageNavigationDisabled(NEXT)" @onclick="Next">
-        <PaginationLink>
-            <span aria-hidden="true">»</span>
-        </PaginationLink>
-    </PaginationItem>
-</Pagination>
+        <PaginationItem Disabled="@IsPageNavigationDisabled(NEXT)" @onclick="Next">
+            <PaginationLink>
+                <span aria-hidden="true">»</span>
+            </PaginationLink>
+        </PaginationItem>
+    </Pagination>
+    @*<Container Style="width: 100%; height: 300px; overflow-y: auto;">
+    *@
 
-@*<Container Style="width: 100%; height: 300px; overflow-y: auto;">
-*@
-
-<Container>
-    @for(int i= 0; i<100; i++)
-    {
-        <p>Page @currentPage  Linha @i"</p>
-    }
-</Container>
+    <Container>
+        @foreach (SearchResult result in searchData.SearchResults)
+        {
+            <p>@result.Text</p>
+        }
+    </Container>
+}
 
 
 @code
@@ -44,6 +50,8 @@
     private int itemsPerPage = 5;
     private int paginationFirst = 1;
     private int paginationLast = 5;
+    SearchData searchData= new SearchData();
+    private bool paginationVisible= false;
 
     private bool IsActive(string page)
         => currentPage == page;
@@ -61,11 +69,21 @@
         return false;
     }
 
+    public async Task<SearchData> CallSearch(SearchData searchData)
+    {
+        searchData= await SearchBookService.Search(searchData);
+        return searchData;
+    }
+
+
     private void CalculatePagination(string currentPage)
     {
         currentPageNo = Convert.ToInt32(currentPage);
         paginationFirst = Math.Max(1, currentPageNo - 2);
         paginationLast = Math.Min(pageItemsNo, paginationFirst + itemsPerPage - 1);
+
+        searchData = Task.Run(() => CallSearch(searchData)).GetAwaiter().GetResult();
+        StateHasChanged();
     }
 
     private void Previous()
@@ -92,9 +110,16 @@
     {
         currentPage = page;
         CalculatePagination(currentPage);
-        StateHasChanged();
     }
 
+    public void Start(SearchData searchData)
+    {
+        this.searchData = searchData;
+        searchData.IndexPathRoot = StaticObjects.Parameters.TubSearchFolders;
+        searchData.Translation = StaticObjects.Book.GetTocSearchTranslation();
+        paginationVisible = true;
+        SetActive("1");
+    }
 
  
 }

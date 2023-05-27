@@ -1,4 +1,5 @@
 ﻿@page "/search"
+@using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.InterchangeData;
 @using Blazorise
 
@@ -99,4 +100,32 @@
         searchData.CurrentPaperOnly = value;
         return Task.CompletedTask;
     }
- }
+
+    public SearchData GetSearchData()
+    {
+        searchData.QueryString = TextToSearchObject.Text;
+        StaticObjects.Parameters.SimpleSearchIncludePartI = searchData.Part1Included;
+        StaticObjects.Parameters.SimpleSearchIncludePartII = searchData.Part1Included;
+        StaticObjects.Parameters.SimpleSearchIncludePartIII = searchData.Part1Included;
+        StaticObjects.Parameters.SimpleSearchIncludePartIV = searchData.Part1Included;
+        StaticObjects.Parameters.SimpleSearchCurrentPaperOnly = searchData.Part1Included;
+        StaticObjects.Parameters.LastSearchString = searchData.QueryString;
+        return searchData;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartI;
+            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartII;
+            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartIII;
+            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartIV;
+            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchCurrentPaperOnly;
+            searchData.QueryString= StaticObjects.Parameters.LastSearchString;
+            StateHasChanged();
+        }
+    }
+
+}
