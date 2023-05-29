@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmadonStandardLib.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AmadonStandardLib.UbClasses
 {
@@ -246,43 +248,25 @@ namespace AmadonStandardLib.UbClasses
             return Path.Combine(repositoryPath, RelativeFilePathWindows(p));
         }
 
-
-        private string GetCssClass(bool isEdit)
+        private string FormatIdentification()
         {
-            string cssClass = "commonText";
-
-            if (isEdit)
-            {
-                switch (Status)
-                {
-                    case ParagraphStatus.Started:
-                        cssClass = "parStarted";
-                        break;
-                    case ParagraphStatus.Working:
-                        cssClass = "parWorking";
-                        break;
-                    case ParagraphStatus.Ok:
-                        cssClass = "parOk";
-                        break;
-                    case ParagraphStatus.Doubt:
-                        cssClass = "parDoubt";
-                        break;
-                    case ParagraphStatus.Closed:
-                        cssClass = "parClosed";
-                        break;
-                }
-            }
-            return cssClass;
+            return $"<span class=\"text-secondary\">{Identification} </span>";
         }
 
-        private void FormatText(StringBuilder sb, bool isEdit, bool insertAnchor, string startTag, string endTag)
+
+        private void FormatText(StringBuilder sb, bool insertAnchor, string startTag, string endTag)
         {
-            sb.Append($"{startTag}{(insertAnchor ? $"<a name =\"{AName}\"/>" : "")} {ID} {Text}{endTag}");
+            string ident = StaticObjects.Parameters.ShowParagraphIdentification ? FormatIdentification() : "";
+            sb.Append($"{startTag}{(insertAnchor ? $"<a name =\"{AName}\"/>" : "")} {ident}{Text}{endTag}");
         }
 
-        private void FormatTitle(StringBuilder sb, bool isEdit, bool insertAnchor, string startTag, string endTag)
+        private string FormatTextTitle()
         {
-            sb.Append($"{startTag}{(insertAnchor ? $"<a name =\"{AName}\"/>" : "")} {Text}{endTag}");
+            return $"<span class=\"text-warning\">{Text} </span>";
+        }
+        private void FormatTitle(StringBuilder sb, bool insertAnchor, string startTag, string endTag)
+        {
+            sb.Append($"{startTag}{(insertAnchor ? $"<a name =\"{AName}\"/>" : "")} {FormatTextTitle()}{endTag}");
         }
 
 
@@ -296,26 +280,26 @@ namespace AmadonStandardLib.UbClasses
         }
 
 
-        public string GetHtml(bool isEdit, bool insertAnchor)
+        public string GetHtml(bool insertAnchor)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"<div class=\"p-3 mb-2 {GetCssClass(isEdit)}\">");
+            sb.AppendLine($"<div class=\"p-2 \">");
             switch (Format)
             {
                 case ParagraphHtmlType.BookTitle:
-                    FormatText(sb, isEdit, false, "<h1>", "</h1>");
+                    FormatText(sb, false, "<h1>", "</h1>");
                     break;
                 case ParagraphHtmlType.PaperTitle:
-                    FormatTitle(sb, isEdit, insertAnchor, "<h2>", "</h2>");
+                    FormatTitle(sb, insertAnchor, "<h2>", "</h2>");
                     break;
                 case ParagraphHtmlType.SectionTitle:
-                    FormatTitle(sb, isEdit, insertAnchor, "<h3>", "</h3>");
+                    FormatTitle(sb, insertAnchor, "<h3>", "</h3>");
                     break;
                 case ParagraphHtmlType.NormalParagraph:
-                    FormatText(sb, isEdit, insertAnchor, "<p>", "</p>");
+                    FormatText(sb, insertAnchor, "<p>", "</p>");
                     break;
                 case ParagraphHtmlType.IdentedParagraph:
-                    FormatText(sb, isEdit, insertAnchor, "<bloquote><p>", "</p></bloquote>");
+                    FormatText(sb, insertAnchor, "<bloquote><p>", "</p></bloquote>");
                     break;
             }
             sb.AppendLine("</div>");

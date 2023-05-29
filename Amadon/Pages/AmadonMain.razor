@@ -8,21 +8,21 @@
 @using Blazorise
 
 <div class="container_fluid  h-100">
-@if (!AmadonMainPageInitialized)
-{
-    <InitializationControl></InitializationControl>
-}
-else
-{
-    <div class="row ">
-        <div class="col-md-3 bg_left splitLeft left bg_left text-white overflow-auto">
-            <LeftColumn></LeftColumn>
+    @if (!AmadonMainPageInitialized)
+    {
+        <InitializationControl></InitializationControl>
+    }
+    else
+    {
+        <div class="row ">
+            <div class="col-md-3 bg-dark text-white splitLeft left overflow-auto">
+                <LeftColumn></LeftColumn>
+            </div>
+            <div class="col-md-9 bg-dark text-white splitRight right mt-0 overflow-auto">
+                <BookText></BookText>
+            </div>
         </div>
-        <div class="col-md-9 splitRight right mt-0 bg-dark text-white overflow-auto">
-            <BookText></BookText>
-        </div>
-    </div>
-}
+    }
 </div>
 
 
@@ -40,13 +40,6 @@ else
         await base.OnInitializedAsync();
         AmadonEvents.OnInitializationSuccesfully += OnInitializationSuccesfully;
     }
-
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    if (firstRender)
-    //    {
-    //    }
-    //}
 
     protected void OnInitializationSuccesfully()
     {

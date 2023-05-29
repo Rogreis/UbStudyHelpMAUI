@@ -30,13 +30,13 @@ namespace Amadon.Services
         /// <param name="par"></param>
         /// <param name="isEdit"></param>
         /// <param name="insertAnchor"></param>
-        private static void Columntext(StringBuilder sb, Paragraph par, bool isEdit, bool insertAnchor)
+        private static void Columntext(StringBuilder sb, Paragraph par, bool insertAnchor)
         {
             if (par != null)
             {
                 string id= insertAnchor? $" id =\"{par.AName}\"" : "";
                 sb.AppendLine($"<td{id}>");
-                sb.AppendLine(par.GetHtml(isEdit, insertAnchor));
+                sb.AppendLine(par.GetHtml(insertAnchor));
                 sb.AppendLine("</td>");
             }
         }
@@ -49,10 +49,10 @@ namespace Amadon.Services
         /// <param name="entry"></param>
         /// <param name="isEdit"></param>
         /// <param name="insertAnchor"></param>
-        private static void GetText(StringBuilder sb, List<Paragraph> list, TOC_Entry entry, bool isEdit, bool insertAnchor)
+        private static void GetText(StringBuilder sb, List<Paragraph> list, TOC_Entry entry, bool insertAnchor)
         {
             Paragraph par = list?.Find(p => p.Section == entry.Section && p.ParagraphNo == entry.ParagraphNo);
-            Columntext(sb, par, isEdit, insertAnchor);
+            Columntext(sb, par, insertAnchor);
         }
 
         /// <summary>
@@ -65,14 +65,12 @@ namespace Amadon.Services
         /// <param name="compareParagraphs"></param>
         private static void GetParagraphsLine(StringBuilder sb, Paragraph leftParagraph, 
                                               List<Paragraph> rightParagraphs, 
-                                              List<Paragraph> middleParagraphs,
-                                              List<Paragraph> compareParagraphs)
+                                              List<Paragraph> middleParagraphs)
         {
             // Only first column has anchor
-            Columntext(sb, leftParagraph, false, true);
-            GetText(sb, middleParagraphs, leftParagraph.Entry, false, false);
-            GetText(sb, rightParagraphs, leftParagraph.Entry, false, false);
-            GetText(sb, compareParagraphs, leftParagraph.Entry, false, false);
+            Columntext(sb, leftParagraph, true);
+            GetText(sb, middleParagraphs, leftParagraph.Entry, false);
+            GetText(sb, rightParagraphs, leftParagraph.Entry, false);
         }
 
         /// <summary>
@@ -98,31 +96,22 @@ namespace Amadon.Services
 
         private static TextShowOption CalculateShowOption()
         {
-            TextShowOption showOption = TextShowOption.LeftOnly;
-            StaticObjects.Parameters.ShowRight = StaticObjects.Parameters.TranslationsToShowId.Count > 0 && StaticObjects.Parameters.LanguageIDRightTranslation >= 0;
-            StaticObjects.Parameters.ShowMiddle = StaticObjects.Parameters.TranslationsToShowId.Count > 1 && StaticObjects.Parameters.LanguageIDMiddleTranslation >= 0;
-            if (StaticObjects.Parameters.TranslationsToShowId.Count == 1)
+            StaticObjects.Parameters.ShowRight = StaticObjects.Parameters.ShowRight && StaticObjects.Parameters.TranslationsToShowId.Count > 0 && StaticObjects.Parameters.LanguageIDRightTranslation >= 0;
+            StaticObjects.Parameters.ShowMiddle = StaticObjects.Parameters.ShowMiddle && StaticObjects.Parameters.TranslationsToShowId.Count > 1 && StaticObjects.Parameters.LanguageIDMiddleTranslation >= 0;
+
+            if (StaticObjects.Parameters.ShowRight && StaticObjects.Parameters.ShowMiddle)
             {
-                if (StaticObjects.Parameters.ShowRight)
-                {
-                    showOption = TextShowOption.LeftRight;
-                    return showOption;
-                }
-            } else if (StaticObjects.Parameters.TranslationsToShowId.Count > 1)
-            {
-                if (StaticObjects.Parameters.ShowRight && StaticObjects.Parameters.ShowMiddle)
-                {
-                    showOption = TextShowOption.LeftMiddleRight;
-                    return showOption;
-                }
-                if (StaticObjects.Parameters.ShowRight)
-                {
-                    showOption = TextShowOption.LeftRight;
-                    return showOption;
-                }
+                return TextShowOption.LeftMiddleRight;
             }
-            if (showOption == TextShowOption.LeftOnly && StaticObjects.Parameters.LanguageIDLeftTranslation < 0) StaticObjects.Parameters.LanguageIDLeftTranslation = 0;
-            return showOption;
+            if (!StaticObjects.Parameters.ShowRight && StaticObjects.Parameters.ShowMiddle)
+            {
+                return TextShowOption.LeftMiddle;
+            }
+            if (StaticObjects.Parameters.ShowRight && !StaticObjects.Parameters.ShowMiddle)
+            {
+                return TextShowOption.LeftRight;
+            }
+            return TextShowOption.LeftOnly;
         }
 
         /// <summary>
@@ -139,7 +128,6 @@ namespace Amadon.Services
             List<Paragraph>? leftParagraphs = null;
             List<Paragraph>? rightParagraphs = null;
             List<Paragraph>? middleParagraphs = null;
-            List<Paragraph>? compareParagraphs = null;
 
             // Left is always shown
             leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
@@ -149,7 +137,7 @@ namespace Amadon.Services
             {
                 case TextShowOption.LeftOnly:
                     ColumnSize = "100%";
-                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
                     break;
                 case TextShowOption.LeftRight:
                     ColumnSize = "50%";
@@ -157,14 +145,11 @@ namespace Amadon.Services
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
                     rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
                     break;
-                case TextShowOption.LeftRightCompare:
-                    ColumnSize = "33%";
+                case TextShowOption.LeftMiddle:
+                    ColumnSize = "50%";
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
-                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    paperTextFormatted.Titles.Add("Compare");
-                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
-                    leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
-                    compareParagraphs = null; // TO DO implement compare
+                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
+                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
                     break;
                 case TextShowOption.LeftMiddleRight:
                     ColumnSize = "33%";
@@ -174,23 +159,13 @@ namespace Amadon.Services
                     rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
                     middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
                     break;
-                case TextShowOption.LeftMiddleRightCompare:
-                    ColumnSize = "25%";
-                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
-                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
-                    paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    paperTextFormatted.Titles.Add("Compare");
-                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
-                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
-                    compareParagraphs = null; // TO DO implement compare
-                    break;
             }
 
             // Format line
             foreach(Paragraph p in leftParagraphs)
             {
                 StringBuilder sb = new StringBuilder();
-                GetParagraphsLine(sb, p, rightParagraphs, middleParagraphs, compareParagraphs);
+                GetParagraphsLine(sb, p, rightParagraphs, middleParagraphs);
                 paperTextFormatted.Lines.Add(sb.ToString());
             }
 

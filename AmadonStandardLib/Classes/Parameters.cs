@@ -14,8 +14,7 @@ namespace AmadonStandardLib.Classes
         LeftOnly = 0,
         LeftRight = 1,
         LeftMiddleRight = 2,
-        LeftRightCompare = 3,
-        LeftMiddleRightCompare = 4
+        LeftMiddle = 3
     }
 
     public enum TranslatioForTocSearch
