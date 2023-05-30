@@ -7,12 +7,22 @@
 {
     @foreach (string line in @trackList)
     {
-        @((MarkupString)@line)
+        string link = @line.Substring(0, 11);
+        string text = @line.Remove(0, 11);
+        <Card WhiteText class="bg-dark">
+            <CardBody>
+                <CardText>
+                    <Button Color="Color.Primary" Outline Size="Size.Small" Margin="Margin.Is2" Clicked="@(()=> ButtonClicked(@link))">@Ident(link) <Icon Name="IconName.ArrowRight" /></Button>
+                    @((MarkupString)@text)
+                    <br />
+                </CardText>
+            </CardBody>
+        </Card>
     }
 }
- 
 
-@code 
+
+@code
 {
     private List<string> trackList;
     private bool showTrackList = false;
@@ -20,6 +30,12 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        AmadonEvents.OnShowTrack += OnShowTrack;
+    }
+
+    private string Ident(string link)
+    {
+        return TOC_Entry.FromHref(link).ParagraphIDNoPage;
     }
 
     private async void ShowTrack()
@@ -31,12 +47,16 @@
         StateHasChanged();
     }
 
-    public async void OnNewTocEntry(TOC_Entry entry)
+    private void OnShowTrack()
     {
-        showTrackList = false;
-        await TrackService.AddEntry(entry);
         ShowTrack();
     }
+
+    protected void ButtonClicked(string option)
+    {
+        AmadonEvents.NewTrackEntry(TOC_Entry.FromHref(option));
+    }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

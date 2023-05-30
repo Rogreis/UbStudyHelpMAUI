@@ -17,6 +17,8 @@ namespace Amadon
     internal delegate void HighlightExpressionDelegate(string expression);
     internal delegate void NewSubjectIndexEntryDelegate(TOC_Entry entry);
     internal delegate void NewSearchEntryDelegate(TOC_Entry entry);
+    internal delegate void NewTrackEntryDelegate(TOC_Entry entry);
+    internal delegate void ShowTrackDelegate();
 
     internal class AmandonComponentNames
     {
@@ -73,7 +75,15 @@ namespace Amadon
         /// </summary>
         public static event HighlightExpressionDelegate OnHighlightExpression;
 
+        /// <summary>
+        /// Used to force track component to update after a new entry added
+        /// </summary>
+        public static event ShowTrackDelegate OnShowTrack;
 
+        /// <summary>
+        /// Used to inform text object asking to show a new paragraph
+        /// </summary>
+        public static event NewTrackEntryDelegate OnNewTrackEntry;
 
         // ============================================================================================================= 
         // Functions to fire the above events
@@ -127,5 +137,14 @@ namespace Amadon
             OnHighlightExpression?.Invoke(expression);
         }
 
+        public static void ShowTrack()
+        {
+            OnShowTrack?.Invoke();
+        }
+
+        public static void NewTrackEntry(TOC_Entry entry)
+        {
+            OnNewTrackEntry?.Invoke(entry);
+        }
     }
 }

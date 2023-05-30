@@ -279,6 +279,13 @@ namespace AmadonStandardLib.UbClasses
             return sb.ToString();
         }
 
+        public string GetTrackHtml()
+        {
+            return $"{Paper:000};{Section:000};{ParagraphNo:000}{Identification} {Text}";
+        }
+
+
+
         /// <summary>
         /// Convert paragraph markdown to HTML
         /// The markdown used for TUB paragraphs has just italics

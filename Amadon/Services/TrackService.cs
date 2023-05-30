@@ -17,6 +17,7 @@ namespace Amadon.Services
         public static void OnNewTocEntry(TOC_Entry entry)
         {
             AddEntry(entry);
+            AmadonEvents.ShowTrack();
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace Amadon.Services
                 }
                 else 
                 {
-                    result.Add(par.GetHtml(false));
+                    result.Add(par.GetTrackHtml());
                 }
             }
             return Task.FromResult(result);
