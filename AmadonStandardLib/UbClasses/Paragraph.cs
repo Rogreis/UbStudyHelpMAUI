@@ -89,7 +89,7 @@ namespace AmadonStandardLib.UbClasses
         }
 
         [JsonIgnore]
-        public TOC_Entry Entry
+        public TOC_Entry? Entry
         {
             get
             {
@@ -191,33 +191,6 @@ namespace AmadonStandardLib.UbClasses
             Section = Convert.ToInt16(parts[1]);
             ParagraphNo = Convert.ToInt16(parts[2]);
             IsEditTranslation = true;
-        }
-
-        public Paragraph(string repositoryPath, string ident)
-        {
-            char[] sep = { '_' };
-            string[] parts = ident.Remove(0, 1).Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            Paper = Convert.ToInt16(parts[0]);
-            Section = Convert.ToInt16(parts[1]);
-            ParagraphNo = Convert.ToInt16(parts[2]);
-            IsEditTranslation = true;
-            string filePath = FullPath(repositoryPath, this);
-            Text = MarkdownToHtml(File.ReadAllText(filePath));
-        }
-
-
-        public Paragraph(string repositoryPath, short paperNo, short sectionNo, short paragraphNo)
-        {
-            Paper = paperNo;
-            Section = sectionNo;
-            ParagraphNo = paragraphNo;
-            string filePath = FullPath(repositoryPath, this);
-            if (!File.Exists(filePath))
-            {
-                throw new Exception($"Paragraph does not exist: {paperNo} {sectionNo} {paragraphNo}");
-            }
-            IsEditTranslation = true;
-            Text = MarkdownToHtml(File.ReadAllText(filePath));
         }
 
 
