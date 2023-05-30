@@ -108,6 +108,10 @@
             {
                 items.AddRange(data.ResultsList);
                 dropdownSubjectTitlesVisible = true;
+                if (data.ResultsList.Count == 1)
+                {
+                    await DropdownItemChecked(data.ResultsList[0]);
+                }
             }
             else
             {
