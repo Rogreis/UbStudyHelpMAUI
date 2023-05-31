@@ -5,6 +5,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @using Blazorise.LoadingIndicator;
 
+<LoadingIndicator @ref="loadingIndicator">
 @if (@paginationVisible)
 {
     <Pagination>
@@ -31,10 +32,10 @@
         </PaginationItem>
     </Pagination>
 }
+</LoadingIndicator>
 
 @if (hasDataToShow)
 {
-    <LoadingIndicator @ref="loadingIndicator">
          <Container>
             @for (int nrPage = firstItemToShow; nrPage < lastItemToShwow; nrPage++)
             {
@@ -48,7 +49,6 @@
                 </p>
             }
         </Container>
-    </LoadingIndicator>
 }
 else
 {
