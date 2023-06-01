@@ -45,12 +45,10 @@
                 </li>
             </ul>
 
-            <form class="d-flex">
-                <Field Horizontal>
-                    <TextEdit Class="form-control me-2 highlightField" @bind-Text="@ExpressionToSearch" Placeholder="Expression to highlight" />
-                </Field>
-                <Button Color="Color.Warning" Clicked="@QuickSearch">Highlight</Button>
-            </form>
+            <Field Horizontal>
+                <TextEdit Class="form-control me-2 highlightField" @bind-Text="@ExpressionToSearch" Placeholder="Expression to highlight" />
+            </Field>
+            <Button Color="Color.Warning" Clicked="@QuickSearch">Highlight</Button>
 
         </div>
    </div>
