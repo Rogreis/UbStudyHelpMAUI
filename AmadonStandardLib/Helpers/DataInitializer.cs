@@ -108,6 +108,12 @@ namespace AmadonStandardLib.Helpers
 
         #region Initialization funtions
 
+        public static string GetLocalStorageFolder(string storageName)
+        {
+            return Path.Combine(MakeProgramDataFolder(), storageName);
+        }
+
+
         public static string GetFullLogPath()
         {
             Logger.PathLog = Path.Combine(MakeProgramDataFolder(), Logger.FileName);

@@ -13,6 +13,7 @@ namespace AmadonStandardLib.Classes
     {
         public TOC_Entry? Entry { get; set; }
         public string Text { get; set; } = "";
+        public bool Expanded { get; set; } = false;
 
         public ItemForToc[] Children
         {
@@ -22,6 +23,8 @@ namespace AmadonStandardLib.Classes
             }
         }
         public List<ItemForToc> WorkChildren = new List<ItemForToc>();
+
+
 
         public override string ToString()
         {

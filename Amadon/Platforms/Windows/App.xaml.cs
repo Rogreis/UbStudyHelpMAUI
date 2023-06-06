@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using AmadonStandardLib.Helpers;
+using Microsoft.UI.Xaml;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -17,6 +18,12 @@ namespace Amadon.WinUI
         public App()
         {
             this.InitializeComponent();
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            StaticObjects.Logger.Error("App_UnhandledException", e.Exception);
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();

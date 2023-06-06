@@ -8,6 +8,7 @@ namespace Amadon.Services
         public static Task Store()
         {
             Parameters.Serialize();
+            PersistentData.Serialize();
             return Task.CompletedTask;
         }
 

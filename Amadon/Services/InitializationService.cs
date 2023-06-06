@@ -17,6 +17,7 @@ namespace Amadon.Services
             FileLoggerProvider fileLoggerProvider = new FileLoggerProvider(logFilePath, LogLevel.Information);
             //builder.Logging.AddProvider(fileLoggerProvider).SetMinimumLevel(LogLevel.Debug);
             StaticObjects.Logger = new Logger(fileLoggerProvider.CreateLogger("Amadon"));
+            //PersistentData.SetPath(logFilePath);
             return true;
         }
 

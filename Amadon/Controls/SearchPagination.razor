@@ -3,9 +3,12 @@
 @using AmadonStandardLib.InterchangeData;
 @using AmadonStandardLib.UbClasses;
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-@using Blazorise.LoadingIndicator;
 
+@*@using Blazorise.LoadingIndicator;
 <LoadingIndicator @ref="loadingIndicator">
+</LoadingIndicator>
+*@
+
 @if (@paginationVisible)
 {
     <Pagination>
@@ -32,7 +35,7 @@
         </PaginationItem>
     </Pagination>
 }
-</LoadingIndicator>
+
 
 @if (hasDataToShow)
 {
@@ -58,7 +61,7 @@ else
 
 @code
 {
-    LoadingIndicator loadingIndicator;
+    // LoadingIndicator loadingIndicator;
     private const string PREVIOUS = "previous";
     private const string NEXT = "next";
     private string currentPage = "2";
@@ -107,12 +110,12 @@ else
         paginationVisible = false;
         searchData.ErrorMessage = "";
         int totalItemsToShow = 0;
-        loadingIndicator.Show();
+        //loadingIndicator.Show();
         messageWhenNoSearch = "Indexing translation to use.";
         searchData = Task.Run(() => CallSearch(searchData)).GetAwaiter().GetResult();
         Task.Delay(5000);
         StateHasChanged();
-        loadingIndicator.Hide();
+        //loadingIndicator.Hide();
 
 
         if (!string.IsNullOrEmpty(searchData.ErrorMessage))

@@ -34,7 +34,7 @@
     <CloseButton />
 </Alert>
 
-    @code {
+@code {
     enum Status
     {
         NotInitialized,
@@ -176,6 +176,8 @@
                     }
                     else
                     {
+                        // The persistent data doe not stops execution in case of error
+                        PersistentData.Deserialize();
                         InitializationStatus = Status.ParametersInitialized;
                     }
                     break;

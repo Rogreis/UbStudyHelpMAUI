@@ -6,7 +6,8 @@
 @using Blazorise.TreeView
 
 
-<h5>Table of contents:</h5>
+<h5>Table of contents for</h5>
+<h5>@CurrentTranslationTitle:</h5>
 
 @*  Based in:
     https://blazorise.com/docs/extensions/treeview
@@ -30,6 +31,8 @@
 @code {
 
     TreeView<ItemForToc> treeViewPrimary;
+    private string CurrentTranslationTitle = "";
+    IList<ItemForToc> expandedNodesPrimary = new List<ItemForToc>();
 
     // Output data
     public List<ItemForToc>? TocId1 { get; set; } = null;
@@ -42,8 +45,6 @@
 
     IEnumerable<ItemForToc> ItemsPrimary = new ItemForToc[0];
 
-    IList<ItemForToc> expandedNodesPrimary = new List<ItemForToc>();
-
     private ItemForToc selectedNode;
     private ItemForToc SelectedNode 
     { 
@@ -54,9 +55,35 @@
         set
         {
             ItemForToc item = value;
+            item.Expanded = true;
             AmadonEvents.NewTocEntry(item.Entry);
             selectedNode = value;
         }
+    }
+
+    /// <summary>
+    /// Recursively search for an item in the tree items
+    /// </summary>
+    /// <param name="items"></param>
+    /// <returns></returns>
+    private ItemForToc FindItemByTocEntry(List<ItemForToc> items, List<ItemForToc> selectedNodes)
+    {
+        if (items == null) return null;
+        foreach (var item in items)
+        {
+            if (item.Entry * StaticObjects.Parameters.Entry)
+            {
+                selectedNodes.Add(item);
+                return item;
+            }
+            var foundInChildren = FindItemByTocEntry(item.WorkChildren, selectedNodes);
+            if (foundInChildren != null)
+            {
+                selectedNodes.Add(item);
+                return foundInChildren;
+            }
+        }
+        return null;
     }
 
     public async Task UpdateAll()
@@ -72,6 +99,21 @@
         data.TranslationId1 = StaticObjects.Book.GetTocSearchTranslation().LanguageID;
         data = await TOC_Service.GetTocTable(data);
         ItemsPrimary = data.TocId1;
+        List<ItemForToc> selectedNodes = new List<ItemForToc>();
+        ItemForToc item = FindItemByTocEntry(ItemsPrimary.ToList(), selectedNodes);
+        if (item != null)
+        {
+            item.Expanded = true;
+            SelectedNode = item;
+            expandedNodesPrimary = new List<ItemForToc>();
+            selectedNodes.Reverse();
+            foreach (ItemForToc itemReverted in selectedNodes)
+            {
+                itemReverted.Expanded = true;
+                expandedNodesPrimary.Add(itemReverted);
+            }
+
+        }
         TocGotFromData = true;
         StateHasChanged();
     }
@@ -93,6 +135,7 @@
     {
         if (firstRender)
         {
+            CurrentTranslationTitle = StaticObjects.Book.GetTocSearchTranslation().Description;
             await UpdateAll();
         }
     }

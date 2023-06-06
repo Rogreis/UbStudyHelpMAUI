@@ -119,13 +119,6 @@ namespace AmadonStandardLib.Classes
 
         //public short CurrentTranslation { get; set; } = 0;
 
-
-
-        /// <summary>
-        /// Currente executable folder initialize every execution
-        /// </summary>
-        public string ApplicationFolder { get; set; } = "";
-
         /// <summary>
         /// Current data folder
         /// </summary>

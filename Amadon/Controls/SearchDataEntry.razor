@@ -7,7 +7,8 @@
 <Container>
     <Row>
         <Column>
-            <h5>Text Search:</h5>
+            <h5>Table of contents for</h5>
+            <h5>@CurrentTranslationTitle:</h5>
             <TextEdit @ref="TextToSearchObject" @bind-Text="@TextToSearch" Placeholder="Search the subject index titles..." Size="Size.Small" />
         </Column>
     </Row>
@@ -52,6 +53,7 @@
     Switch<bool> SwitchPartIV;
     Switch<bool> SwitchCurrentPaper;
 
+    private string CurrentTranslationTitle = "";
 
     SearchData searchData = new SearchData();
 
@@ -121,7 +123,8 @@
         base.OnAfterRender(firstRender);
         if (firstRender)
         {
-            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartI;
+            CurrentTranslationTitle = StaticObjects.Book.GetTocSearchTranslation().Description;
+            searchData.Part1Included = StaticObjects.Parameters.SimpleSearchIncludePartI;
             searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartII;
             searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartIII;
             searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartIV;
