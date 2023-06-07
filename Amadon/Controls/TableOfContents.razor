@@ -66,17 +66,17 @@
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    private ItemForToc FindItemByTocEntry(List<ItemForToc> items, List<ItemForToc> selectedNodes)
+    private ItemForToc FindItemByTocEntry(TOC_Entry entry, List<ItemForToc> items, List<ItemForToc> selectedNodes)
     {
         if (items == null) return null;
         foreach (var item in items)
         {
-            if (item.Entry * StaticObjects.Parameters.Entry)
+            if (item.Entry * entry)
             {
                 selectedNodes.Add(item);
                 return item;
             }
-            var foundInChildren = FindItemByTocEntry(item.WorkChildren, selectedNodes);
+            var foundInChildren = FindItemByTocEntry(entry, item.WorkChildren, selectedNodes);
             if (foundInChildren != null)
             {
                 selectedNodes.Add(item);
@@ -84,6 +84,25 @@
             }
         }
         return null;
+    }
+
+    private void ExpandNodes(TOC_Entry entry)
+    {
+        List<ItemForToc> selectedNodes = new List<ItemForToc>();
+        ItemForToc item = FindItemByTocEntry(entry, ItemsPrimary.ToList(), selectedNodes);
+        if (item != null)
+        {
+            item.Expanded = true;
+            SelectedNode = item;
+            expandedNodesPrimary = new List<ItemForToc>();
+            selectedNodes.Reverse();
+            foreach (ItemForToc itemReverted in selectedNodes)
+            {
+                itemReverted.Expanded = true;
+                expandedNodesPrimary.Add(itemReverted);
+            }
+
+        }
     }
 
     public async Task UpdateAll()
@@ -99,21 +118,7 @@
         data.TranslationId1 = StaticObjects.Book.GetTocSearchTranslation().LanguageID;
         data = await TOC_Service.GetTocTable(data);
         ItemsPrimary = data.TocId1;
-        List<ItemForToc> selectedNodes = new List<ItemForToc>();
-        ItemForToc item = FindItemByTocEntry(ItemsPrimary.ToList(), selectedNodes);
-        if (item != null)
-        {
-            item.Expanded = true;
-            SelectedNode = item;
-            expandedNodesPrimary = new List<ItemForToc>();
-            selectedNodes.Reverse();
-            foreach (ItemForToc itemReverted in selectedNodes)
-            {
-                itemReverted.Expanded = true;
-                expandedNodesPrimary.Add(itemReverted);
-            }
-
-        }
+        ExpandNodes(StaticObjects.Parameters.Entry);
         TocGotFromData = true;
         StateHasChanged();
     }
@@ -124,10 +129,21 @@
         Task.Run(async () => await UpdateAll()).GetAwaiter().GetResult();
     }
 
+    public void OnNewTocEntry(TOC_Entry entry)
+    {
+        StaticObjects.Parameters.Entry = entry;
+        TranslationTocChanged();
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         AmadonEvents.OnTranslationTocChanged += TranslationTocChanged;
+        AmadonEvents.OnNewTocEntry += OnNewTocEntry;
+        AmadonEvents.OnNewSubjectIndexEntry += OnNewTocEntry;
+        AmadonEvents.OnNewSearchEntry += OnNewTocEntry;
+        AmadonEvents.OnNewTrackEntry += OnNewTocEntry;
     }
 
 
