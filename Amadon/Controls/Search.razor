@@ -1,8 +1,46 @@
-﻿@using Amadon.Services;
-@using AmadonStandardLib.InterchangeData;
-@using Blazorise.LoadingIndicator;
+﻿@page "/search"
 
-<SearchDataEntry @ref="dataEntry"></SearchDataEntry>
+@using Amadon.Services;
+@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.InterchangeData;
+@using AmadonStandardLib.UbClasses;
+
+<Container>
+    <Row>
+        <Column>
+            <h5>Search UB texts for</h5>
+            <h5>@CurrentTranslationTitle:</h5>
+            <TextEdit @ref="TextToSearchObject" @bind-Text="@PersistentData.SearchData.QueryString" Placeholder="Search the subject index titles..." Size="Size.Small" @onkeydown="HandleKeyDown" />
+        </Column>
+    </Row>
+
+    <br />
+    <Row>
+        <Column>
+            <Tooltip Text="When on, includes the Part I of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartI" TValue="bool" Checked="@PersistentData.SearchData.Part1Included" CheckedChanged="@OnIncludesPartI">Part I</Switch>
+            </Tooltip>
+            <Tooltip Text="When on, includes the Part III of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartIII" TValue="bool" Checked="@PersistentData.SearchData.Part3Included" CheckedChanged="@OnIncludesPartIII">Part III</Switch>
+            </Tooltip>
+        </Column>
+
+        <Column>
+            <Tooltip Text="When on, includes the Part II of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartII" TValue="bool" Checked="@PersistentData.SearchData.Part2Included" CheckedChanged="@OnIncludesPartII">Part II</Switch>
+            </Tooltip>
+            <Tooltip Text="When on, includes the Part IV of the Book in the search" Placement="TooltipPlacement.Bottom">
+                <Switch @ref="SwitchPartIV" TValue="bool" Checked="@PersistentData.SearchData.Part4Included" CheckedChanged="@OnIncludesPartIV">Part IV</Switch>
+            </Tooltip>
+        </Column>
+    </Row>
+    <Row>
+        <Tooltip Text="When on, search only in teh current paper" Placement="TooltipPlacement.Bottom">
+            <Switch @ref="SwitchCurrentPaper" TValue="bool" Checked="@PersistentData.SearchData.CurrentPaperOnly" CheckedChanged="@OnSwitchCurrentPaper">Current Paper Only</Switch>
+        </Tooltip>
+    </Row>
+</Container>
+
 <Row>
     <Column>
         <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSortClick">Reorder</Button>
@@ -10,17 +48,236 @@
     </Column>
 </Row>
 
-<LoadingIndicator @ref="loadingIndicator">
-    <SearchPagination @ref="SearchPaginationElement"></SearchPagination>
-</LoadingIndicator>
+@if (@PersistentData.SearchData.paginationVisible)
+{
+    <Pagination>
+        <PaginationItem Disabled="@IsPageNavigationDisabled(PREVIOUS)" @onclick="Previous">
+            <PaginationLink>
+                <span aria-hidden="true">«</span>
+            </PaginationLink>
+        </PaginationItem>
+        @{
+            for (var i = PersistentData.SearchData.paginationFirst; i <= PersistentData.SearchData.paginationLast; i++)
+            {
+                var pageNumberAsString = i.ToString();
+                <PaginationItem @key="pageNumberAsString" Active="@IsActive(pageNumberAsString)">
+                    <PaginationLink Page="@pageNumberAsString" Clicked="SetActive">
+                        @pageNumberAsString
+                    </PaginationLink>
+                </PaginationItem>
+            }
+        }
+        <PaginationItem Disabled="@IsPageNavigationDisabled(NEXT)" @onclick="Next">
+            <PaginationLink>
+                <span aria-hidden="true">»</span>
+            </PaginationLink>
+        </PaginationItem>
+    </Pagination>
+}
 
+
+@if (PersistentData.SearchData.hasDataToShow)
+{
+    <p>@PersistentData.SearchData.SearchResults.Count.ToString() paragraph(s) found</p>
+    <p>Showing page @PersistentData.SearchData.currentPage of @PersistentData.SearchData.totalPages pages</p>
+    <Container>
+        @for (int nrItem = PersistentData.SearchData.firstItemToShow; nrItem < PersistentData.SearchData.lastItemToShwow; nrItem++)
+        {
+            SearchResult result = PersistentData.SearchData.SearchResults[nrItem];
+            <p>
+                <Button Color="Color.Primary" Outline Size="Size.Small" Margin="Margin.Is2" Clicked="@(()=> ButtonClicked(@result.LinkText))">@result.ID <Icon Name="IconName.ArrowRight" /></Button>
+                @((MarkupString)@result.Text)
+            </p>
+        }
+    </Container>
+}
+else
+{
+    <p>@messageWhenNoSearch</p>
+}
 
 
 @code {
-    LoadingIndicator loadingIndicator;
-    SearchPagination SearchPaginationElement;
-    SearchDataEntry dataEntry;
+
+    #region Data Entry 
+    TextEdit TextToSearchObject;
+
+    Switch<bool> SwitchPartI;
+    Switch<bool> SwitchPartII;
+    Switch<bool> SwitchPartIII;
+    Switch<bool> SwitchPartIV;
+    Switch<bool> SwitchCurrentPaper;
+
+    private string CurrentTranslationTitle = "";
+
+    #endregion
+
+    #region Pagination Data
+    private const string PREVIOUS = "previous";
+    private const string NEXT = "next";
+    private string messageWhenNoSearch = "";
+    #endregion
+
     bool showSearchResults = false;
+
+    #region Data Entry Functions
+    Task OnIncludesPartI(bool value)
+    {
+        PersistentData.SearchData.Part1Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
+        return Task.CompletedTask;
+    }
+
+    Task OnIncludesPartII(bool value)
+    {
+        PersistentData.SearchData.Part2Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
+        return Task.CompletedTask;
+    }
+
+    Task OnIncludesPartIII(bool value)
+    {
+        PersistentData.SearchData.Part3Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
+        return Task.CompletedTask;
+    }
+
+    Task OnIncludesPartIV(bool value)
+    {
+        PersistentData.SearchData.Part4Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
+        return Task.CompletedTask;
+    }
+
+    Task OnSwitchCurrentPaper(bool value)
+    {
+        PersistentData.SearchData.Part1Included = !value;
+        PersistentData.SearchData.Part2Included = !value;
+        PersistentData.SearchData.Part3Included = !value;
+        PersistentData.SearchData.Part4Included = !value;
+        PersistentData.SearchData.CurrentPaperOnly = value;
+        return Task.CompletedTask;
+    }
+
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Key == "Enter")
+        {
+        }
+    }
+    #endregion
+
+    #region Pagination Functions
+    private bool IsActive(string page) => PersistentData.SearchData.currentPage == page;
+
+    private bool IsPageNavigationDisabled(string navigation)
+    {
+        if (navigation.Equals(PREVIOUS))
+        {
+            return PersistentData.SearchData.currentPage.Equals("1");
+        }
+        else if (navigation.Equals(NEXT))
+        {
+            return PersistentData.SearchData.currentPage.Equals(PersistentData.SearchData.maxPaginationPages.ToString());
+        }
+        return false;
+    }
+
+    private async Task<bool> CallSearch(SearchData searchData)
+    {
+        return await SearchBookService.Search(searchData);
+    }
+
+    private void CalculatePagination()
+    {
+        int currentPageAsInt = Convert.ToInt32(PersistentData.SearchData.currentPage);
+        PersistentData.SearchData.hasDataToShow = false;
+        PersistentData.SearchData.paginationVisible = false;
+        int totalItemsToShow = 0;
+        //loadingIndicator.Show();
+        messageWhenNoSearch = "Indexing translation to search.";
+        if (currentPageAsInt == 1)
+        {
+            PersistentData.SearchData.ErrorMessage = "";
+            bool ret = Task.Run(() => CallSearch(PersistentData.SearchData)).GetAwaiter().GetResult();
+        }
+        Task.Delay(5000);
+        StateHasChanged();
+        //loadingIndicator.Hide();
+
+
+        if (!string.IsNullOrEmpty(PersistentData.SearchData.ErrorMessage))
+        {
+            PersistentData.SearchData.paginationVisible = false;
+            messageWhenNoSearch = PersistentData.SearchData.ErrorMessage;
+        }
+        else if (PersistentData.SearchData.SearchResults.Count == 0)
+        {
+            PersistentData.SearchData.paginationVisible = false;
+            messageWhenNoSearch = "No paragraph found.";
+        }
+        else
+        {
+
+            totalItemsToShow = PersistentData.SearchData.SearchResults.Count;
+            PersistentData.SearchData.firstItemToShow = (currentPageAsInt - 1) * PersistentData.SearchData.maxItemsPerPage + 1;
+            PersistentData.SearchData.lastItemToShwow = Math.Min(PersistentData.SearchData.firstItemToShow + PersistentData.SearchData.maxItemsPerPage, totalItemsToShow);
+            PersistentData.SearchData.paginationVisible = totalItemsToShow > PersistentData.SearchData.maxItemsPerPage;
+            PersistentData.SearchData.totalPages = Math.Ceiling((double)totalItemsToShow / (double)PersistentData.SearchData.maxItemsPerPage).ToString();
+            PersistentData.SearchData.hasDataToShow = true;
+        }
+
+        int maxPaginas = totalItemsToShow / PersistentData.SearchData.maxItemsPerPage + 1;
+        currentPageAsInt = Convert.ToInt32(PersistentData.SearchData.currentPage);
+        PersistentData.SearchData.paginationFirst = Math.Max(1, currentPageAsInt - 2);
+        PersistentData.SearchData.paginationLast = Math.Min(PersistentData.SearchData.maxPaginationPages, PersistentData.SearchData.paginationFirst + PersistentData.SearchData.maxPaginationItems - 1);
+
+        PersistentData.SearchData.maxItemsPerPage = StaticObjects.Parameters.SearchPageSize;
+        StateHasChanged();
+    }
+
+    private void Previous()
+    {
+        var currentPageAsInt = int.Parse(PersistentData.SearchData.currentPage);
+        if (currentPageAsInt > 1)
+        {
+            PersistentData.SearchData.currentPage = (currentPageAsInt - 1).ToString();
+        }
+        CalculatePagination();
+        StateHasChanged();
+    }
+
+    private void Next()
+    {
+        var currentPageAsInt = int.Parse(PersistentData.SearchData.currentPage);
+        if (currentPageAsInt < PersistentData.SearchData.maxPaginationPages)
+        {
+            PersistentData.SearchData.currentPage = (currentPageAsInt + 1).ToString();
+        }
+        CalculatePagination();
+    }
+
+    private void SetActive(string page)
+    {
+        PersistentData.SearchData.currentPage = page;
+        CalculatePagination();
+    }
+
+    public void Start()
+    {
+        PersistentData.SearchData.IndexPathRoot = StaticObjects.Parameters.TubSearchFolders;
+        PersistentData.SearchData.Translation = StaticObjects.Book.GetTocSearchTranslation();
+        PersistentData.SearchData.Clear();
+        SetActive("1");
+    }
+
+
+    protected void ButtonClicked(string option)
+    {
+        AmadonEvents.NewSearchEntry(TOC_Entry.FromHref(option));
+    }
+    #endregion
 
     void OnSortClick()
     {
@@ -32,7 +289,7 @@
         if (!string.IsNullOrEmpty(PersistentData.SearchData.QueryString))
         {
             showSearchResults = true;
-            SearchPaginationElement.Start();
+            Start();
             //StateHasChanged();
         }
     }
@@ -53,6 +310,9 @@
         base.OnAfterRender(firstRender);
         if (firstRender)
         {
+            PersistentData.SearchData.hasDataToShow = PersistentData.SearchData.SearchResults.Count > 0;
+            CurrentTranslationTitle = StaticObjects.Book.GetTocSearchTranslation().Description;
+            StateHasChanged();
             //dataEntry.OnQueryText += HandleOnQueryText;
         }
     }
