@@ -78,22 +78,6 @@ namespace AmadonStandardLib.Classes
 
         public List<string> SearchIndexEntries { get; set; } = new List<string>();
 
-        #region Search Options
-        public string LastSearchString { get; set; } = "";
-
-        public bool SimpleSearchIncludePartI { get; set; } = true;
-
-        public bool SimpleSearchIncludePartII { get; set; } = true;
-
-        public bool SimpleSearchIncludePartIII { get; set; } = true;
-
-        public bool SimpleSearchIncludePartIV { get; set; } = true;
-
-        public bool SimpleSearchCurrentPaperOnly { get; set; } = false;
-
-        #endregion
-
-
         public List<TOC_Entry> TrackEntries { get; set; } = new List<TOC_Entry>();
 
         public string LastTrackFileSaved { get; set; } = "";
@@ -102,22 +86,6 @@ namespace AmadonStandardLib.Classes
 
         public double FontSizeInfo { get; set; } = 18;
 
-        //public virtual ColorSerial HighlightColor { get; set; } = new ColorSerial(0, 0, 102, 255); // rgb(0, 102, 255)
-
-        // Quick search
-        public string SearchFor { get; set; } = "";
-
-        public string SimilarSearchFor { get; set; } = "";
-
-        public string CloseSearchDistance { get; set; } = "5";
-
-        public string CloseSearchFirstWord { get; set; } = "";
-
-        //public string CloseSearchSecondWord { get; set; } = "";
-
-        public List<string> CloseSearchWords { get; set; } = new List<string>();
-
-        //public short CurrentTranslation { get; set; } = 0;
 
         /// <summary>
         /// Current data folder

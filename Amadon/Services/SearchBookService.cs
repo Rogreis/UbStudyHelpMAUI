@@ -7,15 +7,14 @@ namespace Amadon.Services
     public class SearchBookService
     {
 
-        public static SearchData DoSearch(SearchData searchData)
+        public static bool DoSearch(SearchData searchData)
         {
             LuceneBookSearch luceneBookSearch = new();
             // When an erro occurs, error message is set inside SearchData
-            bool ret= luceneBookSearch.Execute(searchData);
-            return searchData;
+            return luceneBookSearch.Execute(searchData);
          }
 
-        public static Task<SearchData> Search(SearchData searchData)
+        public static Task<bool> Search(SearchData searchData)
         {
             return Task.FromResult(DoSearch(searchData));
         }

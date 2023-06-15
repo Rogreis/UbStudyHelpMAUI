@@ -1,5 +1,6 @@
 ﻿@page "/search"
 
+@using Amadon.Services;
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.InterchangeData;
 @using Blazorise
@@ -7,9 +8,9 @@
 <Container>
     <Row>
         <Column>
-            <h5>Table of contents for</h5>
+            <h5>Search UB texts for</h5>
             <h5>@CurrentTranslationTitle:</h5>
-            <TextEdit @ref="TextToSearchObject" @bind-Text="@TextToSearch" Placeholder="Search the subject index titles..." Size="Size.Small" />
+            <TextEdit @ref="TextToSearchObject" @bind-Text="@PersistentData.SearchData.QueryString" Placeholder="Search the subject index titles..." Size="Size.Small" @onkeydown="HandleKeyDown" />
         </Column>
     </Row>
 
@@ -17,25 +18,25 @@
     <Row>
         <Column>
             <Tooltip Text="When on, includes the Part I of the Book in the search" Placement="TooltipPlacement.Bottom">
-                <Switch @ref="SwitchPartI" TValue="bool" Checked="@searchData.Part1Included" CheckedChanged="@OnIncludesPartI">Part I</Switch>
+                <Switch @ref="SwitchPartI" TValue="bool" Checked="@PersistentData.SearchData.Part1Included" CheckedChanged="@OnIncludesPartI">Part I</Switch>
             </Tooltip>
             <Tooltip Text="When on, includes the Part III of the Book in the search" Placement="TooltipPlacement.Bottom">
-                <Switch @ref="SwitchPartIII" TValue="bool" Checked="@searchData.Part3Included" CheckedChanged="@OnIncludesPartIII">Part III</Switch>
+                <Switch @ref="SwitchPartIII" TValue="bool" Checked="@PersistentData.SearchData.Part3Included" CheckedChanged="@OnIncludesPartIII">Part III</Switch>
             </Tooltip>
         </Column>
 
         <Column>
             <Tooltip Text="When on, includes the Part II of the Book in the search" Placement="TooltipPlacement.Bottom">
-                <Switch @ref="SwitchPartII" TValue="bool" Checked="@searchData.Part2Included" CheckedChanged="@OnIncludesPartII">Part II</Switch>
+                <Switch @ref="SwitchPartII" TValue="bool" Checked="@PersistentData.SearchData.Part2Included" CheckedChanged="@OnIncludesPartII">Part II</Switch>
             </Tooltip>
             <Tooltip Text="When on, includes the Part IV of the Book in the search" Placement="TooltipPlacement.Bottom">
-                <Switch @ref="SwitchPartIV" TValue="bool" Checked="@searchData.Part4Included" CheckedChanged="@OnIncludesPartIV">Part IV</Switch>
+                <Switch @ref="SwitchPartIV" TValue="bool" Checked="@PersistentData.SearchData.Part4Included" CheckedChanged="@OnIncludesPartIV">Part IV</Switch>
             </Tooltip>
         </Column>
     </Row>
     <Row>
         <Tooltip Text="When on, search only in teh current paper" Placement="TooltipPlacement.Bottom">
-            <Switch @ref="SwitchCurrentPaper" TValue="bool" Checked="@searchData.CurrentPaperOnly" CheckedChanged="@OnSwitchCurrentPaper">Current Paper Only</Switch>
+            <Switch @ref="SwitchCurrentPaper" TValue="bool" Checked="@PersistentData.SearchData.CurrentPaperOnly" CheckedChanged="@OnSwitchCurrentPaper">Current Paper Only</Switch>
         </Tooltip>
     </Row>
 </Container>
@@ -43,9 +44,9 @@
 
 
 @code {
+    public delegate void QueryTextDelegate();
 
     TextEdit TextToSearchObject;
-    string TextToSearch= "";
 
     Switch<bool> SwitchPartI;
     Switch<bool> SwitchPartII;
@@ -55,67 +56,59 @@
 
     private string CurrentTranslationTitle = "";
 
-    SearchData searchData = new SearchData();
-
-    string selectedItem;
-    bool isPart2Checked;
-    bool isPart3Checked;
-    bool isPart4Checked;
-    bool isCurrentPaperChecked;
+    public event QueryTextDelegate OnQueryText;
 
     Task OnIncludesPartI(bool value)
     {
-        searchData.Part1Included = value;
-        searchData.CurrentPaperOnly = false;
-        //ShowComparator = value;
-        //StaticObjects.Parameters.ShowCompare = value;
-        //AmadonEvents.TranslationsToShowChanged();
-        //Task.Run(async () => await StoreParameters()).GetAwaiter().GetResult();
+        PersistentData.SearchData.Part1Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
         return Task.CompletedTask;
     }
 
     Task OnIncludesPartII(bool value)
     {
-        searchData.Part2Included = value;
-        searchData.CurrentPaperOnly = false;
+        PersistentData.SearchData.Part2Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
         return Task.CompletedTask;
     }
 
     Task OnIncludesPartIII(bool value)
     {
-        searchData.Part3Included = value;
-        searchData.CurrentPaperOnly = false;
+        PersistentData.SearchData.Part3Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
         return Task.CompletedTask;
     }
 
     Task OnIncludesPartIV(bool value)
     {
-        searchData.Part4Included = value;
-        searchData.CurrentPaperOnly = false;
+        PersistentData.SearchData.Part4Included = value;
+        PersistentData.SearchData.CurrentPaperOnly = false;
         return Task.CompletedTask;
     }
 
     Task OnSwitchCurrentPaper(bool value)
     {
-        searchData.Part1Included = !value;
-        searchData.Part2Included = !value;
-        searchData.Part3Included = !value;
-        searchData.Part4Included = !value;
-        searchData.CurrentPaperOnly = value;
+        PersistentData.SearchData.Part1Included = !value;
+        PersistentData.SearchData.Part2Included = !value;
+        PersistentData.SearchData.Part3Included = !value;
+        PersistentData.SearchData.Part4Included = !value;
+        PersistentData.SearchData.CurrentPaperOnly = value;
         return Task.CompletedTask;
     }
 
-    public SearchData GetSearchData()
+
+    private void HandleKeyDown(KeyboardEventArgs e)
     {
-        searchData.QueryString = TextToSearchObject.Text;
-        StaticObjects.Parameters.SimpleSearchIncludePartI = searchData.Part1Included;
-        StaticObjects.Parameters.SimpleSearchIncludePartII = searchData.Part1Included;
-        StaticObjects.Parameters.SimpleSearchIncludePartIII = searchData.Part1Included;
-        StaticObjects.Parameters.SimpleSearchIncludePartIV = searchData.Part1Included;
-        StaticObjects.Parameters.SimpleSearchCurrentPaperOnly = searchData.Part1Included;
-        StaticObjects.Parameters.LastSearchString = searchData.QueryString;
-        StaticObjects.Parameters.TextSearForIndexTitles= TextToSearch;
-        return searchData;
+        if (e.Code == "Enter" || e.Key == "Enter")
+        {
+
+            OnQueryText?.Invoke();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -124,13 +117,6 @@
         if (firstRender)
         {
             CurrentTranslationTitle = StaticObjects.Book.GetTocSearchTranslation().Description;
-            searchData.Part1Included = StaticObjects.Parameters.SimpleSearchIncludePartI;
-            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartII;
-            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartIII;
-            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchIncludePartIV;
-            searchData.Part1Included= StaticObjects.Parameters.SimpleSearchCurrentPaperOnly;
-            searchData.QueryString= StaticObjects.Parameters.LastSearchString;
-            TextToSearch = StaticObjects.Parameters.TextSearForIndexTitles;
             StateHasChanged();
         }
     }

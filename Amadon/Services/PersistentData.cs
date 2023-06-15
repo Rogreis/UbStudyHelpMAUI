@@ -1,17 +1,23 @@
 ﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.Helpers;
+using AmadonStandardLib.InterchangeData;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace Amadon.Services
 {
     internal static class PersistentData
     {
+        public static IList<ItemForToc> ExpandedNodesList = new List<ItemForToc>();
+
+        public static SearchData SearchData = new SearchData();
+
+
         private static string PathPersistentData(string dataName)
         {
             return Path.Combine(StaticObjects.Parameters.ApplicationDataFolder, $"{dataName}.json");
         }
 
-        public static IList<ItemForToc> ExpandedNodesList= new List<ItemForToc>();
 
 
         //public static bool SetItem<T>(string storageName, string key, T data, CancellationToken cancellationToken = default)
@@ -42,6 +48,36 @@ namespace Amadon.Services
         //    return (T)obj;
         //}
 
+        private static void Serialize<T>(T o, string name)
+        {
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true,
+            };
+            string jsonString = JsonSerializer.Serialize<T>(o, options);
+            File.WriteAllText(PathPersistentData(name), jsonString);
+        }
+
+        private static T DeSerialize<T>(string name) where T : new()
+        {
+            StaticObjects.Logger.Info($"»»»» Deserialize persistent object {name}");
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true,
+            };
+
+            string filePath = PathPersistentData(name);
+            if (File.Exists(filePath))
+            {
+                string jsonString = File.ReadAllText(filePath);
+                return JsonSerializer.Deserialize<T>(jsonString);
+            }
+            return new T();
+        }
+
+
         /// <summary>
         /// Serialize the persistent objects
         /// </summary>
@@ -49,16 +85,8 @@ namespace Amadon.Services
         {
             try
             {
-                var options = new JsonSerializerOptions
-                {
-                    AllowTrailingCommas = true,
-                    WriteIndented = true,
-                };
-                if (StaticObjects.Parameters != null)
-                {
-                    var jsonString = JsonSerializer.Serialize<IList<ItemForToc>>(ExpandedNodesList, options);
-                    File.WriteAllText(PathPersistentData("ExpandedNodesList"), jsonString);
-                }
+                Serialize<IList<ItemForToc>>(ExpandedNodesList, "ExpandedNodesList");
+                Serialize<SearchData>(SearchData, "SearchData");
             }
             catch (Exception ex)
             {
@@ -74,18 +102,13 @@ namespace Amadon.Services
         {
             try
             {
-                StaticObjects.Logger.Info("»»»» Deserialize persistent objects");
-                string filePath= PathPersistentData("ExpandedNodesList");
-                if (File.Exists(filePath)) 
-                {
-                    var jsonString = File.ReadAllText(filePath);
-                    ExpandedNodesList = JsonSerializer.Deserialize<IList<ItemForToc>>(jsonString);
-                }
+                ExpandedNodesList = (IList<ItemForToc>)DeSerialize<List<ItemForToc>>("ExpandedNodesList");
+                SearchData = DeSerialize<SearchData>("SearchData");
                 return true;
             }
             catch (Exception ex)
             {
-                ExpandedNodesList= new List<ItemForToc>();
+                ExpandedNodesList= (IList<ItemForToc>)new List<ItemForToc>();
                 StaticObjects.Logger.Error("»»»» Deserialize persistent objects failure, returning default", ex);
                 return false;
             }

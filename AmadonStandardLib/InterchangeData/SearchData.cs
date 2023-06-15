@@ -14,7 +14,7 @@ namespace AmadonStandardLib.InterchangeData
     /// </summary>
     public class SearchData : InterchangeDataBase
     {
-        private bool OrderedByParagraphs = false;
+        public bool OrderedByParagraphs { get; set; } = false;
 
         public Translation? Translation { get; set; } = null;
 
@@ -34,18 +34,40 @@ namespace AmadonStandardLib.InterchangeData
 
         public short CurrentPaper { get; set; } = -1;
 
+        public string currentPage { get; set; } = "1";
+        public string totalPages { get; set; } = "0";
 
+        public int maxPaginationPages { get; set; } = 25; // Max number of pages
+        public int maxPaginationItems { get; set; } = 5;  // Max number of pages shown in the pagination
+        public int paginationFirst { get; set; } = 1;     // First page number in pagination
+        public int paginationLast { get; set; } = 5;      // Last page number in pagination
+
+        public int maxItemsPerPage { get; set; } = 20;    // Max number of items shown per page
+        public int firstItemToShow { get; set; } = 1;     // Number of the first search result to show
+        public int lastItemToShwow { get; set; } = 20;    // Number of the last search result to show
 
 
         public List<SearchResult> SearchResults { get; set; } = new List<SearchResult>();
 
         public List<string> Words { get; set; } = new List<string>();
 
+        public bool paginationVisible { get; set; } = false;
+        public bool hasDataToShow { get; set; } = false;
+
         public bool IsPaperIncluded(int PaperNo) =>
                     Part1Included && PaperNo < 32 ||
                     Part2Included && PaperNo >= 32 && PaperNo <= 56 ||
                     Part3Included && PaperNo >= 57 && PaperNo <= 119 ||
                     Part4Included && PaperNo >= 120;
+
+        public void Clear()
+        {
+            SearchResults.Clear();
+            Words.Clear();
+            OrderedByParagraphs = false;
+            paginationVisible = false;
+            hasDataToShow = false;
+        }
 
 
         ///// <summary>
