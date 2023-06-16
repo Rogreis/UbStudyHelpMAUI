@@ -211,27 +211,29 @@ else
         {
             PersistentData.SearchData.paginationVisible = false;
             messageWhenNoSearch = PersistentData.SearchData.ErrorMessage;
+            StateHasChanged();
+            return;
         }
         else if (PersistentData.SearchData.SearchResults.Count == 0)
         {
             PersistentData.SearchData.paginationVisible = false;
             messageWhenNoSearch = "No paragraph found.";
+            StateHasChanged();
+            return;
         }
-        else
-        {
 
-            totalItemsToShow = PersistentData.SearchData.SearchResults.Count;
-            PersistentData.SearchData.firstItemToShow = (currentPageAsInt - 1) * PersistentData.SearchData.maxItemsPerPage + 1;
-            PersistentData.SearchData.lastItemToShwow = Math.Min(PersistentData.SearchData.firstItemToShow + PersistentData.SearchData.maxItemsPerPage, totalItemsToShow);
-            PersistentData.SearchData.paginationVisible = totalItemsToShow > PersistentData.SearchData.maxItemsPerPage;
-            PersistentData.SearchData.totalPages = Math.Ceiling((double)totalItemsToShow / (double)PersistentData.SearchData.maxItemsPerPage).ToString();
-            PersistentData.SearchData.hasDataToShow = true;
-        }
+        totalItemsToShow = PersistentData.SearchData.SearchResults.Count;
+        PersistentData.SearchData.firstItemToShow = (currentPageAsInt - 1) * PersistentData.SearchData.maxItemsPerPage + 1;
+        PersistentData.SearchData.lastItemToShwow = Math.Min(PersistentData.SearchData.firstItemToShow + PersistentData.SearchData.maxItemsPerPage - 1, totalItemsToShow);
+        PersistentData.SearchData.paginationVisible = totalItemsToShow > PersistentData.SearchData.maxItemsPerPage;
+        int totalPages = (int)Math.Ceiling((double)totalItemsToShow / (double)PersistentData.SearchData.maxItemsPerPage);
+        PersistentData.SearchData.totalPages = totalPages.ToString();
+        PersistentData.SearchData.hasDataToShow = true;
 
         int maxPaginas = totalItemsToShow / PersistentData.SearchData.maxItemsPerPage + 1;
         currentPageAsInt = Convert.ToInt32(PersistentData.SearchData.currentPage);
         PersistentData.SearchData.paginationFirst = Math.Max(1, currentPageAsInt - 2);
-        PersistentData.SearchData.paginationLast = Math.Min(PersistentData.SearchData.maxPaginationPages, PersistentData.SearchData.paginationFirst + PersistentData.SearchData.maxPaginationItems - 1);
+        PersistentData.SearchData.paginationLast = Math.Min(totalPages, PersistentData.SearchData.paginationFirst + PersistentData.SearchData.maxPaginationItems - 1);
 
         PersistentData.SearchData.maxItemsPerPage = StaticObjects.Parameters.SearchPageSize;
         StateHasChanged();
