@@ -43,7 +43,7 @@
 
 <Row>
     <Column>
-        <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSortClick">Reorder</Button>
+        <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSortClick">@TextInSearchButton</Button>
         <Button Outline Size="Size.Small" Margin="Margin.Is2" Color="Color.Primary" @onclick="OnSearch">Search</Button>
     </Column>
 </Row>
@@ -109,6 +109,7 @@ else
     Switch<bool> SwitchCurrentPaper;
 
     private string CurrentTranslationTitle = "";
+    private string TextInSearchButton = "Order by Ranking";
 
     #endregion
 
@@ -188,6 +189,7 @@ else
     {
         return await SearchBookService.Search(searchData);
     }
+
 
     private void CalculatePagination()
     {
@@ -283,7 +285,17 @@ else
 
     void OnSortClick()
     {
-        // Your event handler code here
+        PersistentData.SearchData.SortResults();
+        TextInSearchButton = PersistentData.SearchData.OrderedByParagraphs ? "Order by Ranking" : "Order by Paragraph";
+        PersistentData.SearchData.currentPage = "1";
+        int currentPageAsInt = 1;
+        int maxPaginas = PersistentData.SearchData.SearchResults.Count / PersistentData.SearchData.maxItemsPerPage + 1;
+        currentPageAsInt = Convert.ToInt32(PersistentData.SearchData.currentPage);
+        int totalPages = (int)Math.Ceiling((double)PersistentData.SearchData.SearchResults.Count / (double)PersistentData.SearchData.maxItemsPerPage);
+        PersistentData.SearchData.paginationFirst = Math.Max(1, currentPageAsInt - 2);
+        PersistentData.SearchData.paginationLast = Math.Min(totalPages, PersistentData.SearchData.paginationFirst + PersistentData.SearchData.maxPaginationItems - 1);
+        PersistentData.SearchData.maxItemsPerPage = StaticObjects.Parameters.SearchPageSize;
+        StateHasChanged();
     }
 
     void DoSearch()

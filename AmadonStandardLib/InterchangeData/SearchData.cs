@@ -135,6 +135,9 @@ namespace AmadonStandardLib.InterchangeData
             }
         }
 
+        /// <summary>
+        /// Sort the results by paragraphs or original order (ranking done by Lucene)
+        /// </summary>
         public void SortResults()
         {
             if (SearchResults.Count == 0)
