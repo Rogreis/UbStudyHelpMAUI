@@ -1,5 +1,4 @@
-﻿using Amadon.Controls.Settings;
-using AmadonStandardLib.Classes;
+﻿using AmadonStandardLib.Classes;
 using AmadonStandardLib.Helpers;
 using AmadonStandardLib.UbClasses;
 using System.Text;
@@ -20,7 +19,9 @@ namespace Amadon.Services
         /// <returns></returns>
         private static List<Paragraph> GetParagraphs(Translation t, TOC_Entry entry) 
         {
-            return t?.Paper(entry.Paper).Paragraphs;
+            List<Paragraph> list= t?.Paper(entry.Paper).Paragraphs;
+            list.ForEach(p => p.TranslationId = t.LanguageID);
+            return list;
         }
 
         /// <summary>
@@ -28,16 +29,20 @@ namespace Amadon.Services
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="par"></param>
-        /// <param name="isEdit"></param>
         /// <param name="insertAnchor"></param>
         private static void Columntext(StringBuilder sb, Paragraph par, bool insertAnchor)
         {
             if (par != null)
             {
                 string id= insertAnchor? $" id =\"{par.AName}\"" : "";
-                sb.AppendLine($"<td{id}>");
+                string divClass = "";
+                if (par.TranslationId == StaticObjects.Book.GetTocSearchTranslation().LanguageID && par.Entry * StaticObjects.Parameters.Entry)
+                {
+                    divClass = "class=\"highlightedPar\"";
+                }
+                sb.AppendLine($"<td {id}><div {divClass}>");
                 sb.AppendLine(par.GetHtml(insertAnchor));
-                sb.AppendLine("</td>");
+                sb.AppendLine("</div></td>");
             }
         }
 
@@ -59,10 +64,9 @@ namespace Amadon.Services
         /// Decision about which translations will be shown
         /// </summary>
         /// <param name="sb"></param>
-        /// <param name="rightParagraph"></param>
-        /// <param name="leftParagraphs"></param>
+        /// <param name="leftParagraph"></param>
+        /// <param name="rightParagraphs"></param>
         /// <param name="middleParagraphs"></param>
-        /// <param name="compareParagraphs"></param>
         private static void GetParagraphsLine(StringBuilder sb, Paragraph leftParagraph, 
                                               List<Paragraph> rightParagraphs, 
                                               List<Paragraph> middleParagraphs)

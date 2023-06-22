@@ -188,3 +188,11 @@ a, .btn-link {
     padding-right: 40px;
 }
 
+.highlightedPar {
+    border: 1px solid gold;
+    padding: 10px;
+    margin: 5px;
+}
+
+
+

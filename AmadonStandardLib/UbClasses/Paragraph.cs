@@ -37,14 +37,6 @@ namespace AmadonStandardLib.UbClasses
 
     public class Paragraph
     {
-
-        public string TranslatorNote { get; set; } = "";
-
-        public string Comment { get; set; } = "";
-
-        public DateTime LastDate { get; set; }
-
-
         [JsonPropertyName("TranslationID")]
         public short TranslationId { get; set; } = 0;
         public short Paper { get; set; }
@@ -53,8 +45,20 @@ namespace AmadonStandardLib.UbClasses
         public short ParagraphNo { get; set; }
         public short Page { get; set; }
         public short Line { get; set; }
-        public virtual string Text { get; set; } = "";
         public int FormatInt { get; set; }
+
+        public string _text = "";
+        public string Text
+        {
+            get
+            {
+                return _text;
+            }
+            set
+            {
+                _text = value;
+            }
+        }
 
         [JsonIgnore]
         private TOC_Entry? entry = null;
