@@ -12,7 +12,6 @@ namespace Amadon.Services
 
         public static SearchData SearchData = new SearchData();
 
-
         private static string PathPersistentData(string dataName)
         {
             return Path.Combine(StaticObjects.Parameters.ApplicationDataFolder, $"{dataName}.json");

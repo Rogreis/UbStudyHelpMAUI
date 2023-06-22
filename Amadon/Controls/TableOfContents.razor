@@ -19,7 +19,7 @@
           GetChildNodes="@(item => item.Children)"
           HasChildNodes="@(item => item.Children?.Any() == true)"
           @bind-SelectedNode="SelectedNode"
-          @bind-ExpandedNodes="expandedNodesPrimary">
+          @bind-ExpandedNodes="PersistentData.ExpandedNodesList">
         <NodeContent>
             @context.Text
         </NodeContent>
@@ -30,15 +30,11 @@
 
 @code {
 
+    #region Local Data
     TreeView<ItemForToc> treeViewPrimary;
     private string CurrentTranslationTitle = "";
-    IList<ItemForToc> expandedNodesPrimary = new List<ItemForToc>();
 
-    // Output data
-    public List<ItemForToc>? TocId1 { get; set; } = null;
-
-    public string TitleTranslation1 { get; set; } = "Primary";
-
+    #endregion
 
     TOCdata data = new TOCdata();
     bool TocGotFromData = false;
@@ -61,45 +57,75 @@
         }
     }
 
+    private ItemForToc GetPaperItem(int i, short paperNo) => ItemsPrimary.ToList()[i].WorkChildren.ToList().Find(item => item.Entry.Paper == paperNo);
+
     /// <summary>
-    /// Recursively search for an item in the tree items
+    /// Find the ItemForToc equivalent to TOC_Entry
     /// </summary>
-    /// <param name="items"></param>
+    /// <param name="entry"></param>
+    /// <param name="selectedNodes"></param>
     /// <returns></returns>
-    private ItemForToc FindItemByTocEntry(TOC_Entry entry, List<ItemForToc> items, List<ItemForToc> selectedNodes)
+    private ItemForToc FindItemByTocEntry(TOC_Entry entry, List<ItemForToc> selectedNodes)
     {
-        if (items == null) return null;
-        foreach (var item in items)
+        ItemForToc itemPaper = null;
+        if (entry.Paper == 0)
         {
-            if (item.Entry * entry)
-            {
-                selectedNodes.Add(item);
-                return item;
-            }
-            var foundInChildren = FindItemByTocEntry(entry, item.WorkChildren, selectedNodes);
-            if (foundInChildren != null)
-            {
-                selectedNodes.Add(item);
-                return foundInChildren;
-            }
+            itemPaper = ItemsPrimary.First();
+            selectedNodes.Add(itemPaper);
         }
-        return null;
+        else if (entry.Paper < 32)
+        {
+            selectedNodes.Add(ItemsPrimary.ToList()[1]);
+            itemPaper = GetPaperItem(1, entry.Paper);
+            selectedNodes.Add(itemPaper);
+        }
+        else if (entry.Paper < 57)
+        {
+            selectedNodes.Add(ItemsPrimary.ToList()[2]);
+            itemPaper = GetPaperItem(2, entry.Paper);
+            selectedNodes.Add(itemPaper);
+        }
+        else if (entry.Paper < 120)
+        {
+            selectedNodes.Add(ItemsPrimary.ToList()[3]);
+            itemPaper = GetPaperItem(3, entry.Paper);
+            selectedNodes.Add(itemPaper);
+        }
+        else
+        {
+            selectedNodes.Add(ItemsPrimary.ToList()[4]);
+            itemPaper = GetPaperItem(4, entry.Paper);
+            selectedNodes.Add(itemPaper);
+        }
+        if (itemPaper == null) return null;
+
+        if (entry.Section > 0)
+        {
+            ItemForToc itemSection = itemPaper.WorkChildren.ToList().Find(i => i.Entry.Section == entry.Section);
+            if (itemSection == null)
+            {
+                return null;
+            }
+            selectedNodes.Add(itemSection);
+            return itemSection;
+        }
+        return itemPaper;
     }
 
     private void ExpandNodes(TOC_Entry entry)
     {
         List<ItemForToc> selectedNodes = new List<ItemForToc>();
-        ItemForToc item = FindItemByTocEntry(entry, ItemsPrimary.ToList(), selectedNodes);
+        ItemForToc item = FindItemByTocEntry(entry, selectedNodes);
         if (item != null)
         {
             item.Expanded = true;
             SelectedNode = item;
-            expandedNodesPrimary = new List<ItemForToc>();
+            //PersistentData.ExpandedNodesList = new List<ItemForToc>();
             selectedNodes.Reverse();
             foreach (ItemForToc itemReverted in selectedNodes)
             {
                 itemReverted.Expanded = true;
-                expandedNodesPrimary.Add(itemReverted);
+                PersistentData.ExpandedNodesList.Add(itemReverted);
             }
 
         }
