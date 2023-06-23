@@ -91,8 +91,7 @@
 
     private void QuickSearch()
     {
-        if (!string.IsNullOrWhiteSpace(ExpressionToSearch))
-            AmadonEvents.HighlightExpression(ExpressionToSearch);
+        AmadonEvents.HighlightExpression(ExpressionToSearch);
     }
 
 }

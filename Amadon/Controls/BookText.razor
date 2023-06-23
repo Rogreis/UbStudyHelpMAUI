@@ -67,20 +67,41 @@
         return regex.Replace(html, "$1");
     }
 
-
-    private void OnHighlightExpression(string expression)
+    private void UnhighlightAll()
     {
         for (int i = 0; i < PaperLines.Titles.Count; i++)
         {
             PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
-            PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
         }
         for (int i = 0; i < PaperLines.Lines.Count; i++)
         {
-            PaperLines.Lines[i]= UnhighlightString(PaperLines.Lines[i]);
-            PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
+            PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
         }
+        PersistentData.GenericData.HighlightedText = string.Empty;
         StateHasChanged();
+    }
+
+    private void OnHighlightExpression(string expression)
+    {
+        if (!string.IsNullOrEmpty(expression))
+        {
+            PersistentData.GenericData.HighlightedText = expression;
+            for (int i = 0; i < PaperLines.Titles.Count; i++)
+            {
+                PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
+                PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
+            }
+            for (int i = 0; i < PaperLines.Lines.Count; i++)
+            {
+                PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
+                PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
+            }
+            StateHasChanged();
+        }
+        else
+        {
+            UnhighlightAll();
+        }
     }
 
     #endregion
@@ -115,6 +136,7 @@
     private void ShowPage()
     {
         GetTexts();
+        OnHighlightExpression(PersistentData.GenericData.HighlightedText);
         StateHasChanged();
         JumpToAnchor(StaticObjects.Parameters.Entry);
     }

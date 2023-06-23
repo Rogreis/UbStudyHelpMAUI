@@ -12,6 +12,9 @@ namespace Amadon.Services
 
         public static SearchData SearchData = new SearchData();
 
+        public static GenericData GenericData = new GenericData();
+        
+
         private static string PathPersistentData(string dataName)
         {
             return Path.Combine(StaticObjects.Parameters.ApplicationDataFolder, $"{dataName}.json");
@@ -86,6 +89,7 @@ namespace Amadon.Services
             {
                 Serialize<IList<ItemForToc>>(ExpandedNodesList, "ExpandedNodesList");
                 Serialize<SearchData>(SearchData, "SearchData");
+                Serialize<GenericData>(GenericData, "GenericData");
             }
             catch (Exception ex)
             {
@@ -103,6 +107,7 @@ namespace Amadon.Services
             {
                 ExpandedNodesList = (IList<ItemForToc>)DeSerialize<List<ItemForToc>>("ExpandedNodesList");
                 SearchData = DeSerialize<SearchData>("SearchData");
+                GenericData= DeSerialize<GenericData>("GenericData");
                 return true;
             }
             catch (Exception ex)
