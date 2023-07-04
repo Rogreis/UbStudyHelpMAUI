@@ -7,15 +7,10 @@
 
 <h5>Search the subject index titles:</h5>
 
-<TextEdit @ref="TextToSearchObject" Text="PersistentData.GenericData.TextSearchForIndexTitles" Placeholder="Search the subject index titles..." Size="Size.Small" TextChanged="@OnTextToSearchChanged" />
-
-@if (showLoading)
-{
-    <Button Color="Color.Primary" Loading>Loading</Button>
-}
+<TextEdit @ref="TextToSearchObject" Text="@PersistentData.GenericData.TextSearchForIndexTitles" Placeholder="Search the subject index titles..." Size="Size.Small" TextChanged="@OnTextToSearchChanged" />
 
 
-@if (dropdownSubjectTitlesVisible)
+@if (PersistentData.GenericData.dropdownSubjectTitlesVisible)
 {
     <br />
     <label for="select_subject_index">Subject index entries found</label>
@@ -28,7 +23,7 @@
     <br />
 }
 
-@if (browserSubjectsFound)
+@if (PersistentData.GenericData.browserSubjectsFound)
 {
     <div class="row">
 
@@ -63,9 +58,6 @@
     bool alertVisible = false;
     string AlertMessage = "";
     Color AlertColor = Color.Success;
-    bool dropdownSubjectTitlesVisible = false;
-    bool browserSubjectsFound = false;
-    bool showLoading = false;
 
     TextEdit TextOutputObject;
     TextEdit TextToSearchObject;
@@ -85,9 +77,10 @@
 
     async Task OnTextToSearchChanged(string value)
     {
+        //  && string.Compare(PersistentData.GenericData.TextSearchForIndexTitles, value, true) != 0
+        PersistentData.GenericData.TextSearchForIndexTitles = value;
         if (!string.IsNullOrEmpty(value) && value.Length >= 3)
         {
-            PersistentData.GenericData.TextSearchForIndexTitles = value;
             PersistentData.GenericData.IndexItemsFound.Clear();
             LuceneIndexSearch luceneIndex = new LuceneIndexSearch();
             SearchIndexData data = new SearchIndexData();
@@ -100,7 +93,7 @@
             else if (string.IsNullOrEmpty(data.ErrorMessage))
             {
                 PersistentData.GenericData.IndexItemsFound.AddRange(data.ResultsList);
-                dropdownSubjectTitlesVisible = true;
+                PersistentData.GenericData.dropdownSubjectTitlesVisible = true;
                 if (data.ResultsList.Count == 1)
                 {
                     await DropdownItemChecked(data.ResultsList[0]);
@@ -109,7 +102,7 @@
             else
             {
                 await ShowAlert(Color.Danger, data.ErrorMessage);
-                dropdownSubjectTitlesVisible = false;
+                PersistentData.GenericData.dropdownSubjectTitlesVisible = false;
             }
             StateHasChanged();
         }
@@ -118,11 +111,9 @@
 
     protected async Task DropdownItemChecked(string option)
     {
-        showLoading = true;
         StateHasChanged();
         PersistentData.GenericData.TubIndex = await SearchIndexService.GetSubjectItemsToShow(option);
-        browserSubjectsFound = PersistentData.GenericData.TubIndex != null;
-        showLoading = false;
+        PersistentData.GenericData.browserSubjectsFound = PersistentData.GenericData.TubIndex != null;
         StateHasChanged();
     }
 

@@ -25,6 +25,10 @@ namespace AmadonStandardLib.InterchangeData
 
         public List<string> IndexItemsFound { get; set; } = new List<string>();
 
+        public bool browserSubjectsFound { get; set; } = false;
+
+        public bool dropdownSubjectTitlesVisible { get; set; } = false;
+
 
 
     }
