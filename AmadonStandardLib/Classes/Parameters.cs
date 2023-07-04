@@ -74,14 +74,6 @@ namespace AmadonStandardLib.Classes
         /// </summary>
         public int MaxExpressionsStored { get; set; } = 50;
 
-        public string TextSearForIndexTitles { get; set; } = "";
-
-        public List<string> SearchIndexEntries { get; set; } = new List<string>();
-
-        public List<TOC_Entry> TrackEntries { get; set; } = new List<TOC_Entry>();
-
-        public string LastTrackFileSaved { get; set; } = "";
-
         public string FontFamilyInfo { get; set; } = "Verdana";
 
         public double FontSizeInfo { get; set; } = 18;

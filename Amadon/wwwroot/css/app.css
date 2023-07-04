@@ -2,7 +2,7 @@
 
 
 :root {
-    --font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-family: 'Roboto Condensed', 'Helvetica Neue', 'Helvetica', 'Arial';
     --font-size: 18px;
 }
 

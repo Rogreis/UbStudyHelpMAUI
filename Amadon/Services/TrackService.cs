@@ -34,25 +34,25 @@ namespace Amadon.Services
         /// <returns></returns>
         public static Task AddEntry(TOC_Entry entry)
         {
-            if (StaticObjects.Parameters.TrackEntries.Count == StaticObjects.Parameters.MaxExpressionsStored)
+            if (PersistentData.GenericData.TrackEntries.Count == StaticObjects.Parameters.MaxExpressionsStored)
             {
-                StaticObjects.Parameters.TrackEntries.RemoveAt(StaticObjects.Parameters.TrackEntries.Count - 1);
+                PersistentData.GenericData.TrackEntries.RemoveAt(PersistentData.GenericData.TrackEntries.Count - 1);
             }
 
-            if (StaticObjects.Parameters.TrackEntries.Count > 0 && StaticObjects.Parameters.TrackEntries[0] * entry)
+            if (PersistentData.GenericData.TrackEntries.Count > 0 && PersistentData.GenericData.TrackEntries[0] * entry)
             {
                 return Task.CompletedTask;
             }
 
             // Text is not saved and will be always filled with the same translation used for TOC and search
             entry.Text = "";
-            StaticObjects.Parameters.TrackEntries.Insert(0, entry);
+            PersistentData.GenericData.TrackEntries.Insert(0, entry);
             return Task.CompletedTask;
         }
 
         public static Task<List<string>> GetAllEntries() 
         {
-            List<TOC_Entry> list= new List<TOC_Entry>(StaticObjects.Parameters.TrackEntries);
+            List<TOC_Entry> list= new List<TOC_Entry>(PersistentData.GenericData.TrackEntries);
             List<string> result= new List<string>();
             foreach (TOC_Entry entry in list) 
             {

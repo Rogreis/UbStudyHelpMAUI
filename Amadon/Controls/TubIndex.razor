@@ -7,11 +7,11 @@
 
 <h5>Search the subject index titles:</h5>
 
-<TextEdit @ref="TextToSearchObject" Placeholder="Search the subject index titles..." Size="Size.Small" TextChanged="@OnNameChanged" />
+<TextEdit @ref="TextToSearchObject" Text="PersistentData.GenericData.TextSearchForIndexTitles" Placeholder="Search the subject index titles..." Size="Size.Small" TextChanged="@OnTextToSearchChanged" />
 
 @if (showLoading)
 {
-    <Button Color="Color.Primary" Loading> Loading</Button>
+    <Button Color="Color.Primary" Loading>Loading</Button>
 }
 
 
@@ -20,7 +20,7 @@
     <br />
     <label for="select_subject_index">Subject index entries found</label>
     <Select TValue="string" ElementId="select_subject_index" TValue="int" SelectedValueChanged="@DropdownItemChecked">
-        @foreach (var item in items)
+        @foreach (var item in PersistentData.GenericData.IndexItemsFound)
         {
             <SelectItem Value="@item">@item</SelectItem>
         }
@@ -34,8 +34,8 @@
 
         <Card WhiteText class="bg-dark">
             <CardBody>
-            <CardTitle Size="5">@tubIndex.Title</CardTitle>
-                    @foreach (IndexDetails detail in @tubIndex.Details)
+            <CardTitle Size="5">@PersistentData.GenericData.TubIndex.Title</CardTitle>
+                @foreach (IndexDetails detail in @PersistentData.GenericData.TubIndex.Details)
                     {
                         <CardText>
                             @detail.Text<br />
@@ -60,14 +60,12 @@
 
 
 @code{
-    string TextToSearch = "";
     bool alertVisible = false;
     string AlertMessage = "";
     Color AlertColor = Color.Success;
     bool dropdownSubjectTitlesVisible = false;
     bool browserSubjectsFound = false;
     bool showLoading = false;
-    AmadonStandardLib.InterchangeData.TubIndex tubIndex;
 
     TextEdit TextOutputObject;
     TextEdit TextToSearchObject;
@@ -75,7 +73,6 @@
     SearchIndexService searchIndex = new SearchIndexService();
 
     string selectedValue;
-    List<string> items = new List<string>();
 
     private Task ShowAlert(Color color, string message)
     {
@@ -86,12 +83,12 @@
     }
 
 
-    async Task OnNameChanged(string value)
+    async Task OnTextToSearchChanged(string value)
     {
         if (!string.IsNullOrEmpty(value) && value.Length >= 3)
         {
-            StaticObjects.Parameters.TextSearForIndexTitles = value;
-            items.Clear();
+            PersistentData.GenericData.TextSearchForIndexTitles = value;
+            PersistentData.GenericData.IndexItemsFound.Clear();
             LuceneIndexSearch luceneIndex = new LuceneIndexSearch();
             SearchIndexData data = new SearchIndexData();
             data.Query = value;
@@ -102,7 +99,7 @@
             }
             else if (string.IsNullOrEmpty(data.ErrorMessage))
             {
-                items.AddRange(data.ResultsList);
+                PersistentData.GenericData.IndexItemsFound.AddRange(data.ResultsList);
                 dropdownSubjectTitlesVisible = true;
                 if (data.ResultsList.Count == 1)
                 {
@@ -123,8 +120,8 @@
     {
         showLoading = true;
         StateHasChanged();
-        tubIndex = await SearchIndexService.GetSubjectItemsToShow(option);
-        browserSubjectsFound = tubIndex != null;
+        PersistentData.GenericData.TubIndex = await SearchIndexService.GetSubjectItemsToShow(option);
+        browserSubjectsFound = PersistentData.GenericData.TubIndex != null;
         showLoading = false;
         StateHasChanged();
     }
@@ -145,7 +142,6 @@
         base.OnAfterRender(firstRender);
         if (firstRender)
         {
-            TextToSearch = StaticObjects.Parameters.TextSearForIndexTitles;
             StateHasChanged();
         }
     }
