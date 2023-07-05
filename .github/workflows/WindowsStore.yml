@@ -1,0 +1,55 @@
+name: Windows Store CI/CD
+
+# on:
+#  push:
+#    tags:
+#      - 'release_*'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration Release
+
+      - name: Publish application
+        run: dotnet publish --configuration Release --output ./publish
+
+      - name: Setup Windows Packaging Tool
+        uses: microsoft/setup-msix-packaging-tool@v1
+
+      - name: Create MSIX package
+        run: msixpackagingtool pack -p ./publish/YourApp.csproj -r AppxBundle
+
+      - name: Deploy to Windows Store
+        uses: microsoft/MSIX-PackageSupportFramework@1.0
+        with:
+          msix_path: ./YourApp.msix
+          target_store: 'Windows Store'
+          store_publishing_profile: ${{ secrets.WINDOWS_STORE_PUBLISHING_PROFILE }}
+
+      - name: Submit Store Release
+        uses: microsoft/MSIX-PackageSupportFramework@1.0
+        with:
+          msix_path: ./YourApp.msix
+          target_store: 'Windows Store'
+          store_publishing_profile: ${{ secrets.WINDOWS_STORE_PUBLISHING_PROFILE }}
+          submission_type: 'store'
+
+      - name: Deploy complete!
+        run: echo "Deployment to Windows Store is complete."
