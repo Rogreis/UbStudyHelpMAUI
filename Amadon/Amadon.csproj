@@ -61,4 +61,10 @@
       <ProjectReference Include="..\AmadonStandardLib\AmadonStandardLib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Docs\SearchHelp.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
