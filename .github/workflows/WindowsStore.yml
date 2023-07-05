@@ -1,10 +1,12 @@
 name: Windows Store CI/CD
 
-on:
-  push:
-    tags:
-      - 'release_*'
+# on:
+#  push:
+#    tags:
+#      - 'release_*'
 
+on:
+  workflow_dispatch:
 
 jobs:
   build:
