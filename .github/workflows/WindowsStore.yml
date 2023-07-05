@@ -22,7 +22,7 @@ jobs:
           dotnet-version: '6.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore Amadon/Amadon.csproj
 
       - name: Build solution
         run: dotnet build --configuration Release
