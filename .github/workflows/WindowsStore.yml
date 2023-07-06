@@ -21,15 +21,15 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore Amadon/Amadon.csproj
-        
       - name: Install MAUI Android workload
         run: dotnet workload install maui-android
 
       - name: Restore workloads and packages
         run: dotnet workload restore
 
+      - name: Restore dependencies
+        run: dotnet restore Amadon/Amadon.csproj
+        
       - name: Build solution
         run: dotnet build --configuration Release
 
