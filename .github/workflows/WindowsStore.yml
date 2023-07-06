@@ -25,7 +25,7 @@ jobs:
         run: dotnet workload install maui-android
         
       - name: List directories
-        run: ls -la 
+        run: dir
 
       - name: Restore workloads and packages
         run: dotnet workload restore
