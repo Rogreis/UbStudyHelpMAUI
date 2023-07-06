@@ -33,8 +33,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore AmadonBlazor2.sln
         
-      - name: Build solution
-        run: dotnet build --configuration Release
+      - name: Build AmadonStandardLib
+        run: dotnet build AmadonStandardLib\AmadonStandardLib.csproj --configuration Release
+
+      - name: Build Amadon
+        run: dotnet build Amadon\Amadon.csproj --configuration Release
 
       - name: Publish application
         run: dotnet publish --configuration Release --output ./publish
