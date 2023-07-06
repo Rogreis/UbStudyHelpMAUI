@@ -28,7 +28,7 @@ jobs:
         run: dotnet workload restore
 
       - name: Restore dependencies
-        run: dotnet restore Amadon/Amadon.csproj
+        run: dotnet restore Amadon.csproj
         
       - name: Build solution
         run: dotnet build --configuration Release
