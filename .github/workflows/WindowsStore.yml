@@ -42,11 +42,14 @@ jobs:
       - name: Publish application
         run: dotnet publish --configuration Release --output ./publish AmadonBlazor2.sln
 
-      - name: Setup Windows Packaging Tool
-        uses: microsoft/setup-msix-packaging-tool@v1
+      - name: List publish folder
+        run: dir ./publish
 
-      - name: Create MSIX package
-        run: msixpackagingtool pack -p ./publish/AmadonBlazor2.sln -r AppxBundle
+     # - name: Setup Windows Packaging Tool
+     #   uses: microsoft/setup-msix-packaging-tool@v1
+
+     # - name: Create MSIX package
+     #   run: msixpackagingtool pack -p ./publish/AmadonBlazor2.sln -r AppxBundle
 
 #     - name: Deploy to Windows Store
 #       uses: microsoft/MSIX-PackageSupportFramework@1.0
