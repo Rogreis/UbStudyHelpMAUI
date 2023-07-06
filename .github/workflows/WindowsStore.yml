@@ -28,7 +28,7 @@ jobs:
         run: dir
 
       - name: Restore workloads and packages
-        run: dotnet workload restore
+        run: dotnet workload restore -source AmadonBlazor2.sln
 
       - name: Restore dependencies
         run: dotnet restore AmadonBlazor2.sln
