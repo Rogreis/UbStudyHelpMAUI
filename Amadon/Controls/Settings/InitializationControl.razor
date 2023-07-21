@@ -72,8 +72,8 @@
     private void HandleSendMessage(string Message)
     {
         //if (Status == Status.InitializedFinished) return;
-        logViewer.AppendLogText(Message);
-        Task.Delay(1);
+        Task t = Task.Run(async () => await logViewer.AppendLogText(Message));
+        //t.Wait();
         StateHasChanged();
     }
 

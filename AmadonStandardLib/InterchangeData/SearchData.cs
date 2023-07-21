@@ -17,13 +17,13 @@ namespace AmadonStandardLib.InterchangeData
 
         public string IndexPathRoot { get; set; } = "";
 
-        public bool Part1Included { get; set; } = false;
+        public bool Part1Included { get; set; } = true;
 
-        public bool Part2Included { get; set; } = false;
+        public bool Part2Included { get; set; } = true;
 
-        public bool Part3Included { get; set; } = false;
+        public bool Part3Included { get; set; } = true;
 
-        public bool Part4Included { get; set; } = false;
+        public bool Part4Included { get; set; } = true;
 
         public bool CurrentPaperOnly { get; set; } = false;
 

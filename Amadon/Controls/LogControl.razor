@@ -9,10 +9,14 @@
     private bool _visibility = true;
 
 
-    public void AppendLogText(string message)
+    public async Task AppendLogText(string message)
     {
-        LogText += message + "\n";
-        StateHasChanged();
+        await InvokeAsync(() =>
+        {
+            LogText += message + "\n";
+            StateHasChanged();
+        });
+        await Task.Yield();
     }
 
 }

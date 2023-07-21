@@ -33,6 +33,7 @@
     #region Local Data
     TreeView<ItemForToc> treeViewPrimary;
     private string CurrentTranslationTitle = "";
+    private bool InternalSelection = false;
 
     #endregion
 
@@ -52,8 +53,9 @@
         {
             ItemForToc item = value;
             item.Expanded = true;
-            AmadonEvents.NewTocEntry(item.Entry);
             selectedNode = value;
+            if (!InternalSelection)
+                AmadonEvents.NewTocEntry(item.Entry);
         }
     }
 
@@ -114,6 +116,7 @@
 
     private void ExpandNodes(TOC_Entry entry)
     {
+        InternalSelection = true;
         List<ItemForToc> selectedNodes = new List<ItemForToc>();
         ItemForToc item = FindItemByTocEntry(entry, selectedNodes);
         if (item != null)
@@ -129,6 +132,7 @@
             }
 
         }
+        InternalSelection = false;
     }
 
     public async Task UpdateAll()
@@ -146,7 +150,11 @@
         ItemsPrimary = data.TocId1;
         ExpandNodes(StaticObjects.Parameters.Entry);
         TocGotFromData = true;
-        StateHasChanged();
+        try
+        {
+            StateHasChanged();
+        }
+        catch { }
     }
 
 
