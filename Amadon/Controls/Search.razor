@@ -79,11 +79,14 @@
 @if (PersistentData.SearchData.hasDataToShow)
 {
     <p>@PersistentData.SearchData.SearchResults.Count.ToString() paragraph(s) found</p>
-    <p>Showing page @PersistentData.SearchData.currentPage of @PersistentData.SearchData.totalPages pages</p>
+    @if (Convert.ToInt32(@PersistentData.SearchData.totalPages) > 1)
+    {
+        <p>Showing page @PersistentData.SearchData.currentPage of @PersistentData.SearchData.totalPages pages</p>
+    }
     <Container>
-        @for (int nrItem = PersistentData.SearchData.firstItemToShow; nrItem < PersistentData.SearchData.lastItemToShwow; nrItem++)
+        @for (int nrItem = PersistentData.SearchData.firstItemToShow; nrItem <= PersistentData.SearchData.lastItemToShwow; nrItem++)
         {
-            SearchResult result = PersistentData.SearchData.SearchResults[nrItem];
+            SearchResult result = PersistentData.SearchData.SearchResults[nrItem - 1];
             <p>
                 <Button Color="Color.Primary" Outline Size="Size.Small" Margin="Margin.Is2" Clicked="@(()=> ButtonClicked(@result.LinkText))">@result.ID <Icon Name="IconName.ArrowRight" /></Button>
                 @((MarkupString)@result.Text)

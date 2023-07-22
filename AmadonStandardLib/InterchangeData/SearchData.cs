@@ -67,45 +67,11 @@ namespace AmadonStandardLib.InterchangeData
         }
 
 
-        ///// <summary>
-        ///// Create the word list to be used when highlighting search text found
-        ///// </summary>
-        ///// <param name="textPrefix"></param>
-        ///// <param name="searchString"></param>
-        //public void SetSearchString(string textPrefix, string searchString)
-        //{
-        //    bool continues = true;
-        //    int lastStartPos = 0;
-
-        //    searchString = searchString.Replace('~', ' ');
-        //    searchString = searchString.Replace('^', ' ');
-
-        //    while (continues)
-        //    {
-        //        int pos = searchString.IndexOf(textPrefix, lastStartPos);
-        //        continues = pos >= 0 && lastStartPos < searchString.Length;
-        //        if (continues)
-        //        {
-        //            int startPos = pos + textPrefix.Length;
-        //            char divisor = searchString.ToCharArray()[startPos] == '"' ? '"' : ' ';
-        //            if (divisor == '"')
-        //            {
-        //                startPos += 1;
-        //            }
-        //            int endPos = searchString.IndexOf(divisor, startPos);
-        //            endPos = (endPos >= 0 ? endPos : searchString.Length);
-        //            int size = endPos - startPos;
-        //            Words.Add(searchString.Substring(startPos, size));
-        //            lastStartPos = endPos + 1;
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //        continues = lastStartPos < searchString.Length;
-        //    }
-        //}
-
+        private string PrepareWordToHighligth(string word)
+        {
+            return word.Trim().Replace("~", "").Replace("^", "").Replace("*", "");
+        }
+        
         /// <summary>
         /// Create a list of words to highligh in the search
         /// </summary>
@@ -120,7 +86,7 @@ namespace AmadonStandardLib.InterchangeData
                 query.ExtractTerms(terms);
                 foreach (Term t in terms)
                 {
-                    Words.Add(t.Text);
+                    Words.Add(PrepareWordToHighligth(t.Text));
                 }
             }
             catch
@@ -152,9 +118,6 @@ namespace AmadonStandardLib.InterchangeData
                 OrderedByParagraphs = false;
             }
         }
-
-
-
 
     }
 }
