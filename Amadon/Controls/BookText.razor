@@ -3,7 +3,6 @@
 @using Amadon.Controls;
 @using AmadonStandardLib.Helpers;
 @using AmadonStandardLib.UbClasses;
-@using System.Text.RegularExpressions;
 @using System.Diagnostics;
 @inject IJSRuntime JSRuntime;
 
@@ -50,32 +49,16 @@
 
     #region Current page search and hightlight functions
 
-    private string HighlightString(string html, string expression)
-    {
-        if (string.IsNullOrEmpty(expression))
-        {
-            return html;
-        }
-
-        Regex regex = new Regex($"({expression})", RegexOptions.IgnoreCase);
-        return regex.Replace(html, $"<span class=\"highlight\">{expression}</span>");
-    }
-
-    private string UnhighlightString(string html)
-    {
-        Regex regex = new Regex("<span class=\"highlight\">(.*?)</span>", RegexOptions.IgnoreCase);
-        return regex.Replace(html, "$1");
-    }
 
     private void UnhighlightAll()
     {
         for (int i = 0; i < PaperLines.Titles.Count; i++)
         {
-            PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
+            PaperLines.Lines[i] = HighlightTexts.UnhighlightString(PaperLines.Lines[i]);
         }
         for (int i = 0; i < PaperLines.Lines.Count; i++)
         {
-            PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
+            PaperLines.Lines[i] = HighlightTexts.UnhighlightString(PaperLines.Lines[i]);
         }
         PersistentData.GenericData.HighlightedText = string.Empty;
         StateHasChanged();
@@ -88,13 +71,13 @@
             PersistentData.GenericData.HighlightedText = expression;
             for (int i = 0; i < PaperLines.Titles.Count; i++)
             {
-                PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
-                PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
+                PaperLines.Lines[i] = HighlightTexts.UnhighlightString(PaperLines.Lines[i]);
+                PaperLines.Lines[i] = HighlightTexts.HighlightString(PaperLines.Lines[i], expression);
             }
             for (int i = 0; i < PaperLines.Lines.Count; i++)
             {
-                PaperLines.Lines[i] = UnhighlightString(PaperLines.Lines[i]);
-                PaperLines.Lines[i] = HighlightString(PaperLines.Lines[i], expression);
+                PaperLines.Lines[i] = HighlightTexts.UnhighlightString(PaperLines.Lines[i]);
+                PaperLines.Lines[i] = HighlightTexts.HighlightString(PaperLines.Lines[i], expression);
             }
             StateHasChanged();
         }

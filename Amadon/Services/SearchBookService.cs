@@ -7,7 +7,7 @@ namespace Amadon.Services
     public class SearchBookService
     {
 
-        public static bool DoSearch(SearchData searchData)
+        private static bool DoSearch(SearchData searchData)
         {
             LuceneBookSearch luceneBookSearch = new();
             // When an erro occurs, error message is set inside SearchData

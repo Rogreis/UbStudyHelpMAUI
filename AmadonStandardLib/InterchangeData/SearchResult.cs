@@ -33,6 +33,10 @@ namespace AmadonStandardLib.InterchangeData
             {
                 return Entry.Text;
             }
+            set 
+            {
+                Entry.Text= value;
+            }
         }
 
 

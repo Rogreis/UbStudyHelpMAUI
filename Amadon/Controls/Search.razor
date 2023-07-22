@@ -160,7 +160,6 @@ else
         return Task.CompletedTask;
     }
 
-
     private void HandleKeyDown(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Key == "Enter")
@@ -187,7 +186,18 @@ else
 
     private async Task<bool> CallSearch(SearchData searchData)
     {
-        return await SearchBookService.Search(searchData);
+        bool ret = await SearchBookService.Search(searchData);
+        if (ret)
+        {
+            foreach (SearchResult result in searchData.SearchResults)
+            {
+                foreach(string word in searchData.Words)
+                {
+                    result.Text= HighlightTexts.HighlightString(result.Text, word);
+                }
+            }
+        }
+        return ret;
     }
 
 
