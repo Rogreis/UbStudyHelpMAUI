@@ -3,7 +3,7 @@
 ### Introduction
 Amadon search engine is based on Lucene.net, a powerful search library, which can provide advanced search functionality to any application. This help guide will walk you through the basics of using the Lucene.net based search engine in our application.
 
-
+![The search engine](images/Search.png)
 
 ### Getting Started
 
@@ -60,5 +60,5 @@ https://lucene.apache.org/core/2_9_4/queryparsersyntax.html
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUzMzY0NDkyLDE1NTU0NTQ2NTBdfQ==
+eyJoaXN0b3J5IjpbMTM3MDEwMjg3MywxNTU1NDU0NjUwXX0=
 -->
