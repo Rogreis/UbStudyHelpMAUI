@@ -2,7 +2,7 @@
 
 ### Introduction
 
-Amadon search engine is based on Lucene.net is a powerful search library written in C#, which can provide advanced search functionality to any application. This help guide will walk you through the basics of using the Lucene.net based search engine in our application.
+Amadon search engine is based on Lucene.net, a powerful search library, which can provide advanced search functionality to any application. This help guide will walk you through the basics of using the Lucene.net based search engine in our application.
 
 ### Getting Started
 
@@ -59,6 +59,6 @@ https://lucene.apache.org/core/2_9_4/queryparsersyntax.html
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjIwMDY2OTU0LC0xODkyMjgxMjI1LDczMD
-k5ODExNl19
+eyJoaXN0b3J5IjpbMTU1NTQ1NDY1MCwtMTg5MjI4MTIyNSw3Mz
+A5OTgxMTZdfQ==
 -->
