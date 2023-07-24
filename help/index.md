@@ -4,9 +4,7 @@
 
 The Subject Index is a crucial feature of our application designed to provide you with quick access to specific topics across "The Uantia Book". Each entry in the index is composed of a key expression and the subject, with a clickable link on the left of the subject. This guide will assist you in understanding how to effectively use this feature.
 
-
-[The subjec index](images/Index.png)
-
+![The subjec index](images/Index.png)
 
 ### How to Use the Subject Index
 
@@ -43,5 +41,5 @@ Remember, the Subject Index is a tool designed to make your reading of "The Uant
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUxODkzMzkwM119
+eyJoaXN0b3J5IjpbMTA0NTM2NzYzMl19
 -->
