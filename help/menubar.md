@@ -6,15 +6,18 @@ The menu bar is the primary way to navigate through the Amadon app. This guide w
 
 ### Menu Options
 
-1.  **Table of Contents**: The Table of Contents is an organized listing of all the sections and papers within "The Urantia Book". It provides an overview of the book's structure and allows you to directly access any section by simply clicking on its title.
+![The Menu Bar](images/menu.png)
+
+
+1.  **Table of Contents**: The Table of Contents is an organized listing of all the papers and sections within "The Urantia Book". It provides an overview of the book's structure and allows you to directly access any section or paper by simply clicking on its title. More details at our "[Table of Contents](toc.md)".
     
-2.  **Index**: The Index is an alphabetical listing of the key expressions and subjects throughout "The Urantia Book". Each subject is linked to its relevant section within the book. Use this feature to quickly find and navigate to specific topics.
+2.  **Index**: The Index is an alphabetical listing of the key expressions and subjects throughout "The Urantia Book". Each subject is linked to its relevant section within the book. Use this feature to quickly find and navigate to specific topics or check more details at our "[Subject Index Feature](index.md)".
     
-3.  **Search**: The Search feature allows you to find specific words, phrases, or topics throughout "The Urantia Book". Powered by Lucene.net, this search engine can handle complex queries and return precise results. You can find more detailed information on how to use this feature in our "Search Engine Help Guide".
+3.  **Search**: The Search feature allows you to find specific words, phrases, or topics throughout "The Urantia Book". Powered by Lucene.net, this search engine can handle complex queries and return precise results. You can find more detailed information on how to use this feature in our "[Search Engine Help Guide](search.md)".
     
-4.  **Track**: The Track feature is a tool for keeping track of your progress through "The Urantia Book". As you read, use this feature to mark read paragraphs. This allows you to quickly identify what you have already read and where you left off.
+4.  **Track**: The Track feature is a tool for keeping track of your progress through "The Urantia Book". As you read, use this feature to mark read paragraphs. This allows you to quickly identify what you have already read and where you left off. More details at our "[Track of Paragraphs](track.md)".
     
-5.  **Settings**: In the Settings menu, you can customize the app according to your preferences. This includes adjusting the text size, theme, notification settings, and more. Any changes made in this menu will be applied across the app.
+5.  **Settings**: In the Settings menu, you can customize the app according to your preferences. This includes adjusting the text size, theme, notification settings, and more. Any changes made in this menu will be applied across the app. See "[Settings Page](settings.md)".
     
 6.  **Help**: The Help option provides assistance on how to use the app and its features. It includes various help guides and troubleshooting tips. If you are having difficulty with any aspect of the app, this should be your first port of call.
     
@@ -37,5 +40,5 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ4Njc4Mzg2OF19
+eyJoaXN0b3J5IjpbLTk2MzU5Njc4OSwxNDg2NzgzODY4XX0=
 -->
