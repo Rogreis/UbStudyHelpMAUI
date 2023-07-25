@@ -38,11 +38,11 @@ The Settings page is where you can customize your reading experience in the Amad
 
 To change a setting, navigate to the 'Settings' option in the menu bar. Find the feature you wish to modify, then select or deselect the checkbox for toggle features or choose from a dropdown list for selection features. Your changes will be automatically saved and applied throughout the app.
 
-Remember, the Settings page is designed to make your reading experience more personalized and enjoyable. Feel free to experiment with different settings to see what works best for you. If you need further help, don't hesitate to contact our support team.
+Remember, the Settings page is designed to make your reading experience more personalized and enjoyable. Feel free to experiment with different settings to see what works best for you. If you need further help, don't hesitate to contact our [support team](https://github.com/Rogreis/UbStudyHelpMAUI/issues).
 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzUwOTYwMjc4LDEwOTQyMzY5OTEsLTIwMD
-A1ODExNjcsLTE4MTcyOTQ4MzddfQ==
+eyJoaXN0b3J5IjpbLTE3MTA0MDQ2OTcsMTA5NDIzNjk5MSwtMj
+AwMDU4MTE2NywtMTgxNzI5NDgzN119
 -->
