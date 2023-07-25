@@ -9,9 +9,9 @@ The menu bar is the primary way to navigate through the Amadon app. This guide w
 ![The Menu Bar](images/menu.png)
 
 
-1.  **Table of Contents**: The Table of Contents is an organized listing of all the papers and sections within "The Urantia Book". It provides an overview of the book's structure and allows you to directly access any section or paper by simply clicking on its title.
+1.  **Table of Contents**: The Table of Contents is an organized listing of all the papers and sections within "The Urantia Book". It provides an overview of the book's structure and allows you to directly access any section or paper by simply clicking on its title. More details at our 
     
-2.  **Index**: The Index is an alphabetical listing of the key expressions and subjects throughout "The Urantia Book". Each subject is linked to its relevant section within the book. Use this feature to quickly find and navigate to specific topics or check more details .
+2.  **Index**: The Index is an alphabetical listing of the key expressions and subjects throughout "The Urantia Book". Each subject is linked to its relevant section within the book. Use this feature to quickly find and navigate to specific topics or check more details at our "[Subject Index Feature](index.md)".
     
 3.  **Search**: The Search feature allows you to find specific words, phrases, or topics throughout "The Urantia Book". Powered by Lucene.net, this search engine can handle complex queries and return precise results. You can find more detailed information on how to use this feature in our "[Search Engine Help Guide](search.md)".
     
@@ -40,5 +40,5 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTQxNzkwMDc5LDE0ODY3ODM4NjhdfQ==
+eyJoaXN0b3J5IjpbLTExODUyNjkzMzQsMTQ4Njc4Mzg2OF19
 -->
