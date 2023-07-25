@@ -24,8 +24,6 @@ The Settings page is where you can customize your reading experience in the Amad
 ### Translation Choices
 |![Translation Choices](images/Settings03.png)  |![Translation Choices](images/Settings04.png)  |
 
-
-
 1.  **Left Translation Choice**: The left translation is mandatory in our layout. However, you can select which translation to display on the left from the available options.
     
 2.  **Middle Translation Choices**: You can choose which translation to display in the middle position. If you've chosen to show this column, select your preferred version from the available options.
@@ -34,6 +32,8 @@ The Settings page is where you can customize your reading experience in the Amad
     
 
 ### Search and Contents Options
+
+![Translation Choices](images/Settings04.png) 
 
 1.  **Table Of Contents and Search Engine Translation**: This setting allows you to choose the translation used in the Table of Contents and the Search Engine. This ensures that your search results and table of contents match the translation you are most comfortable with.
 
@@ -50,6 +50,6 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQzODA2MDY3LDE0NTk4MDY0NTQsMTA5ND
-IzNjk5MSwtMjAwMDU4MTE2NywtMTgxNzI5NDgzN119
+eyJoaXN0b3J5IjpbMTY5NTIxOTUyOSwxNDU5ODA2NDU0LDEwOT
+QyMzY5OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
 -->
