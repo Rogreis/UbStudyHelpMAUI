@@ -1,7 +1,3 @@
-
-
-
-
 ## Amadon App Settings Page - Help Guide
 
 ### Introduction
@@ -57,7 +53,7 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjQ0MzM4ODU5LDEwMjQwMzY5MjksMTQ1OT
-gwNjQ1NCwxMDk0MjM2OTkxLC0yMDAwNTgxMTY3LC0xODE3Mjk0
-ODM3XX0=
+eyJoaXN0b3J5IjpbNzE0MDc0NTksMjQ0MzM4ODU5LDEwMjQwMz
+Y5MjksMTQ1OTgwNjQ1NCwxMDk0MjM2OTkxLC0yMDAwNTgxMTY3
+LC0xODE3Mjk0ODM3XX0=
 -->
