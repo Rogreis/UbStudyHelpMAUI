@@ -15,9 +15,9 @@ The menu bar is the primary way to navigate through the Amadon app. This guide w
     
 3.  **Search**: The Search feature allows you to find specific words, phrases, or topics throughout "The Urantia Book". Powered by Lucene.net, this search engine can handle complex queries and return precise results. You can find more detailed information on how to use this feature in our "[Search Engine Help Guide](search.md)".
     
-4.  **Track**: The Track feature is a tool for keeping track of your progress through "The Urantia Book". As you read, use this feature to mark read paragraphs. This allows you to quickly identify what you have already read and where you left off. More details at our "[Track of Paragreaphsable of Contents](toc.md)".
+4.  **Track**: The Track feature is a tool for keeping track of your progress through "The Urantia Book". As you read, use this feature to mark read paragraphs. This allows you to quickly identify what you have already read and where you left off. More details at our "[Track of Paragraphs](track.md)".
     
-5.  **Settings**: In the Settings menu, you can customize the app according to your preferences. This includes adjusting the text size, theme, notification settings, and more. Any changes made in this menu will be applied across the app.
+5.  **Settings**: In the Settings menu, you can customize the app according to your preferences. This includes adjusting the text size, theme, notification settings, and more. Any changes made in this menu will be applied across the app. See "[Settings Page](settings.md)".
     
 6.  **Help**: The Help option provides assistance on how to use the app and its features. It includes various help guides and troubleshooting tips. If you are having difficulty with any aspect of the app, this should be your first port of call.
     
@@ -40,5 +40,5 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTI4OTc4NzY2LDE0ODY3ODM4NjhdfQ==
+eyJoaXN0b3J5IjpbLTk2MzU5Njc4OSwxNDg2NzgzODY4XX0=
 -->
