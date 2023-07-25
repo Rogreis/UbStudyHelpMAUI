@@ -12,7 +12,7 @@ The Settings page is where you can customize your reading experience in the Amad
 
 ### Reading Options
 
-![The Settings Page](images/Settings.png)
+![Reading Options](images/Settings01.png)
 
 1.  **Show/Hide Middle Translation**: This option allows you to toggle the visibility of the middle translation of "The Urantia Book". If you wish to view two translations at once, you can choose to show the middle translation. Otherwise, you can hide it for a less cluttered view.
     
@@ -22,6 +22,8 @@ The Settings page is where you can customize your reading experience in the Amad
     
 
 ### Translation Choices
+
+![Translation Choices](images/Settings01.png)
 
 1.  **Left Translation Choice**: The left translation is mandatory in our layout. However, you can select which translation to display on the left from the available options.
     
@@ -45,6 +47,6 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MDA0NzY3MzgsMTQ1OTgwNjQ1NCwxMD
-k0MjM2OTkxLC0yMDAwNTgxMTY3LC0xODE3Mjk0ODM3XX0=
+eyJoaXN0b3J5IjpbNTEwNDMwMTQxLDE0NTk4MDY0NTQsMTA5ND
+IzNjk5MSwtMjAwMDU4MTE2NywtMTgxNzI5NDgzN119
 -->
