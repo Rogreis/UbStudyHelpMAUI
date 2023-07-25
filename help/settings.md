@@ -22,8 +22,9 @@ The Settings page is where you can customize your reading experience in the Amad
     
 
 ### Translation Choices
+|![Translation Choices](images/Settings03.png)  |![Translation Choices](images/Settings04.png)  |
 
-![Translation Choices](images/Settings03.png)
+
 
 1.  **Left Translation Choice**: The left translation is mandatory in our layout. However, you can select which translation to display on the left from the available options.
     
@@ -49,6 +50,6 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEwMTgxOTMxMywxNDU5ODA2NDU0LDEwOT
-QyMzY5OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
+eyJoaXN0b3J5IjpbLTQzODA2MDY3LDE0NTk4MDY0NTQsMTA5ND
+IzNjk5MSwtMjAwMDU4MTE2NywtMTgxNzI5NDgzN119
 -->
