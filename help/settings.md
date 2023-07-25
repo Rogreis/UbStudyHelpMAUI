@@ -8,9 +8,7 @@ The Settings page is where you can customize your reading experience in the Amad
 
 ### Reading Options
 
-![Reading Options](images/Settings01.png)
 <img src="images/Settings01.png" alt="Reading Options" width="300" height="200" />
-
 
 1.  **Show/Hide Middle Translation**: This option allows you to toggle the visibility of the middle translation of "The Urantia Book". If you wish to view two translations at once, you can choose to show the middle translation. Otherwise, you can hide it for a less cluttered view.
     
@@ -21,6 +19,7 @@ The Settings page is where you can customize your reading experience in the Amad
 ### Updated Settings Options
 
 ![Reading Options](images/Settings02.png)
+<img src="images/Settings01.png" alt="Reading Options" width="300" height="200" />
 
 1.  **Search Page Size**: This setting allows you to adjust the maximum number of paragraphs a search page will contain. By controlling the page size, you can manage the volume of search results that are displayed at once, thereby making the results easier to sift through. To modify the Search Page Size, navigate to this option in the Settings, enter your preferred number of paragraphs, and save the changes.
     
@@ -55,7 +54,7 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwOTczMDgwMTYsMjQ0MzM4ODU5LDEwMj
-QwMzY5MjksMTQ1OTgwNjQ1NCwxMDk0MjM2OTkxLC0yMDAwNTgx
-MTY3LC0xODE3Mjk0ODM3XX0=
+eyJoaXN0b3J5IjpbLTYxMjM0NDQwOSwtMjA5NzMwODAxNiwyND
+QzMzg4NTksMTAyNDAzNjkyOSwxNDU5ODA2NDU0LDEwOTQyMzY5
+OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
 -->
