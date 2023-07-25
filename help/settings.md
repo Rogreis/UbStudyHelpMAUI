@@ -25,7 +25,7 @@ The Settings page is where you can customize your reading experience in the Amad
 2.  **Max Expression**: The Max Expression setting is related to the maximum number of expressions that can be stored for the Search Engine or the Subjects Index search for titles. This means you can control how many past search expressions or titles the system will remember for future use. To modify the Max Expression, navigate to this option in the Settings, enter your preferred number of expressions, and save the changes.    
 
 ### Translation Choices
-|<img src="images/Settings03.png" alt="Translation Choices" width="300" height="200" /> |![Translation Choices](images/Settings04.png)  |
+|<img src="images/Settings03.png" alt="Translation Choices" width="300" height="200" /> |<img src="images/Settings04.png" alt="How to select a translation" width="300" height="200" />  |
 
 
 1.  **Left Translation Choice**: The left translation is mandatory in our layout. However, you can select which translation to display on the left from the available options.
@@ -38,6 +38,7 @@ The Settings page is where you can customize your reading experience in the Amad
 ### Search,  Contents and App Load Options
 
 ![Search and Content](images/Settings05.png) 
+<img src="images/Settings03.png" alt="Search, Contents and App Load Options" width="300" height="200" />
 
 **Table Of Contents and Search Engine Translation**: This setting allows you to choose the translation used in the Table of Contents and the Search Engine. This ensures that your search results and table of contents match the translation you are most comfortable with. Your choices are
 1.  Use the mandatory always shown left translation
@@ -54,7 +55,7 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEzMzU3MDIyOCwtMjA5NzMwODAxNiwyND
-QzMzg4NTksMTAyNDAzNjkyOSwxNDU5ODA2NDU0LDEwOTQyMzY5
-OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
+eyJoaXN0b3J5IjpbMTMzNDg3MzE2LC0yMDk3MzA4MDE2LDI0ND
+MzODg1OSwxMDI0MDM2OTI5LDE0NTk4MDY0NTQsMTA5NDIzNjk5
+MSwtMjAwMDU4MTE2NywtMTgxNzI5NDgzN119
 -->
