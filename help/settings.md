@@ -19,7 +19,14 @@ The Settings page is where you can customize your reading experience in the Amad
 2.  **Show/Hide Right Translation**: Similar to the middle translation, this option lets you toggle the visibility of the right translation. Show or hide this based on your reading preferences.
     
 3.  **Show/Hide Paragraph Number**: If you prefer a minimalist view or if you're using a reading tool to listen to the translations, you can choose to hide the paragraph numbers. To display the numbers for reference, select 'Show'.
+
+### Updated Settings Options
+
+![Reading Options](images/Settings02.png)
+
+1.  **Search Page Size**: This setting allows you to adjust the maximum number of paragraphs a search page will contain. By controlling the page size, you can manage the volume of search results that are displayed at once, thereby making the results easier to sift through. To modify the Search Page Size, navigate to this option in the Settings, enter your preferred number of paragraphs, and save the changes.
     
+2.  **Max Expression**: The Max Expression setting is related to the maximum number of expressions that can be stored for the Search Engine or the Subjects Index search for titles. This means you can control how many past search expressions or titles the system will remember for future use. To modify the Max Expression, navigate to this option in the Settings, enter your preferred number of expressions, and save the changes.    
 
 ### Translation Choices
 |![Translation Choices](images/Settings03.png)  |![Translation Choices](images/Settings04.png)  |
@@ -50,6 +57,7 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTAyNDAzNjkyOSwxNDU5ODA2NDU0LDEwOT
-QyMzY5OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
+eyJoaXN0b3J5IjpbMjQ0MzM4ODU5LDEwMjQwMzY5MjksMTQ1OT
+gwNjQ1NCwxMDk0MjM2OTkxLC0yMDAwNTgxMTY3LC0xODE3Mjk0
+ODM3XX0=
 -->
