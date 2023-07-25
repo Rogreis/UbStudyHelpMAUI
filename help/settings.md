@@ -8,7 +8,7 @@
 
 The Settings page is where you can customize your reading experience in the Amadon app. Here's what you can do:
 
-![The search engine](images/Search.png)
+![The Settings Page](images/Settings.png)
 
 ### Reading Options
 
@@ -43,6 +43,6 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA5NDIzNjk5MSwtMjAwMDU4MTE2NywtMT
-gxNzI5NDgzN119
+eyJoaXN0b3J5IjpbNzUwOTYwMjc4LDEwOTQyMzY5OTEsLTIwMD
+A1ODExNjcsLTE4MTcyOTQ4MzddfQ==
 -->
