@@ -33,9 +33,9 @@ The Settings page is where you can customize your reading experience in the Amad
 
 ### Search and Contents Options
 
-![Translation Choices](images/Settings04.png) 
+![Search and Content](images/Settings05.png) 
 
-1.  **Table Of Contents and Search Engine Translation**: This setting allows you to choose the translation used in the Table of Contents and the Search Engine. This ensures that your search results and table of contents match the translation you are most comfortable with.
+1.  **Table Of Contents and Search Engine Translation**: This setting allows you to choose the translation used in the Table of Contents and the Search Engine. This ensures that your search results and table of contents match the translation you are most comfortable with. Your choices are
 
 ### App Load Options
 
@@ -50,6 +50,6 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTY5NTIxOTUyOSwxNDU5ODA2NDU0LDEwOT
+eyJoaXN0b3J5IjpbMTYwMjMwNTA0NCwxNDU5ODA2NDU0LDEwOT
 QyMzY5OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
 -->
