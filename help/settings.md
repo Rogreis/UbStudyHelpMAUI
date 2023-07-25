@@ -34,13 +34,13 @@ The Settings page is where you can customize your reading experience in the Amad
 
 3. **Right Translation Choices**: You can also choose which translation to display in the right position. If you've chosen to show this translation, select your preferred version from the available options.
     
-In the second you can see the translations options open and the selection for Spanish
+In the second you can see the translations options open and the selection for 'Spanish 2021'.
 
 ### Search,  Contents and App Load Options
 <img src="images/Settings05.png" alt="Search, Contents and App Load Options" width="300" height="200" />
 
 **Table Of Contents and Search Engine Translation**: This setting allows you to choose the translation used in the Table of Contents and the Search Engine. This ensures that your search results and table of contents match the translation you are most comfortable with. Your choices are
-1.  Use the mandatory always shown left translation
+1.  Use the mandatory always shown left translation.
 2.  Use the middle translation when shown.
 3.  Use the right translation when shown.
 4.  **Choose Translations on App Load**: Upon the first launch of the app, you can choose a subset of "The Urantia Book" translations to use. Once this is set, it's usually fixed. However, if you want to change your choices, you can toggle this option on. Next time you load the app, you'll be prompted to choose your translations again.
@@ -54,7 +54,7 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0OTM0NDIzNTgsLTIwOTczMDgwMTYsMj
-Q0MzM4ODU5LDEwMjQwMzY5MjksMTQ1OTgwNjQ1NCwxMDk0MjM2
-OTkxLC0yMDAwNTgxMTY3LC0xODE3Mjk0ODM3XX0=
+eyJoaXN0b3J5IjpbLTYzMDU5NzQ5OSwtMjA5NzMwODAxNiwyND
+QzMzg4NTksMTAyNDAzNjkyOSwxNDU5ODA2NDU0LDEwOTQyMzY5
+OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
 -->
