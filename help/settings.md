@@ -27,9 +27,9 @@ The Settings page is where you can customize your reading experience in the Amad
 
 1.  **Left Translation Choice**: The left translation is mandatory in our layout. However, you can select which translation to display on the left from the available options.
     
-2.  **Middle Translation Choices**: You can choose which translations to display in the middle and right positions. If you've chosen to show these translations, select your preferred versions from the available options.
+2.  **Middle Translation Choices**: You can choose which translation to display in the middle position. If you've chosen to show this column, select your preferred version from the available options.
 
-3. **Right Translation Choices**: You can choose which translations to display in the middle and right positions. If you've chosen to show these translations, select your preferred versions from the available options.
+3. **Right Translation Choices**: You can also choose which translation to display in the right position. If you've chosen to show this translation, select your preferred version from the available options.
     
 
 ### Search and Contents Options
@@ -49,6 +49,6 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjQzNjczODU2LDE0NTk4MDY0NTQsMTA5ND
-IzNjk5MSwtMjAwMDU4MTE2NywtMTgxNzI5NDgzN119
+eyJoaXN0b3J5IjpbMjEwMTgxOTMxMywxNDU5ODA2NDU0LDEwOT
+QyMzY5OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
 -->
