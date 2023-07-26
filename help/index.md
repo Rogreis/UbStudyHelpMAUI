@@ -12,15 +12,14 @@ The Subject Index is a crucial feature of our application designed to provide yo
 
 <img src="images/Index01.png" alt="Index contents" width="300" height="200" />
 
-1.  **Navigate to the Subject Index**: This can typically be found in the [menu bar](menubar.md) of the application, labelled as 'Index'.
+  
+1.  **Search the Index**: The Subject Index is organized alphabetically, with each key expression and linked subject listed in alphabetical order. Type at least 3 letters to get the field in part 2 filled with a list of subjects startinScroll through the list or use the alphabetical shortcuts to quickly jump to a section of the index.
     
-2.  **Browse the Index**: The Subject Index is organized alphabetically, with each key expression and linked subject listed in alphabetical order. Scroll through the list or use the alphabetical shortcuts to quickly jump to a section of the index.
+2.  **Key Expression**: This is a succinct phrase or term that encapsulates the essence of the linked subject. It provides a snapshot of the topic you'll explore when you click the associated link.
     
-3.  **Key Expression**: This is a succinct phrase or term that encapsulates the essence of the linked subject. It provides a snapshot of the topic you'll explore when you click the associated link.
+3.  **Linked Subject**: Next to the key expression, you will find the linked subject. This denotes the actual content from "The Uantia Book" that the key expression refers to.
     
-4.  **Linked Subject**: Next to the key expression, you will find the linked subject. This denotes the actual content from "The Uantia Book" that the key expression refers to.
-    
-5.  **Using the Link**: To the left of each subject is a clickable link. Clicking this link will take you directly to the relevant section of "The Uantia Book". The link may be a specific page number, a section name, or a unique identifier for digital versions.
+4.  **Using the Link**: To the left of each subject is a clickable link. Clicking this link will take you directly to the relevant section of "The Uantia Book". The link may be a specific page number, a section name, or a unique identifier for digital versions.
     
 
 ### Tips for Using the Subject Index
@@ -45,6 +44,6 @@ Remember, the Subject Index is a tool designed to make your reading of "The Uant
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzY3NjUyMTUwLDE1NjQ1MjczNDAsNTE1NT
-A3Njk1LC0xOTg1MzE5NzQsMTA0NTM2NzYzMl19
+eyJoaXN0b3J5IjpbLTE4MTA5NTUwMzMsMTU2NDUyNzM0MCw1MT
+U1MDc2OTUsLTE5ODUzMTk3NCwxMDQ1MzY3NjMyXX0=
 -->
