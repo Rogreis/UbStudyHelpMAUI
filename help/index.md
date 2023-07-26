@@ -22,9 +22,7 @@ When you select a subject item in the Amadon app, the selected item is immediate
     
 3.  **Subject Entries Page**: On this page, you'll see a list of short subject descriptions, each followed by a link. These links lead to the corresponding passages in "The Urantia Book". This expanded view contains all entries related to the chosen subject. These entries indicate where in "The Urantia Book" the subject occurs, giving you direct access to every mention of the subject across the entire book.
     
-4.  **Link to Text**: Click on the links provided if the subject matches what you're interested in what will take you directly to the relevant section of "The Uantia Book". The relevant text will be displayed in the column or columns to the right. Each clicked link not only opens the corresponding text but also gets recorded in the "Tracking" page for future reference.
-
- To the left of each subject is a clickable link. Clicking this link  The link may be a specific page number, a section name, or a unique identifier for digital versions.
+4.  **Link to Text**: Click on the links provided if the subject matches what you're interested in what will take you directly to the relevant section of "The Uantia Book" that will be displayed in the column or columns to the right. Each clicked link not only opens the corresponding text but also gets recorded in the "Tracking" page for future reference.  The link may be a specific paper number, a section name, or paragraph a unique identifier for digital versions.
     
 
 ### Tips for Using the Subject Index
@@ -50,7 +48,7 @@ If you need further assistance using the Subject Index or any other feature of t
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjYxNDE0NzI0LC0xOTE5MzI1NzEsMTU2ND
-UyNzM0MCw1MTU1MDc2OTUsLTE5ODUzMTk3NCwxMDQ1MzY3NjMy
-XX0=
+eyJoaXN0b3J5IjpbMTUxNDAwMDc1NSwtMTkxOTMyNTcxLDE1Nj
+Q1MjczNDAsNTE1NTA3Njk1LC0xOTg1MzE5NzQsMTA0NTM2NzYz
+Ml19
 -->
