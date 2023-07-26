@@ -15,9 +15,9 @@ The menu bar is the primary way to navigate through the Amadon app. This guide w
     
 3.  **Search**: The Search feature allows you to find specific words, phrases, or topics throughout "The Urantia Book". Powered by Lucene.net, this search engine can handle complex queries and return precise results. You can find more detailed information on how to use this feature in our "[Search Engine Help Guide](search.md)".
     
-4.  **Track**: The Track feature is a tool for keeping track of your progress through "The Urantia Book". As you access any paragraph or section title, the link reference to it is automatically stored in the tracking; you can, then, use this feature to return to read texts. More details at our "[Track of Paragraphs](track.md)". The maximum number of items 
+4.  **Track**: The Track feature is a tool for keeping track of your progress through "The Urantia Book". As you access any paragraph or section title, the link reference to it is automatically stored in the tracking; you can, then, use this feature to return to read texts. More details at our "[Track of Paragraphs](track.md)". The maximum number of items stored can be changed in the "[Settings Page](settings.md)".
     
-5.  **Settings**: In the Settings menu, you can customize the app according to your preferences. This includes adjusting the text size, theme, notification settings, and more. Any changes made in this menu will be applied across the app. See "[Settings Page](settings.md)".
+5.  **Settings**: In the Settings menu, you can customize the app according to your preferences. This includes chossing the translation to show, adjusting the text size, theme, notification settings, and more. Any changes made in this menu will be applied across the app. See "[Settings Page](settings.md)".
     
 6.  **Help**: The Help option provides assistance on how to use the app and its features. It includes various help guides and troubleshooting tips. If you are having difficulty with any aspect of the app, this should be your first port of call.
     
@@ -40,6 +40,6 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTM1NTI0ODQ3LC05NjM1OTY3ODksMTQ4Nj
-c4Mzg2OF19
+eyJoaXN0b3J5IjpbLTY1MDc0NDU2MCwtOTYzNTk2Nzg5LDE0OD
+Y3ODM4NjhdfQ==
 -->
