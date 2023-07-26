@@ -2,13 +2,13 @@
 
 ### Introduction
 
-The Subject Index is a crucial feature of our application designed to provide you with quick access to specific topics across "The Urantia Book". Each entry in the index is composed of a key expression and the subject, with a clickable link on the left of the subject. This guide will assist you in understanding how to effectively use this feature.
+The Subject Index is a crucial feature of our application designed to provide you with quick access to specific topics across "The Urantia Book". Each entry in the index is composed of a key expression and the subject, with a clickable link below the subject. This guide will assist you in understanding how to effectively use this feature.
 
 ![The subjec index](images/Index.png)
 
 ### How to Use the Subject Index
 
-1.  **Navigate to the Subject Index**: This can typically be found in the [menu bar](menubar.md) of the application, labelled as 'Index' or similar.
+1.  **Navigate to the Subject Index**: This can typically be found in the [menu bar](menubar.md) of the application, labelled as 'Index'.
     
 2.  **Browse the Index**: The Subject Index is organized alphabetically, with each key expression and linked subject listed in alphabetical order. Scroll through the list or use the alphabetical shortcuts to quickly jump to a section of the index.
     
@@ -41,6 +41,6 @@ Remember, the Subject Index is a tool designed to make your reading of "The Uant
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTE1NTA3Njk1LC0xOTg1MzE5NzQsMTA0NT
-M2NzYzMl19
+eyJoaXN0b3J5IjpbMTU2NDUyNzM0MCw1MTU1MDc2OTUsLTE5OD
+UzMTk3NCwxMDQ1MzY3NjMyXX0=
 -->
