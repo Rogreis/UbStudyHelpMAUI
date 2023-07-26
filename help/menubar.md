@@ -17,7 +17,7 @@ The menu bar is the primary way to navigate through the Amadon app. This guide w
     
 4.  **Track**: The Track feature is a tool for keeping track of your progress through "The Urantia Book". As you access any paragraph or section title, the link reference to it is automatically stored in the tracking; you can, then, use this feature to return to read texts. More details at our "[Track of Paragraphs](track.md)". The maximum number of items stored can be changed in the "[Settings Page](settings.md)".
     
-5.  **Settings**: In the Settings menu, you can customize the app according to your preferences. This includes chossing the translation to show, adjusting the text size, theme, notification settings, and more. Any changes made in this menu will be applied across the app. See "[Settings Page](settings.md)".
+5.  **Settings**: In the Settings menu, you can customize the app according to your preferences, like chose the translations and how many columns to show, for example. Any changes made be immediately applied across the app. See "[Settings Page](settings.md)".
     
 6.  **Help**: The Help option provides assistance on how to use the app and its features. It includes various help guides and troubleshooting tips. If you are having difficulty with any aspect of the app, this should be your first port of call.
     
@@ -40,6 +40,6 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY1MDc0NDU2MCwtOTYzNTk2Nzg5LDE0OD
-Y3ODM4NjhdfQ==
+eyJoaXN0b3J5IjpbLTIwNDY4Mjg3NDgsLTk2MzU5Njc4OSwxND
+g2NzgzODY4XX0=
 -->
