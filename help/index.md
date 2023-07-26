@@ -8,8 +8,7 @@ The Subject Index is a crucial feature of our application designed to provide yo
 
 ### How to Use the Subject Index
 
-![The subjec index](images/Index.png)
-
+<img src="images/Index01.png" alt="Index contents" width="300" height="200" />
 
 1.  **Navigate to the Subject Index**: This can typically be found in the [menu bar](menubar.md) of the application, labelled as 'Index'.
     
@@ -44,6 +43,6 @@ Remember, the Subject Index is a tool designed to make your reading of "The Uant
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMTA5NTc2ODcsMTU2NDUyNzM0MCw1MT
-U1MDc2OTUsLTE5ODUzMTk3NCwxMDQ1MzY3NjMyXX0=
+eyJoaXN0b3J5IjpbLTQzNDA0NTM1OCwxNTY0NTI3MzQwLDUxNT
+UwNzY5NSwtMTk4NTMxOTc0LDEwNDUzNjc2MzJdfQ==
 -->
