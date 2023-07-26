@@ -15,7 +15,7 @@ The Subject Index is a crucial feature of our application designed to provide yo
   
 1.  **Search the Index**: The Subject Index is organized alphabetically, with each key expression and linked subject listed in alphabetical order. Type at least 3 letters to get the field in part 2 filled with a list of subjects starting with the letters given. Scroll through the list to quickly jump to a section of the index.
     
-2.  **Key Expression**: This is a succinct phrase or term that encapsulates the essence of the linked subject. It provides a snapshot of the topic you'll explore when you click the associated link. 
+2.  **Key Expression**: This is a succinct phrase or term that encapsulates the essence of the linked subject. It provides a snapshot of the topic you'll explore when you click the associated link. When you make a choice it will be 
     
 3.  **Linked Subject**: Next to the key expression, you will find the linked subject. This denotes the actual content from "The Uantia Book" that the key expression refers to.
     
@@ -44,6 +44,6 @@ Remember, the Subject Index is a tool designed to make your reading of "The Uant
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0ODM3NDQ2ODMsMTU2NDUyNzM0MCw1MT
-U1MDc2OTUsLTE5ODUzMTk3NCwxMDQ1MzY3NjMyXX0=
+eyJoaXN0b3J5IjpbMTc0ODU5OTQ2MiwxNTY0NTI3MzQwLDUxNT
+UwNzY5NSwtMTk4NTMxOTc0LDEwNDUzNjc2MzJdfQ==
 -->
