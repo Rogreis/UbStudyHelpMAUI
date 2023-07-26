@@ -27,9 +27,9 @@ When you select a subject item in the Amadon app, the selected item is immediate
 
 1.  **Search Term**: Enter a search term of at least three letters into the search field. As you type, the app will automatically start generating concise titles that match your search term, populating the following combobox field with these results.
     
-2.  **Title Selection**: The combobox will display a list of concise titles found based on the letters you've entered. These titles represent groups of subjects within the book. Select a title from the dropdown list, and the page below will be automatically populated with the relevant subject entries.
+2.  **Title Selection**: The combobox will display a list of concise titles found based on the letters you've entered. These titles represent groups of subjects within the book. Select a title from the dropdown list, and the page below will be automatically populated with the relevant subject entries.  
     
-3.  **Subject Entries Page**: On this page, you'll see a list of short subject descriptions, each followed by a link. These links lead to the corresponding passages in "The Urantia Book". The subject entries page gives you a quick overview of where your subject of interest occurs within the book.
+3.  **Subject Entries Page**: On this page, you'll see a list of short subject descriptions, each followed by a link. These links lead to the corresponding passages in "The Urantia Book". The subject entries page gives you a quick overview of where your subject of interest occurs within the book. This expanded view contains all entries related to the chosen subject. These entries indicate where in "The Urantia Book" the subject occurs, giving you direct access to every mention of the subject across the entire book.
     
 4.  **Link to Text**: Click on the links provided if the subject matches what you're interested in. The relevant text will be displayed in the column or columns to the right. Each clicked link not only opens the corresponding text but also gets recorded in the "Tracking" page for future reference.
 
@@ -58,7 +58,7 @@ If you need further assistance using the Subject Index or any other feature of t
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjg3ODM0OTUyLC0xOTE5MzI1NzEsMTU2ND
-UyNzM0MCw1MTU1MDc2OTUsLTE5ODUzMTk3NCwxMDQ1MzY3NjMy
-XX0=
+eyJoaXN0b3J5IjpbMTE5NDQzOTM3NSwtMTkxOTMyNTcxLDE1Nj
+Q1MjczNDAsNTE1NTA3Njk1LC0xOTg1MzE5NzQsMTA0NTM2NzYz
+Ml19
 -->
