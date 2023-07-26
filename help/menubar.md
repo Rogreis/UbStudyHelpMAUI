@@ -19,7 +19,7 @@ The menu bar is the primary way to navigate through the Amadon app. This guide w
     
 5.  **Settings**: In the Settings menu, you can customize the app according to your preferences, like chose the translations and how many columns to show, for example. Any changes made be immediately applied across the app. See "[Settings Page](settings.md)".
     
-6.  **Help**: The Help option provides links to this help guide from inside the app and some useful links. assistance on how to use the app and its features. It includes various help guides and troubleshooting tips. If you are having difficulty with any aspect of the app, this should be your first port of call.
+6.  **Help**: The Help option provides links to this help guide from inside the app and some useful links. If you are having difficulty with any aspect of the app, this should be your first port of call.
     
 
 ### Navigating the Menu Bar
@@ -40,6 +40,6 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTgzNTAyMTg4NSwtOTYzNTk2Nzg5LDE0OD
-Y3ODM4NjhdfQ==
+eyJoaXN0b3J5IjpbMTQ3NzI5MTQyLC05NjM1OTY3ODksMTQ4Nj
+c4Mzg2OF19
 -->
