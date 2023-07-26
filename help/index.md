@@ -20,6 +20,12 @@ The Subject Index is a crucial feature of our application designed to provide yo
 3.  **Linked Subject**: Next to the key expression, you will find the linked subject. This denotes the actual content from "The Uantia Book" that the key expression refers to.
     
 4.  **Using the Link**: To the left of each subject is a clickable link. Clicking this link will take you directly to the relevant section of "The Uantia Book". The link may be a specific page number, a section name, or a unique identifier for digital versions.
+
+When you select a subject item in the Amadon app, the selected item is immediately expanded below. This expanded view contains all entries related to the chosen subject. These entries indicate where in "The Urantia Book" the subject occurs, giving you direct access to every mention of the subject across the entire book.
+
+This feature is designed to make your study of "The Urantia Book" more focused and efficient by bringing all instances of a particular subject together, saving you the time and effort of manually searching through the book.
+
+If you need further assistance using the Subject Index or any other feature of the Amadon app, please don't hesitate to contact our support team.
     
 
 ### Tips for Using the Subject Index
@@ -44,6 +50,6 @@ Remember, the Subject Index is a tool designed to make your reading of "The Uant
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc0ODU5OTQ2MiwxNTY0NTI3MzQwLDUxNT
+eyJoaXN0b3J5IjpbMTYxMTU1NDg4MCwxNTY0NTI3MzQwLDUxNT
 UwNzY5NSwtMTk4NTMxOTc0LDEwNDUzNjc2MzJdfQ==
 -->
