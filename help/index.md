@@ -15,7 +15,7 @@ The Subject Index is a crucial feature of our application designed to provide yo
   
 1.  **Search the Index**: The Subject Index is organized alphabetically, with each key expression and linked subject listed in alphabetical order. Type at least 3 letters to get the field in part 2 filled with a list of subjects starting with the letters given. Scroll through the list to quickly jump to a section of the index.
     
-2.  **Key Expression**: This is a succinct phrase or term that encapsulates the essence of the linked subject. It provides a snapshot of the topic you'll explore when you click the associated link. When you make a choice it will be 
+2.  **Key Expression**: This is a succinct phrase or term that encapsulates the essence of the linked subject. It provides a snapshot of the topic you'll explore when you click the associated link. When you select a subject item in the Amadon app, the selected item is immediately expanded below. This expanded view contains all entries related to the chosen subject. These entries indicate where in "The Urantia Book" the subject occurs, giving you direct access to every mention of the subject across the entire book.
     
 3.  **Linked Subject**: Next to the key expression, you will find the linked subject. This denotes the actual content from "The Uantia Book" that the key expression refers to.
     
@@ -46,10 +46,10 @@ If you're having trouble with the Subject Index, here are some tips:
     
 This feature is designed to make your study of "The Urantia Book" more focused and efficient by bringing all instances of a particular subject together, saving you the time and effort of manually searching through the book.
 
-If you need further assistance using the Subject Index or any other feature of the Amadon app, please don't hesitate to contact our support team.
+If you need further assistance using the Subject Index or any other feature of the Amadon app, please don't hesitate to contact our support page.
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA2MDU3ODIxOCwxNTY0NTI3MzQwLDUxNT
+eyJoaXN0b3J5IjpbLTE5MTkzMjU3MSwxNTY0NTI3MzQwLDUxNT
 UwNzY5NSwtMTk4NTMxOTc0LDEwNDUzNjc2MzJdfQ==
 -->
