@@ -29,7 +29,7 @@ The Subject Index is a crucial feature of our application designed to provide yo
     
 2.  **Use the Search Function**: The Subject Index is extensive, hard to be used in a paper book, then you can use the built-in search function to find specific subjects.
     
-3.  **Follow the Links**: Don't be afraid to follow the links to the subjects. These will take you directly to the corresponding content in "The Uantia Book".
+3.  **Follow the Links**: Don't be afraid to follow the links to the subjects. These will take you directly to the corresponding content in "The Urantia Book".
     
 
 ### Troubleshooting
@@ -46,7 +46,7 @@ If you need further assistance using the Subject Index or any other feature of t
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDYxMTYyNTIyLC0xOTE5MzI1NzEsMTU2ND
-UyNzM0MCw1MTU1MDc2OTUsLTE5ODUzMTk3NCwxMDQ1MzY3NjMy
-XX0=
+eyJoaXN0b3J5IjpbMTE1MjgzMzg1NCwtMTkxOTMyNTcxLDE1Nj
+Q1MjczNDAsNTE1NTA3Njk1LC0xOTg1MzE5NzQsMTA0NTM2NzYz
+Ml19
 -->
