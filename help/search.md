@@ -73,88 +73,45 @@ Multiple character wildcard searches looks for 0 or more characters. For example
 
 - absolut*
 
-  
-  
-
 You can also use the wildcard searches in the middle of a term.
-
-  
 
 - abso*e will find everything starting with abso and finishing with e
 
-  
-  
-  
-  
-
-### Similar Searches
-
-  
+### Similar (Fuzzy) Searches
 
 To do a similar search use the tilde, "~", symbol at the end of a Single word Term. For example to search for a term similar in spelling to "abso" use the fuzzy search:
 
-  
-
 - roam~ will find terms like foam and roams.
-
-  
-  
+ 
 
 An additional (optional) parameter can specify the required similarity. The value is between 0 and 1, with a value closer to 1 only terms with a higher similarity will be matched. For example:
 
-  
-
 - roam~0.8
-
-  
-  
 
 *The default that is used if the parameter is not given is 0.5.*
 
-  
-  
-  
-
 ### Proximity Searches
 
-  
-
 You can try finding words are a within a specific distance away. To do a proximity search use the tilde, "~", symbol at the end of a Phrase. For example to search for a "Jesus" and "God" within 10 or 2 words of each other in a document use the search:
-
-  
 
 - "Jesus God"~10 finds 117 paragraphs
 
 - "Jesus God"~2 finds 18 paragraphs
 
-  
-
 ### Boosting a Term
-
-  
 
 To increase some term's relevance use the caret, "^", symbol with a boost factor (a number) at the end of the term you are searching. The higher the boost factor, the more relevant the term will be.
 
-  
-
 Boosting allows you to control the relevance of a document by boosting its term. For example, if you are searching for **Jesus God** and you want the term "**Jesus**" to be more relevant boost it using the ^ symbol along with the boost factor next to the term. You would type:
-
-  
 
 - Jesus^4 God This will make documents with the term Jesus appear more relevant.
 
 - "Jesus Christ"^4 "apostle Peter" Here the phrase has a bigger boost
 
 By default, the boost factor is 1. Although the boost factor must be positive, it can be less than 1 (e.g. 0.2)
-
-  
-  
-  
-  
+ 
 
 ### Boolean Operators
-
-  
 
 Boolean operators allow terms to be combined through logic operators. This search supports AND, "+", OR, NOT and "-" as Boolean operators(Note: Boolean operators must be ALL CAPS).
 
@@ -165,8 +122,6 @@ The OR operator is the default conjunction operator. This means that if there is
   
 
 #### OR
-
-  
 
 To search for documents that contain either "Christ Michael" or just "Jesus" use the query:
 
@@ -310,6 +265,6 @@ To escape these character use the \ before the character. For example to search 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM0NzA0MDU0OCwtMTQwNDM3OTk0NiwxMz
-cwMTAyODczLDE1NTU0NTQ2NTBdfQ==
+eyJoaXN0b3J5IjpbLTE5Njc4NTg3MjEsLTE0MDQzNzk5NDYsMT
+M3MDEwMjg3MywxNTU1NDU0NjUwXX0=
 -->
