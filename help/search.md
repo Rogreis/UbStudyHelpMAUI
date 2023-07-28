@@ -28,7 +28,8 @@ Our search engine supports several search operators:
 7.  **"~": (Fuzzy Search)**: This operator can be used when you are not sure of the correct spelling. To perform a fuzzy search, use: `term~`
     
 8.  **"": (Phrase)**: This operator is used to search for exact phrases. For instance, to find documents containing the exact phrase "my phrase", use: `"my phrase"`
-    
+
+*See more details below.*    
 
 ### Search Tips
 
@@ -192,6 +193,6 @@ To escape these character use the \ before the character. For example to search 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQwNzIxNDA5MSwtMTQwNDM3OTk0NiwxMz
-cwMTAyODczLDE1NTU0NTQ2NTBdfQ==
+eyJoaXN0b3J5IjpbNTg5MDk0NDQwLC0xNDA0Mzc5OTQ2LDEzNz
+AxMDI4NzMsMTU1NTQ1NDY1MF19
 -->
