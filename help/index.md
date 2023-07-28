@@ -1,5 +1,17 @@
 ## Subject Index Feature - Help Guide
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Subject Index Feature - Help Guide](#subject-index-feature-help-guide)
+  * [Introduction](#introduction)
+  * [How to Use the Subject Index](#how-to-use-the-subject-index)
+  * [Using the Subject Index](#using-the-subject-index)
+  * [Tips for Using the Subject Index](#tips-for-using-the-subject-index)
+  * [Troubleshooting](#troubleshooting)
+
+<!-- TOC end -->
+
+
 ### Introduction
 
 The Subject Index is a crucial feature of our application designed to provide you with quick access to specific topics across "The Urantia Book". Each entry in the index is composed of a key expression and the subject, with a clickable link below the subject. This guide will assist you in understanding how to effectively use this feature.
@@ -46,7 +58,7 @@ If you need further assistance using the Subject Index or any other feature of t
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTE1MjgzMzg1NCwtMTkxOTMyNTcxLDE1Nj
+eyJoaXN0b3J5IjpbMjEzMDc4MDcxNiwtMTkxOTMyNTcxLDE1Nj
 Q1MjczNDAsNTE1NTA3Njk1LC0xOTg1MzE5NzQsMTA0NTM2NzYz
 Ml19
 -->
