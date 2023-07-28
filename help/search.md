@@ -156,83 +156,42 @@ Note: The NOT operator cannot be used with just one term. For example, the follo
 
 #### -
 
-  
-
 The "-" or prohibit operator excludes documents that contain the term after the "-" symbol.
-
-  
 
 To search for documents that contain **"Christ Michael"** but not **"Jesus of Nazareth"** use the query:
 
-  
-
 - "Christ Michael" - "Jesus of Nazareth"
-
-  
-  
 
 ### Grouping
 
-  
-
 You can use parentheses to group clauses to form sub queries. This can be very useful if you want to control the boolean logic for a query.
-
-  
 
 To search for either "Christ " or "Nebadon" and "Gabriel" use the query:
 
-  
-
 - (Christ OR Nebadon) AND Gabriel
-
-  
-  
-  
 
 *This eliminates any confusion and makes sure you that website must exist and either term Christ or Nebadon may exist.*
 
-  
-
 ### Field Grouping
-
-  
 
 Parentheses also can be used to group multiple clauses to a single field.
 
-  
-
 To search for a title that contains both the word "Buddha" and the phrase "Genghis Khan" use the query:
-
-  
 
 - (+Buddha+"Genghis Khan")
 
-  
-  
-
 ### Escaping Special Characters
-
-  
 
 Lucene supports escaping special characters that are part of the query syntax. The current list special characters are
 
-  
-
 +  - && || ! ( ) { } [ ] ^ " ~ * ? : \
-
-  
 
 To escape these character use the \ before the character. For example to search for **[Revealed** use the query:
 
-  
-
 -  \\[Revealed
-
-
-
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjg5MDcyMTM1LC0xNDA0Mzc5OTQ2LDEzNz
-AxMDI4NzMsMTU1NTQ1NDY1MF19
+eyJoaXN0b3J5IjpbLTQwNzIxNDA5MSwtMTQwNDM3OTk0NiwxMz
+cwMTAyODczLDE1NTU0NTQ2NTBdfQ==
 -->
