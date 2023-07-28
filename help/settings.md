@@ -1,5 +1,17 @@
 ## Amadon App Settings Page - Help Guide
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Amadon App Settings Page - Help Guide](#amadon-app-settings-page-help-guide)
+  * [Introduction](#introduction)
+  * [Reading Options](#reading-options)
+  * [Updated Settings Options](#updated-settings-options)
+  * [Translation Choices](#translation-choices)
+  * [Search,  Contents and App Load Options](#search-contents-and-app-load-options)
+  * [How to Modify Settings](#how-to-modify-settings)
+
+<!-- TOC end -->
+
 ### Introduction
 
 The Settings page is where you can customize your reading experience in the Amadon app. Here's what you can do:
@@ -54,7 +66,8 @@ Remember, the Settings page is designed to make your reading experience more per
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYzMDU5NzQ5OSwtMjA5NzMwODAxNiwyND
-QzMzg4NTksMTAyNDAzNjkyOSwxNDU5ODA2NDU0LDEwOTQyMzY5
-OTEsLTIwMDA1ODExNjcsLTE4MTcyOTQ4MzddfQ==
+eyJoaXN0b3J5IjpbMTg0NTAzMjQ2MywtNjMwNTk3NDk5LC0yMD
+k3MzA4MDE2LDI0NDMzODg1OSwxMDI0MDM2OTI5LDE0NTk4MDY0
+NTQsMTA5NDIzNjk5MSwtMjAwMDU4MTE2NywtMTgxNzI5NDgzN1
+19
 -->
