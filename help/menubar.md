@@ -24,7 +24,7 @@ The menu bar is the primary way to navigate through the Amadon app. This guide w
 
 ### Navigating the Menu Bar
 
-To use the menu bar, simply click on the desired option. The corresponding feature will open in the main window of the app. To return to the previous view, click the "Back" button, usually located in the top-left corner of the app.
+To use the menu bar, simply click on the desired option. The corresponding feature will open in the main window of the app. 
 
 ### Tips for Using the Menu Bar
 
@@ -40,6 +40,6 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ3NzI5MTQyLC05NjM1OTY3ODksMTQ4Nj
-c4Mzg2OF19
+eyJoaXN0b3J5IjpbNjYzNzkxOTg3LDE0NzcyOTE0MiwtOTYzNT
+k2Nzg5LDE0ODY3ODM4NjhdfQ==
 -->
