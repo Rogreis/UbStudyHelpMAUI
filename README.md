@@ -6,14 +6,13 @@ Our primary objective is to grant you **direct access to the papers and sections
 
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
-Help Pages Available
-  * [Introduction](#introduction)
-  * [Reading Options](#reading-options)
-  * [Updated Settings Options](#updated-settings-options)
-  * [Translation Choices](#translation-choices)
-  * [Search,  Contents and App Load Options](#search-contents-and-app-load-options)
-  * [How to Modify Settings](#how-to-modify-settings)
-
+### Help Pages Available
+  * [Table of Contents](#help/toc.md)
+  * [Searchading Options](#help/)
+  * [Updated Settings Options](#help/)
+  * [Translation Choices](#help/)
+  * [Search,  Contents and App Load Options](#help/)
+  * [How to Modify Settings](#help/)
 <!-- TOC end -->
 
 
@@ -26,5 +25,5 @@ Lastly, our app features a **tracking system** for read paragraphs. This allows 
 
 **Amadon** is more than just an app; it's a companion to your journey through the profound wisdom of "The Urantia Book". We're proud to share this open-source application with you and invite you to join our community of explorers. So, let the journey begin!
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM5OTM1MzA0OV19
+eyJoaXN0b3J5IjpbLTEzMjM5OTM1MjJdfQ==
 -->
