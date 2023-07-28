@@ -1,5 +1,17 @@
 ## Amadon App Menu Bar - Help Guide
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Amadon App Menu Bar - Help Guide](#amadon-app-menu-bar-help-guide)
+  * [Introduction](#introduction)
+  * [Menu Options](#menu-options)
+  * [Navigating the Menu Bar](#navigating-the-menu-bar)
+  * [Tips for Using the Menu Bar](#tips-for-using-the-menu-bar)
+
+<!-- TOC end -->
+
+
+
 ### Introduction
 
 The menu bar is the primary way to navigate through the Amadon app. This guide will explain each menu option and its function.
@@ -40,6 +52,6 @@ Remember, the goal of the Amadon app is to make your reading experience of "The 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjYzNzkxOTg3LDE0NzcyOTE0MiwtOTYzNT
-k2Nzg5LDE0ODY3ODM4NjhdfQ==
+eyJoaXN0b3J5IjpbLTM4MzY2MjI3NCwxNDc3MjkxNDIsLTk2Mz
+U5Njc4OSwxNDg2NzgzODY4XX0=
 -->
