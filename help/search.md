@@ -125,66 +125,34 @@ The OR operator is the default conjunction operator. This means that if there is
 
 To search for documents that contain either "Christ Michael" or just "Jesus" use the query:
 
-  
-
 - "Christ Michael" OR Jesus
-
-  
-  
 
 #### AND
 
-  
-
 The AND operator matches documents where both terms exist anywhere in the text of a single document. This is equivalent to an intersection using sets. The symbol && can be used in place of the word AND.
-
-  
 
 To search for documents that contain **"Christ Michael"** and **"Jesus of Nazareth"** use the query:
 
-  
-
 - "Christ Michael" AND "Jesus of Nazareth"
 
-  
-  
 
 #### +
 
-  
-
 The "+" or required operator requires that the term after the "+" symbol exist somewhere in a the field of a single document.
-
-  
 
 To search for documents that must contain **"Christ "** and may contain **"Nebadon"** use the query:
 
-  
-
 - +Christ Nebadon
-
-  
 
 #### NOT
 
-  
-
 The NOT operator excludes documents that contain the term after NOT. This is equivalent to a difference using sets. The symbol ! can be used in place of the word NOT.
-
-  
 
 To search for documents that contain **"Christ Michael"** but not **"Jesus of Nazareth"** use the query:
 
-  
-
 - "Christ Michael" NOT "Jesus of Nazareth"
 
-  
-  
-
 Note: The NOT operator cannot be used with just one term. For example, the following search will return no results: **NOT "Christ Michael"**
-
-  
 
 #### -
 
@@ -265,6 +233,6 @@ To escape these character use the \ before the character. For example to search 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5Njc4NTg3MjEsLTE0MDQzNzk5NDYsMT
-M3MDEwMjg3MywxNTU1NDU0NjUwXX0=
+eyJoaXN0b3J5IjpbNjg5MDcyMTM1LC0xNDA0Mzc5OTQ2LDEzNz
+AxMDI4NzMsMTU1NTQ1NDY1MF19
 -->
