@@ -8,9 +8,9 @@ Our primary objective is to grant you **direct access to the papers and sections
 
 ### Help Pages Available
   * [Table of Contents](#help/toc.md)
-  * [Searchading Options](#help/)
-  * [Updated Settings Options](#help/)
-  * [Translation Choices](#help/)
+  * [Index](#help/index.md)
+  * [Search](#help/search.md)
+  * [Track](#help/)
   * [Search,  Contents and App Load Options](#help/)
   * [How to Modify Settings](#help/)
 <!-- TOC end -->
@@ -25,5 +25,5 @@ Lastly, our app features a **tracking system** for read paragraphs. This allows 
 
 **Amadon** is more than just an app; it's a companion to your journey through the profound wisdom of "The Urantia Book". We're proud to share this open-source application with you and invite you to join our community of explorers. So, let the journey begin!
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMjM5OTM1MjJdfQ==
+eyJoaXN0b3J5IjpbNTEzMDcyMTA3XX0=
 -->
