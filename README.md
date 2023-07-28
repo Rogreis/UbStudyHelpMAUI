@@ -12,10 +12,8 @@ Our primary objective is to grant you **direct access to the papers and sections
   * [Search](#help/search.md)
   * [Track](#help/track.md)
   * [Settings](#help/settings.md)
-  * [Menu BHow to Modify Settings](#help/)
+  * [Menu Bar](#help/menubar.md)
 <!-- TOC end -->
-
-
 
 In addition to easy access, we have integrated the **advanced search** capabilities of Lucene.net. Whether you're looking for a specific phrase, topic, or theme, our search engine allows you to effortlessly find what you need. Using complex algorithms, it scours the entire text and returns accurate results in record time.
 
@@ -25,5 +23,5 @@ Lastly, our app features a **tracking system** for read paragraphs. This allows 
 
 **Amadon** is more than just an app; it's a companion to your journey through the profound wisdom of "The Urantia Book". We're proud to share this open-source application with you and invite you to join our community of explorers. So, let the journey begin!
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDMwMzM5NDA5XX0=
+eyJoaXN0b3J5IjpbNDQ4NDY3Njc5XX0=
 -->
