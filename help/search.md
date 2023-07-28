@@ -1,5 +1,37 @@
 ## Amadon Search Engine - Help Guide
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Amadon Search Engine - Help Guide](#amadon-search-engine-help-guide)
+  * [Introduction](#introduction)
+  * [Getting Started](#getting-started)
+  * [Search Operators](#search-operators)
+  * [Search Tips](#search-tips)
+  * [Troubleshooting](#troubleshooting)
+  * [Basic search examples:](#basic-search-examples)
+  * [Wildcards](#wildcards)
+  * [Similar (Fuzzy) Searches](#similar-fuzzy-searches)
+  * [Proximity Searches](#proximity-searches)
+  * [Boosting a Term](#boosting-a-term)
+  * [Boolean Operators](#boolean-operators)
+    + [OR](#or)
+    + [AND](#and)
+    + [+](#)
+    + [NOT](#not)
+    + [-](#-)
+  * [Grouping](#grouping)
+  * [Field Grouping](#field-grouping)
+  * [Escaping Special Characters](#escaping-special-characters)
+
+<!-- TOC end -->
+
+<!-- TOC --><a name="amadon-search-engine-help-guide"></a>
+## Amadon Search Engine - Help Guide
+
+<!-- TOC --><a name="introduction"></a>
+
+
+
 ### Introduction
 Amadon search engine is based on [Apache Lucene](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html), a powerful search library, which can provide advanced search functionality to any application. This help guide will walk you through the basics of using the Lucene.net based search engine in our application.
 
@@ -193,6 +225,6 @@ To escape these character use the \ before the character. For example to search 
 
 > Written with [StackEdit](https://stackedit.io/).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTg5MDk0NDQwLC0xNDA0Mzc5OTQ2LDEzNz
-AxMDI4NzMsMTU1NTQ1NDY1MF19
+eyJoaXN0b3J5IjpbNDM0NTY5MjEzLDU4OTA5NDQ0MCwtMTQwND
+M3OTk0NiwxMzcwMTAyODczLDE1NTU0NTQ2NTBdfQ==
 -->
