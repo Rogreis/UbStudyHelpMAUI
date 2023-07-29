@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Compile Remove="Classes\ControlsAppearance.cs" />
-    <Compile Remove="Classes\GetDataFilesMAUI.cs" />
     <Compile Remove="Classes\Initializer.cs" />
     <Compile Remove="Classes\LogMAUI.cs" />
     <Compile Remove="Helpers\GitHelper.cs" />
@@ -24,7 +23,6 @@
 
   <ItemGroup>
     <None Include="Classes\ControlsAppearance.cs" />
-    <None Include="Classes\GetDataFilesMAUI.cs" />
     <None Include="Classes\Initializer.cs" />
     <None Include="Classes\LogMAUI.cs" />
     <None Include="UbClasses\GetDataFiles.cs" />

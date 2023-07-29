@@ -1,21 +1,25 @@
-﻿@using Amadon.Services;
-@using AmadonStandardLib.Helpers;
-<h5>Help</h5>
+﻿@using Amadon.Controls.Help
 
+<h1>@CurrentHelpPageName</h1>
+
+
+<StartHelp></StartHelp>
 
 
 @code {
+    private string CurrentHelpPageName = AmandonHelpPageNames.StartingHelp;
 
-    // <iframe src="https://github.com/Rogreis/PtAlternative/blob/main/README.md" width="100%" height="500"></iframe>
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        base.OnAfterRender(firstRender);
-        if (firstRender)
-        {
-            HelpService.GetHtml();
-            StateHasChanged();
-        }
+        await base.OnInitializedAsync();
+        AmadonEvents.OnShowHelpPage += OnShowHelp;
+    }
+
+    private void OnShowHelp(string newHelpPAge)
+    {
+        CurrentHelpPageName = newHelpPAge;
+        StateHasChanged();
     }
 
 

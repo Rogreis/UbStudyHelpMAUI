@@ -1,5 +1,6 @@
 ﻿using Amadon.Controls;
 using AmadonStandardLib.UbClasses;
+using Blazorise;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Amadon
     internal delegate void NewSearchEntryDelegate(TOC_Entry entry);
     internal delegate void NewTrackEntryDelegate(TOC_Entry entry);
     internal delegate void ShowTrackDelegate();
+    internal delegate void ShowHelpPageDelegate(string helpPage);
 
     internal class AmandonComponentNames
     {
@@ -29,6 +31,18 @@ namespace Amadon
         public const string ControlIndex = "index";
         public const string ControlToc = "toc";
     }
+
+    internal class AmandonHelpPageNames
+    {
+        public const string TocHelp = "toc";
+        public const string SearchHelp = "search";
+        public const string StartingHelp = "help";
+        public const string TrackHelp = "track";
+        public const string IndexHelp = "index";
+        public const string MenuBarHelp = "menubar";
+        public const string SettingsHelp = "settings";
+    }
+
 
     internal static class AmadonEvents
     {
@@ -84,6 +98,8 @@ namespace Amadon
         /// Used to inform text object asking to show a new paragraph
         /// </summary>
         public static event NewTrackEntryDelegate OnNewTrackEntry;
+
+        public static event ShowHelpPageDelegate OnShowHelpPage;
 
         // ============================================================================================================= 
         // Functions to fire the above events
@@ -146,5 +162,11 @@ namespace Amadon
         {
             OnNewTrackEntry?.Invoke(entry);
         }
+
+        public static void ShowHelpPage(string newPage)
+        {
+            OnShowHelpPage?.Invoke(newPage);
+        }
+
     }
 }

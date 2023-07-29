@@ -9,3 +9,11 @@
         }
     }
  }
+
+ window.registerClickEvent = function(dotNetObject) {
+    document.querySelector('a').addEventListener('click', function(event) {
+        event.preventDefault();
+        dotNetObject.invokeMethodAsync('OnLinkClicked');
+    });
+};
+
