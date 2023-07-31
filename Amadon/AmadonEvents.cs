@@ -1,11 +1,4 @@
-﻿using Amadon.Controls;
-using AmadonStandardLib.UbClasses;
-using Blazorise;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AmadonStandardLib.UbClasses;
 
 namespace Amadon
 {
@@ -167,6 +160,13 @@ namespace Amadon
         {
             OnShowHelpPage?.Invoke(newPage);
         }
+
+        public static void BackToHelpHome()
+        {
+            ShowHelpPage(AmandonHelpPageNames.StartingHelp);
+        }
+
+
 
     }
 }

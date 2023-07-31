@@ -1,0 +1,61 @@
+﻿
+
+<div class="centered-bar">
+    <Bar Breakpoint="Breakpoint.Desktop"
+         Background="Background.Dark"
+         ThemeContrast="ThemeContrast.Dark">
+        <BarToggler />
+        <BarMenu>
+            <BarEnd>
+                <BarItem>
+                    <Button Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.TocHelp))" Color="Color.Primary" Class="helpButton">TOC</Button>
+                    <Button Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.IndexHelp))" Color="Color.Primary" Class="helpButton">Index</Button>
+                    <Button Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.SearchHelp))" Color="Color.Primary" Class="helpButton">Search</Button>
+                    <Button Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.TrackHelp))" Color="Color.Primary" Class="helpButton">Track</Button>
+                </BarItem>
+            </BarEnd>
+        </BarMenu>
+    </Bar>
+</div>
+
+<div class="centered-bar">
+    <Bar Breakpoint="Breakpoint.Desktop"
+         Background="Background.Dark"
+         ThemeContrast="ThemeContrast.Dark">
+        <BarToggler />
+        <BarMenu>
+            <BarEnd>
+                <BarItem>
+                    <Button Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.SettingsHelp))" Color="Color.Primary" Class="helpButton">Settings</Button>
+                    <Button Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.MenuBarHelp))" Color="Color.Primary" Class="helpButton">Menu Bar</Button>
+                    <Button Clicked="AmadonEvents.BackToHelpHome" Color="Color.Primary" Class="helpButton">Start</Button>
+                </BarItem>
+            </BarEnd>
+        </BarMenu>
+    </Bar>
+</div>
+
+
+
+
+@code {
+    private bool ControlNameValid(string name)
+    {
+        return name == AmandonHelpPageNames.TocHelp ||
+               name == AmandonHelpPageNames.IndexHelp ||
+               name == AmandonHelpPageNames.SearchHelp ||
+               name == AmandonHelpPageNames.TrackHelp ||
+               name == AmandonHelpPageNames.SettingsHelp ||
+               name == AmandonHelpPageNames.MenuBarHelp;
+    }
+
+
+    private void FireHelpEvent(string eventName)
+    {
+        if (ControlNameValid(eventName))
+        {
+            AmadonEvents.ShowHelpPage(eventName);
+        }
+    }
+
+}
