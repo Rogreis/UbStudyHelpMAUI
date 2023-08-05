@@ -1,221 +1,340 @@
-﻿<h3 id="amadon-search-engine-help-guide">Search Engine - Help Guide</h3>
+﻿@using Blazorise
 
-@*<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+<HelpBar></HelpBar>
 
-<ul>
-    <li>
-        <a href="#amadon-search-engine-help-guide">Amadon Search Engine - Help Guide</a>
-        <ul>
-            <li><a href="#introduction">Introduction</a></li>
-            <li><a href="#getting-started">Getting Started</a></li>
-            <li><a href="#search-operators">Search Operators</a></li>
-            <li><a href="#search-tips">Search Tips</a></li>
-            <li><a href="#troubleshooting">Troubleshooting</a></li>
-            <li><a href="#basic-search-examples">Basic search examples:</a></li>
-            <li><a href="#wildcards">Wildcards</a></li>
-            <li><a href="#similar-fuzzy-searches">Similar (Fuzzy) Searches</a></li>
-            <li><a href="#proximity-searches">Proximity Searches</a></li>
-            <li><a href="#boosting-a-term">Boosting a Term</a></li>
-            <li>
-                <a href="#boolean-operators">Boolean Operators</a>
-                <ul>
-                    <li><a href="#or">OR</a></li>
-                    <li><a href="#and">AND</a></li>
-                    <li><a href="#">+</a></li>
-                    <li><a href="#not">NOT</a></li>
-                    <li><a href="#-">-</a></li>
-                </ul>
-            </li>
-            <li><a href="#grouping">Grouping</a></li>
-            <li><a href="#field-grouping">Field Grouping</a></li>
-            <li><a href="#escaping-special-characters">Escaping Special Characters</a></li>
-        </ul>
-    </li>
-</ul>
-<!-- TOC end -->
-*@
-<!-- TOC --><a name="amadon-search-engine-help-guide"></a>
-<h2 id="amadon-search-engine---help-guide-1">Amadon Search Engine - Help Guide</h2>
-<!-- TOC --><a name="introduction"></a>
+<h3>Search Engine - Help Guide</h3>
+
+<style>
+
+    td, th {
+        background-color: #212529; /* This is for .bg-dark */
+        color: #ffffff; /* This is for .text-white */
+    }
 
 
+</style>
 
-<h3 id="introduction">Introduction</h3>
-<p>Amadon search engine is based on <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">Apache Lucene</a>, a powerful search library, which can provide advanced search functionality to any application. This help guide will walk you through the basics of using the Lucene.net based search engine in our application.</p>
-<p><img src="images/Search.png" alt="The search engine" class="imageFull"></p>
-<h3 id="getting-started">Getting Started</h3>
-<ol>
-    <li><strong>Input Your Search Query</strong>: Type your search term in the search box and press enter. You can search for a single word, a phrase, or use advanced queries.</li>
-</ol>
-<h3 id="search-operators">Search Operators</h3>
-<p>Our search engine supports several search operators:</p>
-<ol>
-    <li>
-        <p><strong>AND</strong>: This operator matches documents where both terms exist anywhere in the text. To search for documents that contain &quot;term1&quot; and &quot;term2&quot;, use: <code>term1 AND term2</code></p>
-    </li>
-    <li>
-        <p><strong>OR</strong>: This operator matches documents where either term exists anywhere in the text. To search for documents that contain &quot;term1&quot; or &quot;term2&quot;, use: <code>term1 OR term2</code></p>
-    </li>
-    <li>
-        <p><strong>NOT</strong>: This operator excludes documents that contain the term after NOT. To search for documents that contain &quot;term1&quot; but not &quot;term2&quot;, use: <code>term1 NOT term2</code></p>
-    </li>
-    <li>
-        <p><strong>&quot;+&quot;: (Must)</strong>: This operator makes a term mandatory, or &quot;must appear&quot; in the result. To search for documents that must contain &quot;term1&quot;, use: <code>+term1</code></p>
-    </li>
-    <li>
-        <p><strong>&quot;-&quot;: (Must Not)</strong>: This operator requires that the term must not appear in the document. To search for documents that must not contain &quot;term1&quot;, use: <code>-term1</code></p>
-    </li>
-    <li>
-        <p><strong>&quot;*&quot;: (Wildcard)</strong>: The wildcard operator can be used to search for partial words. For instance, to find documents containing words that start with &quot;term&quot;, use: <code>term*</code></p>
-    </li>
-    <li>
-        <p><strong>&quot;~&quot;: (Fuzzy Search)</strong>: This operator can be used when you are not sure of the correct spelling. To perform a fuzzy search, use: <code>term~</code></p>
-    </li>
-    <li>
-        <p><strong>&quot;&quot;: (Phrase)</strong>: This operator is used to search for exact phrases. For instance, to find documents containing the exact phrase &quot;my phrase&quot;, use: <code>&quot;my phrase&quot;</code></p>
-    </li>
-</ol>
-<p><em>See more details below.</em>    </p>
-<h3 id="search-tips">Search Tips</h3>
-<ol>
-    <li>
-        <p>Lucene.net search is case insensitive. For example, searching for &quot;term&quot; will also return &quot;Term&quot; or &quot;TERM&quot;.</p>
-    </li>
-    <li>
-        <p>Special characters need to be escaped with &quot;&quot;. For example, to search for &quot;(1+1)=2&quot;, use: <code>\(1\+1\)=2</code></p>
-    </li>
-    <li>
-        <p>Avoid using a single wildcard (*) as a search term, as it may return too many results and slow down the search.</p>
-    </li>
-</ol>
-<h3 id="troubleshooting">Troubleshooting</h3>
-<p>If you&#39;re having issues with the search functionality, try these steps:</p>
-<ol>
-    <li>
-        <p>Check your search term for typos or spelling mistakes.</p>
-    </li>
-    <li>
-        <p>If you&#39;re using search operators, ensure that they&#39;re formatted correctly.</p>
-    </li>
-    <li>
-        <p>If the search is returning too many irrelevant results, try adding more specific terms or using the AND or &quot;+&quot; operator to narrow down the results.</p>
-    </li>
-    <li>
-        <p>If the search is returning too few or no results, try using broader terms or the OR operator to widen the search.</p>
-    </li>
-</ol>
-<p>Remember, the aim of the search is to help you find exactly what you&#39;re looking for in the most efficient way. Happy searching!</p>
-<h3 id="basic-search-examples">Basic search examples:</h3>
-<ul>
-    <li>Jesus</li>
-    <li>&quot;Christ Michael&quot;</li>
-    <li>Jesus and God</li>
-    <li>&quot;My master delays his coming&quot; AND God</li>
-    <li>Adora???</li>
-    <li>Adora*</li>
-</ul>
-<h3 id="wildcards">Wildcards</h3>
-<p>The single character wildcard search looks for terms that match that with the single character replaced. For example, to search for &quot;absoluta&quot; or &quot;absolute&quot; you can use the search:</p>
-<ul>
-    <li>absolut?</li>
-</ul>
-<p>Multiple character wildcard searches looks for 0 or more characters. For example, to search for absoluta, absolute or absoluteness, you can use the search:</p>
-<ul>
-    <li>absolut*</li>
-</ul>
-<p>You can also use the wildcard searches in the middle of a term.</p>
-<ul>
-    <li>abso*e will find everything starting with abso and finishing with e</li>
-</ul>
-<h3 id="similar-fuzzy-searches">Similar (Fuzzy) Searches</h3>
-<p>To do a similar search use the tilde, &quot;~&quot;, symbol at the end of a Single word Term. For example to search for a term similar in spelling to &quot;abso&quot; use the fuzzy search:</p>
-<ul>
-    <li>roam~ will find terms like foam and roams.</li>
-</ul>
-<p>An additional (optional) parameter can specify the required similarity. The value is between 0 and 1, with a value closer to 1 only terms with a higher similarity will be matched. For example:</p>
-<ul>
-    <li>roam~0.8</li>
-</ul>
-<p><em>The default that is used if the parameter is not given is 0.5.</em></p>
-<h3 id="proximity-searches">Proximity Searches</h3>
-<p>You can try finding words are a within a specific distance away. To do a proximity search use the tilde, &quot;~&quot;, symbol at the end of a Phrase. For example to search for a &quot;Jesus&quot; and &quot;God&quot; within 10 or 2 words of each other in a document use the search:</p>
-<ul>
-    <li>
-        <p>&quot;Jesus God&quot;~10 finds 117 paragraphs</p>
-    </li>
-    <li>
-        <p>&quot;Jesus God&quot;~2 finds 18 paragraphs</p>
-    </li>
-</ul>
-<h3 id="boosting-a-term">Boosting a Term</h3>
-<p>To increase some term&#39;s relevance use the caret, &quot;^&quot;, symbol with a boost factor (a number) at the end of the term you are searching. The higher the boost factor, the more relevant the term will be.</p>
-<p>Boosting allows you to control the relevance of a document by boosting its term. For example, if you are searching for <strong>Jesus God</strong> and you want the term &quot;<strong>Jesus</strong>&quot; to be more relevant boost it using the ^ symbol along with the boost factor next to the term. You would type:</p>
-<ul>
-    <li>
-        <p>Jesus^4 God This will make documents with the term Jesus appear more relevant.</p>
-    </li>
-    <li>
-        <p>&quot;Jesus Christ&quot;^4 &quot;apostle Peter&quot; Here the phrase has a bigger boost</p>
-    </li>
-</ul>
-<p>By default, the boost factor is 1. Although the boost factor must be positive, it can be less than 1 (e.g. 0.2)</p>
-<h3 id="boolean-operators">Boolean Operators</h3>
-<p>Boolean operators allow terms to be combined through logic operators. This search supports AND, &quot;+&quot;, OR, NOT and &quot;-&quot; as Boolean operators(Note: Boolean operators must be ALL CAPS).</p>
-<p>The OR operator is the default conjunction operator. This means that if there is no Boolean operator between two terms, the OR operator is used. The OR operator links two terms and finds a matching document if either of the terms exist in a document. This is equivalent to a union using sets. The symbol || can be used in place of the word OR.</p>
-<h4 id="or">OR</h4>
-<p>To search for documents that contain either &quot;Christ Michael&quot; or just &quot;Jesus&quot; use the query:</p>
-<ul>
-    <li>&quot;Christ Michael&quot; OR Jesus</li>
-</ul>
-<h4 id="and">AND</h4>
-<p>The AND operator matches documents where both terms exist anywhere in the text of a single document. This is equivalent to an intersection using sets. The symbol &amp;&amp; can be used in place of the word AND.</p>
-<p>To search for documents that contain <strong>&quot;Christ Michael&quot;</strong> and <strong>&quot;Jesus of Nazareth&quot;</strong> use the query:</p>
-<ul>
-    <li>&quot;Christ Michael&quot; AND &quot;Jesus of Nazareth&quot;</li>
-</ul>
-<h4 id="">+</h4>
-<p>The &quot;+&quot; or required operator requires that the term after the &quot;+&quot; symbol exist somewhere in a the field of a single document.</p>
-<p>To search for documents that must contain <strong>&quot;Christ &quot;</strong> and may contain <strong>&quot;Nebadon&quot;</strong> use the query:</p>
-<ul>
-    <li>+Christ Nebadon</li>
-</ul>
-<h4 id="not">NOT</h4>
-<p>The NOT operator excludes documents that contain the term after NOT. This is equivalent to a difference using sets. The symbol ! can be used in place of the word NOT.</p>
-<p>To search for documents that contain <strong>&quot;Christ Michael&quot;</strong> but not <strong>&quot;Jesus of Nazareth&quot;</strong> use the query:</p>
-<ul>
-    <li>&quot;Christ Michael&quot; NOT &quot;Jesus of Nazareth&quot;</li>
-</ul>
-<p>Note: The NOT operator cannot be used with just one term. For example, the following search will return no results: <strong>NOT &quot;Christ Michael&quot;</strong></p>
-<h4 id="-">-</h4>
-<p>The &quot;-&quot; or prohibit operator excludes documents that contain the term after the &quot;-&quot; symbol.</p>
-<p>To search for documents that contain <strong>&quot;Christ Michael&quot;</strong> but not <strong>&quot;Jesus of Nazareth&quot;</strong> use the query:</p>
-<ul>
-    <li>&quot;Christ Michael&quot; - &quot;Jesus of Nazareth&quot;</li>
-</ul>
-<h3 id="grouping">Grouping</h3>
-<p>You can use parentheses to group clauses to form sub queries. This can be very useful if you want to control the boolean logic for a query.</p>
-<p>To search for either &quot;Christ &quot; or &quot;Nebadon&quot; and &quot;Gabriel&quot; use the query:</p>
-<ul>
-    <li>(Christ OR Nebadon) AND Gabriel</li>
-</ul>
-<p><em>This eliminates any confusion and makes sure you that website must exist and either term Christ or Nebadon may exist.</em></p>
-<h3 id="field-grouping">Field Grouping</h3>
-<p>Parentheses also can be used to group multiple clauses to a single field.</p>
-<p>To search for a title that contains both the word &quot;Buddha&quot; and the phrase &quot;Genghis Khan&quot; use the query:</p>
-<ul>
-    <li>(+Buddha+&quot;Genghis Khan&quot;)</li>
-</ul>
-<h3 id="escaping-special-characters">Escaping Special Characters</h3>
-<p>Lucene supports escaping special characters that are part of the query syntax. The current list special characters are</p>
-<ul>
-    <li>
-        <ul>
-            <li>&amp;&amp; || ! ( ) { } [ ] ^ &quot; ~ * ? : \</li>
-        </ul>
-    </li>
-</ul>
-<p>To escape these character use the \ before the character. For example to search for <strong>[Revealed</strong> use the query:</p>
-<ul>
-    <li>\[Revealed</li>
-</ul>
+<Accordion>
 
+    <Collapse Visible="@collapse1Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is1">
+                <AccordionToggle>Introduction</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>Amadon search engine is based on <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">Apache Lucene</a>, a powerful search library, which can provide advanced search functionality to any application. This help guide will walk you through the basics of using the Lucene.net based search engine in our application.</p>
+            <p><img src="images/Search.png" alt="The search engine" class="imageFull"></p>
+            <h3 id="getting-started">Getting Started</h3>
+            <ol>
+                <li><strong>Input Your Search Query</strong>: Type your search term in the search box and press enter. You can search for a single word, a phrase, or use advanced queries.</li>
+            </ol>
+            <h3 id="search-operators">Search Operators</h3>
+            <p>Our search engine supports several search operators:</p>
+            <ol>
+                <li>
+                    <p><strong>AND</strong>: This operator matches documents where both terms exist anywhere in the text. To search for documents that contain &quot;term1&quot; and &quot;term2&quot;, use: <code>term1 AND term2</code></p>
+                </li>
+                <li>
+                    <p><strong>OR</strong>: This operator matches documents where either term exists anywhere in the text. To search for documents that contain &quot;term1&quot; or &quot;term2&quot;, use: <code>term1 OR term2</code></p>
+                </li>
+                <li>
+                    <p><strong>NOT</strong>: This operator excludes documents that contain the term after NOT. To search for documents that contain &quot;term1&quot; but not &quot;term2&quot;, use: <code>term1 NOT term2</code></p>
+                </li>
+                <li>
+                    <p><strong>&quot;+&quot;: (Must)</strong>: This operator makes a term mandatory, or &quot;must appear&quot; in the result. To search for documents that must contain &quot;term1&quot;, use: <code>+term1</code></p>
+                </li>
+                <li>
+                    <p><strong>&quot;-&quot;: (Must Not)</strong>: This operator requires that the term must not appear in the document. To search for documents that must not contain &quot;term1&quot;, use: <code>-term1</code></p>
+                </li>
+                <li>
+                    <p><strong>&quot;*&quot;: (Wildcard)</strong>: The wildcard operator can be used to search for partial words. For instance, to find documents containing words that start with &quot;term&quot;, use: <code>term*</code></p>
+                </li>
+                <li>
+                    <p><strong>&quot;~&quot;: (Fuzzy Search)</strong>: This operator can be used when you are not sure of the correct spelling. To perform a fuzzy search, use: <code>term~</code></p>
+                </li>
+                <li>
+                    <p><strong>&quot;&quot;: (Phrase)</strong>: This operator is used to search for exact phrases. For instance, to find documents containing the exact phrase &quot;my phrase&quot;, use: <code>&quot;my phrase&quot;</code></p>
+                </li>
+            </ol>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse2Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is1">
+                <AccordionToggle>Search Tips</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <ol>
+                <li>
+                    <p>Lucene.net search is case insensitive. For example, searching for &quot;term&quot; will also return &quot;Term&quot; or &quot;TERM&quot;.</p>
+                </li>
+                <li>
+                    <p>Special characters need to be escaped with &quot;&quot;. For example, to search for &quot;(1+1)=2&quot;, use: <code>\(1\+1\)=2</code></p>
+                </li>
+                <li>
+                    <p>Avoid using a single wildcard (*) as a search term, as it may return too many results and slow down the search.</p>
+                </li>
+            </ol>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse3Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is1">
+                <AccordionToggle>Troubleshooting</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>If you&#39;re having issues with the search functionality, try these steps:</p>
+            <ol>
+                <li>
+                    <p>Check your search term for typos or spelling mistakes.</p>
+                </li>
+                <li>
+                    <p>If you&#39;re using search operators, ensure that they&#39;re formatted correctly.</p>
+                </li>
+                <li>
+                    <p>If the search is returning too many irrelevant results, try adding more specific terms or using the AND or &quot;+&quot; operator to narrow down the results.</p>
+                </li>
+                <li>
+                    <p>If the search is returning too few or no results, try using broader terms or the OR operator to widen the search.</p>
+                </li>
+            </ol>
+            <p>Remember, the aim of the search is to help you find exactly what you&#39;re looking for in the most efficient way. Happy searching!</p>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse4Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Basic search examples</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <ul>
+                <li>Jesus</li>
+                <li>&quot;Christ Michael&quot;</li>
+                <li>Jesus and God</li>
+                <li>&quot;My master delays his coming&quot; AND God</li>
+                <li>Adora???</li>
+                <li>Adora*</li>
+            </ul>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse5Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Wildcards</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>The single character wildcard search looks for terms that match that with the single character replaced. For example, to search for &quot;absoluta&quot; or &quot;absolute&quot; you can use the search:</p>
+            <ul>
+                <li>absolut?</li>
+            </ul>
+            <p>Multiple character wildcard searches looks for 0 or more characters. For example, to search for absoluta, absolute or absoluteness, you can use the search:</p>
+            <ul>
+                <li>absolut*</li>
+            </ul>
+            <p>You can also use the wildcard searches in the middle of a term.</p>
+            <ul>
+                <li>abso*e will find everything starting with abso and finishing with e</li>
+            </ul>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse6Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Similar (Fuzzy) Searches</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>To do a similar search use the tilde, &quot;~&quot;, symbol at the end of a Single word Term. For example to search for a term similar in spelling to &quot;abso&quot; use the fuzzy search:</p>
+            <ul>
+                <li>roam~ will find terms like foam and roams.</li>
+            </ul>
+            <p>An additional (optional) parameter can specify the required similarity. The value is between 0 and 1, with a value closer to 1 only terms with a higher similarity will be matched. For example:</p>
+            <ul>
+                <li>roam~0.8</li>
+            </ul>
+            <p><em>The default that is used if the parameter is not given is 0.5.</em></p>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse7Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Proximity Searches</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>You can try finding words are a within a specific distance away. To do a proximity search use the tilde, &quot;~&quot;, symbol at the end of a Phrase. For example to search for a &quot;Jesus&quot; and &quot;God&quot; within 10 or 2 words of each other in a document use the search:</p>
+            <ul>
+                <li>
+                    <p>&quot;Jesus God&quot;~10 finds 117 paragraphs</p>
+                </li>
+                <li>
+                    <p>&quot;Jesus God&quot;~2 finds 18 paragraphs</p>
+                </li>
+            </ul>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse8Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Boosting a Term</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>To increase some term&#39;s relevance use the caret, &quot;^&quot;, symbol with a boost factor (a number) at the end of the term you are searching. The higher the boost factor, the more relevant the term will be.</p>
+            <p>Boosting allows you to control the relevance of a document by boosting its term. For example, if you are searching for <strong>Jesus God</strong> and you want the term &quot;<strong>Jesus</strong>&quot; to be more relevant boost it using the ^ symbol along with the boost factor next to the term. You would type:</p>
+            <ul>
+                <li>
+                    <p>Jesus^4 God This will make documents with the term Jesus appear more relevant.</p>
+                </li>
+                <li>
+                    <p>&quot;Jesus Christ&quot;^4 &quot;apostle Peter&quot; Here the phrase has a bigger boost</p>
+                </li>
+            </ul>
+            <p>By default, the boost factor is 1. Although the boost factor must be positive, it can be less than 1 (e.g. 0.2)</p>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse9Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Boolean Operators</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>Boolean operators allow terms to be combined through logic operators. This search supports AND, &quot;+&quot;, OR, NOT and &quot;-&quot; as Boolean operators(Note: Boolean operators must be ALL CAPS).</p>
+            <p>The OR operator is the default conjunction operator. This means that if there is no Boolean operator between two terms, the OR operator is used. The OR operator links two terms and finds a matching document if either of the terms exist in a document. This is equivalent to a union using sets. The symbol || can be used in place of the word OR.</p>
+
+            <Table Hoverable>
+                <TableHeader ThemeContrast="ThemeContrast.Dark">
+                    <TableRow>
+                        <TableHeaderCell>Operator</TableHeaderCell>
+                        <TableHeaderCell>Description</TableHeaderCell>
+                        <TableHeaderCell>Examples</TableHeaderCell>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableRowHeader><h4 id="or">OR</h4></TableRowHeader>
+                        <TableRowCell>To search for documents that contain either &quot;Christ Michael&quot; or just &quot;Jesus&quot; use the left example.</TableRowCell>
+                        <TableRowCell>&quot;Christ Michael&quot; OR Jesus</TableRowCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableRowHeader><h4 id="and">AND</h4></TableRowHeader>
+                        <TableRowCell>
+                            <p>The AND operator matches documents where both terms exist anywhere in the text of a single document. This is equivalent to an intersection using sets. The symbol &amp;&amp; can be used in place of the word AND.</p>
+                            <p>To search for documents that contain <strong>&quot;Christ Michael&quot;</strong> and <strong>&quot;Jesus of Nazareth&quot;</strong> use the left example.</p>
+                        </TableRowCell>
+                        <TableRowCell>&quot;Christ Michael&quot; AND &quot;Jesus of Nazareth&quot;</TableRowCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableRowHeader><h4 id="">+</h4></TableRowHeader>
+                        <TableRowCell>
+                            <p>The &quot;+&quot; or required operator requires that the term after the &quot;+&quot; symbol exist somewhere in a the field of a single document.</p>
+                            <p>To search for documents that must contain <strong>&quot;Christ &quot;</strong> and may contain <strong>&quot;Nebadon&quot;</strong> use the left example.</p>
+                        </TableRowCell>
+                        <TableRowCell>+Christ Nebadon</TableRowCell>
+                    </TableRow>
+
+                    <TableRow>
+                        <TableRowHeader><h4 id=""><h4 id="not">NOT</h4></h4></TableRowHeader>
+                        <TableRowCell>
+                            <p>The NOT operator excludes documents that contain the term after NOT. This is equivalent to a difference using sets. The symbol ! can be used in place of the word NOT.</p>
+                            <p>To search for documents that contain <strong>&quot;Christ Michael&quot;</strong> but not <strong>&quot;Jesus of Nazareth&quot;</strong> use the left example.</p>
+                            <p><em>Note: The NOT operator cannot be used with just one term. For example, the following search will return no results: <strong>NOT &quot;Christ Michael&quot;</strong></em></p>
+                        </TableRowCell>
+                        <TableRowCell>&quot;Christ Michael&quot; NOT &quot;Jesus of Nazareth&quot;</TableRowCell>
+                    </TableRow>
+
+                    <TableRow>
+                        <TableRowHeader><h4 id="">-</h4></TableRowHeader>
+                        <TableRowCell>
+                            <p>The &quot;-&quot; or prohibit operator excludes documents that contain the term after the &quot;-&quot; symbol.</p>
+                            <p>To search for documents that contain <strong>&quot;Christ Michael&quot;</strong> but not <strong>&quot;Jesus of Nazareth&quot;</strong> use the query:</p>
+                        </TableRowCell>
+                        <TableRowCell>&quot;Christ Michael&quot; - &quot;Jesus of Nazareth&quot;</TableRowCell>
+                    </TableRow>
+
+                </TableBody>
+            </Table>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse10Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Grouping</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>You can use parentheses to group clauses to form sub queries. This can be very useful if you want to control the boolean logic for a query.</p>
+            <p>To search for either &quot;Christ &quot; or &quot;Nebadon&quot; and &quot;Gabriel&quot; use the query:</p>
+            <ul>
+                <li>(Christ OR Nebadon) AND Gabriel</li>
+            </ul>
+            <p><em>This eliminates any confusion and makes sure you that website must exist and either term Christ or Nebadon may exist.</em></p>
+            <h3 id="field-grouping">Field Grouping</h3>
+            <p>Parentheses also can be used to group multiple clauses to a single field.</p>
+            <p>To search for a title that contains both the word &quot;Buddha&quot; and the phrase &quot;Genghis Khan&quot; use the query:</p>
+            <ul>
+                <li>(+Buddha+&quot;Genghis Khan&quot;)</li>
+            </ul>
+        </CollapseBody>
+    </Collapse>
+
+    <Collapse Visible="@collapse11Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is3">
+                <AccordionToggle>Escaping Special Characters</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>Lucene supports escaping special characters that are part of the query syntax. The current list special characters are</p>
+            <ul>
+                <li>
+                    <ul>
+                        <li>&amp;&amp; || ! ( ) { } [ ] ^ &quot; ~ * ? : \</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>To escape these character use the \ before the character. For example to search for <strong>[Revealed</strong> use the query:</p>
+            <ul>
+                <li>\[Revealed</li>
+            </ul>
+        </CollapseBody>
+    </Collapse>
+
+
+
+</Accordion>
+
+<HelpBar></HelpBar>
+
+
+@code {
+
+    bool collapse1Visible = true;
+    bool collapse2Visible = false;
+    bool collapse3Visible = false;
+    bool collapse4Visible = false;
+    bool collapse5Visible = false;
+    bool collapse6Visible = false;
+    bool collapse7Visible = false;
+    bool collapse8Visible = false;
+    bool collapse9Visible = false;
+    bool collapse10Visible = false;
+    bool collapse11Visible = false;
+
+
+}

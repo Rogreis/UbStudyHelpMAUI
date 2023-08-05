@@ -99,7 +99,10 @@ namespace Amadon
 
         public static void TopNavCommand(string controlName)
         {
-            OnTopNavCommand?.Invoke(controlName);
+            if (controlName == AmandonComponentNames.ControlHelp)
+                ShowHelpPage(AmandonHelpPageNames.StartingHelp);
+            else
+                OnTopNavCommand?.Invoke(controlName);
         }
 
         public static void TranslationsListInitialized()

@@ -9,6 +9,12 @@
 
 <div id="rightColumn" class="black splitRight right mt-0 p-0 bg-dark text-white">
     <div class="row">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+            Open modal
+        </button>
+
+        <Button Color="Color.Primary" Clicked="@ShowModal">Show Modal</Button>
+
         @if (@PaperLines != null)
         {
             <Table ElementId="@tableId" Borderless Resizable ResizeMode="TableResizeMode.Columns" FullWidth Class="bg-dark text-white">
@@ -28,7 +34,7 @@
                 </TableBody>
             </Table>
         }
-
+        <HelpModal @ref="ModalForHelp"></HelpModal>
 
 *    </div>
 
@@ -38,8 +44,8 @@
 
 @code {
     private PaperTextFormatted PaperLines { get; set; }
-    private LeftColumn LeftControl;
     private string ExpressionToHighlight { get; set; }
+    private HelpModal ModalForHelp;
     string anchor = "";
 
 
@@ -103,6 +109,12 @@
         AmadonEvents.OnHighlightExpression += OnHighlightExpression;
     }
 
+    public Task ShowModal()
+    {
+        return ModalForHelp.ShowModal();
+    }
+
+
     private async void GetTexts()
     {
         PaperLines = await TextService.GetHtml();
@@ -123,6 +135,7 @@
         StateHasChanged();
         JumpToAnchor(StaticObjects.Parameters.Entry);
     }
+
 
 
     protected void EventsControl_RedrawText()

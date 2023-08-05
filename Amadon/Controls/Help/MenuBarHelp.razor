@@ -1,63 +1,75 @@
-﻿<h3 id="menu-bar-help-guide">Menu Bar - Help Guide</h3>
+﻿@using Blazorise
+<HelpBar></HelpBar>
 
+<h3 id="menu-bar-help-guide">Menu Bar Help</h3>
 
-@*<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
-<ul>
-    <li>
-        <a href="#amadon-app-menu-bar-help-guide">Amadon App Menu Bar - Help Guide</a>
-        <ul>
-            <li><a href="#introduction">Introduction</a></li>
-            <li><a href="#menu-options">Menu Options</a></li>
-            <li><a href="#navigating-the-menu-bar">Navigating the Menu Bar</a></li>
-            <li><a href="#tips-for-using-the-menu-bar">Tips for Using the Menu Bar</a></li>
-        </ul>
-    </li>
-</ul>
-<!-- TOC end -->
-*@
+<Accordion>
+    <Collapse Visible="@collapse1Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is1">
+                <AccordionToggle>Introduction</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>The menu bar is the primary way to navigate through the Amadon app. This guide will explain each menu option and its function.</p>
+            <h3 id="menu-options">Menu Options</h3>
+            <p><img src="images/menu.png" alt="The Menu Bar" class="imageMenubar"></p>
+            <ol>
+                <li>
+                    <p><strong>Table of Contents</strong>: The Table of Contents is an organized listing of all the papers and sections within &quot;The Urantia Book&quot;. It provides an overview of the book&#39;s structure and allows you to directly access any section or paper by simply clicking on its title. More details at our &quot;<a href="toc.md">Table of Contents</a>&quot;.</p>
+                </li>
+                <li>
+                    <p><strong>Index</strong>: The Index is an alphabetical listing of the key expressions and subjects throughout &quot;The Urantia Book&quot;. Each subject is linked to its relevant section within the book. Use this feature to quickly find and navigate to specific topics or check more details at our &quot;<a href="index.md">Subject Index Feature</a>&quot;.</p>
+                </li>
+                <li>
+                    <p><strong>Search</strong>: The Search feature allows you to find specific words, phrases, or topics throughout &quot;The Urantia Book&quot;. Powered by Lucene.net, this search engine can handle complex queries and return precise results. You can find more detailed information on how to use this feature in our &quot;<a href="search.md">Search Engine Help Guide</a>&quot;.</p>
+                </li>
+                <li>
+                    <p><strong>Track</strong>: The Track feature is a tool for keeping track of your progress through &quot;The Urantia Book&quot;. As you access any paragraph or section title, the link reference to it is automatically stored in the tracking; you can, then, use this feature to return to read texts. More details at our &quot;<a href="track.md">Track of Paragraphs</a>&quot;. The maximum number of items stored can be changed in the &quot;<a href="settings.md">Settings Page</a>&quot;.</p>
+                </li>
+                <li>
+                    <p><strong>Settings</strong>: In the Settings menu, you can customize the app according to your preferences, like chose the translations and how many columns to show, for example. Any changes made be immediately applied across the app. See &quot;<a href="settings.md">Settings Page</a>&quot;.</p>
+                </li>
+                <li>
+                    <p><strong>Help</strong>: The Help option provides links to this help guide from inside the app and some useful links. If you are having difficulty with any aspect of the app, this should be your first port of call.</p>
+                </li>
+            </ol>
+        </CollapseBody>
+    </Collapse>
 
-<h3 id="introduction">Introduction</h3>
-<p>The menu bar is the primary way to navigate through the Amadon app. This guide will explain each menu option and its function.</p>
-<h3 id="menu-options">Menu Options</h3>
-<p><img src="images/menu.png" alt="The Menu Bar" class="imageMenubar"></p>
-<ol>
-    <li>
-        <p><strong>Table of Contents</strong>: The Table of Contents is an organized listing of all the papers and sections within &quot;The Urantia Book&quot;. It provides an overview of the book&#39;s structure and allows you to directly access any section or paper by simply clicking on its title. More details at our &quot;<a href="toc.md">Table of Contents</a>&quot;.</p>
-    </li>
-    <li>
-        <p><strong>Index</strong>: The Index is an alphabetical listing of the key expressions and subjects throughout &quot;The Urantia Book&quot;. Each subject is linked to its relevant section within the book. Use this feature to quickly find and navigate to specific topics or check more details at our &quot;<a href="index.md">Subject Index Feature</a>&quot;.</p>
-    </li>
-    <li>
-        <p><strong>Search</strong>: The Search feature allows you to find specific words, phrases, or topics throughout &quot;The Urantia Book&quot;. Powered by Lucene.net, this search engine can handle complex queries and return precise results. You can find more detailed information on how to use this feature in our &quot;<a href="search.md">Search Engine Help Guide</a>&quot;.</p>
-    </li>
-    <li>
-        <p><strong>Track</strong>: The Track feature is a tool for keeping track of your progress through &quot;The Urantia Book&quot;. As you access any paragraph or section title, the link reference to it is automatically stored in the tracking; you can, then, use this feature to return to read texts. More details at our &quot;<a href="track.md">Track of Paragraphs</a>&quot;. The maximum number of items stored can be changed in the &quot;<a href="settings.md">Settings Page</a>&quot;.</p>
-    </li>
-    <li>
-        <p><strong>Settings</strong>: In the Settings menu, you can customize the app according to your preferences, like chose the translations and how many columns to show, for example. Any changes made be immediately applied across the app. See &quot;<a href="settings.md">Settings Page</a>&quot;.</p>
-    </li>
-    <li>
-        <p><strong>Help</strong>: The Help option provides links to this help guide from inside the app and some useful links. If you are having difficulty with any aspect of the app, this should be your first port of call.</p>
-    </li>
-</ol>
-<h3 id="navigating-the-menu-bar">Navigating the Menu Bar</h3>
-<p>To use the menu bar, simply click on the desired option. The corresponding feature will open in the main window of the app.</p>
-<h3 id="tips-for-using-the-menu-bar">Tips for Using the Menu Bar</h3>
-<ol>
-    <li>
-        <p><strong>Explore Each Option</strong>: Don&#39;t be afraid to explore each menu option to familiarize yourself with its functionality. Understanding how to navigate the app will enhance your overall reading experience.</p>
-    </li>
-    <li>
-        <p><strong>Customize Your Settings</strong>: Make sure to check out the Settings menu to tailor the app to your reading preferences.</p>
-    </li>
-    <li>
-        <p><strong>Use the Help Option</strong>: If you&#39;re unsure about anything, remember the Help option is there to assist you.</p>
-    </li>
-</ol>
+    <Collapse Visible="@collapse2Visible">
+        <CollapseHeader Class="HeaderColors">
+            <Heading Size="HeadingSize.Is1">
+                <AccordionToggle>Navigating the Menu Bar</AccordionToggle>
+            </Heading>
+        </CollapseHeader>
+        <CollapseBody Class="AmadonDark">
+            <p>To use the menu bar, simply click on the desired option. The corresponding feature will open in the main window of the app.</p>
+            <h3 id="tips-for-using-the-menu-bar">Tips for Using the Menu Bar</h3>
+            <ol>
+                <li>
+                    <p><strong>Explore Each Option</strong>: Don&#39;t be afraid to explore each menu option to familiarize yourself with its functionality. Understanding how to navigate the app will enhance your overall reading experience.</p>
+                </li>
+                <li>
+                    <p><strong>Customize Your Settings</strong>: Make sure to check out the Settings menu to tailor the app to your reading preferences.</p>
+                </li>
+                <li>
+                    <p><strong>Use the Help Option</strong>: If you&#39;re unsure about anything, remember the Help option is there to assist you.</p>
+                </li>
+            </ol>
+            <p>Remember, the goal of the Amadon app is to make your reading experience of &quot;The Urantia Book&quot; as enjoyable and efficient as possible. If you have any questions or need further assistance, don&#39;t hesitate to contact our support team.</p>
+        </CollapseBody>
+    </Collapse>
 
-<p>Remember, the goal of the Amadon app is to make your reading experience of &quot;The Urantia Book&quot; as enjoyable and efficient as possible. If you have any questions or need further assistance, don&#39;t hesitate to contact our support team.</p>
+</Accordion>
+
+<HelpBar></HelpBar>
 
 
 @code {
+
+    bool collapse1Visible = true;
+    bool collapse2Visible = false;
+
 
 }
