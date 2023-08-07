@@ -10,10 +10,20 @@
     }
  }
 
- window.registerClickEvent = function(dotNetObject) {
+window.registerClickEvent = function(dotNetObject) {
     document.querySelector('a').addEventListener('click', function(event) {
         event.preventDefault();
         dotNetObject.invokeMethodAsync('OnLinkClicked');
     });
 };
+
+window.setupF1KeyListener = () => {
+    document.body.addEventListener('keydown', (event) => {
+        if (event.key === 'F1') {
+            event.preventDefault(); // To prevent the browser's default F1 action
+            DotNet.invokeMethodAsync('Amadon', 'HandleF1KeyPress');
+        }
+    });
+};
+    
 

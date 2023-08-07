@@ -51,6 +51,14 @@
     const string tableId = "tableText";
 
 
+    [JSInvokable]
+    public static void HandleF1KeyPress()
+    {
+        // Handle the F1 key press here
+        AmadonEvents.HelpContext();
+    }
+
+
     #region Current page search and hightlight functions
 
 
@@ -98,6 +106,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        await JSRuntime.InvokeVoidAsync("setupF1KeyListener");
         LibraryEventsControl.RedrawText += EventsControl_RedrawText;
         AmadonEvents.OnNewTocEntry += OnNewTocEntry;
         AmadonEvents.OnNewSubjectIndexEntry += OnNewTocEntry;
