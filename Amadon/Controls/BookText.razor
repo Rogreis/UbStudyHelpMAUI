@@ -13,8 +13,6 @@
             Open modal
         </button>
 
-        <Button Color="Color.Primary" Clicked="@ShowModal">Show Modal</Button>
-
         @if (@PaperLines != null)
         {
             <Table ElementId="@tableId" Borderless Resizable ResizeMode="TableResizeMode.Columns" FullWidth Class="bg-dark text-white">
@@ -34,10 +32,10 @@
                 </TableBody>
             </Table>
         }
-        <HelpModal @ref="ModalForHelp"></HelpModal>
+
+        <HelpModal @ref="ModalHelpControl"></HelpModal>
 
 *    </div>
-
 
 </div>
 
@@ -45,7 +43,7 @@
 @code {
     private PaperTextFormatted PaperLines { get; set; }
     private string ExpressionToHighlight { get; set; }
-    private HelpModal ModalForHelp;
+    private HelpModal ModalHelpControl;
     string anchor = "";
 
 
@@ -107,11 +105,7 @@
         AmadonEvents.OnNewTrackEntry += OnNewTocEntry;
         AmadonEvents.OnTranslationsToShowChanged += TranslationsToShowChanged;
         AmadonEvents.OnHighlightExpression += OnHighlightExpression;
-    }
-
-    public Task ShowModal()
-    {
-        return ModalForHelp.ShowModal();
+        AmadonEvents.OnShowHelpPage += ShowHelp;
     }
 
 
@@ -136,6 +130,12 @@
         JumpToAnchor(StaticObjects.Parameters.Entry);
     }
 
+
+    protected void ShowHelp(string helpPage)
+    {
+        ModalHelpControl.ShowModal(helpPage);
+        StateHasChanged();
+    }
 
 
     protected void EventsControl_RedrawText()

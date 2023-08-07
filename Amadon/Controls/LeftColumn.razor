@@ -37,6 +37,7 @@
     protected override async Task OnInitializedAsync()
     {
         AmadonEvents.OnTopNavCommand += AmadonEvents_OnTopNavCommand;
+        AmadonEvents.OnHelpContext += AmadonEvents_OnHelpContext;
         await base.OnInitializedAsync();
         SetControl(StaticObjects.Parameters.LastLeftControl);
         return;
@@ -45,6 +46,31 @@
     private void AmadonEvents_OnTopNavCommand(string controlName)
     {
         SetControl(controlName);
+    }
+
+    private void AmadonEvents_OnHelpContext()
+            {
+        switch (ControlName)
+        {
+            case AmandonComponentNames.ControlToc:
+                AmadonEvents.ShowHelpPage(AmandonHelpPageNames.TocHelp);
+                break;
+            case AmandonComponentNames.ControlIndex:
+                AmadonEvents.ShowHelpPage(AmandonHelpPageNames.IndexHelp);
+                break;
+            case AmandonComponentNames.ControlSearch:
+                AmadonEvents.ShowHelpPage(AmandonHelpPageNames.SearchHelp);
+                break;
+            case AmandonComponentNames.ControlTrack:
+                AmadonEvents.ShowHelpPage(AmandonHelpPageNames.TrackHelp);
+                break;
+            case AmandonComponentNames.ControlSettings:
+                AmadonEvents.ShowHelpPage(AmandonHelpPageNames.SettingsHelp);
+                break;
+            default:
+                AmadonEvents.ShowHelpPage(AmandonHelpPageNames.StartingHelp);
+                break;
+        }
     }
 
     public void SetControl(string controlName)

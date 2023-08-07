@@ -15,7 +15,11 @@
     <BarMenu>
         <BarStart>
             <BarItem>
-                <BarLink Class="barlink-hover" Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.StartingHelp))" Title="Go to help first page">Help Home</BarLink>
+                <BarLink Class="barlink-hover" Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.StartingHelp))" Title="Go to help first page">Home</BarLink>
+            </BarItem>
+
+            <BarItem>
+                <BarLink Class="barlink-hover" Clicked="@(()=> FireHelpEvent(AmandonHelpPageNames.MenuBarHelp))" Title="Go to help about the menu bar">Menu Bar</BarLink>
             </BarItem>
 
             <BarItem>
@@ -51,7 +55,8 @@
                name == AmandonHelpPageNames.SearchHelp ||
                name == AmandonHelpPageNames.TrackHelp ||
                name == AmandonHelpPageNames.SettingsHelp ||
-               name == AmandonHelpPageNames.MenuBarHelp;
+               name == AmandonHelpPageNames.MenuBarHelp ||
+               name == AmandonHelpPageNames.StartingHelp;
     }
 
 

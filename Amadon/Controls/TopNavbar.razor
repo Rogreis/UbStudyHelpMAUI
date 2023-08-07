@@ -51,7 +51,7 @@
             <Button Color="Color.Warning" Clicked="@QuickSearch">Highlight</Button>
 
         </div>
-   </div>
+    </div>
 </nav>
 
 @code
@@ -69,10 +69,19 @@
 
     private void FireTopNavCommand(string eventName)
     {
+
         if (ControlNameValid(eventName))
         {
-            StaticObjects.Parameters.LastLeftControl = eventName;
-            AmadonEvents.TopNavCommand(eventName);
+            switch (eventName)
+            {
+                case AmandonComponentNames.ControlHelp:
+                    AmadonEvents.HelpContext();
+                    break;
+                default:
+                    StaticObjects.Parameters.LastLeftControl = eventName;
+                    AmadonEvents.TopNavCommand(eventName);
+                    break;
+            }
         }
     }
     private void LinkToTOC() => FireTopNavCommand(AmandonComponentNames.ControlToc);

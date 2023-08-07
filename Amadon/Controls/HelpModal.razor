@@ -1,112 +1,128 @@
 ﻿@using Amadon.Controls.Help
 
-
 <style>
 
-    .helpButton {
-        font-size: 70%; /* decrease the font size to 80% of the current size */
+    .AmadonModal {
+        width: 70vw !important; /* 70% of the viewport width */
+        height: 70vh !important; /* 70% of the viewport height */
+        margin: auto !important; /* Center the modal */
     }
 
-    .centered-bar {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%; /* or any height you want */
+    .AmadonDark {
+        background-color: #212529; /* This is for .bg-dark */
+        color: #ffffff; /* This is for .text-white */
     }
 
-    .imageFull {
-        width: 430px;
-        height: 300px;
+    .ModalSize {
+        position: fixed; /* Use fixed position */
+        top: 150px; /* Distance from the top */
+        left: 250px; /* Distance from the left */
+        width: 95% !important;
+        height: 70% !important;
+        max-height: 70% !important;
+        overflow: auto; /* Add scrollbar if content is larger than modal */
     }
 
-    .imageSmall {
-        width: 300px;
-        height: 200px;
+    .ModalBorder {
+        border: 2px solid var(--bs-warning) !important;
     }
 
-    .imageMenubar {
-        width: 430px;
-        height: 110px;
+    .HeaderColors {
+        background-color: var(--bs-primary);
+        color: var(--bs-white);
     }
 
-
-    table, th, td {
-        border: 0px;
+    .scrollable-modal-body {
+        max-height: 450px; /* Adjust this to your desired height */
+        overflow-y: auto;
+        overflow-x: hidden;
     }
-
-    h3, h4 {
-        color: gold;
-    }
-
-
-  /*  .modal-dark-mode {
-        background-color: #1a1a2e;
-        color: #f2f2f2;
-    }
-
-    .modal-dark-mode .modal-content {
-        background-color: #1a1a2e;
-        color: #f2f2f2;
-    }
-
-    .modal-dark-mode .modal-header, .modal-dark-mode .modal-body, .modal-dark-mode .modal-footer {
-        border-color: #30304d;
-    }
-*/
-
 
 </style>
 
-<div class="modal" id="myModal">
-    <div class="modal-dialog modal-lg  modal-dialog-centered">
-        <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Amadon Help</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
- @*               <SettingsHelp></SettingsHelp>
- *@           </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-@*
-<Modal @ref="modalRef" Class="@(IsDarkMode ? "modal-dark-mode" : "")">
-    <ModalContent Scrollable Centered Margin="Margin.Is5.FromTop">
-        <ModalHeader>
-            <ModalTitle>Employee edit</ModalTitle>
+<Modal @ref="modalRef" Class="modal-xl ModalSize fade">
+    <ModalContent ElementId="ModalContentXXX" Class="ModalBorder">
+        <ModalHeader Class="AmadonDark HeaderColors">
+            <ModalTitle>Amadon Help</ModalTitle>
             <CloseButton />
         </ModalHeader>
-        <ModalBody MaxHeight=500>
-            <SettingsHelp></SettingsHelp>
+        <ModalBody Class="AmadonDark scrollable-modal-body">
+
+
+            @if (@CurrentHelpPageName == AmandonHelpPageNames.StartingHelp)
+            {
+                <StartHelp></StartHelp>
+            }
+
+
+            @if (@CurrentHelpPageName == AmandonHelpPageNames.TocHelp)
+            {
+                <TocHelp></TocHelp>
+            }
+
+            @if (@CurrentHelpPageName == AmandonHelpPageNames.SearchHelp)
+            {
+                <SearchHelp></SearchHelp>
+            }
+
+            @if (@CurrentHelpPageName == AmandonHelpPageNames.TrackHelp)
+            {
+                <TrackHelp></TrackHelp>
+            }
+
+            @if (@CurrentHelpPageName == AmandonHelpPageNames.IndexHelp)
+            {
+                <IndexHelp></IndexHelp>
+            }
+            
+
+            @if (@CurrentHelpPageName == AmandonHelpPageNames.SettingsHelp)
+            {
+                <SettingsHelp></SettingsHelp>
+            }
+
+
+            @if (@CurrentHelpPageName == AmandonHelpPageNames.MenuBarHelp)
+            {
+                <MenuBarHelp></MenuBarHelp>
+            }
+
+
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter Class="AmadonDark">
+            <HelpBar></HelpBar>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
-            <Button Color="Color.Primary" Clicked="@HideModal">Save Changes</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
-*@
+
+
+
 @code {
     // reference to the modal component
     private Modal modalRef;
     public bool IsDarkMode { get; set; } = true;
+    private string CurrentHelpPageName = AmandonHelpPageNames.StartingHelp;
 
-    public Task ShowModal()
+    public void ChangeHelpText(string amandonHelpPageName)
     {
-        return modalRef.Show();
+        CurrentHelpPageName = amandonHelpPageName;
+    }
+
+    public void ShowModal(string amandonHelpPageName)
+    {
+        CurrentHelpPageName = amandonHelpPageName;
+        if (!modalRef.Visible)
+        {
+            modalRef.Show();
+        }
+        else 
+        { 
+            modalRef.Hide();
+            modalRef.Show();
+        }
+        StateHasChanged();
     }
 
     public Task HideModal()
@@ -115,6 +131,3 @@
     }
 }
 
-@code {
-
-}

@@ -14,6 +14,7 @@ namespace Amadon
     internal delegate void NewTrackEntryDelegate(TOC_Entry entry);
     internal delegate void ShowTrackDelegate();
     internal delegate void ShowHelpPageDelegate(string helpPage);
+    internal delegate void HelpContextDelegate();
 
     internal class AmandonComponentNames
     {
@@ -92,7 +93,15 @@ namespace Amadon
         /// </summary>
         public static event NewTrackEntryDelegate OnNewTrackEntry;
 
+        /// <summary>
+        /// Used to open specific help by the left page shown
+        /// </summary>
         public static event ShowHelpPageDelegate OnShowHelpPage;
+
+        /// <summary>
+        /// Used to ask for a help page for the current left shown page
+        /// </summary>
+        public static event HelpContextDelegate OnHelpContext;
 
         // ============================================================================================================= 
         // Functions to fire the above events
@@ -162,6 +171,11 @@ namespace Amadon
         public static void ShowHelpPage(string newPage)
         {
             OnShowHelpPage?.Invoke(newPage);
+        }
+
+        public static void HelpContext()
+        {
+            OnHelpContext?.Invoke();
         }
 
         public static void BackToHelpHome()
