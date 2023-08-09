@@ -50,6 +50,23 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="wwwroot\images\ImagesForAmadonHelp.pptx" />
+      <Content Remove="wwwroot\images\Index.png" />
+      <Content Remove="wwwroot\images\Index01.png" />
+      <Content Remove="wwwroot\images\menu.png" />
+      <Content Remove="wwwroot\images\Search.png" />
+      <Content Remove="wwwroot\images\Settings.png" />
+      <Content Remove="wwwroot\images\Settings01.png" />
+      <Content Remove="wwwroot\images\Settings02.png" />
+      <Content Remove="wwwroot\images\Settings03.png" />
+      <Content Remove="wwwroot\images\Settings04.png" />
+      <Content Remove="wwwroot\images\Settings05.png" />
+      <Content Remove="wwwroot\images\support_email.png" />
+      <Content Remove="wwwroot\images\toc.png" />
+      <Content Remove="wwwroot\images\Track.png" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
         <PackageReference Include="Blazorise.Bootstrap5" Version="1.2.3" />
         <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.3" />
@@ -59,6 +76,49 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AmadonStandardLib\AmadonStandardLib.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="wwwroot\images\ImagesForAmadonHelp.pptx" />
+      <EmbeddedResource Include="wwwroot\images\Index.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Index01.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\menu.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Search.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Settings.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Settings01.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Settings02.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Settings03.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Settings04.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Settings05.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\support_email.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\toc.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="wwwroot\images\Track.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
