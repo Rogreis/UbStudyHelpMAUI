@@ -44,8 +44,8 @@
     }
 
     th {
-        background-color: #212529; 
-        color:gold; 
+        background-color: #212529;
+        color: gold;
     }
 
 
@@ -53,8 +53,6 @@
         cursor: pointer;
         color: var(--bs-warning) !important;
     }
-
-
 
 </style>
 
@@ -93,7 +91,7 @@
             {
                 <IndexHelp @ref="@IndexHelpComponent"></IndexHelp>
             }
-            
+
 
             @if (@CurrentHelpPageName == AmandonHelpPageNames.SettingsHelp)
             {
@@ -138,25 +136,25 @@
         switch (CurrentHelpPageName)
         {
             case AmandonHelpPageNames.StartingHelp:
-                Title= StartHelpComponent.Title;
+                Title = "Starting Help";
                 break;
             case AmandonHelpPageNames.TocHelp:
-                Title = TocHelpComponent.Title;
+                Title = "Table of Contents Help";
                 break;
             case AmandonHelpPageNames.SearchHelp:
-                Title = SearchHelpComponent.Title;
+                Title = "Search Engine Help";
                 break;
             case AmandonHelpPageNames.TrackHelp:
-                Title = TrackHelpComponent.Title;
-                break;
+                Title = "Track Help";
+            break;
             case AmandonHelpPageNames.IndexHelp:
-                Title = IndexHelpComponent.Title;
+                Title = "Subject Index Help";
                 break;
             case AmandonHelpPageNames.SettingsHelp:
-                Title = SettingsHelpComponent.Title;
+                Title = "Settings Help";
                 break;
             case AmandonHelpPageNames.MenuBarHelp:
-                Title = MenuBarHelpComponent.Title;
+                Title = "Menu Bar Help";
                 break;
             default:
                 Title = "???";
@@ -177,13 +175,15 @@
         {
             modalRef.Show();
         }
-        else 
-        { 
+        else
+        {
             modalRef.Hide();
             modalRef.Show();
         }
         StateHasChanged();
+        Task.Delay(1);
         GetCurrentTitle();
+        Task.Delay(1);
         StateHasChanged();
     }
 
