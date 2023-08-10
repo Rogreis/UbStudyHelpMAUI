@@ -1,18 +1,5 @@
 ﻿@using Blazorise
 
-
-<h3>Search Engine - Help Guide</h3>
-
-<style>
-
-    td, th {
-        background-color: #212529; /* This is for .bg-dark */
-        color: #ffffff; /* This is for .text-white */
-    }
-
-
-</style>
-
 <Accordion>
 
     <Collapse Visible="@collapse1Visible">
@@ -408,5 +395,8 @@
         },
     };
    
+
+    public string Title { get; set; } = "Search Engine Help";
+
 
 }

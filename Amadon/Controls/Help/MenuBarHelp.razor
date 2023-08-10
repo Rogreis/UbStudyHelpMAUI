@@ -1,6 +1,5 @@
 ﻿@using Blazorise
 
-<h3 id="menu-bar-help-guide">Menu Bar Help</h3>
 
 <Accordion>
     <Collapse Visible="@collapse1Visible">
@@ -70,5 +69,7 @@
     bool collapse1Visible = true;
     bool collapse2Visible = false;
 
+    public string Title { get; set; } = "Menu Bar Help";
 
+    
 }

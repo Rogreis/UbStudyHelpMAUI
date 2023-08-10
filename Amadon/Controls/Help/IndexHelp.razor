@@ -1,8 +1,5 @@
 ﻿@using Blazorise
 
-
-<h3 id="subject-index-feature-help-guide">Subject Index</h3>
-
 <Accordion>
 
     <Collapse Visible="@collapse1Visible">
@@ -95,5 +92,7 @@
     bool collapse2Visible = false;
     bool collapse3Visible = false;
     bool collapse4Visible = false;
+
+    public string Title { get; set; } = "Subject Index Help";
 
 }
