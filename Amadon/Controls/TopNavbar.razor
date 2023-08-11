@@ -46,7 +46,7 @@
             </ul>
 
             <Field Horizontal>
-                <TextEdit Class="form-control me-2 highlightField" @bind-Text="@ExpressionToSearch" Placeholder="Expression to highlight" />
+                <TextEdit Class="form-control me-2 highlightField" @bind-Text="@ExpressionToSearch" @onkeydown="HandleKeyDown" Placeholder="Expression to highlight" />
             </Field>
             <Button Color="Color.Warning" Clicked="@QuickSearch">Highlight</Button>
 
@@ -66,6 +66,19 @@
                name == AmandonComponentNames.ControlIndex ||
                name == AmandonComponentNames.ControlToc;
     }
+
+    private void HandleKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            QuickSearch();
+        }
+        else if (args.Key == "F1")
+        {
+            AmadonEvents.ShowHelpPage(AmandonHelpPageNames.MenuBarHelp);
+        }
+    }
+
 
     private void FireTopNavCommand(string eventName)
     {
