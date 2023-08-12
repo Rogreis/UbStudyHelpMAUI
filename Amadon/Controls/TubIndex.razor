@@ -14,7 +14,7 @@
 {
     <br />
     <label for="select_subject_index">Subject index entries found</label>
-    <Select TValue="string" ElementId="select_subject_index" TValue="int" SelectedValueChanged="@DropdownItemChecked">
+    <Select TValue="string" ElementId="select_subject_index" TValue="int" SelectedValueChanged="@NewSubjectIndexItem">
         @foreach (var item in PersistentData.GenericData.IndexItemsFound)
         {
             <SelectItem Value="@item">@item</SelectItem>
@@ -29,15 +29,25 @@
 
         <Card WhiteText class="bg-dark">
             <CardBody>
-            <CardTitle Size="5">@PersistentData.GenericData.TubIndex.Title</CardTitle>
+                <CardTitle Size="5">@PersistentData.GenericData.TubIndex.Title</CardTitle>
                 @foreach (IndexDetails detail in @PersistentData.GenericData.TubIndex.Details)
+                {
+                    <CardText>
+                        @if (detail.DetailType == 2)
+                        {
+                            <Blazorise.Link Clicked="@(()=> NewSubjectIndex(@detail.Links[0]))">See also</Blazorise.Link>
+                        }
+                        else
+                        {
+                            @detail.Text
+                        }
+                    </CardText>
+                    @if (detail.DetailType != 2)
                     {
-                        <CardText>
-                            @detail.Text<br />
-                        </CardText>
-                    @foreach (string link in detail.Links)
-                    {
-                        <Button Color="Color.Primary" Outline Size="Size.Small" Margin="Margin.Is2" Clicked="@(()=> ButtonClicked(@link))">@link <Icon Name="IconName.ArrowRight" /></Button>
+                        @foreach (string link in detail.Links)
+                        {
+                            <Blazorise.Link Clicked="@(()=> ButtonClicked(@link))">@link  <Icon Name="IconName.ArrowRight" /></Blazorise.Link>
+                        }
                     }
                 }
             </CardBody>
@@ -54,7 +64,7 @@
 </Alert>
 
 
-@code{
+@code {
     bool alertVisible = false;
     string AlertMessage = "";
     Color AlertColor = Color.Success;
@@ -96,7 +106,7 @@
                 PersistentData.GenericData.dropdownSubjectTitlesVisible = true;
                 if (data.ResultsList.Count == 1)
                 {
-                    await DropdownItemChecked(data.ResultsList[0]);
+                    await NewSubjectIndexItem(data.ResultsList[0]);
                 }
             }
             else
@@ -109,12 +119,10 @@
     }
 
 
-    protected async Task DropdownItemChecked(string option)
+    protected async Task NewSubjectIndexItem(string option)
     {
-        StateHasChanged();
         PersistentData.GenericData.TubIndex = await SearchIndexService.GetSubjectItemsToShow(option);
         PersistentData.GenericData.browserSubjectsFound = PersistentData.GenericData.TubIndex != null;
-        StateHasChanged();
     }
 
     protected void ButtonClicked(string option)
@@ -122,6 +130,10 @@
         AmadonEvents.NewSubjectIndexEntry(TOC_Entry.FromHref(option));
     }
 
+    protected void NewSubjectIndex(string subject)
+    {
+        Task.Run(() => NewSubjectIndexItem(subject));
+    }
 
     protected override void OnInitialized()
     {
