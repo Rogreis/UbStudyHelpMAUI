@@ -27,35 +27,32 @@
 {
     <div class="row">
 
-        <Card WhiteText class="bg-dark">
-            <CardBody>
-                <CardTitle Size="5">@PersistentData.GenericData.TubIndex.Title</CardTitle>
-                @foreach (IndexDetails detail in @PersistentData.GenericData.TubIndex.Details)
-                {
-                    <CardText>
-                        @if (detail.DetailType == 2)
-                        {
-                            <Blazorise.Link Clicked="@(()=> NewSubjectIndex(@detail.Links[0]))">See also</Blazorise.Link>
-                        }
-                        else
-                        {
-                            @detail.Text
-                        }
-                    </CardText>
+        <h3 style="color:gold">@PersistentData.GenericData.TubIndex.Title</h3>
+
+
+        @foreach (IndexDetails detail in @PersistentData.GenericData.TubIndex.Details)
+        {
+                <blockquote>
+                    @if (detail.DetailType == 2)
+                    {
+                        <Blazorise.Link Clicked="@(()=> NewSubjectIndex(@detail.Links[0]))">See also</Blazorise.Link>
+                    }
+                    else
+                    {
+                        @detail.Text
+                        @((MarkupString)@space)
+                    }
                     @if (detail.DetailType != 2)
                     {
                         @foreach (string link in detail.Links)
                         {
-                            <Blazorise.Link Clicked="@(()=> ButtonClicked(@link))">@link  <Icon Name="IconName.ArrowRight" /></Blazorise.Link>
+                            <Blazorise.Link Clicked="@(()=> ButtonClicked(@link))"> @link</Blazorise.Link>
                         }
                     }
-                }
-            </CardBody>
-        </Card>
-
+                </blockquote>
+        }
     </div>
 }
-
 <Alert Color="@AlertColor" @bind-Visible="@alertVisible">
     <AlertMessage>
         @AlertMessage
@@ -68,6 +65,7 @@
     bool alertVisible = false;
     string AlertMessage = "";
     Color AlertColor = Color.Success;
+    string space = "&nbsp;";
 
     TextEdit TextOutputObject;
     TextEdit TextToSearchObject;

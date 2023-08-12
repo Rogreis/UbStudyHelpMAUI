@@ -195,4 +195,34 @@ a, .btn-link {
 }
 
 
+a {
+    color: gold;
+    text-decoration: none;
+}
+
+    a:link {
+        color: gold;
+        text-decoration: none;
+    }
+
+/* visited link */
+a:visited {
+    color: magenta;
+    text-decoration: none;
+}
+
+/* mouse over link */
+    a:hover {
+        cursor: pointer;
+        color: gold;
+        text-decoration: underline;
+    }
+
+/* selected link */
+a:active {
+    text-decoration: none;
+    color: gold;
+}
+
+
 
