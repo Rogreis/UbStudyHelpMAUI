@@ -46,6 +46,40 @@ namespace AmadonStandardLib.InterchangeData
 
         public List<SearchResult> SearchResults { get; set; } = new List<SearchResult>();
 
+        private string PartsIncluded
+        {
+            get
+            {
+                if (CurrentPaperOnly)
+                {
+                    return "Current Paper only";
+                }
+                string parts = "";
+                if (Part1Included) { parts += "I"; }
+                if (Part2Included) { parts += " II"; }
+                if (Part3Included) { parts += " III"; }
+                if (Part4Included) { parts += " IV"; }
+                if (string.IsNullOrWhiteSpace(parts)) return "Search includes no Book's part.";
+                return "Parts includes in the search: " + parts.Trim();
+            }
+        }
+
+        public string SearchResultsMessage
+        {
+            get
+            {
+                switch (SearchResults.Count)
+                {
+                    case 0:
+                        return $"Nothing found. {PartsIncluded}";
+                    case 1:
+                        return $"1 result found. {PartsIncluded}";
+                    default:
+                        return $"{SearchResults.Count} results found. {PartsIncluded}";
+                }
+            }
+        }
+
         public List<string> Words { get; set; } = new List<string>();
 
         public bool paginationVisible { get; set; } = false;
@@ -71,7 +105,7 @@ namespace AmadonStandardLib.InterchangeData
         {
             return word.Trim().Replace("~", "").Replace("^", "").Replace("*", "");
         }
-        
+
         /// <summary>
         /// Create a list of words to highligh in the search
         /// </summary>

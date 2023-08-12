@@ -78,7 +78,7 @@
 
 @if (PersistentData.SearchData.hasDataToShow)
 {
-    <p>@PersistentData.SearchData.SearchResults.Count.ToString() paragraph(s) found</p>
+    <p>@PersistentData.SearchData.SearchResultsMessage</p>
     @if (Convert.ToInt32(@PersistentData.SearchData.totalPages) > 1)
     {
         <p>Showing page @PersistentData.SearchData.currentPage of @PersistentData.SearchData.totalPages pages</p>
@@ -217,7 +217,7 @@ else
             PersistentData.SearchData.ErrorMessage = "";
             bool ret = Task.Run(() => CallSearch(PersistentData.SearchData)).GetAwaiter().GetResult();
         }
-        Task.Delay(5000);
+        Task.Delay(500);
         StateHasChanged();
         //loadingIndicator.Hide();
 
@@ -232,7 +232,7 @@ else
         else if (PersistentData.SearchData.SearchResults.Count == 0)
         {
             PersistentData.SearchData.paginationVisible = false;
-            messageWhenNoSearch = "No paragraph found.";
+            messageWhenNoSearch = PersistentData.SearchData.SearchResultsMessage;
             StateHasChanged();
             return;
         }
