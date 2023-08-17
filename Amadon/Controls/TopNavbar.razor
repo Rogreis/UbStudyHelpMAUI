@@ -1,6 +1,19 @@
 ﻿@using AmadonStandardLib.Helpers;
 @inject NavigationManager NavigationManager
 
+<style>
+
+    .custom-input-ident {
+        width: 180px;
+        margin: 4px; /* Spacing around the elements */
+    }
+
+    .custom-input-high {
+        width: 220px;
+        margin: 4px; /* Spacing around the elements */
+    }
+
+</style>
 
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark navbarheight fixed-top">
     <div class="container-fluid">
@@ -45,10 +58,8 @@
                 </li>
             </ul>
 
-            <Field Horizontal>
-                <TextEdit Class="form-control me-2 highlightField" @bind-Text="@ExpressionToSearch" @onkeydown="HandleKeyDown" Placeholder="Expression to highlight" />
-            </Field>
-            <Button Color="Color.Warning" Clicked="@QuickSearch">Highlight</Button>
+            <TextEdit Class="form-control me-2 highlightField custom-input-ident" @bind-Text="@ParagraphIdent" @onkeydown="HandleKeyDownIdent" Placeholder="Paragraph ident" />
+            <TextEdit Class="form-control me-2 highlightField custom-input-high" @bind-Text="@ExpressionToSearch" @onkeydown="HandleKeyDownHigh" Placeholder="Expression to highlight" />
 
         </div>
     </div>
@@ -56,6 +67,9 @@
 
 @code
 {
+    private string ExpressionToSearch = "";
+
+    private string ParagraphIdent = "";
 
     private bool ControlNameValid(string name)
     {
@@ -67,7 +81,20 @@
                name == AmandonComponentNames.ControlToc;
     }
 
-    private void HandleKeyDown(KeyboardEventArgs args)
+    private void HandleKeyDownIdent(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            QuickSearch();
+        }
+        else if (args.Key == "F1")
+        {
+            AmadonEvents.ShowHelpPage(AmandonHelpPageNames.MenuBarHelp);
+        }
+    }
+
+
+    private void HandleKeyDownHigh(KeyboardEventArgs args)
     {
         if (args.Key == "Enter")
         {
@@ -108,8 +135,6 @@
     private void LinkToSettings() => FireTopNavCommand(AmandonComponentNames.ControlSettings);
 
     private void LinkToHelp() => FireTopNavCommand(AmandonComponentNames.ControlHelp);
-
-    private string ExpressionToSearch = "";
 
     private void QuickSearch()
     {
