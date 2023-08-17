@@ -107,13 +107,13 @@ namespace AmadonStandardLib.Classes
 
                 IndexSearcher searcher = new IndexSearcher(reader);
                 TopDocs hits = searcher.Search(searchQuery, 20);
-                searchIndexData.ResultsList = new List<string>();
+                searchIndexData.ResultsList = new List<TubIndexSubjects>();
 
                 // Nothing found? Try to expand (emulate starting with)
                 if (hits.ScoreDocs.Length == 0)
                 {
                     searchIndexData.Query = searchIndexData.Query.Trim() + "*";
-                    searchQuery = parser.Parse(searchIndexData.Query);
+                    searchQuery = parser.Parse(searchIndexData.Query); 
                     hits = searcher.Search(searchQuery, 20);
                 }
 
@@ -121,7 +121,7 @@ namespace AmadonStandardLib.Classes
                 for (int i = 0; i < results; i++)
                 {
                     Document doc = searcher.Doc(hits.ScoreDocs[i].Doc);
-                    searchIndexData.ResultsList.Add(doc.GetField(IndexFieldData).GetStringValue());
+                    searchIndexData.ResultsList.Add(new TubIndexSubjects() { Subject = doc.GetField(IndexFieldData).GetStringValue() } );
                 }
                 return true;
             }

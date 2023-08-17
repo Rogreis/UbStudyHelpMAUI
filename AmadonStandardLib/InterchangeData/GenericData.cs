@@ -23,7 +23,7 @@ namespace AmadonStandardLib.InterchangeData
 
         public TubIndex TubIndex { get; set; }= new TubIndex();
 
-        public List<string> IndexItemsFound { get; set; } = new List<string>();
+        public List<TubIndexSubjects> IndexItemsFound { get; set; } = new List<TubIndexSubjects>();
 
         public bool browserSubjectsFound { get; set; } = false;
 

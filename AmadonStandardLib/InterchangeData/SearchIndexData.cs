@@ -34,6 +34,12 @@ namespace AmadonStandardLib.InterchangeData
         }
     }
 
+    public class TubIndexSubjects
+    {
+        public string Subject { get; set; } = "";
+        public bool IsActive { get; set; } = false;
+    }
+
     public class SearchIndexData : InterchangeDataBase
     {
 
@@ -43,7 +49,7 @@ namespace AmadonStandardLib.InterchangeData
 
         // Output data
 
-        public List<string>? ResultsList { get; set; } = null;
+        public List<TubIndexSubjects>? ResultsList { get; set; } = null;
 
 
     }
