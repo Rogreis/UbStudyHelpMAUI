@@ -15,6 +15,8 @@ namespace Amadon
     internal delegate void ShowTrackDelegate();
     internal delegate void ShowHelpPageDelegate(string helpPage);
     internal delegate void HelpContextDelegate();
+    internal delegate void SentParagraphIdentDelegate(string reference);
+    
 
     internal class AmandonComponentNames
     {
@@ -103,6 +105,11 @@ namespace Amadon
         /// </summary>
         public static event HelpContextDelegate OnHelpContext;
 
+        /// <summary>
+        /// Used to inform the top edit text for reference about a new paragraph
+        /// </summary>
+        public static event SentParagraphIdentDelegate OnSentParagraphIdent;
+
         // ============================================================================================================= 
         // Functions to fire the above events
 
@@ -183,6 +190,10 @@ namespace Amadon
             ShowHelpPage(AmandonHelpPageNames.StartingHelp);
         }
 
+        public static void SentParagraphIdent(string reference)
+        {
+            OnSentParagraphIdent?.Invoke(reference);
+        }
 
 
     }

@@ -11,7 +11,6 @@ namespace AmadonStandardLib.UbClasses
     public class Translation
     {
         public const short NoTranslation = -1;
-        private readonly string TocTableFileName = "TOC_Table.json";
         private List<ItemForToc>? _tableOfContents = null;
 
         public short LanguageID { get; set; }
@@ -103,6 +102,26 @@ namespace AmadonStandardLib.UbClasses
                 itemSection.Entry = entrySection;
             }
         }
+
+
+        private List<TOC_Entry> AllEntriesList;
+
+        /// <summary>
+        /// Returns an ordered list of all entries in a translation
+        /// </summary>
+        /// <returns></returns>
+        public List<TOC_Entry> AllEntries()
+        {
+            if (AllEntriesList == null)
+            {
+                AllEntriesList = (from paper in Papers
+                                  from par in paper.Paragraphs
+                                  select par.Entry).ToList();
+            }
+            return AllEntriesList;
+        }
+
+
 
         public bool CreateTableOfContents()
         {

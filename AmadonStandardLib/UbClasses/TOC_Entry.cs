@@ -15,7 +15,7 @@ namespace AmadonStandardLib.UbClasses
     {
         public short TranslationId { get; set; } = 0;
         public short Paper { get; set; } = 0;
-        public short Section { get; set; } = 1;
+        public short Section { get; set; } = 0;
         public short ParagraphNo { get; set; } = 1;
         public short Page { get; set; }
         public short Line { get; set; }
@@ -30,24 +30,68 @@ namespace AmadonStandardLib.UbClasses
         public static TOC_Entry FromHref(string href)
         {
             TOC_Entry entry = new TOC_Entry();
-            char[] sep = { ';', ':', '.','-' };
-            string[] parts = href.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            entry.Paper = Convert.ToInt16(parts[0]);
-            entry.Section = Convert.ToInt16(parts[1]);
-            entry.ParagraphNo = Convert.ToInt16(parts[2]);
+            try
+            {
+                char[] sep = { ';', ':', '.', '-', ' ' };
+                string[] parts = href.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+                switch (parts.Length)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        entry.Paper = Convert.ToInt16(parts[0]);
+                        entry.Section = 1;
+                        entry.ParagraphNo = 1;
+                        break;
+                    case 2:
+                        entry.Paper = Convert.ToInt16(parts[0]);
+                        entry.Section = Convert.ToInt16(parts[1]);
+                        entry.ParagraphNo = 1;
+                        break;
+                    default:
+                        entry.Paper = Convert.ToInt16(parts[0]);
+                        entry.Section = Convert.ToInt16(parts[1]);
+                        entry.ParagraphNo = Convert.ToInt16(parts[2]);
+                        break;
+                }
+            }
+            catch 
+            {
+                // In case of execption, the entry is returned with what it already has
+            }
             return entry;
         }
 
-        /// <summary>
-        /// Provide a list of paper for this entrey when the entry is an entry paper
-        /// </summary>
-        public List<TOC_Entry> Papers { get; set; } = new List<TOC_Entry>();
 
         /// <summary>
-        /// Provide a list of sections for this entrey when the entry is an entry paper
+        /// Calculate the next paragraph in the book
         /// </summary>
-        public List<TOC_Entry> Sections { get; set; } = new List<TOC_Entry>();
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static TOC_Entry NextHRef(TOC_Entry entry)
+        {
+            int index= StaticObjects.Book.EnglishTranslation.AllEntries().IndexOf(entry);
+            // If not found or already in the last, return the first
+            if (index == -1 || index == StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1) return new TOC_Entry();
+            // If in the first, return the last
+            if (index == 0) return StaticObjects.Book.EnglishTranslation.AllEntries()[StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1];
+            return StaticObjects.Book.EnglishTranslation.AllEntries()[index + 1];
+        }
 
+        /// <summary>
+        /// Calculate the first paragraph in the book
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static TOC_Entry PreviousHRef(TOC_Entry entry)
+        {
+            int index = StaticObjects.Book.EnglishTranslation.AllEntries().IndexOf(entry);
+            // If not found return the first
+            if (index == -1) return new TOC_Entry();
+            // If already in the first, return the last
+            if (index == 0) return StaticObjects.Book.EnglishTranslation.AllEntries()[StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1];
+            return StaticObjects.Book.EnglishTranslation.AllEntries()[index - 1];
+        }
 
 
         /// <summary>
@@ -165,50 +209,6 @@ namespace AmadonStandardLib.UbClasses
             Text = "";
             IsExpanded = false;
         }
-
-        //public static TOC_Entry? FromReference(string reference, ref string aMessage)
-        //{
-        //    TOC_Entry? entry = null;
-
-        //    try
-        //    {
-        //        char[] sep = { ':', '-', '.', ' ' };
-        //        string[] parts = reference.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-        //        entry = new TOC_Entry();
-        //        entry.TranslationId = StaticObjects.Parameters.CurrentTranslation;
-        //        entry.Paper = Convert.ToInt16(parts[0]);
-        //        entry.Section = Convert.ToInt16(parts[1]);
-        //        entry.ParagraphNo = Convert.ToInt16(parts[2]);
-        //        entry.Page = 0;
-        //        entry.Line = 0;
-        //        entry.Text = "";
-        //        entry.IsExpanded = false;
-        //    }
-        //    catch
-        //    {
-        //        aMessage = $"Invalid paragraph reference {reference}. It should type a valid combination of Paper/Section/Paragrap, separated by : . - or spaces";
-        //        return null;
-        //    }
-
-        //    try
-        //    {
-        //        Paragraph? par = StaticObjects.Book.GetTranslation(StaticObjects.Parameters.CurrentTranslation)
-        //                                          .Paper(entry.Paper)
-        //                                          .GetParagraph(entry);
-        //        if (par != null) 
-        //        {
-        //            entry.Text = par.Text;
-        //        }
-        //        aMessage = $"Jumping to {reference}.";
-        //        return entry;
-        //    }
-        //    catch
-        //    {
-        //        aMessage = $"Paragraph not found {reference}. Try using an exiting paragraph reference";
-        //        return null;
-        //    }
-        //}
-
 
         protected bool SamePaperSection(TOC_Entry index)
         {
@@ -330,6 +330,7 @@ namespace AmadonStandardLib.UbClasses
             return Paper * 100000 + Section * 1000 + ParagraphNo;
         }
         #endregion
+
 
         public string ToShortString()
         {

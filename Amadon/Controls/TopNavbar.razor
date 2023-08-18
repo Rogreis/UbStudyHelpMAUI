@@ -1,11 +1,11 @@
 ﻿@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.UbClasses;
 @inject NavigationManager NavigationManager
 
 <style>
 
     .custom-input-ident {
         width: 180px;
-        margin: 4px; /* Spacing around the elements */
     }
 
     .custom-input-high {
@@ -58,8 +58,14 @@
                 </li>
             </ul>
 
-            <TextEdit Class="form-control me-2 highlightField custom-input-ident" @bind-Text="@ParagraphIdent" @onkeydown="HandleKeyDownIdent" Placeholder="Paragraph ident" />
-            <TextEdit Class="form-control me-2 highlightField custom-input-high" @bind-Text="@ExpressionToSearch" @onkeydown="HandleKeyDownHigh" Placeholder="Expression to highlight" />
+            <NavLink class="nav-link" @onclick="JumpToPreviousReference">
+                <span class="oi oi oi-chevron-left" aria-hidden="true"></span>
+            </NavLink>
+            <TextEdit Class="form-control custom-input-ident" @bind-Text="@ParagraphIdent" @onkeydown="HandleKeyDownIdent" MaxLength="15" Placeholder="Paragraph ident" />
+            <NavLink class="nav-link" @onclick="JumpToNextReference">
+                <span class="oi oi oi-chevron-right" aria-hidden="true"></span>
+            </NavLink>
+            <TextEdit Class="form-control me-2 highlightField custom-input-high" @bind-Text="@ExpressionToSearch" @onkeydown="HandleKeyDownHigh" MaxLength="150" Placeholder="Expression to highlight" />
 
         </div>
     </div>
@@ -67,6 +73,9 @@
 
 @code
 {
+    // Using icoes from: https://github.com/iconic/open-iconic
+    // Preview at: https://www.nsbasic.com/app/OpenIconic.html
+
     private string ExpressionToSearch = "";
 
     private string ParagraphIdent = "";
@@ -81,11 +90,42 @@
                name == AmandonComponentNames.ControlToc;
     }
 
+
+    private void JumpToPreviousReference()
+    {
+        string paragraphRef = ParagraphIdent;
+        TOC_Entry entry = TOC_Entry.PreviousHRef(TOC_Entry.FromHref(paragraphRef));
+        AmadonEvents.NewSearchEntry(entry);
+        ParagraphIdent = entry.Reference;
+    }
+
+    private void JumpToNextReference()
+    {
+        string paragraphRef = ParagraphIdent;
+        TOC_Entry entry = TOC_Entry.NextHRef(TOC_Entry.FromHref(paragraphRef));
+        AmadonEvents.NewSearchEntry(entry);
+        ParagraphIdent = entry.Reference;
+    }
+
+
+    private void JumpToReference()
+    {
+        string paragraphRef = ParagraphIdent;
+        TOC_Entry entry = TOC_Entry.FromHref(paragraphRef);
+        AmadonEvents.NewSearchEntry(entry);
+        ParagraphIdent = entry.Reference;
+    }
+
+    private void QuickSearch()
+    {
+        AmadonEvents.HighlightExpression(ExpressionToSearch);
+    }
+
     private void HandleKeyDownIdent(KeyboardEventArgs args)
     {
         if (args.Key == "Enter")
         {
-            QuickSearch();
+            JumpToReference();
         }
         else if (args.Key == "F1")
         {
@@ -106,6 +146,17 @@
         }
     }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AmadonEvents.OnSentParagraphIdent += SentParagraphIdent;
+    }
+
+    private void SentParagraphIdent(string reference)
+    {
+        ParagraphIdent = reference;
+        StateHasChanged();
+    }
 
     private void FireTopNavCommand(string eventName)
     {
@@ -124,6 +175,7 @@
             }
         }
     }
+
     private void LinkToTOC() => FireTopNavCommand(AmandonComponentNames.ControlToc);
 
     private void LinkToIndex() => FireTopNavCommand(AmandonComponentNames.ControlIndex);
@@ -136,9 +188,5 @@
 
     private void LinkToHelp() => FireTopNavCommand(AmandonComponentNames.ControlHelp);
 
-    private void QuickSearch()
-    {
-        AmadonEvents.HighlightExpression(ExpressionToSearch);
-    }
 
 }

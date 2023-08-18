@@ -14,6 +14,17 @@ namespace AmadonStandardLib.UbClasses
 
         public FormatTable? FormatTableObject { get; set; } = null;
 
+        private const short EnglishId = 0;
+
+
+        public Translation? EnglishTranslation
+        {
+            get
+            {
+                return GetTranslation(EnglishId);
+            }
+        }
+
 
         public Translation? LeftTranslation 
         { 
