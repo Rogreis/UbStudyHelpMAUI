@@ -91,23 +91,34 @@
     }
 
 
+    /// <summary>
+    /// Jump to previous reference
+    /// It is not being tracked
+    /// </summary>
     private void JumpToPreviousReference()
     {
         string paragraphRef = ParagraphIdent;
         TOC_Entry entry = TOC_Entry.PreviousHRef(TOC_Entry.FromHref(paragraphRef));
-        AmadonEvents.NewSearchEntry(entry);
+        AmadonEvents.NewParagraphIdent(entry);
         ParagraphIdent = entry.Reference;
     }
 
+    /// <summary>
+    /// Jump to next reference
+    /// It is not being tracked
+    /// </summary>
     private void JumpToNextReference()
     {
         string paragraphRef = ParagraphIdent;
         TOC_Entry entry = TOC_Entry.NextHRef(TOC_Entry.FromHref(paragraphRef));
-        AmadonEvents.NewSearchEntry(entry);
+        AmadonEvents.NewParagraphIdent(entry);
         ParagraphIdent = entry.Reference;
     }
 
-
+    /// <summary>
+    /// Jump to the typed reference
+    /// It is being tracked
+    /// </summary>
     private void JumpToReference()
     {
         string paragraphRef = ParagraphIdent;
@@ -149,7 +160,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        AmadonEvents.OnSentParagraphIdent += SentParagraphIdent;
+        AmadonEvents.OnUpdateParagraphIdent += SentParagraphIdent;
     }
 
     private void SentParagraphIdent(string reference)

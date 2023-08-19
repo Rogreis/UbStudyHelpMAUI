@@ -15,8 +15,9 @@ namespace Amadon
     internal delegate void ShowTrackDelegate();
     internal delegate void ShowHelpPageDelegate(string helpPage);
     internal delegate void HelpContextDelegate();
-    internal delegate void SentParagraphIdentDelegate(string reference);
-    
+    internal delegate void UpdateParagraphIdentDelegate(string reference);
+    internal delegate void NewParagraphIdentDelegate(TOC_Entry entry);
+
 
     internal class AmandonComponentNames
     {
@@ -73,6 +74,9 @@ namespace Amadon
         /// </summary>
         public static event NewTocEntryDelegate OnNewTocEntry;
 
+        /// <summary>
+        /// Fired when a new paragraph is choosen in the search tool
+        /// </summary>
         public static event NewSearchEntryDelegate OnNewSearchEntry;
 
         /// <summary>
@@ -108,7 +112,12 @@ namespace Amadon
         /// <summary>
         /// Used to inform the top edit text for reference about a new paragraph
         /// </summary>
-        public static event SentParagraphIdentDelegate OnSentParagraphIdent;
+        public static event UpdateParagraphIdentDelegate OnUpdateParagraphIdent;
+
+        /// <summary>
+        /// Fired when user types a new paragraph identification in the top nav and hit enter
+        /// </summary>
+        public static event NewParagraphIdentDelegate OnNewParagraphIdent;
 
         // ============================================================================================================= 
         // Functions to fire the above events
@@ -190,11 +199,15 @@ namespace Amadon
             ShowHelpPage(AmandonHelpPageNames.StartingHelp);
         }
 
-        public static void SentParagraphIdent(string reference)
+        public static void UpdateParagraphIdent(string reference)
         {
-            OnSentParagraphIdent?.Invoke(reference);
+            OnUpdateParagraphIdent?.Invoke(reference);
         }
 
-
+        public static void NewParagraphIdent(TOC_Entry entry)
+        {
+            OnNewParagraphIdent?.Invoke(entry);
+        }
+        
     }
 }
