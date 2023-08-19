@@ -53,6 +53,8 @@ namespace AmadonStandardLib.UbClasses
             {
                 // In case of execption, the entry is returned with what it already has
             }
+            // Check if it isa valid entry
+            if (StaticObjects.Book.EnglishTranslation.AllEntries().Find(e => e * entry) == null) return new TOC_Entry();
             return entry;
         }
 

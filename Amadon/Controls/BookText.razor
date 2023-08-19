@@ -2,6 +2,7 @@
 @using AmadonStandardLib.Classes;
 @using Amadon.Controls;
 @using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.InterchangeData;
 @using AmadonStandardLib.UbClasses;
 @using System.Diagnostics;
 @inject IJSRuntime JSRuntime;
@@ -112,6 +113,7 @@
         AmadonEvents.OnHighlightExpression += OnHighlightExpression;
         AmadonEvents.OnShowHelpPage += ShowHelp;
         AmadonEvents.OnNewParagraphIdent += OnNewParagraphIdent;
+        AmadonEvents.OnOpenEditNoteText += OnOpenEditNoteText;
     }
 
 
@@ -167,6 +169,11 @@
         StaticObjects.Parameters.Entry = entry;
         ShowPage();
     }
+
+    private void OnOpenEditNoteText(UserNote note)
+    {
+    }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

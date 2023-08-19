@@ -1,43 +1,13 @@
-﻿@using AmadonStandardLib.Helpers;
+﻿@using Amadon.Services;
+@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.InterchangeData;
 @using AmadonStandardLib.UbClasses;
 @using Blazorise.DataGrid
 
 <h3>Notes Topics</h3>
 
-<Bar Breakpoint="Breakpoint.Desktop"
-     Background="Background.Light"
-     ThemeContrast="ThemeContrast.Light">
-    <BarMenu>
-        <BarStart>
-            <BarItem>
-                <BarDropdown>
-                    <BarDropdownToggle>
-                        Top-level toggler
-                    </BarDropdownToggle>
-                    <BarDropdownMenu>
-                        <BarDropdownItem>
-                            Top-level item
-                        </BarDropdownItem>
-                        <BarDropdown>
-                            <BarDropdownToggle>
-                                Nested toggler
-                            </BarDropdownToggle>
-                            <BarDropdownMenu>
-                                <BarDropdownItem>
-                                    Nested item
-                                </BarDropdownItem>
-                            </BarDropdownMenu>
-                        </BarDropdown>
-                    </BarDropdownMenu>
-                </BarDropdown>
-            </BarItem>
-        </BarStart>
-    </BarMenu>
-</Bar>
-
-
 <DataGrid @ref="@NotesDataGrid" TItem="UserNote"
-          Data="@NotesList"
+          Data="@PersistentData.NotesList.Notes"
           @bind-SelectedRow="@selectedUserNote"
           RowContextMenu="@OnRowContextMenu"
           RowContextMenuPreventDefault="true"
@@ -46,7 +16,7 @@
           ShowPager
           CommandMode="DataGridCommandMode.ButtonRow">
     <DataGridColumns>
-        <DataGridColumn Field="@nameof(UserNote.Reference)" Caption="Reference" Sortable="true">
+        <DataGridColumn Field="@nameof(UserNote.Reference)" Caption="Reference" Editable Sortable="true">
         </DataGridColumn>
         <DataGridColumn Field="@nameof(UserNote.Title)" Caption="Title" Editable Sortable="true" />
     </DataGridColumns>
@@ -74,28 +44,6 @@
 
 @code{
 
-    public class UserNote
-    {
-        public TOC_Entry Entry { get; set; } = new TOC_Entry();
-        public string Reference
-        {
-            get
-            {
-                return Entry.Reference;
-            }
-        }
-        public string Title { get; set; } = "no title";
-        public string Notes { get; set; } = "";
-    }
-
-    List<UserNote> NotesList = new List<UserNote>()
-    {
-        new UserNote() {Entry = TOC_Entry.FromHref("100"), Title= "bla bla 1", Notes= "Algumas anotações"},
-        new UserNote() {Entry = TOC_Entry.FromHref("100:4:5"), Title= "bla bla 1 bla bla 1 bla bla 1 bla bla 1 bla bla 1 bla bla 1", Notes= "Algumas anotações"},
-        new UserNote() {Entry = TOC_Entry.FromHref("100-8 1"), Title= "bla bla 1", Notes= "Algumas anotações"},
-        new UserNote() {Entry = TOC_Entry.FromHref("100:4:5"), Title= "bla bla 1", Notes= "Algumas anotações"},
-    };
-
     private UserNote selectedUserNote;
 
     private DataGrid<UserNote> NotesDataGrid;
@@ -107,7 +55,7 @@
 
     private void NewNote()
     {
-        NotesList.Add(new UserNote() { Entry = StaticObjects.Parameters.Entry, Title = "bla bla 1", Notes = "" });
+        PersistentData.NotesList.Notes.Add(new UserNote() { Entry = StaticObjects.Parameters.Entry, Title = "bla bla 1", Notes = "" });
         NotesDataGrid.Refresh();
         NotesDataGrid.New();
     }
@@ -115,6 +63,7 @@
     private void EditeNote(UserNote note)
     {
         NotesDataGrid.Edit(note);
+        AmadonEvents.OpenEditNoteText(note);
     }
 
 
@@ -136,7 +85,6 @@
         showContextMenu = false;
     }
 
-
     protected Task OnRowContextMenu(DataGridRowMouseEventArgs<UserNote> eventArgs)
     {
         showContextMenu = true;
@@ -145,16 +93,9 @@
         return Task.CompletedTask;
     }
 
-
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
-        for(int i= 1; i<100; i++)
-        {
-            NotesList.Add(new UserNote() { Entry = TOC_Entry.FromHref("100-8 1"), Title = $"Nota {i}", Notes = "" });
-        }
     }
 }
 

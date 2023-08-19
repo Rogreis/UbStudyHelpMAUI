@@ -1,4 +1,5 @@
-﻿using AmadonStandardLib.UbClasses;
+﻿using AmadonStandardLib.InterchangeData;
+using AmadonStandardLib.UbClasses;
 
 namespace Amadon
 {
@@ -17,6 +18,7 @@ namespace Amadon
     internal delegate void HelpContextDelegate();
     internal delegate void UpdateParagraphIdentDelegate(string reference);
     internal delegate void NewParagraphIdentDelegate(TOC_Entry entry);
+    internal delegate void OpenEditNoteTextDelegate(UserNote note);
 
 
     internal class AmandonComponentNames
@@ -121,6 +123,12 @@ namespace Amadon
         /// </summary>
         public static event NewParagraphIdentDelegate OnNewParagraphIdent;
 
+        /// <summary>
+        /// Fired to open the big edit notes in the Boot Text componenet
+        /// </summary>
+        public static event OpenEditNoteTextDelegate OnOpenEditNoteText;
+        
+
         // ============================================================================================================= 
         // Functions to fire the above events
 
@@ -210,6 +218,11 @@ namespace Amadon
         {
             OnNewParagraphIdent?.Invoke(entry);
         }
-        
+
+        public static void OpenEditNoteText(UserNote note)
+        {
+            OnOpenEditNoteText?.Invoke(note);
+        }
+
     }
 }
