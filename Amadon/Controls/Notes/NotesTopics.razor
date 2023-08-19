@@ -1,5 +1,162 @@
-﻿<h3>Notes Topics</h3>
+﻿@using AmadonStandardLib.Helpers;
+@using AmadonStandardLib.UbClasses;
+@using Blazorise.DataGrid
 
-@code {
+<h3>Notes Topics</h3>
 
+<Bar Breakpoint="Breakpoint.Desktop"
+     Background="Background.Light"
+     ThemeContrast="ThemeContrast.Light">
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        Top-level toggler
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem>
+                            Top-level item
+                        </BarDropdownItem>
+                        <BarDropdown>
+                            <BarDropdownToggle>
+                                Nested toggler
+                            </BarDropdownToggle>
+                            <BarDropdownMenu>
+                                <BarDropdownItem>
+                                    Nested item
+                                </BarDropdownItem>
+                            </BarDropdownMenu>
+                        </BarDropdown>
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+        </BarStart>
+    </BarMenu>
+</Bar>
+
+
+<DataGrid @ref="@NotesDataGrid" TItem="UserNote"
+          Data="@NotesList"
+          @bind-SelectedRow="@selectedUserNote"
+          RowContextMenu="@OnRowContextMenu"
+          RowContextMenuPreventDefault="true"
+          Editable
+          Responsive
+          ShowPager
+          CommandMode="DataGridCommandMode.ButtonRow">
+    <DataGridColumns>
+        <DataGridColumn Field="@nameof(UserNote.Reference)" Caption="Reference" Sortable="true">
+        </DataGridColumn>
+        <DataGridColumn Field="@nameof(UserNote.Title)" Caption="Title" Editable Sortable="true" />
+    </DataGridColumns>
+    <ButtonRowTemplate>
+        <Button Color="Color.Success" Clicked="@(()=> NewNote())">New</Button>
+        <Button Color="Color.Primary" Disabled="(selectedUserNote is null)" Clicked="@(()=> EditeNote(selectedUserNote))">Edit</Button>
+        <Button Color="Color.Danger" Disabled="(selectedUserNote is null)" Clicked="@(()=> DeleteNote(selectedUserNote))">Delete</Button>
+    </ButtonRowTemplate>
+</DataGrid>
+
+@if (showContextMenu)
+{
+    <Div Position="Position.Fixed" Background="Background.Danger" Style="@($"left:{contextMenuPos.X}px;top:{contextMenuPos.Y}px;")">
+        <ListGroup>
+            <ListGroupItem Clicked="@(()=>OnContextItemEditClicked(contextMenuUserNote))">
+                <Icon Name="IconName.Edit" TextColor="TextColor.Secondary" /> Edit
+            </ListGroupItem>
+            <ListGroupItem Clicked="@(()=>OnContextItemDeleteClicked(contextMenuUserNote))">
+                <Icon Name="IconName.Delete" TextColor="TextColor.Danger" /> Delete
+            </ListGroupItem>
+        </ListGroup>
+    </Div>
 }
+
+
+@code{
+
+    public class UserNote
+    {
+        public TOC_Entry Entry { get; set; } = new TOC_Entry();
+        public string Reference
+        {
+            get
+            {
+                return Entry.Reference;
+            }
+        }
+        public string Title { get; set; } = "no title";
+        public string Notes { get; set; } = "";
+    }
+
+    List<UserNote> NotesList = new List<UserNote>()
+    {
+        new UserNote() {Entry = TOC_Entry.FromHref("100"), Title= "bla bla 1", Notes= "Algumas anotações"},
+        new UserNote() {Entry = TOC_Entry.FromHref("100:4:5"), Title= "bla bla 1 bla bla 1 bla bla 1 bla bla 1 bla bla 1 bla bla 1", Notes= "Algumas anotações"},
+        new UserNote() {Entry = TOC_Entry.FromHref("100-8 1"), Title= "bla bla 1", Notes= "Algumas anotações"},
+        new UserNote() {Entry = TOC_Entry.FromHref("100:4:5"), Title= "bla bla 1", Notes= "Algumas anotações"},
+    };
+
+    private UserNote selectedUserNote;
+
+    private DataGrid<UserNote> NotesDataGrid;
+
+    private bool showContextMenu = false;
+    UserNote contextMenuUserNote;
+    System.Drawing.Point contextMenuPos;
+
+
+    private void NewNote()
+    {
+        NotesList.Add(new UserNote() { Entry = StaticObjects.Parameters.Entry, Title = "bla bla 1", Notes = "" });
+        NotesDataGrid.Refresh();
+        NotesDataGrid.New();
+    }
+
+    private void EditeNote(UserNote note)
+    {
+        NotesDataGrid.Edit(note);
+    }
+
+
+    private void DeleteNote(UserNote note)
+    {
+        NotesDataGrid.Delete(note);
+    }
+
+
+    protected void OnContextItemEditClicked(UserNote note)
+    {
+        EditeNote(note);
+        showContextMenu = false;
+    }
+
+    protected void OnContextItemDeleteClicked(UserNote note)
+    {
+        DeleteNote(note);
+        showContextMenu = false;
+    }
+
+
+    protected Task OnRowContextMenu(DataGridRowMouseEventArgs<UserNote> eventArgs)
+    {
+        showContextMenu = true;
+        contextMenuUserNote = eventArgs.Item;
+        contextMenuPos = eventArgs.MouseEventArgs.Client;
+        return Task.CompletedTask;
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        for(int i= 1; i<100; i++)
+        {
+            NotesList.Add(new UserNote() { Entry = TOC_Entry.FromHref("100-8 1"), Title = $"Nota {i}", Notes = "" });
+        }
+    }
+}
+
+
+
