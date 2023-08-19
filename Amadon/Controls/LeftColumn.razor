@@ -1,4 +1,5 @@
-﻿@using Amadon.Controls.Settings
+﻿@using Amadon.Controls.Notes
+@using Amadon.Controls.Settings
 @using AmadonStandardLib.Helpers;
 
 <div id="leftColumn">
@@ -17,6 +18,10 @@
     else if (ControlName == AmandonComponentNames.ControlTrack)
     {
         <Track></Track>
+    }
+    else if (ControlName == AmandonComponentNames.ControlNotes)
+    {
+        <NotesTopics></NotesTopics>
     }
     else if (ControlName == AmandonComponentNames.ControlIndex)
     {
@@ -63,6 +68,9 @@
                 break;
             case AmandonComponentNames.ControlTrack:
                 AmadonEvents.ShowHelpPage(AmandonHelpPageNames.TrackHelp);
+                break;
+            case AmandonComponentNames.ControlNotes:
+                AmadonEvents.ShowHelpPage(AmandonHelpPageNames.NotesHelp);
                 break;
             case AmandonComponentNames.ControlSettings:
                 AmadonEvents.ShowHelpPage(AmandonHelpPageNames.SettingsHelp);

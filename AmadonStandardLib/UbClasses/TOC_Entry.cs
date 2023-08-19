@@ -1,13 +1,7 @@
-﻿using System;
+﻿using AmadonStandardLib.Helpers;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Xml;
-using AmadonStandardLib.Helpers;
-using System.IO;
 
 namespace AmadonStandardLib.UbClasses
 {
@@ -40,7 +34,7 @@ namespace AmadonStandardLib.UbClasses
                         break;
                     case 1:
                         entry.Paper = Convert.ToInt16(parts[0]);
-                        entry.Section = 1;
+                        entry.Section = 0;
                         entry.ParagraphNo = 1;
                         break;
                     case 2:

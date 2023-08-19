@@ -25,6 +25,7 @@ namespace Amadon
         public const string ControlSearch = "search";
         public const string ControlHelp = "help";
         public const string ControlTrack = "track";
+        public const string ControlNotes = "notes";
         public const string ControlIndex = "index";
         public const string ControlToc = "toc";
     }
@@ -35,6 +36,7 @@ namespace Amadon
         public const string SearchHelp = "search";
         public const string StartingHelp = "help";
         public const string TrackHelp = "track";
+        public const string NotesHelp = "notes";
         public const string IndexHelp = "index";
         public const string MenuBarHelp = "menubar";
         public const string SettingsHelp = "settings";

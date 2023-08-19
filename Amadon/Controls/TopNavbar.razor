@@ -47,6 +47,11 @@
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="LinkToNotes">
+                        <span class="oi oi-comment-square" aria-hidden="true"></span> Notes
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
                     <NavLink class="nav-link" @onclick="LinkToSettings">
                         <span class="oi oi-target" aria-hidden="true"></span> Settings
                     </NavLink>
@@ -86,6 +91,7 @@
                name == AmandonComponentNames.ControlSearch ||
                name == AmandonComponentNames.ControlHelp ||
                name == AmandonComponentNames.ControlTrack ||
+               name == AmandonComponentNames.ControlNotes ||
                name == AmandonComponentNames.ControlIndex ||
                name == AmandonComponentNames.ControlToc;
     }
@@ -194,6 +200,8 @@
     private void LinkToSearch() => FireTopNavCommand(AmandonComponentNames.ControlSearch);
 
     private void LinkToTrack() => FireTopNavCommand(AmandonComponentNames.ControlTrack);
+
+    private void LinkToNotes() => FireTopNavCommand(AmandonComponentNames.ControlNotes);
 
     private void LinkToSettings() => FireTopNavCommand(AmandonComponentNames.ControlSettings);
 
