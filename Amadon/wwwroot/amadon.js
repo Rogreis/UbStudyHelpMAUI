@@ -25,5 +25,15 @@ window.setupF1KeyListener = () => {
         }
     });
 };
+
+window.addDoubleClickListener = function (elementId, dotNetReference) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.addEventListener('dblclick', (event) => {
+            dotNetReference.invokeMethodAsync('OnRowDoubleClicked', event.target.closest('tr').rowIndex);
+        });
+    }
+}
+
     
 

@@ -18,7 +18,7 @@ namespace Amadon
     internal delegate void HelpContextDelegate();
     internal delegate void UpdateParagraphIdentDelegate(string reference);
     internal delegate void NewParagraphIdentDelegate(TOC_Entry entry);
-    internal delegate void OpenEditNoteTextDelegate(UserNote note);
+    internal delegate void OpenEditNoteTextDelegate(UserNote note, bool readOnly);
 
 
     internal class AmandonComponentNames
@@ -219,9 +219,9 @@ namespace Amadon
             OnNewParagraphIdent?.Invoke(entry);
         }
 
-        public static void OpenEditNoteText(UserNote note)
+        public static void OpenEditNoteText(UserNote note, bool readOnly)
         {
-            OnOpenEditNoteText?.Invoke(note);
+            OnOpenEditNoteText?.Invoke(note, readOnly);
         }
 
     }

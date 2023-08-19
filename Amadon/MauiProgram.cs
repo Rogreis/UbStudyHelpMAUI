@@ -3,7 +3,7 @@ using Blazored.LocalStorage;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
-
+using Blazorise.RichTextEdit;
 using Microsoft.Extensions.Logging;
 
 using System.Text.Json;
@@ -81,6 +81,8 @@ namespace Amadon
                 config.JsonSerializerOptions.WriteIndented = true;
             });
 
+            builder.Services
+                .AddBlazoriseRichTextEdit();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

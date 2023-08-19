@@ -1,0 +1,102 @@
+﻿@using AmadonStandardLib.InterchangeData;
+@using Blazorise.RichTextEdit
+
+<Modal @ref="modalRef" Class="modal-xl ModalSize fade">
+    <ModalContent ElementId="ModalContent" Class="ModalBorder">
+        <ModalHeader Class="AmadonDark HeaderColors">
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody Class="AmadonDark scrollable-modal-body">
+
+
+            <RichTextEdit @ref="richTextEditRef"
+                          Theme="RichTextEditTheme.Snow"
+                          ContentChanged="@OnContentChanged"
+                          PlaceHolder="Type your note here..."
+                          ReadOnly="@IsReadOnly"
+                          SubmitOnEnter="false"
+                          EnterPressed="@OnSave"
+                          ToolbarPosition="Placement.Top">
+                <Toolbar>
+                    <RichTextEditToolbarGroup>
+                        <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+                        <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+                        <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
+                            <RichTextEditToolbarSelectItem Value="small" />
+                            <RichTextEditToolbarSelectItem Selected />
+                            <RichTextEditToolbarSelectItem Value="large" />
+                            <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
+                        </RichTextEditToolbarSelect>
+                        <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+                        <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+                    </RichTextEditToolbarGroup>
+                    <!-- Custom toolbar content -->
+                    <RichTextEditToolbarGroup Float="Float.End">
+                        <Button onClick="window.open('https://www.quilljs.com/','quilljs')"><Icon Name="IconName.InfoCircle" /></Button>
+                        <Button Clicked="@OnSave"><Icon Name="IconName.Save" /></Button>
+                    </RichTextEditToolbarGroup>
+                </Toolbar>
+                <Editor>My example content</Editor>
+            </RichTextEdit>
+
+
+        </ModalBody>
+        <ModalFooter Class="AmadonDark">
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+
+@code {
+
+    private Modal modalRef;
+    private string Title { get; set; } = "Notes";
+    protected RichTextEdit richTextEditRef;
+    protected bool IsReadOnly;
+    protected string contentAsHtml;
+    protected string contentAsDeltaJson;
+    protected string contentAsText;
+    protected string savedContent;
+
+    public void ShowEditNotes(UserNote note, bool readOnly)
+    {
+        IsReadOnly = readOnly;
+        Title = note.Title;
+
+        if (!modalRef.Visible)
+        {
+            modalRef.Show();
+        }
+        else
+        {
+            modalRef.Hide();
+            modalRef.Show();
+        }
+        StateHasChanged();
+        Task.Delay(1);
+    }
+
+    public Task HideModal()
+    {
+        return modalRef.Hide();
+    }
+
+
+    public async Task OnContentChanged()
+    {
+        contentAsHtml = await richTextEditRef.GetHtmlAsync();
+        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
+        contentAsText = await richTextEditRef.GetTextAsync();
+    }
+
+    public async Task OnSave()
+    {
+        savedContent = await richTextEditRef.GetHtmlAsync();
+        await richTextEditRef.ClearAsync();
+    }
+
+
+
+}

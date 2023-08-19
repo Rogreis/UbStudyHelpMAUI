@@ -3,8 +3,10 @@
 @using AmadonStandardLib.InterchangeData;
 @using AmadonStandardLib.UbClasses;
 @using Blazorise.DataGrid
+@inject IJSRuntime JsRuntime
 
 <h3>Notes Topics</h3>
+
 
 <DataGrid @ref="@NotesDataGrid" TItem="UserNote"
           Data="@PersistentData.NotesList.Notes"
@@ -14,7 +16,8 @@
           Editable
           Responsive
           ShowPager
-          CommandMode="DataGridCommandMode.ButtonRow">
+          CommandMode="DataGridCommandMode.ButtonRow"
+          @onmouseover="AddDoubleClickListener">
     <DataGridColumns>
         <DataGridColumn Field="@nameof(UserNote.Reference)" Caption="Reference" Editable Sortable="true">
         </DataGridColumn>
@@ -53,6 +56,19 @@
     System.Drawing.Point contextMenuPos;
 
 
+    private async Task AddDoubleClickListener()
+    {
+        var dataGridElementId = NotesDataGrid.ElementId;
+        await JsRuntime.InvokeVoidAsync("addDoubleClickListener", dataGridElementId, DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public void OnRowDoubleClicked(int rowIndex)
+    {
+        UserNote note = PersistentData.NotesList.Notes.Skip(rowIndex - 1).FirstOrDefault();
+        AmadonEvents.OpenEditNoteText(note, true);
+    }
+
     private void NewNote()
     {
         PersistentData.NotesList.Notes.Add(new UserNote() { Entry = StaticObjects.Parameters.Entry, Title = "bla bla 1", Notes = "" });
@@ -63,7 +79,7 @@
     private void EditeNote(UserNote note)
     {
         NotesDataGrid.Edit(note);
-        AmadonEvents.OpenEditNoteText(note);
+        AmadonEvents.OpenEditNoteText(note, false);
     }
 
 
