@@ -169,9 +169,9 @@
         AmadonEvents.OnUpdateParagraphIdent += SentParagraphIdent;
     }
 
-    private void SentParagraphIdent(string reference)
+    private void SentParagraphIdent(TOC_Entry entry)
     {
-        ParagraphIdent = reference;
+        ParagraphIdent = entry.Reference;
         StateHasChanged();
     }
 

@@ -138,7 +138,7 @@
     {
         GetTexts();
         OnHighlightExpression(PersistentData.GenericData.HighlightedText);
-        AmadonEvents.UpdateParagraphIdent(StaticObjects.Parameters.Entry.Reference);
+        AmadonEvents.UpdateParagraphIdent(StaticObjects.Parameters.Entry);
         StateHasChanged();
         JumpToAnchor(StaticObjects.Parameters.Entry);
     }
@@ -188,7 +188,7 @@
             {
                 GetTexts();
             });
-            AmadonEvents.UpdateParagraphIdent(StaticObjects.Parameters.Entry.Reference);
+            AmadonEvents.UpdateParagraphIdent(StaticObjects.Parameters.Entry);
             StateHasChanged();
         }
      }

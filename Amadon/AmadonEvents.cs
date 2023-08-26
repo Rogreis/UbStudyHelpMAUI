@@ -16,7 +16,7 @@ namespace Amadon
     internal delegate void ShowTrackDelegate();
     internal delegate void ShowHelpPageDelegate(string helpPage);
     internal delegate void HelpContextDelegate();
-    internal delegate void UpdateParagraphIdentDelegate(string reference);
+    internal delegate void UpdateParagraphIdentDelegate(TOC_Entry entry);
     internal delegate void NewParagraphIdentDelegate(TOC_Entry entry);
     internal delegate void OpenEditNoteTextDelegate(UserNote note, bool readOnly);
 
@@ -209,9 +209,9 @@ namespace Amadon
             ShowHelpPage(AmandonHelpPageNames.StartingHelp);
         }
 
-        public static void UpdateParagraphIdent(string reference)
+        public static void UpdateParagraphIdent(TOC_Entry entry)
         {
-            OnUpdateParagraphIdent?.Invoke(reference);
+            OnUpdateParagraphIdent?.Invoke(entry);
         }
 
         public static void NewParagraphIdent(TOC_Entry entry)

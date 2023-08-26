@@ -5,7 +5,7 @@
 @using Blazorise.DataGrid
 @inject IJSRuntime JsRuntime
 
-<h3>Notes Topics</h3>
+<h3>Notes for Paper @currentPaper</h3>
 
 
 <DataGrid @ref="@NotesDataGrid" TItem="UserNote"
@@ -52,6 +52,8 @@
     private List<UserNote> Notes { get; set; } = new List<UserNote>();
 
     private DataGrid<UserNote> NotesDataGrid;
+
+    private string currentPaper = "";
 
     private bool showContextMenu = false;
     UserNote contextMenuUserNote;
@@ -115,6 +117,7 @@
     {
         Notes = PersistentData.NotesList.Notes.FindAll(n => n.Entry.Paper == entry.Paper);
         Notes.Sort((n1, n2) => n1.Entry.CompareTo(n2.Entry));
+        currentPaper = entry.Paper.ToString();
     }
 
     private void OnNewTocEntry(TOC_Entry entry)
@@ -126,11 +129,12 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        AmadonEvents.OnNewTocEntry += OnNewTocEntry;
-        AmadonEvents.OnNewSubjectIndexEntry += OnNewTocEntry;
-        AmadonEvents.OnNewSearchEntry += OnNewTocEntry;
-        AmadonEvents.OnNewTrackEntry += OnNewTocEntry;
-        AmadonEvents.OnNewParagraphIdent += OnNewTocEntry;
+        //AmadonEvents.OnNewTocEntry += OnNewTocEntry;
+        //AmadonEvents.OnNewSubjectIndexEntry += OnNewTocEntry;
+        //AmadonEvents.OnNewSearchEntry += OnNewTocEntry;
+        //AmadonEvents.OnNewTrackEntry += OnNewTocEntry;
+        //AmadonEvents.OnNewParagraphIdent += OnNewTocEntry;
+        AmadonEvents.OnUpdateParagraphIdent += OnNewTocEntry;
         SelectNotesd(StaticObjects.Parameters.Entry);
     }
 
