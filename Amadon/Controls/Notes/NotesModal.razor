@@ -12,11 +12,9 @@
 
             <RichTextEdit @ref="richTextEditRef"
                           Theme="RichTextEditTheme.Snow"
-                          ContentChanged="@OnContentChanged"
                           PlaceHolder="Type your note here..."
                           ReadOnly="@IsReadOnly"
                           SubmitOnEnter="false"
-                          EnterPressed="@OnSave"
                           ToolbarPosition="Placement.Top">
                 <Toolbar>
                     <RichTextEditToolbarGroup>
@@ -31,19 +29,21 @@
                         <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
                         <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
                     </RichTextEditToolbarGroup>
-                    <!-- Custom toolbar content -->
+
+@*                    <!-- Custom toolbar content -->
                     <RichTextEditToolbarGroup Float="Float.End">
                         <Button onClick="window.open('https://www.quilljs.com/','quilljs')"><Icon Name="IconName.InfoCircle" /></Button>
                         <Button Clicked="@OnSave"><Icon Name="IconName.Save" /></Button>
                     </RichTextEditToolbarGroup>
-                </Toolbar>
-                <Editor>My example content</Editor>
+*@
+                    </Toolbar>
+                <Editor></Editor>
             </RichTextEdit>
-
 
         </ModalBody>
         <ModalFooter Class="AmadonDark">
-            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="Color.Secondary" Clicked="@HideModalCancel">Cancel</Button>
+            <Button Color="Color.Primary" Clicked="@HideModalOk">Ok</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -55,15 +55,14 @@
     private string Title { get; set; } = "Notes";
     protected RichTextEdit richTextEditRef;
     protected bool IsReadOnly;
-    protected string contentAsHtml;
-    protected string contentAsDeltaJson;
-    protected string contentAsText;
-    protected string savedContent;
+    private UserNote Note = null;
 
     public void ShowEditNotes(UserNote note, bool readOnly)
     {
         IsReadOnly = readOnly;
+        Note = note;
         Title = note.Title;
+        richTextEditRef.SetHtmlAsync(note.Notes);
 
         if (!modalRef.Visible)
         {
@@ -78,25 +77,17 @@
         Task.Delay(1);
     }
 
-    public Task HideModal()
+    public Task HideModalCancel()
     {
         return modalRef.Hide();
     }
 
-
-    public async Task OnContentChanged()
+    public async Task HideModalOk()
     {
-        contentAsHtml = await richTextEditRef.GetHtmlAsync();
-        contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
-        contentAsText = await richTextEditRef.GetTextAsync();
-    }
-
-    public async Task OnSave()
-    {
-        savedContent = await richTextEditRef.GetHtmlAsync();
+        Note.Notes = await richTextEditRef.GetHtmlAsync();
         await richTextEditRef.ClearAsync();
+        await modalRef.Hide();
     }
-
 
 
 }

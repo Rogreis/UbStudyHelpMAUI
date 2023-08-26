@@ -9,7 +9,7 @@
 
 
 <DataGrid @ref="@NotesDataGrid" TItem="UserNote"
-          Data="@PersistentData.NotesList.Notes"
+          Data="@Notes"
           @bind-SelectedRow="@selectedUserNote"
           RowContextMenu="@OnRowContextMenu"
           RowContextMenuPreventDefault="true"
@@ -25,7 +25,7 @@
     </DataGridColumns>
     <ButtonRowTemplate>
         <Button Color="Color.Success" Clicked="@(()=> NewNote())">New</Button>
-        <Button Color="Color.Primary" Disabled="(selectedUserNote is null)" Clicked="@(()=> EditeNote(selectedUserNote))">Edit</Button>
+        <Button Color="Color.Primary" Disabled="(selectedUserNote is null)" Clicked="@(()=> EditeNote(selectedUserNote))">Edit Title</Button>
         <Button Color="Color.Danger" Disabled="(selectedUserNote is null)" Clicked="@(()=> DeleteNote(selectedUserNote))">Delete</Button>
     </ButtonRowTemplate>
 </DataGrid>
@@ -49,6 +49,8 @@
 
     private UserNote selectedUserNote;
 
+    private List<UserNote> Notes { get; set; } = new List<UserNote>();
+
     private DataGrid<UserNote> NotesDataGrid;
 
     private bool showContextMenu = false;
@@ -66,7 +68,7 @@
     public void OnRowDoubleClicked(int rowIndex)
     {
         UserNote note = PersistentData.NotesList.Notes.Skip(rowIndex - 1).FirstOrDefault();
-        AmadonEvents.OpenEditNoteText(note, true);
+        AmadonEvents.OpenEditNoteText(note, false);
     }
 
     private void NewNote()
@@ -79,7 +81,7 @@
     private void EditeNote(UserNote note)
     {
         NotesDataGrid.Edit(note);
-        AmadonEvents.OpenEditNoteText(note, false);
+        //AmadonEvents.OpenEditNoteText(note, true);
     }
 
 
@@ -109,9 +111,33 @@
         return Task.CompletedTask;
     }
 
+    private void SelectNotesd(TOC_Entry entry)
+    {
+        Notes = PersistentData.NotesList.Notes.FindAll(n => n.Entry.Paper == entry.Paper);
+        Notes.Sort((n1, n2) => n1.Entry.CompareTo(n2.Entry));
+    }
+
+    private void OnNewTocEntry(TOC_Entry entry)
+    {
+        SelectNotesd(entry);
+        StateHasChanged();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        AmadonEvents.OnNewTocEntry += OnNewTocEntry;
+        AmadonEvents.OnNewSubjectIndexEntry += OnNewTocEntry;
+        AmadonEvents.OnNewSearchEntry += OnNewTocEntry;
+        AmadonEvents.OnNewTrackEntry += OnNewTocEntry;
+        AmadonEvents.OnNewParagraphIdent += OnNewTocEntry;
+        SelectNotesd(StaticObjects.Parameters.Entry);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        SelectNotesd(StaticObjects.Parameters.Entry);
     }
 }
 
