@@ -108,6 +108,7 @@ namespace AmadonStandardLib.UbClasses
         public short LastPaper(short paperNo)
         {
             short part = GetPart(paperNo);
+            if (part == 0) return FistPapers[part + 1];
             short location = LocatePaperInsidePart(paperNo, FistPapers[part], LastPapers[part]);
             switch(location)
             {
