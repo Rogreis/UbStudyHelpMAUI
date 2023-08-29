@@ -13,6 +13,15 @@
         margin: 4px; /* Spacing around the elements */
     }
 
+    .custom-nav-link-right {
+        margin-right: 5px;
+    }
+
+    .custom-nav-link-left {
+        margin-left: 5px;
+    }
+
+
 </style>
 
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark navbarheight fixed-top">
@@ -63,13 +72,29 @@
                 </li>
             </ul>
 
+            <NavLink class="nav-link" @onclick="JumpToFirstPaper">
+                <span class="oi oi oi-media-step-backward custom-nav-link-right" aria-hidden="true"></span>
+            </NavLink>
+            <NavLink class="nav-link" @onclick="JumpToPreviousPaper">
+                <span class="oi oi oi-media-skip-backward custom-nav-link-right" aria-hidden="true"></span>
+            </NavLink>
             <NavLink class="nav-link" @onclick="JumpToPreviousReference">
                 <span class="oi oi oi-chevron-left" aria-hidden="true"></span>
             </NavLink>
+
             <TextEdit Class="form-control custom-input-ident" @bind-Text="@ParagraphIdent" @onkeydown="HandleKeyDownIdent" MaxLength="15" Placeholder="Paragraph ident" />
+
             <NavLink class="nav-link" @onclick="JumpToNextReference">
-                <span class="oi oi oi-chevron-right" aria-hidden="true"></span>
+                <span class="oi oi oi-chevron-right custom-nav-link-right" aria-hidden="true"> </span>
             </NavLink>
+            <NavLink class="nav-link" @onclick="JumpToNextPaper">
+                <span class="oi oi oi-media-skip-forward custom-nav-link-right" aria-hidden="true"> </span>
+            </NavLink>
+            <NavLink class="nav-link" @onclick="JumpToLastPaper">
+                <span class="oi oi oi-media-step-forward" aria-hidden="true"></span>
+            </NavLink>
+
+
             <TextEdit Class="form-control me-2 highlightField custom-input-high" @bind-Text="@ExpressionToSearch" @onkeydown="HandleKeyDownHigh" MaxLength="150" Placeholder="Expression to highlight" />
 
         </div>
@@ -95,6 +120,42 @@
                name == AmandonComponentNames.ControlIndex ||
                name == AmandonComponentNames.ControlToc;
     }
+
+
+    private void JumpToFirstPaper()
+    {
+        string paragraphRef = ParagraphIdent;
+        TOC_Entry entry = TOC_Entry.FirstPaper(TOC_Entry.FromHref(paragraphRef));
+        AmadonEvents.NewParagraphIdent(entry);
+        ParagraphIdent = entry.Reference;
+    }
+
+
+    private void JumpToPreviousPaper()
+    {
+        string paragraphRef = ParagraphIdent;
+        TOC_Entry entry = TOC_Entry.PreviousPaper(TOC_Entry.FromHref(paragraphRef));
+        AmadonEvents.NewParagraphIdent(entry);
+        ParagraphIdent = entry.Reference;
+    }
+
+    private void JumpToNextPaper()
+    {
+        string paragraphRef = ParagraphIdent;
+        TOC_Entry entry = TOC_Entry.NextPaper(TOC_Entry.FromHref(paragraphRef));
+        AmadonEvents.NewParagraphIdent(entry);
+        ParagraphIdent = entry.Reference;
+    }
+
+    private void JumpToLastPaper()
+    {
+        string paragraphRef = ParagraphIdent;
+        TOC_Entry entry = TOC_Entry.LastPaper(TOC_Entry.FromHref(paragraphRef));
+        AmadonEvents.NewParagraphIdent(entry);
+        ParagraphIdent = entry.Reference;
+    }
+
+
 
 
     /// <summary>

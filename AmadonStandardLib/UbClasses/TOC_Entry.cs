@@ -59,20 +59,36 @@ namespace AmadonStandardLib.UbClasses
         }
 
 
+        #region Jump routines
+
+        public static TOC_Entry FirstPaper(TOC_Entry entry)
+        {
+            entry.Paper = StaticObjects.Book.EnglishTranslation.FirstPaper(entry.Paper);
+            entry.Section = 0;
+            entry.ParagraphNo = 1;
+            return entry;
+        }
+
+
         /// <summary>
-        /// Calculate the next paragraph in the book
+        /// Jump to previous paper ot the last
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static TOC_Entry NextHRef(TOC_Entry entry)
+        public static TOC_Entry PreviousPaper(TOC_Entry entry)
         {
-            int index= StaticObjects.Book.EnglishTranslation.AllEntries().IndexOf(entry);
-            // If not found or already in the last, return the first
-            if (index == -1 || index == StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1) return new TOC_Entry();
-            // If in the first, return the last
-            if (index == 0) return StaticObjects.Book.EnglishTranslation.AllEntries()[StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1];
-            return StaticObjects.Book.EnglishTranslation.AllEntries()[index + 1];
+            entry.Paper -= 1;
+            entry.Section = 0;
+            entry.ParagraphNo = 1;
+            int index = StaticObjects.Book.EnglishTranslation.AllEntries().IndexOf(entry);
+            // If not found or already in the first, return the last
+            if (index <= 0)
+            {
+                entry.Paper = StaticObjects.Book.EnglishTranslation.AllEntries()[StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1].Paper;
+            }
+            return entry;
         }
+
 
         /// <summary>
         /// Calculate the first paragraph in the book
@@ -88,6 +104,52 @@ namespace AmadonStandardLib.UbClasses
             if (index == 0) return StaticObjects.Book.EnglishTranslation.AllEntries()[StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1];
             return StaticObjects.Book.EnglishTranslation.AllEntries()[index - 1];
         }
+
+
+        /// <summary>
+        /// Calculate the next paragraph in the book
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static TOC_Entry NextHRef(TOC_Entry entry)
+        {
+            int index = StaticObjects.Book.EnglishTranslation.AllEntries().IndexOf(entry);
+            // If not found or already in the last, return the first
+            if (index == -1 || index == StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1) return new TOC_Entry();
+            // If in the first, return the last
+            if (index == 0) return StaticObjects.Book.EnglishTranslation.AllEntries()[StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1];
+            return StaticObjects.Book.EnglishTranslation.AllEntries()[index + 1];
+        }
+
+        /// <summary>
+        /// Jump to next paper or the first
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static TOC_Entry NextPaper(TOC_Entry entry)
+        {
+            entry.Paper += 1;
+            entry.Section = 0;
+            entry.ParagraphNo = 1;
+            int index = StaticObjects.Book.EnglishTranslation.AllEntries().IndexOf(entry);
+            // If not found or already in the last, return the first
+            if (index == -1 || index == StaticObjects.Book.EnglishTranslation.AllEntries().Count - 1) return new TOC_Entry();
+            // If found, return it
+            return StaticObjects.Book.EnglishTranslation.AllEntries()[index];
+        }
+
+
+        public static TOC_Entry LastPaper(TOC_Entry entry)
+        {
+            entry.Paper = StaticObjects.Book.EnglishTranslation.LastPaper(entry.Paper);
+            entry.Section = 0;
+            entry.ParagraphNo = 1;
+            return entry;
+        }
+
+
+
+        #endregion
 
 
         /// <summary>

@@ -34,24 +34,99 @@ namespace AmadonStandardLib.UbClasses
         // Colocar isto no Json, diferente para cada tradução
         public List<string> PartTitles = new List<string>()
         {
-            "Introdução",
+            "Introduction",
             "Part I",
             "Part II",
             "Part III",
             "Part IV",
         };
 
+
+        #region Working with books parts
         // First papers list for each part
         [JsonIgnore]
-        public short[] FistPapers = new short[]
+        private short[] FistPapers = new short[]
         {
             0,
             1,
             32,
             57,
             120,
-            197
+            196
         };
+
+        // First papers list for each part
+        [JsonIgnore]
+        private short[] LastPapers = new short[]
+        {
+            0,
+            31,
+            56,
+            119,
+            196
+        };
+
+        private short LocatePaperInsidePart(short paperNo, short start, short end)
+        {
+            if (paperNo == start) return -1;
+            if (paperNo == end) return 1;
+            return 0;
+        }
+
+ 
+        private short GetPart(short paperNo)
+        {
+            if (IsIntroduction(paperNo)) return 0;
+            if (IsPartI(paperNo)) return 1;
+            if (IsPartII(paperNo)) return 2;
+            if (IsPartIII(paperNo)) return 3;
+            return 4;
+        }
+
+        public short FirstPaper(short paperNo)
+        {
+            short part = GetPart(paperNo);
+            short location = LocatePaperInsidePart(paperNo, FistPapers[part], LastPapers[part]);
+            switch (location)
+            {
+                case 0:
+                case 1:
+                    return FistPapers[part];
+                default:
+                    paperNo--;
+                    if (part == 0) return FistPapers[4];
+                    return FistPapers[part - 1];
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the next paper
+        /// </summary>
+        /// <param name="paperNo"></param>
+        /// <returns></returns>
+        public short LastPaper(short paperNo)
+        {
+            short part = GetPart(paperNo);
+            short location = LocatePaperInsidePart(paperNo, FistPapers[part], LastPapers[part]);
+            switch(location)
+            {
+                case 0:
+                case -1:
+                    return LastPapers[part];
+                default:
+                    if (part == 4) return FistPapers[0];
+                    return FistPapers[part + 1];
+            }
+        }
+
+
+        public bool IsIntroduction(short paperNo) { return paperNo == FistPapers[0]; }
+        public bool IsPartI(short paperNo) { return paperNo >= FistPapers[1] && paperNo < FistPapers[2]; }
+        public bool IsPartII(short paperNo) { return paperNo >= FistPapers[2] && paperNo < FistPapers[3]; }
+        public bool IsPartIII(short paperNo) { return paperNo >= FistPapers[3] && paperNo < FistPapers[4]; }
+        public bool IsPartIV(short paperNo) { return paperNo >= FistPapers[4]; }
+        #endregion
 
         private List<TOC_Entry> Sections(Paper p)
         {
