@@ -10,6 +10,7 @@ namespace Amadon.Services
     {
 
         private static string ColumnSize = "50%";
+        private static List<string> ParagraphsAnchor = new List<string>();  
 
         /// <summary>
         /// Get the paragraphs list from a translations
@@ -17,10 +18,13 @@ namespace Amadon.Services
         /// <param name="t"></param>
         /// <param name="entry"></param>
         /// <returns></returns>
-        private static List<Paragraph> GetParagraphs(Translation t, TOC_Entry entry) 
+        private static List<Paragraph> GetParagraphs(Translation t, TOC_Entry entry, ColumnInfo columnInfo) 
         {
             List<Paragraph> list= t?.Paper(entry.Paper).Paragraphs;
-            list.ForEach(p => p.TranslationId = t.LanguageID);
+            list.ForEach(p => {
+                p.TranslationId = t.LanguageID;
+                p.Column = columnInfo;
+            });
             return list;
         }
 
@@ -40,7 +44,7 @@ namespace Amadon.Services
                 {
                     divClass = "class=\"highlightedPar\"";
                 }
-                sb.AppendLine($"<td {id}><div {divClass}>");
+                sb.AppendLine($"<td {id}><div id={par.HtmlId} {divClass}>");
                 sb.AppendLine(par.GetHtml(insertAnchor));
                 sb.AppendLine("</div></td>");
             }
@@ -119,6 +123,15 @@ namespace Amadon.Services
         }
 
         /// <summary>
+        /// Returns a list with all paragraph anchor used in this page
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetParagraphsAnchor()
+        {
+            return ParagraphsAnchor;
+        }
+
+        /// <summary>
         /// Service api
         /// </summary>
         /// <param name="href"></param>
@@ -134,7 +147,8 @@ namespace Amadon.Services
             List<Paragraph>? middleParagraphs = null;
 
             // Left is always shown
-            leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry);
+            leftParagraphs = GetParagraphs(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry, ColumnInfo.Left);
+
 
             // Calculate the text to show option
             switch (CalculateShowOption())
@@ -147,21 +161,27 @@ namespace Amadon.Services
                     ColumnSize = "50%";
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
+                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry, ColumnInfo.Right);
+                    ParagraphsAnchor = (from paragraph in leftParagraphs.Concat(rightParagraphs)
+                                        select paragraph.HtmlId).ToList();
                     break;
                 case TextShowOption.LeftMiddle:
                     ColumnSize = "50%";
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
-                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
+                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry, ColumnInfo.Middle);
+                    ParagraphsAnchor = (from paragraph in leftParagraphs.Concat(middleParagraphs)
+                                        select paragraph.HtmlId).ToList();
                     break;
                 case TextShowOption.LeftMiddleRight:
                     ColumnSize = "33%";
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.LeftTranslation, paperTextFormatted.Entry));
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry));
                     paperTextFormatted.Titles.Add(FormatTitle(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry));
-                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry);
-                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry);
+                    rightParagraphs = GetParagraphs(StaticObjects.Book.RightTranslation, paperTextFormatted.Entry, ColumnInfo.Right);
+                    middleParagraphs = GetParagraphs(StaticObjects.Book.MiddleTranslation, paperTextFormatted.Entry, ColumnInfo.Middle);
+                    ParagraphsAnchor = (from paragraph in leftParagraphs.Concat(middleParagraphs).Concat(rightParagraphs)
+                                        select paragraph.HtmlId).ToList();
                     break;
             }
 

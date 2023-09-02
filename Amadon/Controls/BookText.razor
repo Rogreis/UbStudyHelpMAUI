@@ -9,6 +9,73 @@
 @inject IJSRuntime JSRuntime;
 
 
+<style>
+
+    .context-menu {
+        position: absolute;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        /* more styles */
+    }
+
+    .context-menu button {
+        display: block; /* Makes each button take up the full width, moving to a new line */
+        background: none; /* Remove default background */
+        border: none; /* Remove default borders */
+        color: blue; /* Text color similar to a typical hyperlink */
+        text-decoration: underline; /* Underline similar to hyperlink */
+        cursor: pointer; /* Cursor similar to hyperlink */
+        padding: 8px 12px; /* Add some padding */
+    }
+
+    /* Optional: change appearance on hover */
+    .context-menu button:hover {
+        background-color: #f0f0f0; /* Light grey background on hover */
+    }
+
+
+</style>
+
+<Paragraph @ref="par1" ElementId="x1" Entry=" entrada1" @oncontextmenu="@(e => ShowContextMenu(e))">
+    Este é o primeiro parágrafo
+</Paragraph>
+
+<Paragraph @ref="par2" Entry="entrada2" ElementId="x2"  @oncontextmenu="@(e => ShowContextMenu(e))">
+    Este é o segundo parágrafo<br />
+    Este é o segundo parágrafo<br />
+    Este é o segundo parágrafo<br />
+    Este é o segundo parágrafo<br />
+    Este é o segundo parágrafo<br />
+</Paragraph>
+
+
+@*<div id="firstDiv" @oncontextmenu="@(e => ShowContextMenu(e, "firstDiv"))">
+    Right-click me (First Div)
+</div>
+
+<div id="secondDiv" @oncontextmenu="@(e => ShowContextMenu(e, "secondDiv"))">
+    Right-click me (Second Div)
+</div>
+*@
+
+
+
+@if (showContextMenu)
+{
+    string showContextMenuStr = showContextMenu.ToString();
+    string posicao = $"top:{ContextMenuY}px;left:{ContextMenuX}px";
+    <p>Show Context Menu= @showContextMenuStr  @posicao</p>
+    <div style="@($"position:absolute;top:{ContextMenuY}px;left:{ContextMenuX}px; background-color: #ffffff;")" class="context-menu">
+        <button @onclick="SelectParagraph">Select this paragraph</button>
+        <button @onclick="OpenNotes">Notes</button>
+        <button @onclick="SearchHighlighted">Search</button>
+    </div>
+
+
+}
+
+
 <div id="rightColumn" class="black splitRight right mt-0 p-0 bg-dark text-white">
     <div class="row">
         @if (@PaperLines != null)
@@ -46,7 +113,15 @@
     private HelpModal ModalHelpControl;
     private NotesModal NotesModalControl;
     string anchor = "";
+    private bool showContextMenu = false;
+    private double ContextMenuX = 0;
+    private double ContextMenuY = 0;
 
+    private ElementReference firstDivRef;
+    private ElementReference secondDivRef;
+
+    Blazorise.Paragraph par1;
+    Blazorise.Paragraph par2;
 
     Table MainTextTable;
     const string tableId = "tableText";
@@ -59,6 +134,112 @@
         AmadonEvents.HelpContext();
     }
 
+    #region Context Menu
+
+    ElementReference myElementRef;
+    object elementProperties;
+
+
+    private async Task<ElementReference> GetHtmlElementFromId(string id)
+    {
+        myElementRef = await JSRuntime.InvokeAsync<ElementReference>("getElementId", id);
+        return myElementRef;
+    }
+
+    private async Task<object> GetElementProperties(string id)
+    {
+        elementProperties = await JSRuntime.InvokeAsync<object>("getElementPropertiesById", id);
+        return elementProperties;
+    }
+
+    private async Task GetTextDivData(string id)
+    {
+        await JSRuntime.InvokeVoidAsync("GetTextDivData", id);
+    }
+
+
+    private string innerHtml;
+    private string selectedText;
+
+    private async Task GetInnerHtml(string id)
+    {
+        innerHtml = await JSRuntime.InvokeAsync<string>("GetInnerHtml", id);
+    }
+
+    private async Task GetSelectedText(string id)
+    {
+        selectedText = await JSRuntime.InvokeAsync<string>("GetSelectedText", id);
+    }
+
+
+    private void ShowContextMenu(MouseEventArgs e)
+    {
+        showContextMenu = true;
+        string id= par2.ElementId;
+        Task t1 = Task.Run(async () => await GetInnerHtml(id));
+        Task t2 = Task.Run(async () => await GetSelectedText(id));
+
+        var x1 = innerHtml;
+        var x2 = selectedText;
+
+        return;
+
+
+        //// Get a reference to the clicked div element (this could be set through other means)
+
+        //// Attach both the context menu and double-click event listeners
+        ////Task<ElementReference> t = Task.Run(async () => await JSRuntime.InvokeAsync<ElementReference>("getElementById", id));
+        //Task<ElementReference> t = Task.Run(async () => await GetHtmlElementFromId(id));
+        //ElementReference elementReference = myElementRef;
+
+        //Task<object> t2 = Task.Run(async () => await GetElementProperties(id));
+        //object Properties = elementProperties;
+
+
+        ////ElementReference clickedDiv = (ElementReference)
+
+
+        ////// Call the JavaScript function to get the div's absolute position
+        ////var position = await JSRuntime.InvokeAsync<ClientRect>("getAbsolutePosition", clickedDiv);
+
+        ////// Calculate where the context menu should appear
+        ////x = e.ClientX - position.Left;
+        ////y = e.ClientY - position.Top;
+
+
+        //ContextMenuX = e.ClientX;
+        //ContextMenuY = e.ClientY;
+        //StateHasChanged(); // Re-render the component
+
+
+
+    }
+
+
+    public void OpenParagraphContextMenu(TOC_Entry entry, int x, int y)
+    {
+       // Task t3 = Task.Run(async () => await GetTextDivData(id));
+
+        showContextMenu = true;
+        ContextMenuX= x;
+        ContextMenuY= y;
+        StateHasChanged();
+    }
+
+
+    [JSInvokable]
+    public static void ShowContextMenu(int x, int y)
+    {
+        AmadonEvents.OpenParagraphContextMenu(null, x, y);
+    }
+
+    [JSInvokable]
+    public static void HandleDoubleClick(int x, int y)
+    {
+    }
+
+
+    #endregion
 
     #region Current page search and hightlight functions
 
@@ -118,6 +299,24 @@
         AmadonEvents.OnShowHelpPage += ShowHelp;
         AmadonEvents.OnNewParagraphIdent += OnNewParagraphIdent;
         AmadonEvents.OnOpenEditNoteText += OnOpenEditNoteText;
+        AmadonEvents.OnOpenParagraphContextMenu += OpenParagraphContextMenu;
+    }
+
+
+    // Actions for the context menu buttons
+    private void SelectParagraph()
+    {
+        showContextMenu = false;
+    }
+
+    private void OpenNotes()
+    {
+        showContextMenu = false;
+    }
+
+    private void SearchHighlighted()
+    {
+        showContextMenu = false;
     }
 
 
@@ -133,13 +332,24 @@
         await JSRuntime.InvokeVoidAsync("jumpToAnchor", $"{entry.Anchor}");
     }
 
+    private void AddEventListeners()
+    {
+        foreach (string htmlId in TextService.GetParagraphsAnchor())
+        {
+            // Attach both the context menu and double-click event listeners
+            Task t = Task.Run(async () => await JSRuntime.InvokeVoidAsync("addMultipleEventListeners", htmlId));
+        }
+    }
 
     private void ShowPage()
     {
         GetTexts();
         OnHighlightExpression(PersistentData.GenericData.HighlightedText);
         AmadonEvents.UpdateParagraphIdent(StaticObjects.Parameters.Entry);
+
         StateHasChanged();
+        AddEventListeners();
+
         JumpToAnchor(StaticObjects.Parameters.Entry);
     }
 
@@ -190,6 +400,7 @@
             });
             AmadonEvents.UpdateParagraphIdent(StaticObjects.Parameters.Entry);
             StateHasChanged();
+            AddEventListeners();
         }
      }
 }

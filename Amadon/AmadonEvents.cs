@@ -19,6 +19,7 @@ namespace Amadon
     internal delegate void UpdateParagraphIdentDelegate(TOC_Entry entry);
     internal delegate void NewParagraphIdentDelegate(TOC_Entry entry);
     internal delegate void OpenEditNoteTextDelegate(UserNote note, bool readOnly);
+    internal delegate void OpenParagraphContextMenuDelegate(TOC_Entry entry, int x, int y);
 
 
     internal class AmandonComponentNames
@@ -127,7 +128,9 @@ namespace Amadon
         /// Fired to open the big edit notes in the Boot Text componenet
         /// </summary>
         public static event OpenEditNoteTextDelegate OnOpenEditNoteText;
-        
+
+        public static event OpenParagraphContextMenuDelegate OnOpenParagraphContextMenu;
+
 
         // ============================================================================================================= 
         // Functions to fire the above events
@@ -222,6 +225,11 @@ namespace Amadon
         public static void OpenEditNoteText(UserNote note, bool readOnly)
         {
             OnOpenEditNoteText?.Invoke(note, readOnly);
+        }
+
+        public static void OpenParagraphContextMenu(TOC_Entry entry, int x, int y)
+        {
+            OnOpenParagraphContextMenu?.Invoke(entry, x, y);
         }
 
     }

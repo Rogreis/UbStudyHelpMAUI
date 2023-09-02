@@ -23,6 +23,13 @@ namespace AmadonStandardLib.UbClasses
         Closed = 4
     }
 
+    public enum ColumnInfo
+    {
+        Left,
+        Middle,
+        Right 
+    }
+
     /// <summary>
     /// Represents the html format for a paragraph
     /// </summary>
@@ -83,6 +90,26 @@ namespace AmadonStandardLib.UbClasses
             }
         }
 
+        /// <summary>
+        /// This property is set at runtime when we know which column will be used
+        /// </summary>
+        [JsonIgnore]
+        public ColumnInfo Column { get; set; } = ColumnInfo.Left;
+
+        public string HtmlId
+        {
+            get
+            {
+                switch (Column)
+                {
+                    case ColumnInfo.Middle:
+                        return AName + "_M";
+                    case ColumnInfo.Right:
+                        return AName + "_R";
+                }
+                return AName + "_L";
+            }
+        }
 
         public ParagraphHtmlType Format
         {
