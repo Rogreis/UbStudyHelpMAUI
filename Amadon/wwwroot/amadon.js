@@ -113,20 +113,43 @@ window.GetInnerHtml = (elementId) => {
     return element ? element.innerHTML : '';
 }
 
-window.GetSelectedText = (elementId) => {
-    let element = document.getElementById(elementId);
-    if (element) {
-        let selection = window.getSelection();
-        let range = document.createRange();
-        range.selectNodeContents(element);
-        if (selection.rangeCount > 0) {
-            selection.removeAllRanges();
-        }
-        selection.addRange(range);
-        console.log("GetSelectedText worked" + selection.toString());
-        return selection.toString();
+// function to get currently selected text
+function getSelectedText() {
+    let txt = '';
+    if (window.getSelection) {
+        txt = window.getSelection().toString();
     }
-    return '';
+    else if (window.document.getSelection) {
+        txt = window.document.getSelection().toString();
+    }
+    else if (window.document.selection) {
+        txt = window.document.selection.createRange().text;
+    }
+    else {
+        txt = 'Error: not supported';
+    }
+    return txt;
+}
+
+
+
+window.GetSelectedText = (elementId) => {
+    var text = getSelectedText();
+    console.log("Selected text: " + text);
+
+    //let element = document.getElementById(elementId);
+    //if (element) {
+    //    let selection = window.getSelection();
+    //    let range = document.createRange();
+    //    range.selectNodeContents(element);
+    //    if (selection.rangeCount > 0) {
+    //        selection.removeAllRanges();
+    //    }
+    //    selection.addRange(range);
+    //    console.log("GetSelectedText worked" + selection.toString());
+    //    return selection.toString();
+    //}
+    return text;
 }
     
 

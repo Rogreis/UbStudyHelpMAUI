@@ -50,6 +50,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Services\TextService.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Remove="wwwroot\images\highlight.png" />
       <Content Remove="wwwroot\images\ImagesForAmadonHelp.pptx" />
       <Content Remove="wwwroot\images\Index.png" />
