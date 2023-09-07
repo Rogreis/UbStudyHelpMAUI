@@ -39,33 +39,35 @@
         overflow-y: auto;
     }
 
+    #customContextMenu {
+        position: absolute;
+        width: 100px;
+        text-align: center;
+        border: 2px solid gold;
+    }
+
+    .menuItems {
+        list-style: none;
+        font-size: 12px;
+        padding: 0;
+        margin: 0;
+    }
+
+        .menuItems .items {
+            padding: 5px;
+            border-bottom: 1px solid #e6d4b6;
+        }
+
+            .menuItems .items:last-child {
+                border: none;
+            }
+
+            .menuItems .items a {
+                text-decoration: none;
+                color: white;
+            }
+
 </style>
-
-@*
-<Paragraph Visibility="Visibility.Invisible" Id="hiddenParagraph">
-    This is hidden content.
-</Paragraph>
-
-
-<Paragraph @ref="par1" ElementId="x1" Entry="entrada1" @oncontextmenu="@(e => ShowContextMenu(e, par1))">
-    Este é o primeiro parágrafo
-</Paragraph>
-
-<Paragraph @ref="par2" Entry="entrada2" ElementId="x2" @oncontextmenu="@(e => ShowContextMenu(e, par2))">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, autem. Labore vel
-    perspiciatis eligendi corrupti maxime quam magnam, eum alias fugit illum harum repellendus?
-    Placeat nihil iste deserunt itaque quibusdam!
-</Paragraph>
-*@
-
-@*<div id="firstDiv" @oncontextmenu="@(e => ShowContextMenu(e, "firstDiv"))">
-    Right-click me (First Div)
-</div>
-
-<div id="secondDiv" @oncontextmenu="@(e => ShowContextMenu(e, "secondDiv"))">
-    Right-click me (Second Div)
-</div>
-*@
 
 
 
@@ -73,13 +75,46 @@
 {
     string showContextMenuStr = showContextMenu.ToString();
     string posicao = $"top:{ContextMenuY}px;left:{ContextMenuX}px";
-    <p>Show Context Menu= @showContextMenuStr  @posicao</p>
     <div style="@($"position:absolute;top:{ContextMenuY}px;left:{ContextMenuX}px; background-color: #ffffff;")" class="context-menu">
         <button @onclick="SelectParagraph">Select this paragraph</button>
         <button @onclick="OpenNotes">Notes</button>
         <button @onclick="SearchHighlighted">Search</button>
     </div>
 }
+
+<div id="customContextMenu" class="bg-dark text-white" style="display: none;">
+    <ul class="menuItems">
+        <li class="items"><a href="#"> Menu Item-1 </a></li>
+        <li class="items"><a href="#"> Menu Item-2 </a></li>
+        <li class="items"><a href="#"> Menu Item-3 </a></li>
+        <li class="items"><a href="#"> Menu Item-4 </a></li>
+        <li class="items"><a href="#"> Menu Item-5 </a></li>
+        <li class="items"><a href="#"> Menu Item-6</a></li>
+    </ul>
+</div>
+
+<script>
+    // hiding the menu on click to the document
+    function hideCustomContextMenu() {
+        document.getElementById('customContextMenu').style.display = "none";
+    }
+
+    // toggling the menu on right click to the page
+    function showCustomContextMenu(event) {
+        event.preventDefault();
+        var myContextMenu = document.getElementById('customContextMenu');
+        if (myContextMenu.style.display == "block") {
+            myContextMenu.style.display = "none";
+        }
+        else {
+            myContextMenu.style.display = "block";
+            myContextMenu.style.left = event.pageX + "px";
+            myContextMenu.style.top = event.pageY + "px";
+        }
+    }
+    document.onclick = hideCustomContextMenu;
+    document.oncontextmenu = showCustomContextMenu;
+</script>
 
 
 <div id="rightColumn" class="black splitRight right mt-0 p-0 bg-dark text-white">
@@ -98,40 +133,43 @@
                 <TableBody>
                     @foreach (PaperLineContent line in PaperLines.Lines)
                     {
-                        <TableRow>
-                            <TableRowCell>
-                                <Paragraph @ref="@ParagraphsList[contParagraphs, 0]"
-                                           ElementId="@line.LeftLine.HtmlId"
-                                           @oncontextmenu="((e) => HandleContextMenu(e, ParagraphsList[contParagraphs, 0]))">
-                                    @line.LeftLine.Htmltext
-                                </Paragraph>
+                        if (contParagraphs < PaperLines.Lines.Count)
+                        {
+                            <TableRow>
+                                <TableRowCell>
+                                    <Paragraph @ref="@ParagraphsList[contParagraphs, 0]"
+                                               ElementId="@line.LeftLine.HtmlId"
+                                    @oncontextmenu="((e) => HandleContextMenu(e, ParagraphsList[contParagraphs, 0]))">
+                                        @((MarkupString)@line.LeftLine.Htmltext)
+                                    </Paragraph>
 
-                                <!--
-                                builder.AddAttribute(seq++, "oncontextmenu", EventCallback.Factory.Create<MouseEventArgs>(this, (e) => ShowContextMenu(e, paraRef)));
-                                -->
-                            </TableRowCell>
-                            @if (line.MiddleLine != null)
-                            {
-                                <TableRowCell>
-                                    <Paragraph @ref="@ParagraphsList[contParagraphs, 1]"
-                                               ElementId="@line.MiddleLine.HtmlId"
-                                               @oncontextmenu="((e) => HandleContextMenu(e, ParagraphsList[contParagraphs, 1]))">
-                                        @line.MiddleLine.Htmltext
-                                    </Paragraph>
+                                    <!--
+                                    builder.AddAttribute(seq++, "oncontextmenu", EventCallback.Factory.Create<MouseEventArgs>(this, (e) => ShowContextMenu(e, paraRef)));
+                                    -->
                                 </TableRowCell>
-                            }
-                            @if (line.RightLine != null)
-                            {
-                                <TableRowCell>
-                                    <Paragraph @ref="@ParagraphsList[contParagraphs, 1]"
-                                               ElementId="@line.RightLine.HtmlId"
-                                               @oncontextmenu="((e) => HandleContextMenu(e, ParagraphsList[contParagraphs, 2]))">
-                                        @line.RightLine.Htmltext
-                                    </Paragraph>
-                                </TableRowCell>
-                            }
-                        </TableRow>
-                        contParagraphs += 1;
+                                @if (line.MiddleLine != null)
+                                {
+                                    <TableRowCell>
+                                        <Paragraph @ref="@ParagraphsList[contParagraphs, 1]"
+                                                   ElementId="@line.MiddleLine.HtmlId"
+                                        @oncontextmenu="((e) => HandleContextMenu(e, ParagraphsList[contParagraphs, 1]))">
+                                            @((MarkupString)@line.MiddleLine.Htmltext)
+                                        </Paragraph>
+                                    </TableRowCell>
+                                }
+                                @if (line.RightLine != null)
+                                {
+                                    <TableRowCell>
+                                        <Paragraph @ref="@ParagraphsList[contParagraphs, 1]"
+                                                   ElementId="@line.RightLine.HtmlId"
+                                        @oncontextmenu="((e) => HandleContextMenu(e, ParagraphsList[contParagraphs, 2]))">
+                                            @((MarkupString)@line.RightLine.Htmltext)
+                                        </Paragraph>
+                                    </TableRowCell>
+                                }
+                            </TableRow>
+                            contParagraphs += 1;
+                        }
                     }
                 </TableBody>
             </Table>
@@ -148,20 +186,6 @@
 
 @code {
 
-    // private class ParagraphInfo
-    // {
-    //     public int Id { get; set; }
-    //     public Blazorise.Paragraph Reference { get; set; }
-    //     public RenderFragment Fragment { get; set; }
-    // }
-
-    // private class ParagraphsInfo
-    // {
-    //     public ParagraphInfo Left { get; set; }
-    //     public ParagraphInfo Middle { get; set; }
-    //     public ParagraphInfo Right { get; set; }
-    // }
-
     private PaperBookContent PaperLines { get; set; }
 
     int contParagraphs = 0;
@@ -177,14 +201,6 @@
     private double ContextMenuX = 0;
     private double ContextMenuY = 0;
 
-    private ElementReference firstDivRef;
-    private ElementReference secondDivRef;
-
-    Blazorise.Paragraph par1;
-    Blazorise.Paragraph par2;
-
-
-    Table MainTextTable;
     const string tableId = "tableText";
 
 
@@ -197,34 +213,40 @@
 
     #region Create Paragraphs
 
-    // private RenderFragment<Blazorise.Paragraph> RenderParagraph(PaperColumnContent colInfo)
-    // {
-    //     ParagraphInfo paragraphInfo = new ParagraphInfo();
-    //     var paraRef = new Blazorise.Paragraph();
-    //     //paraRef.ElementId = colInfo.HtmlId;
-    //     // Generate a RenderFragment for the new Paragraph
-
-    //     int seq = 1;
-
-
-    //     var fragment = new RenderFragment<Blazorise.Paragraph>(builder =>
-    //     {
-    //         builder.OpenElement(seq++, "Blazorise.Paragraph");
-    //         builder.AddAttribute(seq++, "Ref", paraRef);
-    //         builder.AddAttribute(seq++, "ID", colInfo.HtmlId);
-    //         builder.AddMarkupContent(seq++, colInfo.Htmltext);
-    //         //builder.AddContent(seq++, colInfo.Htmltext);
-    //         builder.CloseElement();
-    //     });
-    //     return fragment;
-    // }
-
     private async void GetTexts()
     {
         PaperLines = await BookTextService.GetHtml();
-        ParagraphsList = new Blazorise.Paragraph[PaperLines.Lines.Count, 3];
-        contParagraphs = 0;
         await Task.Delay(1);
+        ParagraphsList = new Blazorise.Paragraph[PaperLines.Lines.Count + 2, 3];
+        contParagraphs = 0;
+        for (int i = 0; i < PaperLines.Lines.Count; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Blazorise.Paragraph p = new();
+                switch (j)
+                {
+                    case 0:
+                        //p.Attributes.Add("HtmlId", PaperLines.Lines[i].LeftLine.HtmlId);
+                        ParagraphsList[i, 0] = p;
+                        break;
+                    case 1:
+                        if (PaperLines.Lines[i].MiddleLine != null)
+                        {
+                            //p.Attributes.Add("HtmlId", PaperLines.Lines[i].MiddleLine.HtmlId);
+                            ParagraphsList[i, 1] = p;
+                        }
+                        break;
+                    case 2:
+                        if (PaperLines.Lines[i].MiddleLine != null)
+                        {
+                            //p.Attributes.Add("HtmlId", PaperLines.Lines[i].RightLine.HtmlId);
+                            ParagraphsList[i, 2] = p;
+                        }
+                        break;
+                }
+            }
+        }
     }
 
 
@@ -234,7 +256,7 @@
 
     private void HandleContextMenu(MouseEventArgs e, Blazorise.Paragraph p)
     {
-        showContextMenu = true;
+        //showContextMenu = true;
         //string id = p.ElementId;
         //string xxxxx = par2.ChildContent.ToString();
         //Task t1 = Task.Run(async () => await GetInnerHtml(id));
