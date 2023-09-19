@@ -48,108 +48,108 @@ window.setupF1KeyListener = () => {
 //    menu.style.display = 'none';
 //});
 
-window.addMultipleEventListeners = (elementId) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-        console.log("    FOUND");
-        element.addEventListener('contextmenu', function (event) {
-            event.preventDefault();
-            DotNet.invokeMethodAsync('Amadon', 'ShowContextMenu', event.pageX, event.pageY);
-        });
+//window.addMultipleEventListeners = (elementId) => {
+//    const element = document.getElementById(elementId);
+//    if (element) {
+//        console.log("    FOUND");
+//        element.addEventListener('contextmenu', function (event) {
+//            event.preventDefault();
+//            DotNet.invokeMethodAsync('Amadon', 'ShowContextMenu', event.pageX, event.pageY);
+//        });
 
-        element.addEventListener('dblclick', function (event) {
-            DotNet.invokeMethodAsync('Amadon', 'HandleDoubleClick', event.pageX, event.pageY);
-        });
-    }
-};
+//        element.addEventListener('dblclick', function (event) {
+//            DotNet.invokeMethodAsync('Amadon', 'HandleDoubleClick', event.pageX, event.pageY);
+//        });
+//    }
+//};
 
-function GetTextDivData(id)
-{
-    var element = document.getElementById(id);
-    if (element) {
-        console.log('Achou o element ' + element.id);
-        console.log('innerHTML: ' + innerHTML);
-    }
-    else
-    {
-        console.log('Não Achou o elemento ' + id);
-    }
-}
+//function GetTextDivData(id)
+//{
+//    var element = document.getElementById(id);
+//    if (element) {
+//        console.log('Achou o element ' + element.id);
+//        console.log('innerHTML: ' + innerHTML);
+//    }
+//    else
+//    {
+//        console.log('Não Achou o elemento ' + id);
+//    }
+//}
 
-window.getAbsolutePosition = function (element) {
-    var rect = element.getBoundingClientRect();
-    return { top: rect.top, left: rect.left };
-};
+//window.getAbsolutePosition = function (element) {
+//    var rect = element.getBoundingClientRect();
+//    return { top: rect.top, left: rect.left };
+//};
 
-window.getElementId = function (element) {
-    return element.id;
-};
+//window.getElementId = function (element) {
+//    return element.id;
+//};
 
-window.getElementById = function (id) {
-    var element = document.getElementById(id);
-    return element;
-};
-
-
-window.getElementPropertiesById = function (id) {
-    var element = document.getElementById(id);
-    if (element) {
-        return {
-            id: element.id,
-            className: element.className,
-            innerHTML: element.innerHTML
-            // Add more properties as needed
-        };
-    }
-    return null;
-};
+//window.getElementById = function (id) {
+//    var element = document.getElementById(id);
+//    return element;
+//};
 
 
-window.GetInnerHtml = (elementId) => {
-    let element = document.getElementById(elementId);
-    if (element) {
-        console.log("GetInnerHtml worked: " + element.innerHTML);
-    }
-    return element ? element.innerHTML : '';
-}
-
-// function to get currently selected text
-function getSelectedText() {
-    let txt = '';
-    if (window.getSelection) {
-        txt = window.getSelection().toString();
-    }
-    else if (window.document.getSelection) {
-        txt = window.document.getSelection().toString();
-    }
-    else if (window.document.selection) {
-        txt = window.document.selection.createRange().text;
-    }
-    else {
-        txt = 'Error: not supported';
-    }
-    return txt;
-}
+//window.getElementPropertiesById = function (id) {
+//    var element = document.getElementById(id);
+//    if (element) {
+//        return {
+//            id: element.id,
+//            className: element.className,
+//            innerHTML: element.innerHTML
+//            // Add more properties as needed
+//        };
+//    }
+//    return null;
+//};
 
 
+//window.GetInnerHtml = (elementId) => {
+//    let element = document.getElementById(elementId);
+//    if (element) {
+//        console.log("GetInnerHtml worked: " + element.innerHTML);
+//    }
+//    return element ? element.innerHTML : '';
+//}
 
-window.GetSelectedText = (elementId) => {
-    var text = getSelectedText();
-    console.log("Selected text: " + text);
+//// function to get currently selected text
+//function getSelectedText() {
+//    let txt = '';
+//    if (window.getSelection) {
+//        txt = window.getSelection().toString();
+//    }
+//    else if (window.document.getSelection) {
+//        txt = window.document.getSelection().toString();
+//    }
+//    else if (window.document.selection) {
+//        txt = window.document.selection.createRange().text;
+//    }
+//    else {
+//        txt = 'Error: not supported';
+//    }
+//    return txt;
+//}
 
-    //let element = document.getElementById(elementId);
-    //if (element) {
-    //    let selection = window.getSelection();
-    //    let range = document.createRange();
-    //    range.selectNodeContents(element);
-    //    if (selection.rangeCount > 0) {
-    //        selection.removeAllRanges();
-    //    }
-    //    selection.addRange(range);
-    //    console.log("GetSelectedText worked" + selection.toString());
-    //    return selection.toString();
-    //}
-    return text;
-}
+
+
+//window.GetSelectedText = (elementId) => {
+//    var text = getSelectedText();
+//    console.log("Selected text: " + text);
+
+//    //let element = document.getElementById(elementId);
+//    //if (element) {
+//    //    let selection = window.getSelection();
+//    //    let range = document.createRange();
+//    //    range.selectNodeContents(element);
+//    //    if (selection.rangeCount > 0) {
+//    //        selection.removeAllRanges();
+//    //    }
+//    //    selection.addRange(range);
+//    //    console.log("GetSelectedText worked" + selection.toString());
+//    //    return selection.toString();
+//    //}
+//    return text;
+//}
     
 

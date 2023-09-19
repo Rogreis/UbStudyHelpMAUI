@@ -70,7 +70,7 @@
 </style>
 
 
-
+@* 
 @if (showContextMenu)
 {
     string showContextMenuStr = showContextMenu.ToString();
@@ -81,8 +81,9 @@
         <button @onclick="SearchHighlighted">Search</button>
     </div>
 }
+ *@
 
-<div id="customContextMenu" class="bg-dark text-white" style="display: none;">
+<Div @ref="contextMenuDiv" Class="bg-dark text-white" Style="@styleString">
     <ul class="menuItems">
         <li class="items"><a href="#"> Menu Item-1 </a></li>
         <li class="items"><a href="#"> Menu Item-2 </a></li>
@@ -91,7 +92,7 @@
         <li class="items"><a href="#"> Menu Item-5 </a></li>
         <li class="items"><a href="#"> Menu Item-6</a></li>
     </ul>
-</div>
+</Div>
 
 <script>
     // hiding the menu on click to the document
@@ -203,6 +204,9 @@
 
     const string tableId = "tableText";
 
+    Div contextMenuDiv;
+    string styleString= "display: none";
+
 
     [JSInvokable]
     public static void HandleF1KeyPress()
@@ -264,8 +268,17 @@
 
         //var x1 = innerHtml;
         //var x2 = selectedText;
-
-        return;
+        string position = $"position:relative;left: {e.ClientX}px; top= {e.ClientY}px;";
+        // $"position:absolute;top:{ContextMenuY}px;left:{ContextMenuX}px;
+        if (styleString.Contains("display: block;"))
+        {
+            styleString = "display: none;";
+        }
+        else
+        {
+            styleString = "display: block; " + position;
+        }
+        StateHasChanged();
 
 
         //// Get a reference to the clicked div element (this could be set through other means)
