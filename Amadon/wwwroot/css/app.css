@@ -14,6 +14,13 @@ html, body {
     margin: 0;
 }
 
+/* Your modal body styling */
+.modal-body {
+   font-family: inherit;
+   font-size: inherit;
+   color: inherit;
+}
+
 .flex-container {
     display: flex;
     flex-direction: column;

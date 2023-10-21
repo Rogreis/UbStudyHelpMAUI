@@ -19,14 +19,22 @@
           CommandMode="DataGridCommandMode.ButtonRow"
           @onmouseover="AddDoubleClickListener">
     <DataGridColumns>
-        <DataGridColumn Field="@nameof(UserNote.Reference)" Caption="Reference" Editable Sortable="true">
+        <DataGridColumn Field="@nameof(UserNote.Reference)" Caption="Reference" Editable Sortable="true" >
         </DataGridColumn>
         <DataGridColumn Field="@nameof(UserNote.Title)" Caption="Title" Editable Sortable="true" />
     </DataGridColumns>
+
+     <PageButtonTemplate>
+         <Span TextColor="TextColor.Success">
+             @context.PageNumber
+         </Span>
+     </PageButtonTemplate>
+
+
     <ButtonRowTemplate>
-        <Button Color="Color.Success" Clicked="@(()=> NewNote())">New</Button>
-        <Button Color="Color.Primary" Disabled="(selectedUserNote is null)" Clicked="@(()=> EditeNote(selectedUserNote))">Edit Title</Button>
-        <Button Color="Color.Danger" Disabled="(selectedUserNote is null)" Clicked="@(()=> DeleteNote(selectedUserNote))">Delete</Button>
+         <Button Color="Color.Success" Clicked="@(()=> NewNote())" Size="Size.Small">New</Button>
+         <Button Color="Color.Primary" Disabled="(selectedUserNote is null)" Clicked="@(()=> EditeNote(selectedUserNote))" Size="Size.Small">Edit Title</Button>
+         <Button Color="Color.Danger" Disabled="(selectedUserNote is null)" Clicked="@(()=> DeleteNote(selectedUserNote))" Size="Size.Small">Delete</Button>
     </ButtonRowTemplate>
 </DataGrid>
 
@@ -69,13 +77,15 @@
     [JSInvokable]
     public void OnRowDoubleClicked(int rowIndex)
     {
-        UserNote note = PersistentData.NotesList.Notes.Skip(rowIndex - 1).FirstOrDefault();
+        UserNote note = Notes.Skip(rowIndex - 1).FirstOrDefault();
         AmadonEvents.OpenEditNoteText(note, false);
     }
 
     private void NewNote()
     {
-        PersistentData.NotesList.Notes.Add(new UserNote() { Entry = StaticObjects.Parameters.Entry, Title = "bla bla 1", Notes = "" });
+        PersistentData.NotesList.Notes.Add(new UserNote() { Entry = StaticObjects.Parameters.Entry, Title = $"Notes {PersistentData.NotesList.Notes.Count}", Notes = "" });
+        Notes = PersistentData.NotesList.Notes.FindAll(n => n.Entry.Paper == StaticObjects.Parameters.Entry.Paper);
+        Notes.Sort((n1, n2) => n1.Entry.CompareTo(n2.Entry));
         NotesDataGrid.Refresh();
         NotesDataGrid.New();
     }

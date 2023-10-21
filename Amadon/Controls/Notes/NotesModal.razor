@@ -1,4 +1,6 @@
-﻿@using AmadonStandardLib.InterchangeData;
+﻿@inject IJSRuntime JSRuntime
+
+@using AmadonStandardLib.InterchangeData;
 @using Blazorise.RichTextEdit
 
 <Modal @ref="modalRef" Class="modal-xl ModalSize fade">
@@ -11,6 +13,7 @@
 
 
             <RichTextEdit @ref="richTextEditRef"
+                          id="richTextEditElement"
                           Theme="RichTextEditTheme.Snow"
                           PlaceHolder="Type your note here..."
                           ReadOnly="@IsReadOnly"
@@ -42,20 +45,35 @@
 
         </ModalBody>
         <ModalFooter Class="AmadonDark">
-            <Button Color="Color.Secondary" Clicked="@HideModalCancel">Cancel</Button>
-            <Button Color="Color.Primary" Clicked="@HideModalOk">Ok</Button>
+             <Button Color="Color.Secondary" Clicked="@HideModalCancel" Size="Size.Small">Cancel</Button>
+             <Button Color="Color.Primary" Clicked="@HideModalOk" Size="Size.Small">Ok</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
 
+<script>
+     function changeRichTextEditColor(elementId, color) {
+         const element = document.getElementById(elementId);
+         if (element) {
+             element.style.color = color;
+         }
+     }
+ </script>
 
-@code {
+
+ @code {
 
     private Modal modalRef;
     private string Title { get; set; } = "Notes";
     protected RichTextEdit richTextEditRef;
     protected bool IsReadOnly;
     private UserNote Note = null;
+
+    private async Task ChangeTextColor()
+    {
+        await JSRuntime.InvokeVoidAsync("changeRichTextEditColor", "richTextEditElement", "white");
+    }
+
 
     public void ShowEditNotes(UserNote note, bool readOnly)
     {
@@ -73,6 +91,7 @@
             modalRef.Hide();
             modalRef.Show();
         }
+        //ChangeTextColor();
         StateHasChanged();
         Task.Delay(1);
     }
