@@ -16,7 +16,6 @@
                           id="richTextEditElement"
                           Theme="RichTextEditTheme.Snow"
                           PlaceHolder="Type your note here..."
-                          ReadOnly="@IsReadOnly"
                           SubmitOnEnter="false"
                           ToolbarPosition="Placement.Top">
                 <Toolbar>
@@ -46,7 +45,7 @@
         </ModalBody>
         <ModalFooter Class="AmadonDark">
              <Button Color="Color.Secondary" Clicked="@HideModalCancel" Size="Size.Small">Cancel</Button>
-             <Button Color="Color.Primary" Clicked="@HideModalOk" Size="Size.Small">Ok</Button>
+             <Button Color="Color.Primary" Clicked="@HideModalOk" Size="Size.Small">@OkButtonText</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -66,8 +65,10 @@
     private Modal modalRef;
     private string Title { get; set; } = "Notes";
     protected RichTextEdit richTextEditRef;
-    protected bool IsReadOnly;
+    protected bool IsToDelete;
     private UserNote Note = null;
+
+    private string OkButtonText { get { return IsToDelete ? "Delete" : "Save"; } }
 
     private async Task ChangeTextColor()
     {
@@ -75,9 +76,9 @@
     }
 
 
-    public void ShowEditNotes(UserNote note, bool readOnly)
+    public void ShowEditNotes(UserNote note, bool isToDelete)
     {
-        IsReadOnly = readOnly;
+        IsToDelete = isToDelete;
         Note = note;
         Title = note.Title;
         richTextEditRef.SetHtmlAsync(note.Notes);
@@ -106,6 +107,7 @@
         Note.Notes = await richTextEditRef.GetHtmlAsync();
         await richTextEditRef.ClearAsync();
         await modalRef.Hide();
+        AmadonEvents.EditNoteClosed(Note);
     }
 
 
