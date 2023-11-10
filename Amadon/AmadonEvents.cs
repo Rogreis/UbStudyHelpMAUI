@@ -19,7 +19,7 @@ namespace Amadon
     internal delegate void UpdateParagraphIdentDelegate(TOC_Entry entry);
     internal delegate void NewParagraphIdentDelegate(TOC_Entry entry);
     internal delegate void OpenEditNoteTextDelegate(UserNote note, bool isToDelete);
-    internal delegate void EditNoteClosedDelegate(UserNote note);
+    internal delegate void EditNoteClosedDelegate(UserNote note, bool cancel);
 
 
     internal class AmandonComponentNames
@@ -228,9 +228,9 @@ namespace Amadon
             OnOpenEditNoteText?.Invoke(note, isToDelete);
         }
 
-        public static void EditNoteClosed(UserNote note)
+        public static void EditNoteClosed(UserNote note, bool cancel)
         {
-            OnEditNoteClosed?.Invoke(note);
+            OnEditNoteClosed?.Invoke(note, cancel);
         }
 
     }

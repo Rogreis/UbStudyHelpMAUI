@@ -97,9 +97,10 @@
         Task.Delay(1);
     }
 
-    public Task HideModalCancel()
+    public async Task HideModalCancel()
     {
-        return modalRef.Hide();
+        await modalRef.Hide();
+        AmadonEvents.EditNoteClosed(Note, true);
     }
 
     public async Task HideModalOk()
@@ -107,7 +108,7 @@
         Note.Notes = await richTextEditRef.GetHtmlAsync();
         await richTextEditRef.ClearAsync();
         await modalRef.Hide();
-        AmadonEvents.EditNoteClosed(Note);
+        AmadonEvents.EditNoteClosed(Note, false);
     }
 
 

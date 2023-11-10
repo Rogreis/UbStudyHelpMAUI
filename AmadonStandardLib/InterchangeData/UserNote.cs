@@ -11,7 +11,7 @@ namespace AmadonStandardLib.InterchangeData
     /// </summary>
     public class UserNote
     {
-        public Guid Id { get; set; }= new Guid();
+        public string Id { get; set; }= Guid.NewGuid().ToString();
 
         public TOC_Entry Entry { get; set; } = new TOC_Entry();
 

@@ -34,6 +34,9 @@ namespace AmadonStandardLib.Classes
         // Controls if the choise for translations to be shown are done
         public bool TranslationsChoiceDone { get; set; } = false;
 
+        // Last notes file used
+        public string NotesFile { get; set; } = "";
+
         /// <summary>
         /// Last position in the text, default for first paragraph
         /// </summary>
