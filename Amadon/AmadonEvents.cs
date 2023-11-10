@@ -26,9 +26,10 @@ namespace Amadon
     {
         public const string ControlSettings = "settings";
         public const string ControlSearch = "search";
+        public const string ControlStudies = "studies";
+        public const string ControlNotes = "notes";
         public const string ControlHelp = "help";
         public const string ControlTrack = "track";
-        public const string ControlNotes = "notes";
         public const string ControlIndex = "index";
         public const string ControlToc = "toc";
     }
