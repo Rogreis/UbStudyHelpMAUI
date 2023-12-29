@@ -40,7 +40,7 @@ jobs:
         run: dotnet build Amadon\Amadon.csproj --configuration Release
 
       - name: Publish application
-        run: dotnet publish --configuration Release --output ./publish AmadonBlazor2.sln
+        run: dotnet publish AmadonBlazor2.sln --configuration Release --framework net7.0-windows --output ./publish 
 
       - name: List publish folder
         run: dir ./publish
