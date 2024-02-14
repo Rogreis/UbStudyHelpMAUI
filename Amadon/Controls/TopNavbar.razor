@@ -46,18 +46,23 @@
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="LinkToStudies">
+                        <span class="oi oi-eye" aria-hidden="true"></span> Studies
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
                     <NavLink class="nav-link" @onclick="LinkToSearch">
                         <span class="oi oi-envelope-closed" aria-hidden="true"></span> Search
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" @onclick="LinkToTrack">
-                        <span class="oi oi-location" aria-hidden="true"></span> Track
+                    <NavLink class="nav-link" @onclick="LinkToNotes">
+                        <span class="oi oi-comment-square" aria-hidden="true"></span> Notes
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" @onclick="LinkToNotes">
-                        <span class="oi oi-comment-square" aria-hidden="true"></span> Notes
+                    <NavLink class="nav-link" @onclick="LinkToTrack">
+                        <span class="oi oi-location" aria-hidden="true"></span> Track
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
@@ -114,6 +119,7 @@
     {
         return name == AmandonComponentNames.ControlSettings ||
                name == AmandonComponentNames.ControlSearch ||
+               name == AmandonComponentNames.ControlStudies ||
                name == AmandonComponentNames.ControlHelp ||
                name == AmandonComponentNames.ControlTrack ||
                name == AmandonComponentNames.ControlNotes ||
@@ -258,15 +264,18 @@
 
     private void LinkToIndex() => FireTopNavCommand(AmandonComponentNames.ControlIndex);
 
+    private void LinkToStudies() => FireTopNavCommand(AmandonComponentNames.ControlStudies);
+
     private void LinkToSearch() => FireTopNavCommand(AmandonComponentNames.ControlSearch);
 
-    private void LinkToTrack() => FireTopNavCommand(AmandonComponentNames.ControlTrack);
-
     private void LinkToNotes() => FireTopNavCommand(AmandonComponentNames.ControlNotes);
+
+    private void LinkToTrack() => FireTopNavCommand(AmandonComponentNames.ControlTrack);
 
     private void LinkToSettings() => FireTopNavCommand(AmandonComponentNames.ControlSettings);
 
     private void LinkToHelp() => FireTopNavCommand(AmandonComponentNames.ControlHelp);
+  
 
 
 }

@@ -3,33 +3,37 @@
 @using AmadonStandardLib.Helpers;
 
 <div id="leftColumn">
-    @if (ControlName == AmandonComponentNames.ControlSettings)
+    @if (ControlName == AmandonComponentNames.ControlToc)
     {
-        <SettingsFields></SettingsFields>
-     }
-    else if (ControlName == AmandonComponentNames.ControlSearch)
-    {
-        <Search></Search>
-    }
-    else if (ControlName == AmandonComponentNames.ControlHelp)
-    {
-        <HelpControl></HelpControl>
-    }
-    else if (ControlName == AmandonComponentNames.ControlTrack)
-    {
-        <Track></Track>
-    }
-    else if (ControlName == AmandonComponentNames.ControlNotes)
-    {
-        <NotesTopics></NotesTopics>
+        <TableOfContents></TableOfContents>
     }
     else if (ControlName == AmandonComponentNames.ControlIndex)
     {
         <TubIndex></TubIndex>
     }
-    else if (ControlName == AmandonComponentNames.ControlToc)
+    else if (ControlName == AmandonComponentNames.ControlStudies)
     {
-        <TableOfContents></TableOfContents>
+        <Studies></Studies>
+    }
+    else if (ControlName == AmandonComponentNames.ControlNotes)
+    {
+        <NotesTopics></NotesTopics>
+    }
+    else if (ControlName == AmandonComponentNames.ControlSearch)
+    {
+        <Search></Search>
+    }
+    else if (ControlName == AmandonComponentNames.ControlTrack)
+    {
+        <Track></Track>
+    }
+    else if (ControlName == AmandonComponentNames.ControlSettings)
+    {
+        <SettingsFields></SettingsFields>
+    }
+    else if (ControlName == AmandonComponentNames.ControlHelp)
+    {
+        <HelpControl></HelpControl>
     }
 </div>
 
@@ -54,7 +58,7 @@
     }
 
     private void AmadonEvents_OnHelpContext()
-            {
+    {
         switch (ControlName)
         {
             case AmandonComponentNames.ControlToc:

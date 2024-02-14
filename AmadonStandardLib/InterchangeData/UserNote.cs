@@ -1,5 +1,6 @@
 ﻿using AmadonStandardLib.Helpers;
 using AmadonStandardLib.UbClasses;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -10,6 +11,8 @@ namespace AmadonStandardLib.InterchangeData
     /// </summary>
     public class UserNote
     {
+        public string Id { get; set; }= Guid.NewGuid().ToString();
+
         public TOC_Entry Entry { get; set; } = new TOC_Entry();
 
         public string Title { get; set; } = "no title";
@@ -41,10 +44,6 @@ namespace AmadonStandardLib.InterchangeData
     {
         public List<UserNote> Notes { get; set; } = new List<UserNote>();
 
-        public void FillTestList()
-        {
-
-        }
     }
 
 }

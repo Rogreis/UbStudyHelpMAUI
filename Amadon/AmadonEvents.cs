@@ -18,16 +18,18 @@ namespace Amadon
     internal delegate void HelpContextDelegate();
     internal delegate void UpdateParagraphIdentDelegate(TOC_Entry entry);
     internal delegate void NewParagraphIdentDelegate(TOC_Entry entry);
-    internal delegate void OpenEditNoteTextDelegate(UserNote note, bool readOnly);
+    internal delegate void OpenEditNoteTextDelegate(UserNote note, bool isToDelete);
+    internal delegate void EditNoteClosedDelegate(UserNote note, bool cancel);
 
 
     internal class AmandonComponentNames
     {
         public const string ControlSettings = "settings";
         public const string ControlSearch = "search";
+        public const string ControlStudies = "studies";
+        public const string ControlNotes = "notes";
         public const string ControlHelp = "help";
         public const string ControlTrack = "track";
-        public const string ControlNotes = "notes";
         public const string ControlIndex = "index";
         public const string ControlToc = "toc";
     }
@@ -127,7 +129,10 @@ namespace Amadon
         /// Fired to open the big edit notes in the Boot Text componenet
         /// </summary>
         public static event OpenEditNoteTextDelegate OnOpenEditNoteText;
-        
+
+
+        public static event EditNoteClosedDelegate OnEditNoteClosed;
+
 
         // ============================================================================================================= 
         // Functions to fire the above events
@@ -219,9 +224,14 @@ namespace Amadon
             OnNewParagraphIdent?.Invoke(entry);
         }
 
-        public static void OpenEditNoteText(UserNote note, bool readOnly)
+        public static void OpenEditNoteText(UserNote note, bool isToDelete)
         {
-            OnOpenEditNoteText?.Invoke(note, readOnly);
+            OnOpenEditNoteText?.Invoke(note, isToDelete);
+        }
+
+        public static void EditNoteClosed(UserNote note, bool cancel)
+        {
+            OnEditNoteClosed?.Invoke(note, cancel);
         }
 
     }
