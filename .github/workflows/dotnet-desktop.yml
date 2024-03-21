@@ -1,4 +1,3 @@
-# ROGERIO
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
@@ -57,9 +56,8 @@ jobs:
 
     env:
       Solution_Name: AmadonBlazor2.sln          # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: Amadon/Amadon.csproj   # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
       Wap_Project_Directory: Releases           # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-      Wap_Project_Path: Releases                # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+      Wap_Project_Path: Amadon/Amadon.cspro     # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
 
     steps:
     - name: Checkout
